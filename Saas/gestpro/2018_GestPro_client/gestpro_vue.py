@@ -28,7 +28,7 @@ class Vue():
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.cadreapp=Frame(self.root,width=800,height=600)         #Frame de base a mes fenetre
-        self.cadreapp.pack()
+        self.cadreapp.grid()
         self.monip=monip
         self.parent=parent
         self.modele=None
@@ -61,14 +61,14 @@ class Vue():
         if self.modecourant:
             self.modecourant.grid_forget()
         self.modecourant=cadre
-        self.modecourant.grid(expand=1,fill=BOTH)            
+        self.modecourant.grid(fill=BOTH)            
 
     def changecadre(self,cadre,etend=0):
         if self.cadreactif:
             self.cadreactif.grid_forget()
         self.cadreactif=cadre
         if etend:
-            self.cadreactif.grid(expand=1,fill=BOTH)
+            self.cadreactif.grid(fill=BOTH)
         else:
             self.cadreactif.grid()
     
@@ -95,49 +95,49 @@ class Vue():
         self.cadresplash=Frame(self.cadreapp,bg="#E5E7F4")
         
         self.titre=Label(self.cadresplash, bg="#E5E7F4" , text="Gestionnaire de Projet MAAJM",font='arial 20')
-        self.titre.pack(pady=(40,30),padx=20);
+        self.titre.grid(pady=(40,30),padx=20);
         
         self.labelNom=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre nom d'utilisateur",font='arial 12')
-        self.labelNom.pack()
+        self.labelNom.grid()
         self.nomsplash=Entry(self.cadresplash,bg="white")
         self.nomsplash.insert(0, "jmd")
-        self.nomsplash.pack(pady=(10,30),padx=100)
+        self.nomsplash.grid(pady=(10,30),padx=100)
         
         self.ipsplash=Entry(self.cadresplash,bg="white")
         self.ipsplash.insert(0, self.monip)
-        self.ipsplash.pack()
+        self.ipsplash.grid()
         
         self.labelComboServeur=Label(self.cadresplash, bg="#E5E7F4" , text="Choisiez votre serveur",font='arial 12')
-        self.labelComboServeur.pack()
+        self.labelComboServeur.grid()
         self.Comboserveur= ttk.Combobox(self.cadresplash)
         self.Comboserveur['values']=("Serveur 1","Serveur 2","Serveur 3","Autre Serveur" )
-        self.Comboserveur.pack(pady=(10,20))
+        self.Comboserveur.grid(pady=(10,20))
         
         self.frameButton= Frame(self.cadresplash,bg="#E5E7F4")
-        self.frameButton.pack()
+        self.frameButton.grid()
         
         self.btnconnecter=Button(self.frameButton,text="Ce connecter",bg="#FFFFFF",command=self.loginclient,relief=FLAT)
-        self.btnconnecter.pack(pady=(0,20),fill="both", expand=True)
+        self.btnconnecter.grid(pady=(0,20))
         
         self.inscriptionB = Button(self.frameButton,text="Nouveau Client",bg="#FFFFFF",command=self.AllerAInscription,relief=FLAT)
-        self.inscriptionB.pack(pady=(0,20),fill="both", expand=True)
+        self.inscriptionB.grid(pady=(0,20))
         
     def creeNouvelleUtilisateur(self):    
         self.cadreNouvelleUtilisateur=Frame(self.cadreapp,bg="#E5E7F4")
         self.titre=Label(self.cadreNouvelleUtilisateur,text="Creation d'un nouvelle utilisateur",font='arial 20',bg="#E5E7F4")
-        self.titre.pack(pady=(20,20),padx=50)
+        self.titre.grid(pady=(20,20),padx=50)
         
         self.EntrerNomTitre= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre nom",font='arial 12',bg="#E5E7F4")
-        self.EntrerNomTitre.pack(pady=(20,20),padx=100)
+        self.EntrerNomTitre.grid(pady=(20,20),padx=100)
         
         self.NouveauNom= Entry(self.cadreNouvelleUtilisateur,bg="white")
-        self.NouveauNom.pack(pady=(0,20))
+        self.NouveauNom.grid(pady=(0,20))
         
         self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT)
-        self.confirmerIB.pack(pady=(0,20))
+        self.confirmerIB.grid(pady=(0,20))
         
         self.annuleIB=Button(self.cadreNouvelleUtilisateur,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal)
-        self.annuleIB.pack(pady=(0,20))
+        self.annuleIB.grid(pady=(0,20))
         
     def closeprocess(self):
         self.parent.fermerprocessus()

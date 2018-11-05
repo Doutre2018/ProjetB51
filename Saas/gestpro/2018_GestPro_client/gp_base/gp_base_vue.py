@@ -35,7 +35,6 @@ class Vue():
         self.largeur=self.root.winfo_screenwidth()/7
         self.hauteur=self.root.winfo_screenmmheight()/4.5
         self.cadrebaseExiste=False
-
         self.images={}
         self.cadreactif=None
         self.fullscreen=True
@@ -51,7 +50,7 @@ class Vue():
 
     def changecadre(self,cadre,etend=0):
         if self.cadreactif:
-            pass#self.cadreactif.grid_forget()
+            self.cadreactif.grid_forget()
         self.cadreactif=cadre
         if etend:
             self.cadreactif.grid(expand=1,fill=BOTH)
@@ -176,7 +175,7 @@ class Vue():
         self.boutonProjet3=Button(text="Projet 3",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
 
         self.boutonMandat=Button(text="Mandat",bg="#0B416C",command=None,height=4,width=int(self.largeur/11))
-        self.boutonScrum=Button(text="Scrum",bg="#0072BB",command=self.accesScrum,height=4,width=int(self.largeur/11))
+        self.boutonScrum=Button(text="Scrum",bg="#0072BB",command=None,height=4,width=int(self.largeur/11))
         self.boutonAnalyse=Button(text="Analyse \nTextuelle",bg="#2AABE2",command=None,height=4,width=int(self.largeur/11))
         self.boutonCasUsage=Button(text="Cas \nd'usage",bg="#01A89E",command=None,height=4,width=int(self.largeur/11))
         self.boutonMaquette=Button(text="Maquette",bg="#22B473",command=None,height=4,width=10)

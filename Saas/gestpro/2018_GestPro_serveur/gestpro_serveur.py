@@ -33,6 +33,7 @@ class ModeleService(object):
         self.modulesdisponibles={"projet":"gp_projet",
                                  "sql":"gp_sql",
                                  "mandat":"gp_mandat",
+
                                  "inscription":"gp_inscription"}
         self.clients={}
         

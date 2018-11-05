@@ -26,7 +26,7 @@ class Vue():
         
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
-        self.root.attributes("-fullscreen", True)
+        self.root.attributes("-fullscreen", False)
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
         self.modele=None
@@ -35,10 +35,10 @@ class Vue():
         self.largeur=self.root.winfo_screenwidth()/7
         self.hauteur=self.root.winfo_screenmmheight()/4.5
         self.cadrebaseExiste=False
+
         self.images={}
         self.cadreactif=None
         self.fullscreen=True
-        self.creermenu()
         self.creercadres()
         self.changecadre(self.cadrebase)
         
@@ -50,7 +50,7 @@ class Vue():
 
     def changecadre(self,cadre,etend=0):
         if self.cadreactif:
-            self.cadreactif.grid_forget()
+            pass#self.cadreactif.grid_forget()
         self.cadreactif=cadre
         if etend:
             self.cadreactif.grid(expand=1,fill=BOTH)
@@ -89,7 +89,6 @@ class Vue():
             print("RIEN") 
             
     def creermenu(self):
-
         self.menubar = Menu(self.root)
 
         self.filemenu = Menu(self.menubar, tearoff=0)
@@ -166,40 +165,7 @@ class Vue():
         self.boutonTerlow.destroy()                      
               
     def creercadrebase(self):
-        
-        if(self.cadrebaseExiste):
-            destroyCadreBase()
         self.cadrebase=Frame(self.root)
-        self.boutonProjet1=Button(text="Projet 1",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
-        self.boutonProjet2=Button(text="Projet 2",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
-        self.boutonProjet3=Button(text="Projet 3",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
-
-        self.boutonMandat=Button(text="Mandat",bg="#0B416C",command=None,height=4,width=int(self.largeur/11))
-        self.boutonScrum=Button(text="Scrum",bg="#0072BB",command=None,height=4,width=int(self.largeur/11))
-        self.boutonAnalyse=Button(text="Analyse \nTextuelle",bg="#2AABE2",command=None,height=4,width=int(self.largeur/11))
-        self.boutonCasUsage=Button(text="Cas \nd'usage",bg="#01A89E",command=None,height=4,width=int(self.largeur/11))
-        self.boutonMaquette=Button(text="Maquette",bg="#22B473",command=None,height=4,width=10)
-        self.boutonCrc=Button(text="CRC",bg="#38B64A",command=None,height=4,width=int(self.largeur/11))
-        self.boutonBudget=Button(text="Budget",bg="#8CC83E",command=None,height=4,width=int(self.largeur/11))
-        self.boutonTchat=Button(text="Tchat",bg="#DAE121",command=None,height=4,width=int(self.largeur/11))
-        self.boutonDonnee=Button(text="Modelisation \nde donnee",bg="#FAEF20",command=None,height=4,width=int(self.largeur/11))
-        self.boutonTerlow=Button(text="Terlow",bg="#FFB242",command=None,height=4,width=int(self.largeur/11))
-        
-        self.boutonProjet1.grid(row=1,column=0,rowspan=5)
-        self.boutonProjet2.grid(row=6,column=0,rowspan=5)
-        self.boutonProjet3.grid(row=11,column=0,rowspan=5)
-
-        self.boutonMandat.grid(row=0,column=1)
-        self.boutonScrum.grid(row=0,column=2)
-        self.boutonAnalyse.grid(row=0,column=3)
-        self.boutonCasUsage.grid(row=0,column=4)
-        self.boutonMaquette.grid(row=0,column=5)
-        self.boutonCrc.grid(row=0,column=6)
-        self.boutonBudget.grid(row=0,column=7)
-        self.boutonTchat.grid(row=0,column=8)
-        self.boutonDonnee.grid(row=0,column=9)
-        self.boutonTerlow.grid(row=0,column=10)
-        
 
         self.scroll = Scrollbar(self.root)
         self.mandatTexte = Text(self.root,bg="#09436B",height=int(self.hauteur/4),foreground="white")

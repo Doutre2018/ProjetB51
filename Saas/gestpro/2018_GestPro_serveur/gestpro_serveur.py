@@ -32,12 +32,20 @@ class ModeleService(object):
         self.rdseed=rdseed
         self.modulesdisponibles={"projet":"gp_projet",
                                  "sql":"gp_sql",
-<<<<<<< HEAD
-                                 "base":"gp_base",}
-=======
+                                 "mandat":"gp_mandat",
+                                 "scrum":"gp_scrum",
+                                 "analyse":"gp_analyse",
+                                 "casdusage":"gp_casdusage",
+                                 "maquette":"gp_maquette",
+                                 "crc":"gp_crc",
+                                 "budget":"gp_budget",
+                                 "tchat":"gp_tchat",
+                                 "modelisation":"gp_modelisation",
+                                 "terlow":"gp_terlow",
+
                                  "inscription":"gp_inscription"}
->>>>>>> 3bc540ca4818813c1d792f88a59149c16ba0dcaf
         self.clients={}
+         
         
     def creerclient(self,nom):
         if nom in self.clients.keys(): # on assure un nom unique
@@ -71,8 +79,6 @@ class ControleurServeur(object):
                             
                         listefichiers.append(val)
                     return [mod,dirmod,listefichiers]
-            
-            
             
     def requetefichier(self,lieu):
         fiche=open(lieu,"rb")

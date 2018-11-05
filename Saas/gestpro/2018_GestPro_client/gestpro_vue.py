@@ -131,6 +131,10 @@ class Vue():
         self.NouveauNom= Entry(self.cadreNouvelleUtilisateur,bg="white")
         self.NouveauNom.grid(pady=(0,20))
         
+        self.ipsplash=Entry(self.cadreNouvelleUtilisateur,bg="white")
+        self.ipsplash.insert(0, self.monip)
+        self.ipsplash.grid()
+        
         self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT)
         self.confirmerIB.grid(pady=(0,20))
         

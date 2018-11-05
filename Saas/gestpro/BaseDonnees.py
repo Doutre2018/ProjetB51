@@ -18,6 +18,8 @@ class  BaseDonnees():
             ['AnalyseTextuelle', ['id','integer','PRIMARY KEY'], ['id_projet','integer','NOT NULL'], ['ligne','integer',''],['colonne','integer',''],['id_type','integer','']],
             ['TypeMot', ['id','integer','PRIMARY KEY'], ['nom','text','']],
             ['LigneChat', ['id','integer','PRIMARY KEY'], ['date','date',''],['texte','text',''],['id_filDiscussion','integer',''],['id_utilisateur','integer','']],
+            ['CasUsage', ['id','integer','PRIMARY KEY'], ['id_projet','integer',''],['ligne','text',''],['texte','text','']],
+            ['Scenarii', ['id','integer','PRIMARY KEY'], ['id_casUsage','integer',''],['ligne','text',''],['id_donnees','integer',''],['id_colonne','integer','']],
             ]
         return listeTables
         

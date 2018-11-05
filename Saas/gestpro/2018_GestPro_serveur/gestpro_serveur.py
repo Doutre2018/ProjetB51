@@ -32,7 +32,9 @@ class ModeleService(object):
         self.rdseed=rdseed
         self.modulesdisponibles={"projet":"gp_projet",
                                  "sql":"gp_sql",
-                                 "inscription":"gp_inscription"}
+                                 "base":"gp_base",
+                                 "inscription":"gp_inscription",
+                                 "connexion":"gp_connexion"}
         self.clients={}
         
     def creerclient(self,nom):
@@ -75,7 +77,21 @@ class ControleurServeur(object):
         contenub=fiche.read()
         fiche.close()
         return xmlrpc.client.Binary(contenub)
+    
+    # -----------------DM------------------------ #
+    def userExiste(self, nom):
+        f = open("connexionTest.txt", "r")      # Ouvre le fichier des nom d'utilisateurs en lecture
+        data = f.readlines()                    # Lit le fichier ligne par ligne
+        
+        for line in data:
+            n = line.rstrip('\n')               # Enlève les changement de ligne (\n) après chaque ligne
             
+            if nom == n:                        # Compare les noms de la liste au nom d'utilisateur désiré
+                return True
+            
+        f.close()
+        return False                            # Si le nom d'utilisateur n'a pas été trouvé dans la liste
+    # ------------------------------------------- #        
         
     def quitter(self):
         t=Timer(1,self.fermer)

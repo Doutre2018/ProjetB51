@@ -34,10 +34,15 @@ class Controleur():
             ad="http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
             self.monnom=nom
-            rep=self.serveur.loginauserveur(self.monnom)    # on averti le serveur de nous inscrire
-            print("reponse du serveur",rep)
-            self.vue.chargercentral(rep[2])
-            
+            # ---------------DM ---------------- #
+            if self.serveur.userExiste(self.monnom):            # Vérifie avec le serveur que l'utilisateur existe
+                rep=self.serveur.loginauserveur(self.monnom)    # on averti le serveur de nous inscrire
+                print("reponse du serveur",rep)
+                self.vue.chargercentral(rep[2])
+                
+            else:
+                print("Utilisateur non existant")
+            # ---------------------------------- #            
                     
     def requetemodule(self,mod):
         rep=self.serveur.requetemodule(mod)

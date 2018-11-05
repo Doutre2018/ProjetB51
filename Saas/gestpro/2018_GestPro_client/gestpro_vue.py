@@ -17,8 +17,11 @@ class Vue():
         self.parent=parent
         self.modele=None
         self.nom=None
-        self.largeur=largeur
-        self.hauteur=hauteur
+        self.fullscreen=False
+
+        self.largeur=self.largeurDefault=largeur
+        self.hauteur=self.hauteurDefault=hauteur
+        
         self.images={}
         self.modes={}
         self.modecourant=None
@@ -26,7 +29,17 @@ class Vue():
         self.creermenu()
         self.creercadres()
         self.changecadre(self.cadresplash)
-        
+    def fullScreenMode(self): 
+        if(self.fullscreen):
+            self.fullscreen=False
+            self.largeur=self.root.winfo_screenwidth()
+            self.hauteur=self.root.winfo_screenheight()
+            self.root.attributes("-fullscreen", False)
+        else:
+             self.root.attributes("-fullscreen", True)
+             self.largeur=self.largeurDefault
+             self.hauteur=self.hauteurDefault
+             self.root.attributes("-fullscreen", False)
     def changemode(self,cadre):
         if self.modecourant:
             self.modecourant.pack_forget()
@@ -79,8 +92,11 @@ class Vue():
         self.aidemenu.add_command(label="Read-Me 5", command=self.hello)
         self.menubar.add_cascade(label="Aide", menu=self.aidemenu)
         
-        self.menubar.add_command(label="Fermer", command=self.root.quit)
+        self.affichagemenu = Menu(self.menubar, tearoff=0)
+        self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode())
+        self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
         
+        self.menubar.add_command(label="Fermer", command=self.root.quit)
         self.menu = Menu(self.root, tearoff=0)
         self.menu.add_command(label="Nom", command=self.hello)
         self.menu.add_command(label="Verbe", command=self.hello)
@@ -142,11 +158,33 @@ class Vue():
     def loginclient(self):
         ipserveur=self.ipsplash.get() # lire le IP dans le champ du layout
         nom=self.nomsplash.get() # noter notre nom
-        self.parent.loginclient(ipserveur,nom)
+        
+    # ------------------DM-------------------- #
+        if self.nomConforme(nom):
+            self.parent.loginclient(ipserveur,nom)
+        
+        else:
+            print("Nom d'utilisateur invalide")
+    # ---------------------------------------- #
+    
+    # ------------------DM-------------------- #    
+    def nomConforme(self, nom):             # Vérifie que le nom d'utilisateur est conforme (regex)
+        if len(nom) > 12:                   # Si le nom a plus de 12 caractères
+            return False
+        else:
+            pattern = "\w+"                 # A-Z, a-z, 0-9 et _ au moins une fois
+            if (re.match(pattern, nom)):    # Compare le nom transmis au pattern
+                return True
+            else:
+                return False
+    # ---------------------------------------- #
                 
     def fermerfenetre(self):
         # Ici, on pourrait mettre des actions a faire avant de fermer (sauvegarder, avertir etc)
+        
+        self.root.quit
         self.parent.fermefenetre()
+        
 
     
 if __name__ == '__main__':

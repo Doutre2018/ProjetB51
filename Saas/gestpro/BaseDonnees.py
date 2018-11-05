@@ -4,7 +4,7 @@ class  BaseDonnees():
     def __init__(self):
         self.connecteur = sqlite3.connect('SAAS.db')
         self.curseur = self.connecteur.cursor()
-        self.creerTables(self.genererListeTables())
+        self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.insertion("stocks", ['date','trans', 'symbol',53.2,5.2])
         self.selection('Select * FROM stocks ')
         self.connecteur.close()
@@ -37,13 +37,27 @@ class  BaseDonnees():
             ['Position',['id','integer','PRIMARY KEY'],['x','real','NOT NULL'],['y','real','NOT NULL']]
             ]
         return listeTables
+    
+    def genererListeConst(self):
+        listeConst = [
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ]
+        return listeConst
         
-    def creerTables(self, listeTables):
+    def creerTables(self, listeTables, listeConst):
         try:
             for table in listeTables:
                 stringDropTable = "DROP TABLE "
                 stringDropTable += table[0]
-                stringDropTable += "CASCADE CONSTRAINTS;"
+                stringDropTable += " CASCADE CONSTRAINTS;"
                 self.curseur.execute(stringDropTable)
         except:
             pass
@@ -57,6 +71,7 @@ class  BaseDonnees():
                             stringCreate += ", "
                 stringCreate += ")"
                 self.curseur.execute(stringCreate)
+            self.alterTable(listeConst)
                 
     
     def insertion(self, nomTable = "", listeValeurs=[]):
@@ -76,6 +91,11 @@ class  BaseDonnees():
     def selection(self, stringSelect = ""):
         for rangee in self.curseur.execute(stringSelect):
             print(rangee)
+            
+    def alterTable(self,listeConst):
+        for contrainte in listeConst:
+            stringCreateConst = "ALTER TABLE " + contrainte[0] + " ADD CONSTRAINT " + contrainte[1] + " FOREIGN KEY(" + contrainte[2] + ") REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
+            self.curseur.execute(stringCreateConst)
            
         
 if __name__ == "__main__":

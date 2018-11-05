@@ -1,137 +1,8 @@
-# -*- encoding: utf-8 -*-
-
-#import Pyro4
-from xmlrpc.server import SimpleXMLRPCServer
-
-import xmlrpc.client
-
-import os,os.path
-from threading import Timer
-import sys
-import socket
-import time
-import random
 import sqlite3
-
-
-
-#s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-#s.connect(("gmail.com",80))
-#monip=s.getsockname()[0]
-IP = socket.gethostbyname(socket.getfqdn())
-print("MON IP SERVEUR",IP)
-#s.close()
-
-#daemon = Pyro4.core.Daemon(host=monip,port=9999) 
-daemon= SimpleXMLRPCServer((IP,9999), logRequests = False)
-
-
-class Client(object):
-    def __init__(self,nom):
-        self.nom=nom
-        
-        
-class ModeleService(object):
-    def __init__(self,parent,rdseed):
-        self.parent=parent
-        self.rdseed=rdseed
-        self.modulesdisponibles={"projet":"gp_projet",
-                                 "sql":"gp_sql",
-                                 "mandat":"gp_mandat",
-                                 "scrum":"gp_scrum",
-                                 "analyse":"gp_analyse",
-                                 "casdusage":"gp_casdusage",
-                                 "maquette":"gp_maquette",
-                                 "crc":"gp_crc",
-                                 "budget":"gp_budget",
-                                 "tchat":"gp_tchat",
-                                 "modelisation":"gp_modelisation",
-                                 "terlow":"gp_terlow",
-
-                                 "inscription":"gp_inscription"}
-        self.clients={}
-        self.baseDonnee = BaseDonnees()
-
-        
-    def creerclient(self,nom):
-        if nom in self.clients.keys(): # on assure un nom unique
-            return [0,"Erreur de nom"]
-        # tout va bien on cree le client et lui retourne la seed pour le random
-        c=Client(nom)
-        self.clients[nom]=c
-        return [1,"Bienvenue",list(self.modulesdisponibles.keys())]
-            
-    #méthode tampon pour insert les données dans la table de la BD du serveur selon le format suivant: nomTable = "string représentant nom", liste valeurs = [10, 'texte1', 50.3]
-    def requeteInsertion(self, nomTable, listeValeurs ):
-        self.baseDonnee.insertion(nomTable, listeValeurs)
-        return True
-    
-   #méthode tampon pour mettre à jour des données d'une table. Il faut passer une string représentant l'ensemble de la requête update dans la fonction
-    def requeteMiseAJour(self,stringUpdate):
-        self.baseDonnee.miseAJour(stringUpdate)
-        return True
-    
-    #méthode tampon qui retourne une liste. Chaque élément de la liste correspond à une rangée du select demandé.
-    def requeteSelection(self, stringSelect):
-        return self.baseDonnee.selection(stringSelect)
-    
-class ControleurServeur(object):
-    def __init__(self):
-        rand=random.randrange(1000)+1000
-        self.modele=ModeleService(self,rand)
-
-     
-    def checkBase(self):
-        pass
-            
-    def loginauserveur(self,nom):
-        rep=self.modele.creerclient(nom)
-        return rep
-
-    def requetemodule(self,mod):
-        if mod in self.modele.modulesdisponibles.keys():
-            cwd=os.getcwd()
-            if os.path.exists(cwd+"/gp_modules/"):
-                dirmod=cwd+"/gp_modules/"+self.modele.modulesdisponibles[mod]+"/"
-                if os.path.exists(dirmod):
-                    listefichiers=[]
-                    for i in os.listdir(dirmod):
-                        if os.path.isfile(dirmod+i):
-                            val=["fichier",i]
-                        else:
-                            val=["dossier",i]
-                            
-                        listefichiers.append(val)
-                    return [mod,dirmod,listefichiers]
-            
-    def requetefichier(self,lieu):
-        fiche=open(lieu,"rb")
-        contenub=fiche.read()
-        fiche.close()
-        return xmlrpc.client.Binary(contenub)
-            
-        
-    def quitter(self):
-        timerFermeture = Timer(1,self.fermer).start()
-        return "ferme"
-    
-    def jequitte(self,nom):
-        del self.modele.clients[nom]
-        del self.modele.cadreDelta[nom]
-        if not self.modele.clients:
-            self.quitter()
-        return 1
-    
-    def fermer(self):
-        self.modele.baseDonnee.connecteur.close()
-        daemon.shutdown()
+import os
 
 class  BaseDonnees():
     def __init__(self):
-        #if os.path.exists("SAAS.db"):
-            #os.remove("SAAS.db")
-        #else:
-            #print("Creation du fichier SAAS.db initial")
         self.connecteur = sqlite3.connect('SAAS.db')
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
@@ -153,7 +24,7 @@ class  BaseDonnees():
             ['CollaboCRC', ['id','integer','PRIMARY KEY']],
             ['FilDeDiscussion', ['id','integer','PRIMARY KEY']],
             ['TypeForme', ['id','integer','PRIMARY KEY'], ['nom','text','']],
-            ['Objet_Maquette', ['i d','integer','PRIMARY KEY'], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
+            ['Objet_Maquette', ['id','integer','PRIMARY KEY'], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
             ['ColonnesScenarii', ['id','integer','PRIMARY KEY'], ['nom','text',''], ['numero_position','integer','']],
             ['Cartes', ['id','integer','PRIMARY KEY'], ['classe','text',''], ['ordre','integer','']],
             ['AttributsCRC', ['id','integer','PRIMARY KEY'], ['nomAttributs','text','']],
@@ -161,6 +32,7 @@ class  BaseDonnees():
             ['Tache_Sprint', ['id','integer','PRIMARY KEY'], ['description','text',''], ['nom','text',''], ['duree','integer','']],
             ['Taches_Terlow', ['id','integer','PRIMARY KEY'], ['ordre','integer',''], ['texte','text','DEFAULT NULL']],
             ['Colonnes_Terlow', ['id','integer','PRIMARY KEY'], ['type','text','']],
+            ['TypeDonneeScenario', ['id','integer','PRIMARY KEY'], ['texte','text','']],
             ['Objet_Texte', ['id','integer','PRIMARY KEY'], ['texte','text','']],
             ['Position',['id','integer','PRIMARY KEY'],['x','real','NOT NULL'],['y','real','NOT NULL']]
             ]
@@ -179,6 +51,7 @@ class  BaseDonnees():
             ['CollaboCRC', 'idClasse2','INTEGER', 'Cartes', 'id'],
             ['FonctionsCRC', 'id_classe','INTEGER', 'Cartes', 'id'],
             ['Scenarii', 'id_casUsage','INTEGER', 'CasUsage', 'id'],
+            ['Scenarii', 'id_donnees','INTEGER', 'TypeDonneeScenario', 'id'],
             ['Scenarii', 'id_colonne','INTEGER', 'ColonnesScenarii', 'id'],
             ['AttributsCRC', 'id_classe','INTEGER', 'Cartes', 'id'],
             ['Cartes', 'id_carte_heritage','INTEGER', 'Cartes', 'id'],
@@ -199,7 +72,6 @@ class  BaseDonnees():
             for table in listeTables:
                 stringDropTable = "DROP TABLE "
                 stringDropTable += table[0]
-                #stringDropTable += " CASCADE CONSTRAINTS;"
                 self.curseur.execute(stringDropTable)
         except:
             pass
@@ -238,8 +110,7 @@ class  BaseDonnees():
         for contrainte in listeConst:
             stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
             self.curseur.execute(stringAlterTable)
-
+           
+        
 if __name__ == "__main__":
-    controleurServeur=ControleurServeur()
-    daemon.register_instance(controleurServeur)  
-    daemon.serve_forever()
+    baseDonnees = BaseDonnees()

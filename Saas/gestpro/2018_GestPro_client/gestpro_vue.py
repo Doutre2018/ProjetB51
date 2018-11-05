@@ -27,8 +27,6 @@ class Vue():
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
-        self.cadreapp=Frame(self.root,width=800,height=600)         #Frame de base a mes fenetre
-        self.cadreapp.grid()
         self.monip=monip
         self.parent=parent
         self.modele=None
@@ -92,7 +90,7 @@ class Vue():
         #self.creercadrecentral()
                 
     def creercadresplash(self):
-        self.cadresplash=Frame(self.cadreapp,bg="#E5E7F4")
+        self.cadresplash=Frame(self.root,bg="#E5E7F4")
         
         self.titre=Label(self.cadresplash, bg="#E5E7F4" , text="Gestionnaire de Projet MAAJM",font='arial 20')
         self.titre.grid(pady=(40,30),padx=20);
@@ -123,7 +121,7 @@ class Vue():
         self.inscriptionB.grid(pady=(0,20))
         
     def creeNouvelleUtilisateur(self):    
-        self.cadreNouvelleUtilisateur=Frame(self.cadreapp,bg="#E5E7F4")
+        self.cadreNouvelleUtilisateur=Frame(self.root,bg="#E5E7F4")
         self.titre=Label(self.cadreNouvelleUtilisateur,text="Creation d'un nouvelle utilisateur",font='arial 20',bg="#E5E7F4")
         self.titre.grid(pady=(20,20),padx=50)
         
@@ -229,7 +227,7 @@ class Vue():
             #self.hauteurDefault=int(self.hauteur/4.5)
             self.largeur=self.root.winfo_screenwidth()/7
             self.hauteur=self.root.winfo_screenmmheight()/4.5
-
+        
         self.cadrebase=Frame(self.root)
         self.boutonProjet1=Button(self.cadrebase,text="Projet 1",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
         self.boutonProjet2=Button(self.cadrebase,text="Projet 2",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))

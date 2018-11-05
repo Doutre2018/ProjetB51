@@ -13,6 +13,8 @@ class Vue():
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
+        self.cadreapp=Frame(self.root,width=800,height=600)         #Frame de base a mes fenetre
+        self.cadreapp.pack()
         self.monip=monip
         self.parent=parent
         self.modele=None
@@ -29,6 +31,7 @@ class Vue():
         self.creermenu()
         self.creercadres()
         self.changecadre(self.cadresplash)
+<<<<<<< HEAD
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -40,6 +43,11 @@ class Vue():
              self.largeur=self.largeurDefault
              self.hauteur=self.hauteurDefault
              self.root.attributes("-fullscreen", False)
+=======
+        
+
+        
+>>>>>>> b13306678f475c0b01ea9300a96ad87ef3736c6f
     def changemode(self,cadre):
         if self.modecourant:
             self.modecourant.pack_forget()
@@ -113,23 +121,56 @@ class Vue():
     
     def creercadres(self):
         self.creercadresplash()
+        self.creeNouvelleUtilisateur()
         self.creercadrecentral()
                 
     def creercadresplash(self):
-        self.cadresplash=Frame(self.root)
-        self.canevasplash=Canvas(self.cadresplash,width=640,height=580,bg="red")
-        self.canevasplash.pack()
-        self.nomsplash=Entry(bg="pink")
-        self.nomsplash.insert(0, "jmd")
-        self.ipsplash=Entry(bg="pink")
-        self.ipsplash.insert(0, self.monip)
-        self.balIp=tix.Balloon(self.cadresplash,state="balloon")
-        self.balIp.bind_widget(self.canevasplash,msg="identifiez vous et indiquez l'adresse du serveur")
-        btnconnecter=Button(text="Connecter au serveur",bg="pink",command=self.loginclient)
-        self.canevasplash.create_window(200,200,window=self.nomsplash,width=100,height=30)
+        self.cadresplash=Frame(self.cadreapp,bg="#E5E7F4")
         
-        self.canevasplash.create_window(200,250,window=self.ipsplash,width=100,height=30)
-        self.canevasplash.create_window(200,400,window=btnconnecter,width=100,height=30)
+        self.titre=Label(self.cadresplash, bg="#E5E7F4" , text="Gestionnaire de Projet MAAJM",font='arial 20')
+        self.titre.pack(pady=(40,30),padx=20);
+        
+        self.labelNom=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre nom d'utilisateur",font='arial 12')
+        self.labelNom.pack()
+        self.nomsplash=Entry(self.cadresplash,bg="white")
+        self.nomsplash.insert(0, "jmd")
+        self.nomsplash.pack(pady=(10,30),padx=100)
+        
+        #self.ipsplash=Entry(self.cadresplash,bg="white")
+        #self.ipsplash.insert(0, self.monip)
+        #self.ipsplash.pack()
+        self.labelComboServeur=Label(self.cadresplash, bg="#E5E7F4" , text="Choisiez votre serveur",font='arial 12')
+        self.labelComboServeur.pack()
+        self.Comboserveur= ttk.Combobox(self.cadresplash)
+        self.Comboserveur['values']=("Serveur 1","Serveur 2","Serveur 3","Autre Serveur" )
+        self.Comboserveur.pack(pady=(10,20))
+        
+        self.frameButton= Frame(self.cadresplash,bg="#E5E7F4")
+        self.frameButton.pack()
+        
+        self.btnconnecter=Button(self.frameButton,text="Ce connecter",bg="#FFFFFF",command=self.loginclient,relief=FLAT)
+        self.btnconnecter.pack(pady=(0,20),fill="both", expand=True)
+        
+        self.inscriptionB = Button(self.frameButton,text="Nouveau Client",bg="#FFFFFF",command=self.AllerAInscription,relief=FLAT)
+        self.inscriptionB.pack(pady=(0,20),fill="both", expand=True)
+     
+     
+    def creeNouvelleUtilisateur(self):    
+        self.cadreNouvelleUtilisateur=Frame(self.cadreapp,bg="#E5E7F4")
+        self.titre=Label(self.cadreNouvelleUtilisateur,text="Creation d'un nouvelle utilisateur",font='arial 20',bg="#E5E7F4")
+        self.titre.pack(pady=(20,20),padx=50)
+        
+        self.EntrerNomTitre= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre nom",font='arial 12',bg="#E5E7F4")
+        self.EntrerNomTitre.pack(pady=(20,20),padx=100)
+        
+        self.NouveauNom= Entry(self.cadreNouvelleUtilisateur,bg="white")
+        self.NouveauNom.pack(pady=(0,20))
+        
+        self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT)
+        self.confirmerIB.pack(pady=(0,20))
+        
+        self.annuleIB=Button(self.cadreNouvelleUtilisateur,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal)
+        self.annuleIB.pack(pady=(0,20))
         
     def closeprocess(self):
         self.parent.fermerprocessus()
@@ -165,9 +206,17 @@ class Vue():
         
         self.root.quit
         self.parent.fermefenetre()
+<<<<<<< HEAD
         
 
+=======
+>>>>>>> b13306678f475c0b01ea9300a96ad87ef3736c6f
     
+    def AllerAInscription(self):
+        self.changecadre(self.cadreNouvelleUtilisateur)
+    def retourMenuPrincipal(self):
+        self.changecadre(self.cadresplash)
+        
 if __name__ == '__main__':
     m=Vue(0,"jmd","127.0.0.1")
     m.root.mainloop()

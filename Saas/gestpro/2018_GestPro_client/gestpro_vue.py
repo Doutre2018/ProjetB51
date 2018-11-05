@@ -236,15 +236,15 @@ class Vue():
         self.boutonProjet3=Button(self.cadrebase,text="Projet 3",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
 
         self.boutonMandat=Button(self.cadrebase,text="Mandat",bg="#0B416C",command=self.requeteMandat,height=4,width=int(self.largeur/11))
-        self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#0072BB",command=None,height=4,width=int(self.largeur/11))
-        self.boutonAnalyse=Button(self.cadrebase,text="Analyse \nTextuelle",bg="#2AABE2",command=None,height=4,width=int(self.largeur/11))
-        self.boutonCasUsage=Button(self.cadrebase,text="Cas \nd'usage",bg="#01A89E",command=None,height=4,width=int(self.largeur/11))
-        self.boutonMaquette=Button(self.cadrebase,text="Maquette",bg="#22B473",command=None,height=4,width=10)
-        self.boutonCrc=Button(self.cadrebase,text="CRC",bg="#38B64A",command=None,height=4,width=int(self.largeur/11))
-        self.boutonBudget=Button(self.cadrebase,text="Budget",bg="#8CC83E",command=None,height=4,width=int(self.largeur/11))
-        self.boutonTchat=Button(self.cadrebase,text="Tchat",bg="#DAE121",command=None,height=4,width=int(self.largeur/11))
-        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#FAEF20",command=None,height=4,width=int(self.largeur/11))
-        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#FFB242",command=None,height=4,width=int(self.largeur/11))
+        self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#0072BB",command=self.requeteScrum,height=4,width=int(self.largeur/11))
+        self.boutonAnalyse=Button(self.cadrebase,text="Analyse \nTextuelle",bg="#2AABE2",command=self.requeteAnalyse,height=4,width=int(self.largeur/11))
+        self.boutonCasUsage=Button(self.cadrebase,text="Cas \nd'usage",bg="#01A89E",command=self.requeteCasUsage,height=4,width=int(self.largeur/11))
+        self.boutonMaquette=Button(self.cadrebase,text="Maquette",bg="#22B473",command=self.requeteMaquette,height=4,width=10)
+        self.boutonCrc=Button(self.cadrebase,text="CRC",bg="#38B64A",command=self.requeteCrc,height=4,width=int(self.largeur/11))
+        self.boutonBudget=Button(self.cadrebase,text="Budget",bg="#8CC83E",command=self.requeteBudget,height=4,width=int(self.largeur/11))
+        self.boutonTchat=Button(self.cadrebase,text="Tchat",bg="#DAE121",command=self.requeteTchat,height=4,width=int(self.largeur/11))
+        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#FAEF20",command=self.requeteModelisation(),height=4,width=int(self.largeur/11))
+        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#FFB242",command=self.requeteTerlow(),height=4,width=int(self.largeur/11))
         
         self.boutonProjet1.grid(row=1,column=0,rowspan=5)
         self.boutonProjet2.grid(row=6,column=0,rowspan=5)
@@ -261,7 +261,25 @@ class Vue():
         self.boutonDonnee.grid(row=0,column=9)
         self.boutonTerlow.grid(row=0,column=10)
     def requeteMandat(self):
-        self.requetemodule("mandat")   
+        self.requetemodule("mandat")
+    def requeteScrum(self):
+        self.requetemodule("scrum")  
+    def requeteAnalyse(self):
+        self.requetemodule("analyse")  
+    def requeteCasUsage(self):
+        self.requetemodule("casdusage")  
+    def requeteMaquette(self):
+        self.requetemodule("maquette")  
+    def requeteCrc(self):
+        self.requetemodule("crc")  
+    def requeteBudget(self):
+        self.requetemodule("budget")  
+    def requeteTchat(self):
+        self.requetemodule("tchat")  
+    def requeteModelisation(self):
+        self.requetemodule("modelisation")  
+    def requeteTerlow(self):
+        self.requetemodule("terlow")     
     def requetemodule(self,mod):
         #mod=self.listemodules.selection_get()
         if mod:

@@ -33,9 +33,19 @@ class ModeleService(object):
         self.modulesdisponibles={"projet":"gp_projet",
                                  "sql":"gp_sql",
                                  "mandat":"gp_mandat",
+                                 "scrum":"gp_scrum",
+                                 "analyse":"gp_analyse",
+                                 "casdusage":"gp_casdusage",
+                                 "maquette":"gp_maquette",
+                                 "crc":"gp_crc",
+                                 "budget":"gp_budget",
+                                 "tchat":"gp_tchat",
+                                 "modelisation":"gp_modelisation",
+                                 "terlow":"gp_terlow",
 
                                  "inscription":"gp_inscription"}
         self.clients={}
+         
         
     def creerclient(self,nom):
         if nom in self.clients.keys(): # on assure un nom unique

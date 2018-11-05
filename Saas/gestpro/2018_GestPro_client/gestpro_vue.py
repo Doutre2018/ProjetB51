@@ -10,6 +10,20 @@ import signal
 
 class Vue():
     def __init__(self,parent,monip,largeur=800,hauteur=600):
+        
+        #Variable de BD
+        self.projetName="Projet de Gestion de Projet"
+        self.utilisateursEtRole ={"Joé":"Donnée",
+                                  "Claudia":"Maquette",
+                                  "Ludovic":"Maquette",
+                                  "JF":"Rien",
+                                  "Simon":"Rien",
+                                  "Danick":"Maquette",
+                                  "Marylene":"Rien",}
+        self.dicodesprint={1:"29 oct. 2018",
+                           2:"29 oct. 2018",
+                           3:"29 oct. 2018"}
+        
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
@@ -19,13 +33,14 @@ class Vue():
         self.nom=None
         self.fullscreen=False
 
-        self.largeur=self.largeurDefault=largeur
-        self.hauteur=self.hauteurDefault=hauteur
+        self.largeur=largeur
+        self.hauteur=hauteur
         
         self.images={}
         self.modes={}
         self.modecourant=None
         self.cadreactif=None
+        self.cadrebaseExiste=False
         self.creermenu()
         self.creercadres()
         self.changecadre(self.cadresplash)
@@ -42,69 +57,25 @@ class Vue():
              self.root.attributes("-fullscreen", False)
     def changemode(self,cadre):
         if self.modecourant:
-            self.modecourant.pack_forget()
+            self.modecourant.grid_forget()
         self.modecourant=cadre
-        self.modecourant.pack(expand=1,fill=BOTH)            
+        self.modecourant.grid(expand=1,fill=BOTH)            
 
     def changecadre(self,cadre,etend=0):
         if self.cadreactif:
-            self.cadreactif.pack_forget()
+            self.cadreactif.grid_forget()
         self.cadreactif=cadre
         if etend:
-            self.cadreactif.pack(expand=1,fill=BOTH)
+            self.cadreactif.grid(expand=1,fill=BOTH)
         else:
-            self.cadreactif.pack()
+            self.cadreactif.grid()
     
     def chargercentral(self,rep):
         for i in rep:
             self.listemodules.insert(END,i)
-        self.changecadre(self.cadrecentral)
+        self.changecadre(self.cadrebase)
         
-    def creermenu(self):
-
-        self.menubar = Menu(self.root)
-
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Nouveau Projet", command=self.hello)
-        self.filemenu.add_command(label="Ouvrir", command=self.hello)
-        self.filemenu.add_command(label="Enregistrer", command=self.hello)
-        self.filemenu.add_command(label="Enregistrer sous ...", command=self.hello)
-        self.filemenu.add_separator()
-        self.filemenu.add_command(label="Fermer", command=self.root.quit)
-        self.menubar.add_cascade(label="Fichier", menu=self.filemenu)
-        
-        self.editmenu = Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Undo", command=self.hello)
-        self.editmenu.add_command(label="Redo", command=self.hello)
-        self.editmenu.add_separator()
-        self.editmenu.add_command(label="Copier", command=self.hello)
-        self.editmenu.add_command(label="Couper", command=self.hello)
-        self.editmenu.add_command(label="Coller", command=self.hello)
-        self.menubar.add_cascade(label="Edition", menu=self.editmenu)
-        
-        self.aidemenu = Menu(self.menubar, tearoff=0)
-        self.aidemenu.add_command(label="Read-Me 1", command=self.hello)
-        self.aidemenu.add_command(label="Read-Me 2", command=self.hello)
-        self.aidemenu.add_command(label="Read-Me 3", command=self.hello)
-        self.aidemenu.add_command(label="Read-Me 4", command=self.hello)
-        self.aidemenu.add_command(label="Read-Me 5", command=self.hello)
-        self.menubar.add_cascade(label="Aide", menu=self.aidemenu)
-        
-        self.affichagemenu = Menu(self.menubar, tearoff=0)
-        self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode())
-        self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
-        
-        self.menubar.add_command(label="Fermer", command=self.root.quit)
-        self.menu = Menu(self.root, tearoff=0)
-        self.menu.add_command(label="Nom", command=self.hello)
-        self.menu.add_command(label="Verbe", command=self.hello)
-        
-        #self.frame = Frame(self.root, width=512, height=512)
-        #self.frame.pack()
-        #self.frame.bind("<Button-3>", self.popup)
-        self.root.config(menu=self.menubar)
+   
     
     def popup(self,event):
         self.menu.post(event.x_root, event.y_root)
@@ -113,12 +84,13 @@ class Vue():
     
     def creercadres(self):
         self.creercadresplash()
-        self.creercadrecentral()
+        self.creercadrebase()
+        #self.creercadrecentral()
                 
     def creercadresplash(self):
         self.cadresplash=Frame(self.root)
         self.canevasplash=Canvas(self.cadresplash,width=640,height=580,bg="red")
-        self.canevasplash.pack()
+        self.canevasplash.grid()
         self.nomsplash=Entry(bg="pink")
         self.nomsplash.insert(0, "jmd")
         self.ipsplash=Entry(bg="pink")
@@ -137,7 +109,7 @@ class Vue():
     def creercadrecentral(self):
         self.cadrecentral=Frame(self.root)
         self.canevacentral=Canvas(self.cadrecentral,width=640,height=580,bg="green")
-        self.canevacentral.pack()
+        self.canevacentral.grid()
         
         self.listemodules=Listbox(bg="lightblue",borderwidth=0,relief=FLAT,width=40,height=6)
         self.ipcentral=Entry(bg="pink")
@@ -149,9 +121,113 @@ class Vue():
         btnquitproc=Button(text="Fermer dernier module",bg="red",command=self.closeprocess)
         self.canevacentral.create_window(200,500,window=btnquitproc,width=200,height=30)
         
+    def creermenu(self):
         
-    def requetemodule(self):
-        mod=self.listemodules.selection_get()
+        self.menubar = Menu(self.root)
+
+        self.filemenu = Menu(self.menubar, tearoff=0)
+        
+        self.filemenu = Menu(self.menubar, tearoff=0)
+        self.filemenu.add_command(label="Nouveau Projet", command=self.salutations)
+        self.filemenu.add_command(label="Ouvrir", command=self.salutations)
+        self.filemenu.add_command(label="Enregistrer", command=self.salutations)
+        self.filemenu.add_command(label="Enregistrer sous ...", command=self.salutations)
+        self.filemenu.add_separator()
+        self.filemenu.add_command(label="Fermer", command=self.root.quit)
+        self.menubar.add_cascade(label="Fichier", menu=self.filemenu)
+        
+        self.editmenu = Menu(self.menubar, tearoff=0)
+        self.editmenu.add_command(label="Undo", command=self.salutations)
+        self.editmenu.add_command(label="Redo", command=self.salutations)
+        self.editmenu.add_separator()
+        self.editmenu.add_command(label="Copier", command=self.salutations)
+        self.editmenu.add_command(label="Couper", command=self.salutations)
+        self.editmenu.add_command(label="Coller", command=self.salutations)
+        self.menubar.add_cascade(label="Edition", menu=self.editmenu)
+        
+        self.aidemenu = Menu(self.menubar, tearoff=0)
+        self.aidemenu.add_command(label="Read-Me 1", command=self.salutations)
+        self.aidemenu.add_command(label="Read-Me 2", command=self.salutations)
+        self.aidemenu.add_command(label="Read-Me 3", command=self.salutations)
+        self.aidemenu.add_command(label="Read-Me 4", command=self.salutations)
+        self.aidemenu.add_command(label="Read-Me 5", command=self.salutations)
+        self.menubar.add_cascade(label="Aide", menu=self.aidemenu)
+        
+        self.affichagemenu = Menu(self.menubar, tearoff=0)
+        self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode)
+        self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
+        
+        self.menubar.add_command(label="Fermer", command=self.root.quit)
+        self.menu = Menu(self.root, tearoff=0)
+        self.menu.add_command(label="Nom", command=self.salutations)
+        self.menu.add_command(label="Verbe", command=self.salutations)
+        
+        #self.frame = Frame(self.root, width=512, height=512)
+        #self.frame.grid()
+        #self.frame.bind("<Button-3>", self.popup)
+        self.root.config(menu=self.menubar) 
+    def fullScreenMode(self): 
+        if(self.fullscreen):
+            self.fullscreen=False
+            self.largeur=self.largeurDefault
+            self.hauteur=self.hauteurDefault
+            self.root.attributes("-fullscreen", False)
+            self.creercadres()
+            self.changecadre(self.cadrebase)
+        else:
+             self.fullscreen=True
+             self.largeur=self.root.winfo_screenwidth()/7
+             self.hauteur=self.root.winfo_screenmmheight()/4.5
+             self.root.attributes("-fullscreen", True)
+             self.creercadres()
+             self.changecadre(self.cadrebase)
+    def destroyCadreBase(self):
+        self.cadrebase.destroy()
+       
+    def creercadrebase(self):
+        self.listemodules=Listbox(bg="lightblue",borderwidth=0,relief=FLAT,width=40,height=6)
+        if(self.cadrebaseExiste):
+            self.destroyCadreBase()
+        else:
+            #self.largeurDefault=int(self.largeur/7)
+            #self.hauteurDefault=int(self.hauteur/4.5)
+            self.largeur=self.root.winfo_screenwidth()/7
+            self.hauteur=self.root.winfo_screenmmheight()/4.5
+
+        self.cadrebase=Frame(self.root)
+        self.boutonProjet1=Button(self.cadrebase,text="Projet 1",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
+        self.boutonProjet2=Button(self.cadrebase,text="Projet 2",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
+        self.boutonProjet3=Button(self.cadrebase,text="Projet 3",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
+
+        self.boutonMandat=Button(self.cadrebase,text="Mandat",bg="#0B416C",command=self.requeteMandat,height=4,width=int(self.largeur/11))
+        self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#0072BB",command=None,height=4,width=int(self.largeur/11))
+        self.boutonAnalyse=Button(self.cadrebase,text="Analyse \nTextuelle",bg="#2AABE2",command=None,height=4,width=int(self.largeur/11))
+        self.boutonCasUsage=Button(self.cadrebase,text="Cas \nd'usage",bg="#01A89E",command=None,height=4,width=int(self.largeur/11))
+        self.boutonMaquette=Button(self.cadrebase,text="Maquette",bg="#22B473",command=None,height=4,width=10)
+        self.boutonCrc=Button(self.cadrebase,text="CRC",bg="#38B64A",command=None,height=4,width=int(self.largeur/11))
+        self.boutonBudget=Button(self.cadrebase,text="Budget",bg="#8CC83E",command=None,height=4,width=int(self.largeur/11))
+        self.boutonTchat=Button(self.cadrebase,text="Tchat",bg="#DAE121",command=None,height=4,width=int(self.largeur/11))
+        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#FAEF20",command=None,height=4,width=int(self.largeur/11))
+        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#FFB242",command=None,height=4,width=int(self.largeur/11))
+        
+        self.boutonProjet1.grid(row=1,column=0,rowspan=5)
+        self.boutonProjet2.grid(row=6,column=0,rowspan=5)
+        self.boutonProjet3.grid(row=11,column=0,rowspan=5)
+
+        self.boutonMandat.grid(row=0,column=1)
+        self.boutonScrum.grid(row=0,column=2)
+        self.boutonAnalyse.grid(row=0,column=3)
+        self.boutonCasUsage.grid(row=0,column=4)
+        self.boutonMaquette.grid(row=0,column=5)
+        self.boutonCrc.grid(row=0,column=6)
+        self.boutonBudget.grid(row=0,column=7)
+        self.boutonTchat.grid(row=0,column=8)
+        self.boutonDonnee.grid(row=0,column=9)
+        self.boutonTerlow.grid(row=0,column=10)
+    def requeteMandat(self):
+        self.requetemodule("mandat")   
+    def requetemodule(self,mod):
+        #mod=self.listemodules.selection_get()
         if mod:
             self.parent.requetemodule(mod)
         
@@ -165,7 +241,8 @@ class Vue():
         
         self.root.quit
         self.parent.fermefenetre()
-        
+    def salutations(self):
+        print(hello)   
 
     
 if __name__ == '__main__':

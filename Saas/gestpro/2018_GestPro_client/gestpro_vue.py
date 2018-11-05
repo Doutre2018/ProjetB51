@@ -10,20 +10,7 @@ import signal
 
 class Vue():
     def __init__(self,parent,monip,largeur=800,hauteur=600):
-        
-        #Variable de BD
-        self.projetName="Projet de Gestion de Projet"
-        self.utilisateursEtRole ={"Joé":"Donnée",
-                                  "Claudia":"Maquette",
-                                  "Ludovic":"Maquette",
-                                  "JF":"Rien",
-                                  "Simon":"Rien",
-                                  "Danick":"Maquette",
-                                  "Marylene":"Rien",}
-        self.dicodesprint={1:"29 oct. 2018",
-                           2:"29 oct. 2018",
-                           3:"29 oct. 2018"}
-        
+              
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)

@@ -3,10 +3,6 @@ import os
 
 class  BaseDonnees():
     def __init__(self):
-        if os.path.exists("SAAS.db"):
-            os.remove("SAAS.db")
-        else:
-            print("Creation du fichier SAAS.db initial")
         self.connecteur = sqlite3.connect('SAAS.db')
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
@@ -76,7 +72,6 @@ class  BaseDonnees():
             for table in listeTables:
                 stringDropTable = "DROP TABLE "
                 stringDropTable += table[0]
-                stringDropTable += " CASCADE CONSTRAINTS;"
                 self.curseur.execute(stringDropTable)
         except:
             pass

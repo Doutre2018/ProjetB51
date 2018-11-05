@@ -140,7 +140,7 @@ class  BaseDonnees():
             ['CollaboCRC', ['id','integer','PRIMARY KEY']],
             ['FilDeDiscussion', ['id','integer','PRIMARY KEY']],
             ['TypeForme', ['id','integer','PRIMARY KEY'], ['nom','text','']],
-            ['Objet_Maquette', ['id','integer','PRIMARY KEY'], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
+            ['Objet_Maquette', ['i d','integer','PRIMARY KEY'], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
             ['ColonnesScenarii', ['id','integer','PRIMARY KEY'], ['nom','text',''], ['numero_position','integer','']],
             ['Cartes', ['id','integer','PRIMARY KEY'], ['classe','text',''], ['ordre','integer','']],
             ['AttributsCRC', ['id','integer','PRIMARY KEY'], ['nomAttributs','text','']],
@@ -148,7 +148,6 @@ class  BaseDonnees():
             ['Tache_Sprint', ['id','integer','PRIMARY KEY'], ['description','text',''], ['nom','text',''], ['duree','integer','']],
             ['Taches_Terlow', ['id','integer','PRIMARY KEY'], ['ordre','integer',''], ['texte','text','DEFAULT NULL']],
             ['Colonnes_Terlow', ['id','integer','PRIMARY KEY'], ['type','text','']],
-            ['TypeDonneeScenario', ['id','integer','PRIMARY KEY'], ['texte','text','']],
             ['Objet_Texte', ['id','integer','PRIMARY KEY'], ['texte','text','']],
             ['Position',['id','integer','PRIMARY KEY'],['x','real','NOT NULL'],['y','real','NOT NULL']]
             ]
@@ -167,7 +166,6 @@ class  BaseDonnees():
             ['CollaboCRC', 'idClasse2','INTEGER', 'Cartes', 'id'],
             ['FonctionsCRC', 'id_classe','INTEGER', 'Cartes', 'id'],
             ['Scenarii', 'id_casUsage','INTEGER', 'CasUsage', 'id'],
-            ['Scenarii', 'id_donnees','INTEGER', 'TypeDonneeScenario', 'id'],
             ['Scenarii', 'id_colonne','INTEGER', 'ColonnesScenarii', 'id'],
             ['AttributsCRC', 'id_classe','INTEGER', 'Cartes', 'id'],
             ['Cartes', 'id_carte_heritage','INTEGER', 'Cartes', 'id'],

@@ -32,11 +32,8 @@ class ModeleService(object):
         self.rdseed=rdseed
         self.modulesdisponibles={"projet":"gp_projet",
                                  "sql":"gp_sql",
-<<<<<<< HEAD
-                                 "base":"gp_base",}
-=======
+                                 "base":"gp_base",
                                  "inscription":"gp_inscription"}
->>>>>>> 3bc540ca4818813c1d792f88a59149c16ba0dcaf
         self.clients={}
         
     def creerclient(self,nom):

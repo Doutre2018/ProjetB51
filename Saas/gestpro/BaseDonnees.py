@@ -11,8 +11,13 @@ class  BaseDonnees():
     
     def genererListeTables(self):
         listeTables = [ 
-            ['stocks', ['date','text'], ['trans','text'], ['symbol','text'], ['qty','real'], ['price','real']],
-            ['banane', ['date','text'], ['type','text'], ['symbol','text'], ['qty','real'], ['price','real']]
+            ['Serveurs', ['id','integer','PRIMARY KEY'], ['IP','integer',''], ['nom','text','UNIQUE']],
+            ['Utilisateur', ['id','integer','PRIMARY KEY'], ['nomUtilisateur','text','UNIQUE'], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
+            ['Projet', ['id','integer','PRIMARY KEY'], ['nom','text','UNIQUE']],
+            ['Liaison_Util_Projet', ['id_util','integer','NOT NULL'], ['id_projet','integer','NOT NULL'], ['role','text',''],['PRIMARY KEY (id_util,id_projet)','','']],
+            ['AnalyseTextuelle', ['id','integer','PRIMARY KEY'], ['id_projet','integer','NOT NULL'], ['ligne','integer',''],['colonne','integer',''],['id_type','integer','']],
+            ['TypeMot', ['id','integer','PRIMARY KEY'], ['nom','text','']],
+            ['LigneChat', ['id','integer','PRIMARY KEY'], ['date','date',''],['texte','text',''],['id_filDiscussion','integer',''],['id_utilisateur','integer','']],
             ]
         return listeTables
         
@@ -21,6 +26,7 @@ class  BaseDonnees():
             for table in listeTables:
                 stringDropTable = "DROP TABLE "
                 stringDropTable += table[0]
+                stringDropTable += "CASCADE CONSTRAINTS;"
                 self.curseur.execute(stringDropTable)
         except:
             pass
@@ -29,7 +35,7 @@ class  BaseDonnees():
                 stringCreate = "CREATE TABLE " + table[0] + "(" 
                 for indiceEntrees in range(len(table)):
                     if indiceEntrees > 0:
-                        stringCreate +=  table[indiceEntrees][0] + " " + table[indiceEntrees][1]
+                        stringCreate +=  table[indiceEntrees][0] + " " + table[indiceEntrees][1] + " " + table[indiceEntrees][2]
                         if indiceEntrees < len(table)-1:
                             stringCreate += ", "
                 stringCreate += ")"

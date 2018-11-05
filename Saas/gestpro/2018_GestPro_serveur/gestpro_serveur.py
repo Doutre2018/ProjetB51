@@ -32,8 +32,20 @@ class ModeleService(object):
         self.rdseed=rdseed
         self.modulesdisponibles={"projet":"gp_projet",
                                  "sql":"gp_sql",
+                                 "mandat":"gp_mandat",
+                                 "scrum":"gp_scrum",
+                                 "analyse":"gp_analyse",
+                                 "casdusage":"gp_casdusage",
+                                 "maquette":"gp_maquette",
+                                 "crc":"gp_crc",
+                                 "budget":"gp_budget",
+                                 "tchat":"gp_tchat",
+                                 "modelisation":"gp_modelisation",
+                                 "terlow":"gp_terlow",
+
                                  "inscription":"gp_inscription"}
         self.clients={}
+         
         
     def creerclient(self,nom):
         if nom in self.clients.keys(): # on assure un nom unique
@@ -42,6 +54,31 @@ class ModeleService(object):
         c=Client(nom)
         self.clients[nom]=c
         return [1,"Bienvenue",list(self.modulesdisponibles.keys())]
+    
+    # -------------------DM------------------- #
+    def listeNoms(self):
+        liste = []
+        f = open("inscriptionTest.txt", "r")        # Ouvre le fichier contenant les noms d'utilisateurs
+        data = f.readlines()                        # Sépare les noms par ligne
+        
+        for line in data:
+            n = line.rstrip('\n')                   # Enlève les changements de ligne ('\n') de chaque noms
+            liste.append(n)                         # Ajoute les noms dans la liste
+            
+        return liste                                # Retourne la liste de nom
+    
+    def nomUnique(self, nom):
+        liste = self.listeNoms()
+        
+        for n in liste:                         # Parcours les noms dans la liste
+            if n == nom:                        # Compare le nom à la liste de nom
+                return False                    # Nom existe déjà, donc pas unique 
+        
+        f = open("inscriptionTest.txt", "a")
+        f.write(nom + "\n")
+        f.close()
+        return True                             # Si le nom n'est pas trouvé dans la liste
+    # ---------------------------------------- #
             
 class ControleurServeur(object):
     def __init__(self):
@@ -51,6 +88,14 @@ class ControleurServeur(object):
     def loginauserveur(self,nom):
         rep=self.modele.creerclient(nom)
         return rep
+    
+    # ------------------DM-------------------- #
+    def nomUnique(self, nom):
+        if self.modele.nomUnique(nom):
+            return True
+        else:
+            return False
+    # ---------------------------------------- #
 
     def requetemodule(self,mod):
         if mod in self.modele.modulesdisponibles.keys():
@@ -67,8 +112,6 @@ class ControleurServeur(object):
                             
                         listefichiers.append(val)
                     return [mod,dirmod,listefichiers]
-            
-            
             
     def requetefichier(self,lieu):
         fiche=open(lieu,"rb")

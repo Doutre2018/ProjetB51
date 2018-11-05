@@ -241,8 +241,8 @@ class Vue():
         self.boutonCrc=Button(self.cadrebase,text="CRC",bg="#38B64A",command=self.requeteCrc,height=4,width=int(self.largeur/11))
         self.boutonBudget=Button(self.cadrebase,text="Budget",bg="#8CC83E",command=self.requeteBudget,height=4,width=int(self.largeur/11))
         self.boutonTchat=Button(self.cadrebase,text="Tchat",bg="#DAE121",command=self.requeteTchat,height=4,width=int(self.largeur/11))
-        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#FAEF20",command=self.requeteModelisation(),height=4,width=int(self.largeur/11))
-        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#FFB242",command=self.requeteTerlow(),height=4,width=int(self.largeur/11))
+        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#FAEF20",command=self.requeteModelisation,height=4,width=int(self.largeur/11))
+        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#FFB242",command=self.requeteTerlow,height=4,width=int(self.largeur/11))
         
         self.boutonProjet1.grid(row=1,column=0,rowspan=5)
         self.boutonProjet2.grid(row=6,column=0,rowspan=5)

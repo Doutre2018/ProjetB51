@@ -7,7 +7,7 @@ import socket
 from subprocess import Popen 
 import math
 #from sm_projet_modele import *
-from gp_budget_vue import *
+from gp_crc_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 

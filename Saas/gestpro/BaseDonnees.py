@@ -20,6 +20,21 @@ class  BaseDonnees():
             ['LigneChat', ['id','integer','PRIMARY KEY'], ['date','date',''],['texte','text',''],['id_filDiscussion','integer',''],['id_utilisateur','integer','']],
             ['CasUsage', ['id','integer','PRIMARY KEY'], ['id_projet','integer',''],['ligne','text',''],['texte','text','']],
             ['Scenarii', ['id','integer','PRIMARY KEY'], ['id_casUsage','integer',''],['ligne','text',''],['id_donnees','integer',''],['id_colonne','integer','']],
+            ['FonctionsCRC', ['id','integer','PRIMARY KEY'], ['id_classe','integer',''],['fonction','text','']],
+            ['CollaboCRC', ['id','integer','PRIMARY KEY'], ['idClasse1','integer',''],['idClasse2','text','']],
+            ['filDeDiscussion', ['id','integer','PRIMARY KEY'], ['id_Projet','integer','']],
+            ['typeForme', ['id','integer','PRIMARY KEY'], ['nom','text','']],
+            ['objet_Maquette', ['id','integer','PRIMARY KEY'], ['id_position','integer',''], ['id_type','integer',''], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
+            ['ColonnesScenarii', ['id','integer','PRIMARY KEY'], ['nom','text',''], ['numero_position','integer','']],
+            ['Cartes', ['id','integer','PRIMARY KEY'], ['id_projet','integer',''], ['id_responsable','integer','DEFAULT NULL'], ['classe','text',''], ['id_carte_heritage','integer',''], ['ordre','integer','']],
+            ['AttributsCRC', ['id','integer','PRIMARY KEY'], ['id_classe','integer',''], ['nomAttributs','text','']],
+            ['Sprint', ['id','integer','PRIMARY KEY'], ['id_projet','integer',''], ['ordre','integer',''], ['date','date','']],
+            ['Tache_Sprint', ['id','integer','PRIMARY KEY'], ['id_sprint','integer',''], ['description','text',''], ['nom','text',''], ['duree','integer','']],
+            ['Taches_Terlow', ['id','integer','PRIMARY KEY'], ['id_projet','integer',''], ['id_colonne_terlow','integer','NOT NULL'], ['ordre','integer',''], ['texte','text','DEFAULT NULL']],
+            ['Colonnes_Terlow', ['id','integer','PRIMARY KEY'], ['type','text','']],
+            ['TypeDonneeScenario', ['id','integer','PRIMARY KEY'], ['texte','text','']],
+            ['Objet_Texte', ['id','integer','PRIMARY KEY'], ['id_position','integer',''],['texte','text','']],
+            ['Position',['id','integer','PRIMARY KEY'],['x','real','NOT NULL'],['y','real','NOT NULL']]
             ]
         return listeTables
         
@@ -34,7 +49,7 @@ class  BaseDonnees():
             pass
         finally:
             for table in listeTables:
-                stringCreate = "CREATE TABLE " + table[0] + "(" 
+                stringCreate = "CREATE TABLE IF NOT EXISTS " + table[0] + "(" 
                 for indiceEntrees in range(len(table)):
                     if indiceEntrees > 0:
                         stringCreate +=  table[indiceEntrees][0] + " " + table[indiceEntrees][1] + " " + table[indiceEntrees][2]

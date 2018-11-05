@@ -1,11 +1,17 @@
 import sqlite3
+import os
 
 class  BaseDonnees():
     def __init__(self):
+        if os.path.exists("SAAS.db"):
+            os.remove("SAAS.db")
+        else:
+            print("Creation du fichier SAAS.db initial")
         self.connecteur = sqlite3.connect('SAAS.db')
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.connecteur.close()
+        
     
     def genererListeTables(self):
         listeTables = [ 

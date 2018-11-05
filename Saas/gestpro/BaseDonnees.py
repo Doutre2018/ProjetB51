@@ -20,13 +20,27 @@ class  BaseDonnees():
             ['LigneChat', ['id','integer','PRIMARY KEY'], ['date','date',''],['texte','text',''],['id_filDiscussion','integer',''],['id_utilisateur','integer','']],
             ]
         return listeTables
+    
+    def genererListeConst(self):
+        listeConst = [
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ]
+        return listeConst
         
     def creerTables(self, listeTables):
         try:
             for table in listeTables:
                 stringDropTable = "DROP TABLE "
                 stringDropTable += table[0]
-                stringDropTable += "CASCADE CONSTRAINTS;"
+                stringDropTable += " CASCADE CONSTRAINTS"
                 self.curseur.execute(stringDropTable)
         except:
             pass
@@ -40,6 +54,8 @@ class  BaseDonnees():
                             stringCreate += ", "
                 stringCreate += ")"
                 self.curseur.execute(stringCreate)
+            self.genererListeConst()
+            self.alterTable()
                 
     
     def insertion(self, nomTable = "", listeValeurs=[]):
@@ -59,6 +75,11 @@ class  BaseDonnees():
     def selection(self, stringSelect = ""):
         for rangee in self.curseur.execute(stringSelect):
             print(rangee)
+            
+    def alterTable(self):
+        for contrainte in listeConst:
+            stringCreateConst = "ALTER TABLE " + table[0] + " ADD CONSTRAINT " + table[1] + " FOREIGN KEY(" + table[2] + ") REFERENCES " + table[3] + "(" + table[4] + ");"
+            self.curseur.execute(stringCreateConst)
            
         
 if __name__ == "__main__":

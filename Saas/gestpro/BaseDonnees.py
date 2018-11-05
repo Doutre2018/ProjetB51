@@ -23,15 +23,23 @@ class  BaseDonnees():
     
     def genererListeConst(self):
         listeConst = [
-            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
-            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
-            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
-            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
-            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
-            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
-            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
-            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
-            ['table a modifier', 'nom de la contrainte', 'laForeign Key', 'la table de reference', 'variable de reference'],
+            ['LigneChat', 'fk_lignechat_idUtil', 'id_utilisateur', 'Utilisateur', 'id'],
+            ['LigneChat', 'fk_lignechat_idFilDisc', 'id_filDiscussion', 'filDeDiscussion', 'id'],
+            ['AnalyseTextuelle', 'fk_analyseTextuelle_type', 'id_type', 'TypeMot', 'id'],
+            ['AnalyseTextuelle', 'fk_analyseTextuelle_projet', 'id_projet', 'Projet', 'id'],
+            ['Liaison_Util_Projet', 'fk_liaison_utilisateur', 'id_util', 'Utilisateur', 'id'],
+            ['Liaison_Util_Projet', 'fk_liaison_projet', 'id_projet', 'Projet', 'id'],
+            ['FilDeDiscussion', 'fk_filDiscussion_projet', 'id_projet', 'Projet', 'id'],
+            ['CollaboCRC', 'fk_collaboCrc_classe1', 'idClasse1', 'Cartes', 'id'],
+            ['CollaboCRC', 'fk_collaboCrc_classe2', 'idClasse2', 'Cartes', 'id'],
+            ['FonctionsCRC', 'fk_fonctionsCrc_classe', 'id_classe', 'Cartes', 'id'],
+            ['Scenarii', 'fk_scenarii_casUsage', 'id_casUsage', 'CasUsage', 'id'],
+            ['Scenarii', 'fk_scenarii_donnes', 'id_donnees', 'TypeDonneeScenario', 'id'],
+            ['Scenarii', 'fk_scenarii_colonne', 'id_colonne', 'ColonnesScenarii', 'id'],
+            ['Fo', 'fk_fonctionsCrc_classe', 'id_classe', 'Cartes', 'id'],
+            ['FonctionsCRC', 'fk_fonctionsCrc_classe', 'id_classe', 'Cartes', 'id'],
+            ['FonctionsCRC', 'fk_fonctionsCrc_classe', 'id_classe', 'Cartes', 'id'],
+            ['FonctionsCRC', 'fk_fonctionsCrc_classe', 'id_classe', 'Cartes', 'id'],
             ]
         return listeConst
         
@@ -77,8 +85,8 @@ class  BaseDonnees():
             
     def alterTable(self,listeConst):
         for contrainte in listeConst:
-            stringCreateConst = "ALTER TABLE " + contrainte[0] + " ADD CONSTRAINT " + contrainte[1] + " FOREIGN KEY(" + contrainte[2] + ") REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
-            self.curseur.execute(stringCreateConst)
+            stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD CONSTRAINT " + contrainte[1] + " FOREIGN KEY(" + contrainte[2] + ") REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
+            self.curseur.execute(stringAlterTable)
            
         
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ class  BaseDonnees():
     def __init__(self):
         self.connecteur = sqlite3.connect('SAAS.db')
         self.curseur = self.connecteur.cursor()
-        self.creerTables(self.genererListeTables())
+        self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.insertion("stocks", ['date','trans', 'symbol',53.2,5.2])
         self.selection('Select * FROM stocks ')
         self.connecteur.close()
@@ -35,18 +35,18 @@ class  BaseDonnees():
             ]
         return listeConst
         
-    def creerTables(self, listeTables):
+    def creerTables(self, listeTables, listeConst):
         try:
             for table in listeTables:
                 stringDropTable = "DROP TABLE "
                 stringDropTable += table[0]
-                stringDropTable += " CASCADE CONSTRAINTS"
+                stringDropTable += " CASCADE CONSTRAINTS;"
                 self.curseur.execute(stringDropTable)
         except:
             pass
         finally:
             for table in listeTables:
-                stringCreate = "CREATE TABLE " + table[0] + "(" 
+                stringCreate = "CREATE TABLE IF NOT EXISTS " + table[0] + "(" 
                 for indiceEntrees in range(len(table)):
                     if indiceEntrees > 0:
                         stringCreate +=  table[indiceEntrees][0] + " " + table[indiceEntrees][1] + " " + table[indiceEntrees][2]
@@ -54,8 +54,7 @@ class  BaseDonnees():
                             stringCreate += ", "
                 stringCreate += ")"
                 self.curseur.execute(stringCreate)
-            self.genererListeConst()
-            self.alterTable()
+            self.alterTable(listeConst)
                 
     
     def insertion(self, nomTable = "", listeValeurs=[]):
@@ -76,9 +75,9 @@ class  BaseDonnees():
         for rangee in self.curseur.execute(stringSelect):
             print(rangee)
             
-    def alterTable(self):
+    def alterTable(self,listeConst):
         for contrainte in listeConst:
-            stringCreateConst = "ALTER TABLE " + table[0] + " ADD CONSTRAINT " + table[1] + " FOREIGN KEY(" + table[2] + ") REFERENCES " + table[3] + "(" + table[4] + ");"
+            stringCreateConst = "ALTER TABLE " + contrainte[0] + " ADD CONSTRAINT " + contrainte[1] + " FOREIGN KEY(" + contrainte[2] + ") REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
             self.curseur.execute(stringCreateConst)
            
         

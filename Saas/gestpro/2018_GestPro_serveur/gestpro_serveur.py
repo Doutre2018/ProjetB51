@@ -51,7 +51,6 @@ class ModeleService(object):
                                  "inscription":"gp_inscription"}
         self.clients={}
         self.baseDonnee = BaseDonnees()
-
         
     def creerclient(self,nom):
         if nom in self.clients.keys(): # on assure un nom unique
@@ -60,6 +59,31 @@ class ModeleService(object):
         c=Client(nom)
         self.clients[nom]=c
         return [1,"Bienvenue",list(self.modulesdisponibles.keys())]
+    
+    # -------------------DM------------------- #
+    def listeNoms(self):
+        liste = []
+        f = open("inscriptionTest.txt", "r")        # Ouvre le fichier contenant les noms d'utilisateurs
+        data = f.readlines()                        # Sépare les noms par ligne
+        
+        for line in data:
+            n = line.rstrip('\n')                   # Enlève les changements de ligne ('\n') de chaque noms
+            liste.append(n)                         # Ajoute les noms dans la liste
+            
+        return liste                                # Retourne la liste de nom
+    
+    def nomUnique(self, nom):
+        liste = self.listeNoms()
+        
+        for n in liste:                         # Parcours les noms dans la liste
+            if n == nom:                        # Compare le nom à la liste de nom
+                return False                    # Nom existe déjà, donc pas unique 
+        
+        f = open("inscriptionTest.txt", "a")
+        f.write(nom + "\n")
+        f.close()
+        return True                             # Si le nom n'est pas trouvé dans la liste
+    # ---------------------------------------- #
             
     #méthode tampon pour insert les données dans la table de la BD du serveur selon le format suivant: nomTable = "string représentant nom", liste valeurs = [10, 'texte1', 50.3]
     def requeteInsertion(self, nomTable, listeValeurs ):
@@ -87,6 +111,14 @@ class ControleurServeur(object):
     def loginauserveur(self,nom):
         rep=self.modele.creerclient(nom)
         return rep
+    
+    # ------------------DM-------------------- #
+    def nomUnique(self, nom):
+        if self.modele.nomUnique(nom):
+            return True
+        else:
+            return False
+    # ---------------------------------------- #
 
     def requetemodule(self,mod):
         if mod in self.modele.modulesdisponibles.keys():

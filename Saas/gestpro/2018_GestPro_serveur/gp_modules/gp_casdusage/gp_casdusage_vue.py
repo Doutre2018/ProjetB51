@@ -10,7 +10,7 @@ from msilib.schema import Font
 
 class Vue():
     def __init__(self,parent,largeur=800,hauteur=600):
-                
+
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.attributes("-fullscreen", False)
@@ -70,6 +70,7 @@ class Vue():
             self.listeCas.insert(END, item)
         
         self.cadreExiste=True
+
     def fermerfenetre(self):
         print("ON FERME la fenetre")
         self.root.destroy()

@@ -44,6 +44,7 @@ class Vue():
         self.creermenu()
         self.creercadres()
         self.changecadre(self.cadresplash)
+    
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -55,6 +56,7 @@ class Vue():
              self.largeur=self.largeurDefault
              self.hauteur=self.hauteurDefault
              self.root.attributes("-fullscreen", False)
+    
     def changemode(self,cadre):
         if self.modecourant:
             self.modecourant.grid_forget()
@@ -79,6 +81,7 @@ class Vue():
     
     def popup(self,event):
         self.menu.post(event.x_root, event.y_root)
+    
     def hello(self):
         pass
     
@@ -204,6 +207,7 @@ class Vue():
         #self.frame.grid()
         #self.frame.bind("<Button-3>", self.popup)
         self.root.config(menu=self.menubar) 
+    
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -219,6 +223,7 @@ class Vue():
              self.root.attributes("-fullscreen", True)
              self.creercadres()
              self.changecadre(self.cadrebase)
+    
     def destroyCadreBase(self):
         self.cadrebase.destroy()
        

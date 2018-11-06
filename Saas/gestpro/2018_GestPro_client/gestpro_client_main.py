@@ -29,6 +29,7 @@ class Controleur():
         s.close() # ferme le socket
         return monip
     
+    # ----------------DM------------------------ #
     def nomUnique(self, ipserveur, nom):
         if ipserveur and nom:
             ad = "http://"+ipserveur+":"+self.nodeport
@@ -38,6 +39,7 @@ class Controleur():
                 return True
             else:
                 return False
+    # ------------------------------------------ #
     
     def loginclient(self,ipserveur,nom):
         if ipserveur and nom:

@@ -28,6 +28,11 @@ class Modele():
                           "Verbe explicite",
                           "Verbe supplementaire",]
         self.lesTypes = self.bd.selection("SELECT nom FROM TypeMot")
+    
+        
+    #def InsertInto(self,ligne, colonne, nomProjet, type):
+    #    BD.selection("")
+    #    BD.insertionPerso("INSERT INTO AnalyseTextuelle(ligne, colonne, id_projet, id_type) VALUES( )")  
         
         
     def creerType(self):
@@ -35,7 +40,7 @@ class Modele():
             if type in lesTypes:
                 pass
             else:
-                BD.curseur.execute("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
+                BD.insertionPerso("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
             
         
         

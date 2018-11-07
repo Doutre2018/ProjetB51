@@ -279,7 +279,6 @@ class  BaseDonnees():
             listeData.append(rangee)
         return listeData
             
-            
     def alterTable(self,listeConst):
         for contrainte in listeConst:
             stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"

@@ -4,7 +4,15 @@
 eclipse.preferences.version=1
 encoding//Saas/gestpro/2018_GestPro_client/gestpro_client_main.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_client/gestpro_vue.py=utf-8
+<<<<<<< HEAD
+=======
+encoding//Saas/gestpro/2018_GestPro_client/gp_analyse/gp_analyse.py=utf-8
+>>>>>>> mary
 encoding//Saas/gestpro/2018_GestPro_client/gp_base/gp_base_vue.py=utf-8
+encoding//Saas/gestpro/2018_GestPro_client/gp_casdusage/gp_casdusage.py=utf-8
+encoding//Saas/gestpro/2018_GestPro_client/gp_mandat/gp_base.py=utf-8
+encoding//Saas/gestpro/2018_GestPro_client/gp_mandat/gp_base_vue.py=utf-8
+encoding//Saas/gestpro/2018_GestPro_client/gp_mandat/gp_mandat.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gestpro_serveur.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_analyse/gp_analyse.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_analyse/gp_analyse_vue.py=utf-8

@@ -29,20 +29,37 @@ class Controleur():
         s.close() # ferme le socket
         return monip
     
+    # ----------------DM------------------------ #
+    def nomUnique(self, ipserveur, nom):
+        if ipserveur and nom:
+            ad = "http://"+ipserveur+":"+self.nodeport
+            self.serveur=ServerProxy(ad)
+            
+            if self.serveur.nomUnique(nom):
+                return True
+            else:
+                return False
+            
+    def nomExiste(self, ipserveur, nom):
+        if ipserveur and nom:
+            ad = "http://"+ipserveur+":"+self.nodeport
+            self.serveur=ServerProxy(ad)
+            
+            if self.serveur.nomExiste(nom):
+                return True
+            else:
+                return False
+    # ------------------------------------------ #
+    
     def loginclient(self,ipserveur,nom):
         if ipserveur and nom:
             ad="http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
             self.monnom=nom
-            # ---------------DM ---------------- #
-            if self.serveur.userExiste(self.monnom):            # Vérifie avec le serveur que l'utilisateur existe
-                rep=self.serveur.loginauserveur(self.monnom)    # on averti le serveur de nous inscrire
-                print("reponse du serveur",rep)
-                self.vue.chargercentral(rep[2])
-                
-            else:
-                print("Utilisateur non existant")
-            # ---------------------------------- #            
+            rep=self.serveur.loginauserveur(self.monnom)    # on averti le serveur de nous inscrire
+            print("reponse du serveur",rep)
+            self.vue.chargercentral(rep[2])
+            self.serveur.requeteSelection("select * from stocks")
                     
     def requetemodule(self,mod):
         rep=self.serveur.requetemodule(mod)

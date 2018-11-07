@@ -17,6 +17,7 @@ class Controleur():
         self.createurId=Id
         self.modele=None
         self.serveur=None
+<<<<<<< HEAD
         self.pid=None
         self.monip=self.trouverIP()
         self.nodeport="9999"
@@ -30,6 +31,12 @@ class Controleur():
         monip=s.getsockname()[0] # on analyse la reponse qui contient l'IP en position 0 
         s.close() # ferme le socket
         return monip
+=======
+        self.monip = socket.gethostbyname(socket.getfqdn())
+        self.nodeport="9999"
+        self.vue=Vue(self,self.monip)
+        self.vue.root.mainloop()
+>>>>>>> 8f54e609f8877f55ba1b6e51686734be9cee81c4
     
     # ----------------DM------------------------ #
     def nomUnique(self, ipserveur, nom):
@@ -61,7 +68,10 @@ class Controleur():
             rep=self.serveur.loginauserveur(self.monnom)    # on averti le serveur de nous inscrire
             print("reponse du serveur",rep)
             self.vue.chargercentral(rep[2])
+            with open("adresseServeurCourant.txt",'w') as fichierServeur:
+                fichierServeur.write(self.serveur.getAdresse())
             self.serveur.requeteSelection("select * from stocks")
+
                     
     def requetemodule(self,mod):
         rep=self.serveur.requetemodule(mod)
@@ -111,3 +121,4 @@ class Controleur():
 if __name__=="__main__":
     c=Controleur()
     print("End GestPro")
+    

@@ -30,7 +30,11 @@ class Vue():
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
         self.modele=None
-        
+        self.largeurDefault=largeur/7
+        self.hauteurDefault=hauteur/4.5
+        self.largeur=self.root.winfo_screenwidth()/7
+        self.hauteur=self.root.winfo_screenmmheight()/4.5
+
         self.fullscreen=False
         self.largeurDefault=largeur
         self.hauteurDefault=hauteur
@@ -44,6 +48,7 @@ class Vue():
             self.largeur=self.largeurDefault
             self.hauteur=self.hauteurDefault
         self.root.attributes("-fullscreen", self.fullscreen)    
+
         self.cadremandatExiste=False
 
         self.images={}
@@ -106,7 +111,9 @@ class Vue():
         self.boutonTerlow.destroy()                      
               
     def creercadremandat(self):
+
         self.root.overrideredirect(True)
+
         self.cadremandat=Frame(self.root)
 
         self.scroll = Scrollbar(self.root)
@@ -144,6 +151,10 @@ class Vue():
                  self.listeOccupation.insert(END,self.utilisateursEtRole[membre])
         self.cadremandatExiste=True
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)-(self.hauteurDefault/2)+52))
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 8f54e609f8877f55ba1b6e51686734be9cee81c4
 
     def accesScrum(self):
         ad="http://"+ipserveur+":"+self.nodeport

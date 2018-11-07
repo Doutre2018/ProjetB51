@@ -10,20 +10,7 @@ import signal
 
 class Vue():
     def __init__(self,parent,monip,largeur=800,hauteur=600):
-        
-        #Variable de BD
-        self.projetName="Projet de Gestion de Projet"
-        self.utilisateursEtRole ={"Joé":"Donnée",
-                                  "Claudia":"Maquette",
-                                  "Ludovic":"Maquette",
-                                  "JF":"Rien",
-                                  "Simon":"Rien",
-                                  "Danick":"Maquette",
-                                  "Marylene":"Rien",}
-        self.dicodesprint={1:"29 oct. 2018",
-                           2:"29 oct. 2018",
-                           3:"29 oct. 2018"}
-        
+
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
@@ -44,7 +31,7 @@ class Vue():
         self.creermenu()
         self.creercadres()
         self.changecadre(self.cadresplash)
-    
+
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -56,7 +43,7 @@ class Vue():
              self.largeur=self.largeurDefault
              self.hauteur=self.hauteurDefault
              self.root.attributes("-fullscreen", False)
-    
+
     def changemode(self,cadre):
         if self.modecourant:
             self.modecourant.grid_forget()
@@ -137,7 +124,7 @@ class Vue():
         self.ipsplash=Entry(self.cadreNouvelleUtilisateur,bg="white")
         self.ipsplash.insert(0, self.monip)
         self.ipsplash.grid()
-        
+
         self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT,command=self.fetchNom)
         self.confirmerIB.grid(pady=(0,20))
         
@@ -207,7 +194,7 @@ class Vue():
         #self.frame.grid()
         #self.frame.bind("<Button-3>", self.popup)
         self.root.config(menu=self.menubar) 
-    
+
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -223,7 +210,7 @@ class Vue():
              self.root.attributes("-fullscreen", True)
              self.creercadres()
              self.changecadre(self.cadrebase)
-    
+
     def destroyCadreBase(self):
         self.cadrebase.destroy()
        
@@ -291,11 +278,6 @@ class Vue():
         #mod=self.listemodules.selection_get()
         if mod:
             self.parent.requetemodule(mod)
-        
-    def loginclient(self):
-        ipserveur=self.ipsplash.get() # lire le IP dans le champ du layout
-        nom=self.nomsplash.get() # noter notre nom
-        self.parent.loginclient(ipserveur,nom)
                 
     def fermerfenetre(self):
         # Ici, on pourrait mettre des actions a faire avant de fermer (sauvegarder, avertir etc)
@@ -307,12 +289,12 @@ class Vue():
         print("hello")
         
     # ---------------DM----------------- #     
-    def fetchNom(self):                               # Méthode pour prendre le nom de l'utilisateur du textbox
+    def fetchNom(self):                               # Méthode pour inscrire un nouvel utilisateur
         username = self.NouveauNom.get()              # Prend le string de la textbox "self.NouveauNom"
         ipserveur = self.ipsplash.get()               # Prend le IP de la textbox "self.ipsplash"
         
         if self.nomConforme(username):
-            if self.parent.nomUnique(ipserveur, username):
+            if self.parent.nomUnique(ipserveur, username):      # Méthode pour vérifier que le nom est unique et inscrit l'utilisateur
                 print(username + " inscrit!")
                 
             else:
@@ -330,6 +312,25 @@ class Vue():
                 return True
             else:
                 return False
+            
+    def loginclient(self):                          # Méthode pour la connexion d'un utilisateur existant
+        username = self.nomsplash.get()             # Prend le string de la textbox "self.nomsplash"
+        ipserveur = self.ipsplash.get()             # Prend le IP de la textbox "self.ipsplash"
+        
+        if self.nomConforme(username):
+            if self.parent.nomExiste(ipserveur, username):      # Vérifie que le nom existe dans la DB
+                print("Bienvenue, " + username + "!")
+                self.parent.loginclient(ipserveur, username)    # Login de l'utilisateur
+            
+            else:
+                print("Utilisateur inexistant")
+                
+        else:
+            print("Nom d'utilisateur invalide")
+        
+        #ipserveur=self.ipsplash.get() # lire le IP dans le champ du layout
+        #nom=self.nomsplash.get() # noter notre nom
+        #self.parent.loginclient(ipserveur,nom)
     # --------------------------------- #   
         
     def AllerAInscription(self):

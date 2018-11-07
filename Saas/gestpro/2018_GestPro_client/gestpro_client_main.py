@@ -17,17 +17,10 @@ class Controleur():
         self.createurId=Id
         self.modele=None
         self.serveur=None
-        self.monip=self.trouverIP()
+        self.monip = socket.gethostbyname(socket.getfqdn())
         self.nodeport="9999"
         self.vue=Vue(self,self.monip)
         self.vue.root.mainloop()
-        
-    def trouverIP(self): # fonction pour trouver le IP en 'pignant' gmail
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # on cree un socket
-        s.connect(("gmail.com",80))    # on envoie le ping
-        monip=s.getsockname()[0] # on analyse la reponse qui contient l'IP en position 0 
-        s.close() # ferme le socket
-        return monip
     
     # ----------------DM------------------------ #
     def nomUnique(self, ipserveur, nom):
@@ -49,6 +42,8 @@ class Controleur():
             rep=self.serveur.loginauserveur(self.monnom)    # on averti le serveur de nous inscrire
             print("reponse du serveur",rep)
             self.vue.chargercentral(rep[2])
+            with open("adresseServeurCourant.txt",'w') as fichierServeur:
+                fichierServeur.write(self.serveur.getAdresse())
             
                     
     def requetemodule(self,mod):
@@ -98,3 +93,4 @@ class Controleur():
 if __name__=="__main__":
     c=Controleur()
     print("End GestPro")
+    

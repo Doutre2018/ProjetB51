@@ -34,13 +34,13 @@ class Vue():
         self.hauteurDefault=hauteur/4.5
         self.largeur=self.root.winfo_screenwidth()/7
         self.hauteur=self.root.winfo_screenmmheight()/4.5
-        self.cadrebaseExiste=False
+        self.cadremandatExiste=False
 
         self.images={}
         self.cadreactif=None
         self.fullscreen=True
         self.creercadres()
-        self.changecadre(self.cadrebase)
+        self.changecadre(self.cadremandat)
         
     def changemode(self,cadre):
         if self.modecourant:
@@ -59,79 +59,9 @@ class Vue():
     
         
     def creercadres(self):
-        self.creercadrebase()
-        #self.cadrejeu=Frame(self.root,bg="blue")
-        #self.modecourant=None
+        self.creercadremandat()
         
-    def requetemodule(self,mod):
-        rep=self.serveur.requetemodule(mod)
-        if rep:
-            print(rep[0])
-            cwd=os.getcwd()
-            lieuApp="/gp_"+rep[0]
-            lieu=cwd+lieuApp
-            print(lieu)
-            if not os.path.exists(lieu):
-                os.mkdir(lieu) #plante s'il exist deja
-            reso=rep[1]
-            print(rep[1])
-            for i in rep[2]:
-                if i[0]=="fichier":
-                    nom=reso+i[1]
-                    rep=self.serveur.requetefichier(nom)
-                    fiche=open(lieu+"/"+i[1],"wb")
-                    fiche.write(rep.data)
-                    fiche.close()
-            chaineappli="."+lieuApp+lieuApp+".py"
 
-            self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport],shell=0) 
-        else:
-            print("RIEN") 
-            
-    def creermenu(self):
-        self.menubar = Menu(self.root)
-
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Nouveau Projet", command=self.salutations)
-        self.filemenu.add_command(label="Ouvrir", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer sous ...", command=self.salutations)
-        self.filemenu.add_separator()
-        self.filemenu.add_command(label="Fermer", command=self.root.quit)
-        self.menubar.add_cascade(label="Fichier", menu=self.filemenu)
-        
-        self.editmenu = Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Undo", command=self.salutations)
-        self.editmenu.add_command(label="Redo", command=self.salutations)
-        self.editmenu.add_separator()
-        self.editmenu.add_command(label="Copier", command=self.salutations)
-        self.editmenu.add_command(label="Couper", command=self.salutations)
-        self.editmenu.add_command(label="Coller", command=self.salutations)
-        self.menubar.add_cascade(label="Edition", menu=self.editmenu)
-        
-        self.aidemenu = Menu(self.menubar, tearoff=0)
-        self.aidemenu.add_command(label="Read-Me 1", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 2", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 3", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 4", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 5", command=self.salutations)
-        self.menubar.add_cascade(label="Aide", menu=self.aidemenu)
-        
-        self.affichagemenu = Menu(self.menubar, tearoff=0)
-        self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode)
-        self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
-        
-        self.menubar.add_command(label="Fermer", command=self.root.quit)
-        self.menu = Menu(self.root, tearoff=0)
-        self.menu.add_command(label="Nom", command=self.salutations)
-        self.menu.add_command(label="Verbe", command=self.salutations)
-        
-        #self.frame = Frame(self.root, width=512, height=512)
-        #self.frame.pack()
-        #self.frame.bind("<Button-3>", self.popup)
-        self.root.config(menu=self.menubar) 
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -139,16 +69,17 @@ class Vue():
             self.hauteur=self.hauteurDefault
             self.root.attributes("-fullscreen", False)
             self.creercadres()
-            self.changecadre(self.cadrebase)
+            self.changecadre(self.cadremandat)
+
         else:
              self.fullscreen=True
              self.largeur=self.root.winfo_screenwidth()/7
              self.hauteur=self.root.winfo_screenmmheight()/4.5
              self.root.attributes("-fullscreen", True)
              self.creercadres()
-             self.changecadre(self.cadrebase)
-    def destroyCadreBase(self):
-        self.cadrebase.destroy()
+             self.changecadre(self.cadremandat)
+    def destroycadremandat(self):
+        self.cadremandat.destroy()
         self.boutonAnalyse.destroy()
         self.affichagemenu.destroy()
         self.boutonBudget.destroy()
@@ -164,8 +95,8 @@ class Vue():
         self.boutonTchat.destroy()
         self.boutonTerlow.destroy()                      
               
-    def creercadrebase(self):
-        self.cadrebase=Frame(self.root)
+    def creercadremandat(self):
+        self.cadremandat=Frame(self.root)
 
         self.scroll = Scrollbar(self.root)
         self.mandatTexte = Text(self.root,bg="#09436B",height=int(self.hauteur/4),foreground="white")
@@ -201,7 +132,8 @@ class Vue():
         self.listeOccupation.grid(row=11,column=6,rowspan=5,columnspan=4)
         for membre in self.utilisateursEtRole.keys():
                  self.listeOccupation.insert(END,self.utilisateursEtRole[membre])
-        self.cadrebaseExiste=True
+        self.cadremandatExiste=True
+
     def accesScrum(self):
         ad="http://"+ipserveur+":"+self.nodeport
         self.serveur=ServerProxy(ad)

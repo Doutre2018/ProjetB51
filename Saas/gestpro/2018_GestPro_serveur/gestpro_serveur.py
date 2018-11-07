@@ -268,8 +268,11 @@ class  BaseDonnees():
     
     
     def selection(self, stringSelect = ""):
+        listeData=[]
         for rangee in self.curseur.execute(stringSelect):
             print(rangee)
+            listeDate.append(rangee)
+        return listeData
             
     def alterTable(self,listeConst):
         for contrainte in listeConst:

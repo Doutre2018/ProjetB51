@@ -93,6 +93,10 @@ class ModeleService(object):
         self.baseDonnee.insertion(nomTable, listeValeurs)
         return True
     
+    def requeteInsertionPerso(self,commande):
+        self.baseDonnee.insertionPerso(commande)
+        return True
+    
    #méthode tampon pour mettre à jour des données d'une table. Il faut passer une string représentant l'ensemble de la requête update dans la fonction
     def requeteMiseAJour(self,stringUpdate):
         self.baseDonnee.miseAJour(stringUpdate)
@@ -268,14 +272,21 @@ class  BaseDonnees():
     
     
     def selection(self, stringSelect = ""):
+        listeData=[]
         for rangee in self.curseur.execute(stringSelect):
             print(rangee)
+            listeData.append(rangee)
+        return listeData
+            
             
     def alterTable(self,listeConst):
         for contrainte in listeConst:
             stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
             self.curseur.execute(stringAlterTable)
-
+    
+    def insertionPerso(self,commande):
+        self.curseur.execute(commande)
+        
 if __name__ == "__main__":
     controleurServeur=ControleurServeur()
     daemon.register_instance(controleurServeur)  

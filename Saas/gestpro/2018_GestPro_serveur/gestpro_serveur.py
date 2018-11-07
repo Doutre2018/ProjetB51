@@ -51,6 +51,10 @@ class ModeleService(object):
                                  "inscription":"gp_inscription"}
         self.clients={}
         self.baseDonnee = BaseDonnees()
+        daemon.register_function(self.requeteInsertion)
+        daemon.register_function(self.requeteSelection)
+        daemon.register_function(self.requeteMiseAJour)
+        daemon.register_introspection_functions()
         
     def creerclient(self,nom):
         if nom in self.clients.keys(): # on assure un nom unique
@@ -74,7 +78,6 @@ class ModeleService(object):
     
     def nomUnique(self, nom):
         liste = self.listeNoms()
-        
         for n in liste:                         # Parcours les noms dans la liste
             if n == nom:                        # Compare le nom à la liste de nom
                 return False                    # Nom existe déjà, donc pas unique 
@@ -167,11 +170,13 @@ class  BaseDonnees():
         self.connecteur = sqlite3.connect('SAAS.db')
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
-        self.connecteur.close()
+        self.insertion('stocks', [1])
+       # self.connecteur.close()
         
     
     def genererListeTables(self):
         listeTables = [ 
+            ['stocks', ['price', 'integer', '']],
             ['Serveurs', ['id','integer','PRIMARY KEY'], ['IP','integer',''], ['nom','text','UNIQUE']],
             ['Utilisateur', ['id','integer','PRIMARY KEY'], ['nomUtilisateur','text','UNIQUE'], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
             ['Projet', ['id','integer','PRIMARY KEY'], ['nom','text','UNIQUE']],

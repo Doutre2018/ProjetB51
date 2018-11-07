@@ -192,7 +192,7 @@ class Vue():
         self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode)
         self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
         
-        self.menubar.add_command(label="Fermer", command=self.root.quit)
+        self.menubar.add_command(label="Fermer", command=self.fermerfenetre)
         self.menu = Menu(self.root, tearoff=0)
         self.menu.add_command(label="Nom", command=self.salutations)
         self.menu.add_command(label="Verbe", command=self.salutations)
@@ -279,24 +279,45 @@ class Vue():
     def creerProjet(self):
         pass   
     def requeteMandat(self):
+        if(self.parent.pid):
+            self.parent.fermerprocessus()
+
         self.requetemodule("mandat")
     def requeteScrum(self):
+        if(self.parent.pid):
+            self.parent.fermerprocessus()
         self.requetemodule("scrum")  
     def requeteAnalyse(self):
+        if(self.parent.pid):
+            self.parent.fermerprocessus()
         self.requetemodule("analyse")  
     def requeteCasUsage(self):
+        if(self.parent.pid):
+            self.parent.fermerprocessus()
         self.requetemodule("casdusage")  
     def requeteMaquette(self):
+        if(self.parent.pid):
+            self.parent.fermerprocessus()
         self.requetemodule("maquette")  
     def requeteCrc(self):
+        if(self.parent.pid):
+            self.parent.fermerprocessus()
         self.requetemodule("crc")  
     def requeteBudget(self):
+        if(self.parent.pid):
+            self.parent.fermerprocessus()
         self.requetemodule("budget")  
     def requeteTchat(self):
+        if(self.parent.pid):
+            self.parent.fermerprocessus()
         self.requetemodule("tchat")  
     def requeteModelisation(self):
+        if(self.parent.pid):
+            self.parent.fermerprocessus()
         self.requetemodule("modelisation")  
     def requeteTerlow(self):
+        if(self.parent.pid):
+            self.parent.fermerprocessus()
         self.requetemodule("terlow")     
     def requetemodule(self,mod):
         #mod=self.listemodules.selection_get()
@@ -308,6 +329,7 @@ class Vue():
         
         self.root.quit
         self.parent.fermefenetre()
+        self.parent.fermerprocessus()
     
     def salutations(self):
         print("hello")

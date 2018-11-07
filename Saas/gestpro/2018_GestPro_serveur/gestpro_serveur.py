@@ -250,7 +250,6 @@ class  BaseDonnees():
             for table in listeTables:
                 stringDropTable = "DROP TABLE "
                 stringDropTable += table[0]
-                #stringDropTable += " CASCADE CONSTRAINTS;"
                 self.curseur.execute(stringDropTable)
         except:
             pass

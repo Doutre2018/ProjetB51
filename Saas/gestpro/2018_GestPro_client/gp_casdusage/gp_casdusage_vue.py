@@ -111,10 +111,12 @@ class Vue():
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
         self.cadreExiste=True
+
     def ajouterCas(self):
         pass
     def ajouterScenarii(self):
         pass
+
     def fermerfenetre(self):
         print("ON FERME la fenetre")
         self.root.destroy()

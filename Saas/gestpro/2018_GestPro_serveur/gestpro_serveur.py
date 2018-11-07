@@ -54,6 +54,7 @@ class ModeleService(object):
         daemon.register_function(self.requeteInsertion)
         daemon.register_function(self.requeteSelection)
         daemon.register_function(self.requeteMiseAJour)
+        daemon.register_function(self.requeteInsertionPerso)
         daemon.register_introspection_functions()
         
     def creerclient(self,nom):

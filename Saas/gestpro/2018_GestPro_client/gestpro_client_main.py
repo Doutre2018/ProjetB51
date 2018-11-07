@@ -17,7 +17,6 @@ class Controleur():
         self.createurId=Id
         self.modele=None
         self.serveur=None
-<<<<<<< HEAD
         self.pid=None
         self.monip=self.trouverIP()
         self.nodeport="9999"
@@ -31,12 +30,7 @@ class Controleur():
         monip=s.getsockname()[0] # on analyse la reponse qui contient l'IP en position 0 
         s.close() # ferme le socket
         return monip
-=======
-        self.monip = socket.gethostbyname(socket.getfqdn())
-        self.nodeport="9999"
-        self.vue=Vue(self,self.monip)
-        self.vue.root.mainloop()
->>>>>>> 8f54e609f8877f55ba1b6e51686734be9cee81c4
+
     
     # ----------------DM------------------------ #
     def nomUnique(self, ipserveur, nom):

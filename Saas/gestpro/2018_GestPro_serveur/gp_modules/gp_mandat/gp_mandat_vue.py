@@ -71,7 +71,7 @@ class Vue():
     def creercadres(self):
         self.creercadremandat()
         
-             
+
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -80,6 +80,7 @@ class Vue():
             self.root.attributes("-fullscreen", False)
             self.creercadres()
             self.changecadre(self.cadremandat)
+
         else:
              self.fullscreen=True
              self.largeur=self.root.winfo_screenwidth()
@@ -143,7 +144,7 @@ class Vue():
                  self.listeOccupation.insert(END,self.utilisateursEtRole[membre])
         self.cadremandatExiste=True
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)-(self.hauteurDefault/2)+52))
-        
+
     def accesScrum(self):
         ad="http://"+ipserveur+":"+self.nodeport
         self.serveur=ServerProxy(ad)

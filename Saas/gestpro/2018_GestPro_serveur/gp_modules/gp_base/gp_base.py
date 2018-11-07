@@ -2,12 +2,12 @@
 
 import os,os.path
 import sys
-import Pyro4
+#import Pyro4
 import socket
 from subprocess import Popen 
 import math
 #from sm_projet_modele import *
-from gp_inscription_vue import *
+from gp_base_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 

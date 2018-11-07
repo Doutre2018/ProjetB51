@@ -278,11 +278,6 @@ class Vue():
         #mod=self.listemodules.selection_get()
         if mod:
             self.parent.requetemodule(mod)
-        
-    def loginclient(self):
-        ipserveur=self.ipsplash.get() # lire le IP dans le champ du layout
-        nom=self.nomsplash.get() # noter notre nom
-        self.parent.loginclient(ipserveur,nom)
                 
     def fermerfenetre(self):
         # Ici, on pourrait mettre des actions a faire avant de fermer (sauvegarder, avertir etc)
@@ -294,12 +289,12 @@ class Vue():
         print("hello")
         
     # ---------------DM----------------- #     
-    def fetchNom(self):                               # Méthode pour prendre le nom de l'utilisateur du textbox
+    def fetchNom(self):                               # Méthode pour inscrire un nouvel utilisateur
         username = self.NouveauNom.get()              # Prend le string de la textbox "self.NouveauNom"
         ipserveur = self.ipsplash.get()               # Prend le IP de la textbox "self.ipsplash"
         
         if self.nomConforme(username):
-            if self.parent.nomUnique(ipserveur, username):
+            if self.parent.nomUnique(ipserveur, username):      # Méthode pour vérifier que le nom est unique et inscrit l'utilisateur
                 print(username + " inscrit!")
                 
             else:
@@ -317,6 +312,25 @@ class Vue():
                 return True
             else:
                 return False
+            
+    def loginclient(self):                          # Méthode pour la connexion d'un utilisateur existant
+        username = self.nomsplash.get()             # Prend le string de la textbox "self.nomsplash"
+        ipserveur = self.ipsplash.get()             # Prend le IP de la textbox "self.ipsplash"
+        
+        if self.nomConforme(username):
+            if self.parent.nomExiste(ipserveur, username):      # Vérifie que le nom existe dans la DB
+                print("Bienvenue, " + username + "!")
+                self.parent.loginclient(ipserveur, username)    # Login de l'utilisateur
+            
+            else:
+                print("Utilisateur inexistant")
+                
+        else:
+            print("Nom d'utilisateur invalide")
+        
+        #ipserveur=self.ipsplash.get() # lire le IP dans le champ du layout
+        #nom=self.nomsplash.get() # noter notre nom
+        #self.parent.loginclient(ipserveur,nom)
     # --------------------------------- #   
         
     def AllerAInscription(self):

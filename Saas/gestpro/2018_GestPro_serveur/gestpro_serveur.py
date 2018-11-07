@@ -67,24 +67,31 @@ class ModeleService(object):
     # -------------------DM------------------- #
     def listeNoms(self):
         liste = []
-        f = open("inscriptionTest.txt", "r")        # Ouvre le fichier contenant les noms d'utilisateurs
-        data = f.readlines()                        # Sépare les noms par ligne
+        temp = self.requeteSelection("SELECT nomUtilisateur FROM Utilisateur")      # Demande les nom des utilisateurs de la BD
         
-        for line in data:
-            n = line.rstrip('\n')                   # Enlève les changements de ligne ('\n') de chaque noms
-            liste.append(n)                         # Ajoute les noms dans la liste
-         
+        for n in temp:
+            liste.append(n[0])      # Change la liste de tuples (nom,) à une liste de nom String (nom)
+        
+        #f = open("inscriptionTest.txt", "r")        # Ouvre le fichier contenant les noms d'utilisateurs
+        #data = f.readlines()                        # Sépare les noms par ligne
+        
+        #for line in data:
+        #    n = line.rstrip('\n')                   # Enlève les changements de ligne ('\n') de chaque noms
+        #    liste.append(n)                         # Ajoute les noms dans la liste
+          
         return liste                                # Retourne la liste de nom
     
     def nomUnique(self, nom):
-        liste = self.listeNoms()
+        liste = self.listeNoms()                # Tire la liste d'utilisateurs de la BD
+
         for n in liste:                         # Parcours les noms dans la liste
             if n == nom:                        # Compare le nom à la liste de nom
                 return False                    # Nom existe déjà, donc pas unique 
         
-        f = open("inscriptionTest.txt", "a")
-        f.write(nom + "\n")
-        f.close()
+        self.requeteInsertion("Utilisateur", [1, nom, "NULL", "NULL"])      # Insert dans la DB du nouvel utilisateur
+        #f = open("inscriptionTest.txt", "a")
+        #f.write(nom + "\n")
+        #f.close()
         return True                             # Si le nom n'est pas trouvé dans la liste
     
     def nomExiste(self, nom):
@@ -282,8 +289,12 @@ class  BaseDonnees():
     
     
     def selection(self, stringSelect = ""):
+        listeData=[]
         for rangee in self.curseur.execute(stringSelect):
             print(rangee)
+            listeData.append(rangee)
+        return listeData
+
             
     def alterTable(self,listeConst):
         for contrainte in listeConst:

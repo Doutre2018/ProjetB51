@@ -9,7 +9,7 @@ from helper import Helper as hlp
 from msilib.schema import Font
 
 class Vue():
-    def __init__(self,parent,largeur=800,hauteur=600):
+    def __init__(self,parent,largeur=1200,hauteur=1000):
         #Variable de BD
         self.projetName="Projet de Gestion de Projet"
         self.utilisateursEtRole ={"Joé":"Donnée",
@@ -26,21 +26,31 @@ class Vue():
         
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
-        self.root.attributes("-fullscreen", False)
+        
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
         self.modele=None
-        self.largeurDefault=largeur/7
-        self.hauteurDefault=hauteur/4.5
-        self.largeur=self.root.winfo_screenwidth()/7
-        self.hauteur=self.root.winfo_screenmmheight()/4.5
-        self.cadrebaseExiste=False
+        
+        self.fullscreen=False
+        self.largeurDefault=largeur
+        self.hauteurDefault=hauteur
+        self.largeurEcran=self.root.winfo_screenwidth()
+        self.hauteurEcran=self.root.winfo_screenheight()
+        if(self.fullscreen):
+            self.largeur=self.root.winfo_screenwidth()
+            self.hauteur=self.root.winfo_screenmmheight()
+            
+        else:
+            self.largeur=self.largeurDefault
+            self.hauteur=self.hauteurDefault
+        self.root.attributes("-fullscreen", self.fullscreen)    
+        self.cadremandatExiste=False
 
         self.images={}
         self.cadreactif=None
         self.fullscreen=True
         self.creercadres()
-        self.changecadre(self.cadrebase)
+        self.changecadre(self.cadremandat)
         
     def changemode(self,cadre):
         if self.modecourant:
@@ -59,79 +69,9 @@ class Vue():
     
         
     def creercadres(self):
-        self.creercadrebase()
-        #self.cadrejeu=Frame(self.root,bg="blue")
-        #self.modecourant=None
+        self.creercadremandat()
         
-    def requetemodule(self,mod):
-        rep=self.serveur.requetemodule(mod)
-        if rep:
-            print(rep[0])
-            cwd=os.getcwd()
-            lieuApp="/gp_"+rep[0]
-            lieu=cwd+lieuApp
-            print(lieu)
-            if not os.path.exists(lieu):
-                os.mkdir(lieu) #plante s'il exist deja
-            reso=rep[1]
-            print(rep[1])
-            for i in rep[2]:
-                if i[0]=="fichier":
-                    nom=reso+i[1]
-                    rep=self.serveur.requetefichier(nom)
-                    fiche=open(lieu+"/"+i[1],"wb")
-                    fiche.write(rep.data)
-                    fiche.close()
-            chaineappli="."+lieuApp+lieuApp+".py"
-
-            self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport],shell=0) 
-        else:
-            print("RIEN") 
-            
-    def creermenu(self):
-        self.menubar = Menu(self.root)
-
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Nouveau Projet", command=self.salutations)
-        self.filemenu.add_command(label="Ouvrir", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer sous ...", command=self.salutations)
-        self.filemenu.add_separator()
-        self.filemenu.add_command(label="Fermer", command=self.root.quit)
-        self.menubar.add_cascade(label="Fichier", menu=self.filemenu)
-        
-        self.editmenu = Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Undo", command=self.salutations)
-        self.editmenu.add_command(label="Redo", command=self.salutations)
-        self.editmenu.add_separator()
-        self.editmenu.add_command(label="Copier", command=self.salutations)
-        self.editmenu.add_command(label="Couper", command=self.salutations)
-        self.editmenu.add_command(label="Coller", command=self.salutations)
-        self.menubar.add_cascade(label="Edition", menu=self.editmenu)
-        
-        self.aidemenu = Menu(self.menubar, tearoff=0)
-        self.aidemenu.add_command(label="Read-Me 1", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 2", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 3", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 4", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 5", command=self.salutations)
-        self.menubar.add_cascade(label="Aide", menu=self.aidemenu)
-        
-        self.affichagemenu = Menu(self.menubar, tearoff=0)
-        self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode)
-        self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
-        
-        self.menubar.add_command(label="Fermer", command=self.root.quit)
-        self.menu = Menu(self.root, tearoff=0)
-        self.menu.add_command(label="Nom", command=self.salutations)
-        self.menu.add_command(label="Verbe", command=self.salutations)
-        
-        #self.frame = Frame(self.root, width=512, height=512)
-        #self.frame.pack()
-        #self.frame.bind("<Button-3>", self.popup)
-        self.root.config(menu=self.menubar) 
+             
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -139,16 +79,16 @@ class Vue():
             self.hauteur=self.hauteurDefault
             self.root.attributes("-fullscreen", False)
             self.creercadres()
-            self.changecadre(self.cadrebase)
+            self.changecadre(self.cadremandat)
         else:
              self.fullscreen=True
-             self.largeur=self.root.winfo_screenwidth()/7
-             self.hauteur=self.root.winfo_screenmmheight()/4.5
+             self.largeur=self.root.winfo_screenwidth()
+             self.hauteur=self.root.winfo_screenmmheight()
              self.root.attributes("-fullscreen", True)
              self.creercadres()
-             self.changecadre(self.cadrebase)
-    def destroyCadreBase(self):
-        self.cadrebase.destroy()
+             self.changecadre(self.cadremandat)
+    def destroycadremandat(self):
+        self.cadremandat.destroy()
         self.boutonAnalyse.destroy()
         self.affichagemenu.destroy()
         self.boutonBudget.destroy()
@@ -164,11 +104,12 @@ class Vue():
         self.boutonTchat.destroy()
         self.boutonTerlow.destroy()                      
               
-    def creercadrebase(self):
-        self.cadrebase=Frame(self.root)
+    def creercadremandat(self):
+        self.root.overrideredirect(True)
+        self.cadremandat=Frame(self.root)
 
         self.scroll = Scrollbar(self.root)
-        self.mandatTexte = Text(self.root,bg="#09436B",height=int(self.hauteur/4),foreground="white")
+        self.mandatTexte = Text(self.root,bg="#09436B",height=int(self.hauteur/100),foreground="white")
         self.scroll.grid(row=1,column=3,rowspan=4)
         self.mandatTexte.grid(row=1,column=3,columnspan=6)
         self.scroll.config(command=self.mandatTexte.yview)
@@ -176,32 +117,33 @@ class Vue():
         self.mandatTexte.insert(INSERT, "MANDAT :")
         self.mandatTexte.config(state=DISABLED)
 
-        #self.fontTitle = tkFont.Font(family="Helvetica",size=36,weight="bold")
-        self.projetTexte = Entry(self.root,foreground="black",font="-size 34", width=32,background="#526EFF",justify='center')
+        self.projetTexte = Entry(self.root,foreground="black",font="-size 26", width=32,background="#526EFF",justify='center')
         self.projetTexte.grid(row=5,column=2,columnspan=8)
         self.projetTexte.insert(INSERT, self.projetName)
         self.projetTexte.config(state=DISABLED)
         
-        self.listeSprint = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/6))
+        self.listeSprint = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/65))
         self.listeSprint.grid(row=6,column=4,rowspan=4,columnspan=4)
         for sprint in self.dicodesprint.keys():
                  self.listeSprint.insert(END,"Sprint " + str(sprint) + "................."+self.dicodesprint[sprint])
         
         
-        self.listeTexte = Entry(self.root,foreground="black", font="-size 16",width=80,background="#526EFF",justify='center')
+        self.listeTexte = Entry(self.root,foreground="black", font="-size 14",width=80,background="#526EFF",justify='center')
         self.listeTexte.grid(row=10,column=2,columnspan=8)
         self.listeTexte.insert(INSERT, "Membre \t\t\t\t Travail sur")
         self.listeTexte.config(state=DISABLED)
         
-        self.listeMembre = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/5))
+        self.listeMembre = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/70))
         self.listeMembre.grid(row=11,column=3,rowspan=5,columnspan=4)
         for membre in self.utilisateursEtRole.keys():
                  self.listeMembre.insert(END,membre )
-        self.listeOccupation = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/5))
+        self.listeOccupation = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/70))
         self.listeOccupation.grid(row=11,column=6,rowspan=5,columnspan=4)
         for membre in self.utilisateursEtRole.keys():
                  self.listeOccupation.insert(END,self.utilisateursEtRole[membre])
-        self.cadrebaseExiste=True
+        self.cadremandatExiste=True
+        self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)-(self.hauteurDefault/2)+52))
+        
     def accesScrum(self):
         ad="http://"+ipserveur+":"+self.nodeport
         self.serveur=ServerProxy(ad)

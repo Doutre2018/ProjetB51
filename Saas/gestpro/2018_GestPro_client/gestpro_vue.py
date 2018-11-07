@@ -18,11 +18,18 @@ class Vue():
         self.parent=parent
         self.modele=None
         self.nom=None
-        self.fullscreen=False
+        self.fullscreen=True
+        self.largeurDefault=largeur;
+        self.hauteurDefault=hauteur;
+        if self.fullscreen :
+            self.largeur=self.root.winfo_screenwidth()
+            self.hauteur=self.root.winfo_screenheight()
+            
+        else:
+            self.largeur=self.largeurDefault
+            self.hauteur=self.hauteurDefault
 
-        self.largeur=largeur
-        self.hauteur=hauteur
-        
+        self.root.attributes("-fullscreen", False)
         self.images={}
         self.modes={}
         self.modecourant=None
@@ -56,7 +63,9 @@ class Vue():
             self.cadreactif.grid(fill=BOTH)
         else:
             self.cadreactif.grid()
-    
+        if self.cadreactif == self.cadrebase :
+            self.root.attributes("-fullscreen", self.fullscreen)
+
     def chargercentral(self,rep):
         for i in rep:
             self.listemodules.insert(END,i)
@@ -101,11 +110,12 @@ class Vue():
         self.frameButton= Frame(self.cadresplash,bg="#E5E7F4")
         self.frameButton.grid()
         
-        self.btnconnecter=Button(self.frameButton,text="Ce connecter",bg="#FFFFFF",command=self.loginclient,relief=FLAT)
+        self.btnconnecter=Button(self.frameButton,text="Connexion",bg="#FFFFFF",command=self.loginclient,relief=FLAT)
         self.btnconnecter.grid(pady=(0,20))
         
         self.inscriptionB = Button(self.frameButton,text="Nouveau Client",bg="#FFFFFF",command=self.AllerAInscription,relief=FLAT)
         self.inscriptionB.grid(pady=(0,20))
+        
         
     def creeNouvelleUtilisateur(self):    
         self.cadreNouvelleUtilisateur=Frame(self.root,bg="#E5E7F4")
@@ -127,6 +137,7 @@ class Vue():
         
         self.annuleIB=Button(self.cadreNouvelleUtilisateur,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal)
         self.annuleIB.grid(pady=(0,20))
+        
         
     def closeprocess(self):
         self.parent.fermerprocessus()
@@ -153,12 +164,8 @@ class Vue():
         self.filemenu = Menu(self.menubar, tearoff=0)
         
         self.filemenu = Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Nouveau Projet", command=self.salutations)
-        self.filemenu.add_command(label="Ouvrir", command=self.salutations)
+        self.filemenu.add_command(label="Nouveau Projet", command=self.nouveauProjet)
         self.filemenu.add_command(label="Enregistrer", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer sous ...", command=self.salutations)
-        self.filemenu.add_separator()
-        self.filemenu.add_command(label="Fermer", command=self.root.quit)
         self.menubar.add_cascade(label="Fichier", menu=self.filemenu)
         
         self.editmenu = Menu(self.menubar, tearoff=0)
@@ -220,9 +227,12 @@ class Vue():
             self.hauteur=self.root.winfo_screenmmheight()/4.5
         
         self.cadrebase=Frame(self.root)
-        self.boutonProjet1=Button(self.cadrebase,text="Projet 1",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
-        self.boutonProjet2=Button(self.cadrebase,text="Projet 2",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
-        self.boutonProjet3=Button(self.cadrebase,text="Projet 3",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
+        self.listeProjet=Listbox(self.cadrebase,height=int(self.hauteur-4), width = int(self.largeur/11),bg="#00BCD9")
+        self.listeProjet.grid(row=1,column=0,rowspan=15)
+        self.listeProjet.insert(END, "a list entry")
+        #self.boutonProjet1=Button(self.cadrebase,text="Projet 1",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
+       # self.boutonProjet2=Button(self.cadrebase,text="Projet 2",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
+        #self.boutonProjet3=Button(self.cadrebase,text="Projet 3",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
 
         self.boutonMandat=Button(self.cadrebase,text="Mandat",bg="#0B416C",command=self.requeteMandat,height=4,width=int(self.largeur/11))
         self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#0072BB",command=self.requeteScrum,height=4,width=int(self.largeur/11))
@@ -235,9 +245,9 @@ class Vue():
         self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#FAEF20",command=self.requeteModelisation,height=4,width=int(self.largeur/11))
         self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#FFB242",command=self.requeteTerlow,height=4,width=int(self.largeur/11))
         
-        self.boutonProjet1.grid(row=1,column=0,rowspan=5)
-        self.boutonProjet2.grid(row=6,column=0,rowspan=5)
-        self.boutonProjet3.grid(row=11,column=0,rowspan=5)
+        #self.boutonProjet1.grid(row=1,column=0,rowspan=5)
+        #self.boutonProjet2.grid(row=6,column=0,rowspan=5)
+        #self.boutonProjet3.grid(row=11,column=0,rowspan=5)
 
         self.boutonMandat.grid(row=0,column=1)
         self.boutonScrum.grid(row=0,column=2)
@@ -249,6 +259,20 @@ class Vue():
         self.boutonTchat.grid(row=0,column=8)
         self.boutonDonnee.grid(row=0,column=9)
         self.boutonTerlow.grid(row=0,column=10)
+    def nouveauProjet(self):
+        self.fenetreCreationProjet = Toplevel(self.root, bg="#F8C471"  )
+        self.fenetreCreationProjet.wm_title("Creer un Projet")
+        
+        self.texteCreationProjet = Label(self.fenetreCreationProjet, text="Nom du nouveau projet :", bg="#F8C471")
+        self.texteCreationProjet.grid(row=1,column=1, padx=50, pady=(30,10))
+        
+        self.entreeCreationProjet = Entry(self.fenetreCreationProjet)
+        self.entreeCreationProjet.grid(row=2,column=1, padx=50, pady=(0,10))
+        
+        self.boutonCreationProjet = Button(self.fenetreCreationProjet, text="Creer Projet", bg="#E67E22",command=self.creerProjet)
+        self.boutonCreationProjet.grid(row=3,column=1, padx=50, pady=(0,30))
+    def creerProjet(self):
+        pass   
     def requeteMandat(self):
         self.requetemodule("mandat")
     def requeteScrum(self):

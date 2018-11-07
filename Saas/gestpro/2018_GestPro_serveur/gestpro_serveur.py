@@ -74,7 +74,7 @@ class ModeleService(object):
         for line in data:
             n = line.rstrip('\n')                   # Enlève les changements de ligne ('\n') de chaque noms
             liste.append(n)                         # Ajoute les noms dans la liste
-            
+         
         return liste                                # Retourne la liste de nom
     
     def nomUnique(self, nom):
@@ -87,6 +87,14 @@ class ModeleService(object):
         f.write(nom + "\n")
         f.close()
         return True                             # Si le nom n'est pas trouvé dans la liste
+    
+    def nomExiste(self, nom):
+        liste = self.listeNoms()
+        for n in liste:                         # Parcours les noms dans la liste
+            if n == nom:                        # Compare le nom à la liste de nom
+                return True                     # Nom existe déjà, donc pas unique 
+        
+        return False                            # Si le nom n'est pas trouvé dans la liste
     # ---------------------------------------- #
             
     #méthode tampon pour insert les données dans la table de la BD du serveur selon le format suivant: nomTable = "string représentant nom", liste valeurs = [10, 'texte1', 50.3]
@@ -128,6 +136,12 @@ class ControleurServeur(object):
     # ------------------DM-------------------- #
     def nomUnique(self, nom):
         if self.modele.nomUnique(nom):
+            return True
+        else:
+            return False
+        
+    def nomExiste(self, nom):
+        if self.modele.nomExiste(nom):
             return True
         else:
             return False

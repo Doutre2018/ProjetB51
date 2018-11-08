@@ -17,10 +17,12 @@ class Controleur():
         self.createurId=Id
         self.modele=None
         self.serveur=None
+        self.pid=None
         self.monip=self.trouverIP()
         self.nodeport="9999"
         self.vue=Vue(self,self.monip)
         self.vue.root.mainloop()
+
         
     def trouverIP(self): # fonction pour trouver le IP en 'pignant' gmail
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # on cree un socket
@@ -28,6 +30,7 @@ class Controleur():
         monip=s.getsockname()[0] # on analyse la reponse qui contient l'IP en position 0 
         s.close() # ferme le socket
         return monip
+
     
     # ----------------DM------------------------ #
     def nomUnique(self, ipserveur, nom):
@@ -59,6 +62,8 @@ class Controleur():
             rep=self.serveur.loginauserveur(self.monnom)    # on averti le serveur de nous inscrire
             print("reponse du serveur",rep)
             self.vue.chargercentral(rep[2])
+            with open("adresseServeurCourant.txt",'w') as fichierServeur:
+                fichierServeur.write(self.serveur.getAdresse())
             self.serveur.requeteSelection("select * from stocks")
                     
     def requetemodule(self,mod):
@@ -94,7 +99,7 @@ class Controleur():
             #print("REP",rep)
             self.modele=Modele(self,rep[1][0][1],rep[1][0][2]) # on cree le modele
             self.vue.afficherinitpartie(self.modele)
-
+            
             
     def fermeserveur(self):
         if self.serveur:
@@ -105,6 +110,8 @@ class Controleur():
         self.vue.root.destroy()
         
         
+        
 if __name__=="__main__":
     c=Controleur()
     print("End GestPro")
+    

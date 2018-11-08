@@ -196,7 +196,6 @@ class ControleurServeur(object):
     
     def fermer(self):
         daemon.shutdown()
-    
 
 class  BaseDonnees():
     def __init__(self):
@@ -208,7 +207,8 @@ class  BaseDonnees():
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.insertion('stocks', [1])
-        #self.connecteur.close()
+        self.connecteur.close()
+        
     
     def genererListeTables(self):
         listeTables = [ 
@@ -313,7 +313,7 @@ class  BaseDonnees():
         for contrainte in listeConst:
             stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
             self.curseur.execute(stringAlterTable)
-
+    
     def insertionPerso(self,commande):
         self.curseur.execute(commande)
         

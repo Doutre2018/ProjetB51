@@ -2,7 +2,7 @@
 from tkinter import *
 from tkinter import tix
 from tkinter import ttk
-from PIL import Image,ImageDraw, ImageTk
+#from PIL import Image,ImageDraw, ImageTk
 import os,os.path
 import math
 from helper import Helper as hlp
@@ -69,6 +69,7 @@ class Vue():
         self.listeCas = Listbox(self.cadreUsage, width=int(self.largeur/20),height=int((self.hauteur/130)*5))
         self.listeCas.grid(row=1,column=1,pady=20,padx=20)
         self.listeCas.bind("<Button-1>", self.afficherScenarii)
+        
         self.boutonAjouterCas = Button(self.cadreUsage,text="Ajouter un Cas",bg="lightblue",command=self.ajouterCas)
         self.boutonAjouterCas.grid(row=2,column=1,pady=20,padx=20)
         

@@ -12,6 +12,11 @@ from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
 
+parentPath = os.path.abspath("../..")
+if parentPath not in sys.path:
+    sys.path.insert(0,parentPath)
+from gestpro_serveur import BaseDonnees as bd
+
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
@@ -34,7 +39,8 @@ class Modele():
             self.nombreCartes+=1        
     
     def insertCarte(self,listeValeur):
-        self.bd.insertionPerso(nom,listeValeur)
+        bd.insertionPerso("""INSERT INTO Cartes(id_projet,classe, id_carte_heritage, ordre) VALUES(  """ + listeValeur[0] + """, """ + listeValeur[1] + """, """ + listeValeur[2] + """, """ + listeValeur[3] + """, """ + listeValeur[4] + """ )""")
+
     
     def selectClassesCartes(self):
         commande ="""SELECT classe FROM Cartes"""
@@ -56,6 +62,7 @@ class Modele():
     def insertAttributsDeCarte(self,id_classe):
         listeValeur
         self.bd.insertion("AttributsCRC")
+
     
 if __name__ == '__main__':
     c=Controleur()

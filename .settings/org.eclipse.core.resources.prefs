@@ -1,12 +1,14 @@
 =\=\=\=\=\=\=
 <<<<<<<=HEAD
->>>>>>>=BD
+>>>>>>>=d877d9b59b215979c60cc179f54e870d841188f5
 eclipse.preferences.version=1
 encoding//Saas/gestpro/2018_GestPro_client/gestpro_client_main.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_client/gestpro_vue.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_client/gp_analyse/gp_analyse.py=utf-8
+encoding//Saas/gestpro/2018_GestPro_client/gp_analyse/gp_analyse_vue.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_client/gp_base/gp_base_vue.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_client/gp_casdusage/gp_casdusage.py=utf-8
+encoding//Saas/gestpro/2018_GestPro_client/gp_casdusage/gp_casdusage_vue.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_client/gp_crc/gp_crc.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_client/gp_mandat/gp_base.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_client/gp_mandat/gp_base_vue.py=utf-8
@@ -27,6 +29,8 @@ encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_casdusage/gp_casdusage
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_casdusage/gp_casdusage_vue.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_crc/gp_crc.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_crc/gp_crc_vue.py=utf-8
+encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_inscription/gp_inscription.py=utf-8
+encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_inscription/gp_inscription_vue.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_mandat/gp_mandat.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_mandat/gp_mandat_vue.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_maquette/gp_maquette.py=utf-8

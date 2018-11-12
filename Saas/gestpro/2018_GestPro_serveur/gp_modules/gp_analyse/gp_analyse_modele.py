@@ -38,6 +38,8 @@ class Modele():
                 pass
             else:
                 self.bd.curseur.execute("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
+
+                #self.bd.curseur.execute("")
             
         
         

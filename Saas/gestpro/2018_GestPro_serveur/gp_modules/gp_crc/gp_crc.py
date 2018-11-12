@@ -11,11 +11,6 @@ from gp_crc_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 
-parentPath = os.path.abspath("../..")
-if parentPath not in sys.path:
-    sys.path.insert(0,parentPath)
-from gestpro_serveur import BaseDonnees
-
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
@@ -23,7 +18,7 @@ class Controleur():
         self.modele=None
         self.vue=Vue(self)
         self.vue.root.mainloop()
-        
+
 class Modele():
     def __init__(self):
         self.bd = BaseDonnees
@@ -31,8 +26,8 @@ class Modele():
         for i in selectClassesCartes():
             self.nombreCartes+=1        
     
-    def insertCarte(self,nom="Cartes",listeValeur):
-        self.bd.insertion(nom,listeValeur)
+    def insertCarte(self,listeValeur):
+        self.bd.insertionPerso(nom,listeValeur)
     
     def selectClassesCartes(self):
         commande ="""SELECT classe FROM Cartes"""

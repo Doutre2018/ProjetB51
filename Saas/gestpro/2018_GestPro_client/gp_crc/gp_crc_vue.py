@@ -10,37 +10,25 @@ from msilib.schema import Font
 
 class Vue():
     def __init__(self,parent,largeur=800,hauteur=600):
-        #Variable de BD
-        self.projetName="Projet de Gestion de Projet"
-        self.utilisateursEtRole ={"Joé":"Donnée",
-                                  "Claudia":"Maquette",
-                                  "Ludovic":"Maquette",
-                                  "JF":"Rien",
-                                  "Simon":"Rien",
-                                  "Danick":"Maquette",
-                                  "Marylene":"Rien",}
-        self.dicodesprint={1:"29 oct. 2018",
-                           2:"29 oct. 2018",
-                           3:"29 oct. 2018"}
-        
-        
+
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.attributes("-fullscreen", False)
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
         self.modele=None
-        self.largeurDefault=largeur/7
-        self.hauteurDefault=hauteur/4.5
-        self.largeur=self.root.winfo_screenwidth()/7
-        self.hauteur=self.root.winfo_screenmmheight()/4.5
-        self.cadrebaseExiste=False
+        
+        self.largeurDefault=largeur
+        self.hauteurDefault=hauteur
+        self.largeurEcran=self.root.winfo_screenwidth()
+        self.hauteurEcran=self.root.winfo_screenmmheight()
+        
+        self.cadrecrcExiste=False
 
         self.images={}
         self.cadreactif=None
-        self.fullscreen=True
         self.creercadres()
-        self.changecadre(self.cadrebase)
+        self.changecadre(self.cadrecrc)
         self.compteurBouton=3;
         self.dicBouton={}
         
@@ -61,137 +49,36 @@ class Vue():
     
         
     def creercadres(self):
-        self.creercadrebase()
+        self.creercadrecrc()
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
-        
-    def requetemodule(self,mod):
-        rep=self.serveur.requetemodule(mod)
-        if rep:
-            print(rep[0])
-            cwd=os.getcwd()
-            lieuApp="/gp_"+rep[0]
-            lieu=cwd+lieuApp
-            print(lieu)
-            if not os.path.exists(lieu):
-                os.mkdir(lieu) #plante s'il exist deja
-            reso=rep[1]
-            print(rep[1])
-            for i in rep[2]:
-                if i[0]=="fichier":
-                    nom=reso+i[1]
-                    rep=self.serveur.requetefichier(nom)
-                    fiche=open(lieu+"/"+i[1],"wb")
-                    fiche.write(rep.data)
-                    fiche.close()
-            chaineappli="."+lieuApp+lieuApp+".py"
 
-            self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport],shell=0) 
-        else:
-            print("RIEN") 
             
-    def creermenu(self):
-        self.menubar = Menu(self.root)
-
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Nouveau Projet", command=self.salutations)
-        self.filemenu.add_command(label="Ouvrir", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer sous ...", command=self.salutations)
-        self.filemenu.add_separator()
-        self.filemenu.add_command(label="Fermer", command=self.root.quit)
-        self.menubar.add_cascade(label="Fichier", menu=self.filemenu)
-        
-        self.editmenu = Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Undo", command=self.salutations)
-        self.editmenu.add_command(label="Redo", command=self.salutations)
-        self.editmenu.add_separator()
-        self.editmenu.add_command(label="Copier", command=self.salutations)
-        self.editmenu.add_command(label="Couper", command=self.salutations)
-        self.editmenu.add_command(label="Coller", command=self.salutations)
-        self.menubar.add_cascade(label="Edition", menu=self.editmenu)
-        
-        self.aidemenu = Menu(self.menubar, tearoff=0)
-        self.aidemenu.add_command(label="Read-Me 1", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 2", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 3", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 4", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 5", command=self.salutations)
-        self.menubar.add_cascade(label="Aide", menu=self.aidemenu)
-        
-        self.affichagemenu = Menu(self.menubar, tearoff=0)
-        self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode)
-        self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
-        
-        self.menubar.add_command(label="Fermer", command=self.root.quit)
-        self.menu = Menu(self.root, tearoff=0)
-        self.menu.add_command(label="Nom", command=self.salutations)
-        self.menu.add_command(label="Verbe", command=self.salutations)
-        
-        #self.frame = Frame(self.root, width=512, height=512)
-        #self.frame.pack()
-        #self.frame.bind("<Button-3>", self.popup)
-        self.root.config(menu=self.menubar) 
-    def fullScreenMode(self): 
-        if(self.fullscreen):
-            self.fullscreen=False
-            self.largeur=self.largeurDefault
-            self.hauteur=self.hauteurDefault
-            self.root.attributes("-fullscreen", False)
-            self.creercadres()
-            self.changecadre(self.cadrebase)
-        else:
-             self.fullscreen=True
-             self.largeur=self.root.winfo_screenwidth()/7
-             self.hauteur=self.root.winfo_screenmmheight()/4.5
-             self.root.attributes("-fullscreen", True)
-             self.creercadres()
-             self.changecadre(self.cadrebase)
-    def destroyCadreBase(self):
-        self.cadrebase.destroy()
-        self.boutonAnalyse.destroy()
-        self.affichagemenu.destroy()
-        self.boutonBudget.destroy()
-        self.boutonCasUsage.destroy()
-        self.boutonCrc.destroy()
-        self.boutonDonnee.destroy()
-        self.boutonMandat.destroy()
-        self.boutonMaquette.destroy()
-        self.boutonProjet1.destroy()
-        self.boutonProjet2.destroy()                        
-        self.boutonProjet3.destroy()
-        self.boutonScrum.destroy()
-        self.boutonTchat.destroy()
-        self.boutonTerlow.destroy()                      
+                         
               
-    def creercadrebase(self):
-        self.cadrebase=Frame(self.root)
+    def creercadrecrc(self):
+        #permet d'intégrer l'application dans l'application de base
+        self.root.overrideredirect(True) #Enleve la bordure
+        self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
-        self.lTitreCRC= Label(self.cadrebase, text= "CRC",font= "arial, 20")
+        self.cadrecrc=Frame(self.root)
+
+        self.lTitreCRC= Label(self.cadrecrc, text= "CRC",font= "arial, 20")
         self.lTitreCRC.grid(padx=100 ,row=0, column=0,  columnspan=2)
-        self.AjouterCRC = Button(self.cadrebase ,text= "+", font= "arial, 20",command=self.ajoutCRC, height=1)
+        self.AjouterCRC = Button(self.cadrecrc ,text= "+", font= "arial, 20",command=self.ajoutCRC, height=1)
         self.AjouterCRC.grid(row=1, column=2)
-        self.ListeCRC= Listbox(self.cadrebase,selectmode=SINGLE)
+        self.ListeCRC= Listbox(self.cadrecrc,selectmode=SINGLE)
         self.ListeCRC.insert(0, "Modele")
         self.ListeCRC.insert(1, "Vue")
         self.ListeCRC.insert(2, "Controleur")
         self.ListeCRC.grid(row=1, column=1)
         self.ListeCRC.bind("<ButtonRelease-1>",self.modifierCRC)
         self.ListeCRC.select_set(0)
-        self.SupprimerCRC = Button(self.cadrebase ,text= "-", font= "arial, 20",command=self.delCRC, height=1, width=2)
+        self.SupprimerCRC = Button(self.cadrecrc ,text= "-", font= "arial, 20",command=self.delCRC, height=1, width=2)
         self.SupprimerCRC.grid(row=1, column=3, padx=(10,0))
 
-        self.cadrebaseExiste=True
+        self.cadrecrcExiste=True
 
-    def accesScrum(self):
-        ad="http://"+ipserveur+":"+self.nodeport
-        self.serveur=ServerProxy(ad)
-        mod = self.serveur.requetemodule()
-        self.requetemodule(mod)    
-    def salutations(self):
-        pass
     def fermerfenetre(self):
         print("ON FERME la fenetre")
         self.root.destroy()
@@ -317,7 +204,7 @@ class Vue():
         
         
         #Bouton Ajouter
-        self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.ModfiCRC)
+        self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.ModifCrc)
         self.boutonModifier.grid()
         
 

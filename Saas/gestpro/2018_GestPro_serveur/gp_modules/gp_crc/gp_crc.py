@@ -22,7 +22,7 @@ class Controleur():
         self.connectionServeurCourant()
         self.serveur = ServerProxy(self.adresseServeur)
         print(self.serveur)
-        self.serveur.
+        #self.serveur.
 
         #connection = sqlite3.connect("SAAS.db")
         #curseur = connection.cursor()

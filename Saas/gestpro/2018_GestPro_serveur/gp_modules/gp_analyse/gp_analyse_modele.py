@@ -17,6 +17,7 @@ from gestpro_serveur import BaseDonnees as BD
 class Modele():
     def __init__(self, parent):
         print("Bienvenue dans le modele ..")
+        self.bd = BD()
         self.listeType = ["Nom explicite",
                           "Verbe implicite",
                           "Adjectif supplementaire",

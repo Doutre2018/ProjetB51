@@ -9,7 +9,7 @@ from helper import Helper as hlp
 from msilib.schema import Font
 
 class Vue():
-    def __init__(self,parent,largeur=1200,hauteur=1000):
+    def __init__(self,parent,largeur=900,hauteur=500):
         #Variable de BD
         self.projetName="Projet de Gestion de Projet"
         self.utilisateursEtRole ={"Joé":"Donnée",
@@ -31,19 +31,11 @@ class Vue():
         self.parent=parent
         self.modele=None
         
-        self.fullscreen=False
-        self.largeurDefault=largeur
-        self.hauteurDefault=hauteur
+        self.largeur=self.largeurDefault=largeur
+        self.hauteur=self.hauteurDefault=hauteur
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenheight()
-        if(self.fullscreen):
-            self.largeur=self.root.winfo_screenwidth()
-            self.hauteur=self.root.winfo_screenmmheight()
-            
-        else:
-            self.largeur=self.largeurDefault
-            self.hauteur=self.hauteurDefault
-        self.root.attributes("-fullscreen", self.fullscreen)    
+
         self.cadremandatExiste=False
 
         self.images={}
@@ -70,47 +62,13 @@ class Vue():
         
     def creercadres(self):
         self.creercadremandat()
-        
-
-    def fullScreenMode(self): 
-        if(self.fullscreen):
-            self.fullscreen=False
-            self.largeur=self.largeurDefault
-            self.hauteur=self.hauteurDefault
-            self.root.attributes("-fullscreen", False)
-            self.creercadres()
-            self.changecadre(self.cadremandat)
-
-        else:
-             self.fullscreen=True
-             self.largeur=self.root.winfo_screenwidth()
-             self.hauteur=self.root.winfo_screenmmheight()
-             self.root.attributes("-fullscreen", True)
-             self.creercadres()
-             self.changecadre(self.cadremandat)
-    def destroycadremandat(self):
-        self.cadremandat.destroy()
-        self.boutonAnalyse.destroy()
-        self.affichagemenu.destroy()
-        self.boutonBudget.destroy()
-        self.boutonCasUsage.destroy()
-        self.boutonCrc.destroy()
-        self.boutonDonnee.destroy()
-        self.boutonMandat.destroy()
-        self.boutonMaquette.destroy()
-        self.boutonProjet1.destroy()
-        self.boutonProjet2.destroy()                        
-        self.boutonProjet3.destroy()
-        self.boutonScrum.destroy()
-        self.boutonTchat.destroy()
-        self.boutonTerlow.destroy()                      
               
     def creercadremandat(self):
         self.root.overrideredirect(True)
         self.cadremandat=Frame(self.root)
 
         self.scroll = Scrollbar(self.root)
-        self.mandatTexte = Text(self.root,bg="#09436B",height=int(self.hauteur/100),foreground="white")
+        self.mandatTexte = Text(self.root,bg="#09436B",height=int(self.hauteur/80),foreground="white")
         self.scroll.grid(row=1,column=3,rowspan=4)
         self.mandatTexte.grid(row=1,column=3,columnspan=6)
         self.scroll.config(command=self.mandatTexte.yview)
@@ -123,7 +81,7 @@ class Vue():
         self.projetTexte.insert(INSERT, self.projetName)
         self.projetTexte.config(state=DISABLED)
         
-        self.listeSprint = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/65))
+        self.listeSprint = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/91))
         self.listeSprint.grid(row=6,column=4,rowspan=4,columnspan=4)
         for sprint in self.dicodesprint.keys():
                  self.listeSprint.insert(END,"Sprint " + str(sprint) + "................."+self.dicodesprint[sprint])
@@ -134,22 +92,16 @@ class Vue():
         self.listeTexte.insert(INSERT, "Membre \t\t\t\t Travail sur")
         self.listeTexte.config(state=DISABLED)
         
-        self.listeMembre = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/70))
+        self.listeMembre = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/60))
         self.listeMembre.grid(row=11,column=3,rowspan=5,columnspan=4)
         for membre in self.utilisateursEtRole.keys():
                  self.listeMembre.insert(END,membre )
-        self.listeOccupation = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/70))
+        self.listeOccupation = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/60))
         self.listeOccupation.grid(row=11,column=6,rowspan=5,columnspan=4)
         for membre in self.utilisateursEtRole.keys():
                  self.listeOccupation.insert(END,self.utilisateursEtRole[membre])
         self.cadremandatExiste=True
-        self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)-(self.hauteurDefault/2)+52))
-
-    def accesScrum(self):
-        ad="http://"+ipserveur+":"+self.nodeport
-        self.serveur=ServerProxy(ad)
-        mod = self.serveur.requetemodule()
-        self.requetemodule(mod)    
+        self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)-220))
     def salutations(self):
         pass
     def fermerfenetre(self):

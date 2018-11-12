@@ -97,7 +97,7 @@ class Vue():
         self.labelNom=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre nom d'utilisateur",font='arial 12')
         self.labelNom.grid()
         self.nomsplash=Entry(self.cadresplash,bg="white")
-        self.nomsplash.insert(0, "jmd")
+        self.nomsplash.insert(0, "Employe007")
         self.nomsplash.grid(pady=(10,30),padx=100)
         
         self.ipsplash=Entry(self.cadresplash,bg="white")

@@ -39,8 +39,13 @@ class Modele():
         for i in selectClassesCartes():
             self.nombreCartes+=1        
     
+<<<<<<< HEAD
     def insertCarte(self,listeValeur):
         bd.insertionPerso("""INSERT INTO Cartes(id_projet,classe, id_carte_heritage, ordre) VALUES(  """ + listeValeur[0] + """, """ + listeValeur[1] + """, """ + listeValeur[2] + """, """ + listeValeur[3] + """, """ + listeValeur[4] + """ )""")
+=======
+    def insertCarte (self,listeValeur,nom="Cartes"):
+        self.bd.insertion(nom,listeValeur)
+>>>>>>> f08a15c066688db539cd4bee089a338cc2d957a1
     
     def selectClassesCartes(self):
         commande ="""SELECT classe FROM Cartes"""

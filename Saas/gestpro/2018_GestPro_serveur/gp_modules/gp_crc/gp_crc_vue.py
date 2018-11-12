@@ -10,30 +10,19 @@ from msilib.schema import Font
 
 class Vue():
     def __init__(self,parent,largeur=800,hauteur=600):
-        #Variable de BD
-        self.projetName="Projet de Gestion de Projet"
-        self.utilisateursEtRole ={"Joé":"Donnée",
-                                  "Claudia":"Maquette",
-                                  "Ludovic":"Maquette",
-                                  "JF":"Rien",
-                                  "Simon":"Rien",
-                                  "Danick":"Maquette",
-                                  "Marylene":"Rien",}
-        self.dicodesprint={1:"29 oct. 2018",
-                           2:"29 oct. 2018",
-                           3:"29 oct. 2018"}
-        
-        
+
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.attributes("-fullscreen", False)
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
         self.modele=None
+        
         self.largeurDefault=largeur
         self.hauteurDefault=hauteur
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
+        
         self.cadrecrcExiste=False
 
         self.images={}
@@ -68,7 +57,8 @@ class Vue():
                          
               
     def creercadrecrc(self):
-        self.root.overrideredirect(True)
+        #permet d'intégrer l'application dans l'application de base
+        self.root.overrideredirect(True) #Enleve la bordure
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
         self.cadrecrc=Frame(self.root)

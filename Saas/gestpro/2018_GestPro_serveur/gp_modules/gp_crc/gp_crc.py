@@ -59,7 +59,7 @@ class Modele():
         commande = """SELECT nomAttributs FROM AttributsCRC WHERE id_classe="""
         commande+=idCarte
         #Retourne une liste de String des attributs d'UNE carte
-        return bd.selection(commande)
+        return self.serveur.selection(commande)
     
     def insertAttributsDeCarte(self,id_classe):
         #listeValeur

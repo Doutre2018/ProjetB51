@@ -2,7 +2,7 @@
 from tkinter import *
 from tkinter import tix
 from tkinter import ttk
-from PIL import Image,ImageDraw, ImageTk
+#from PIL import Image,ImageDraw, ImageTk
 import os,os.path
 import math
 from helper import Helper as hlp

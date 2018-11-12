@@ -2,7 +2,7 @@
 from tkinter import *
 from tkinter import tix
 from tkinter import ttk
-from PIL import Image,ImageDraw, ImageTk
+#from PIL import Image,ImageDraw, ImageTk
 import os,os.path
 import math
 from helper import Helper as hlp
@@ -385,6 +385,6 @@ class Vue():
         self.changecadre(self.cadresplash)
     
 if __name__ == '__main__':
-    m=Vue(0,"jmd","127.0.0.1")
+    m=Vue(0,"Employe007","127.0.0.1")
     m.root.mainloop()
     

@@ -23,7 +23,7 @@ class Controleur():
         self.modele=None
         self.vue=Vue(self)
         self.vue.root.mainloop()
-        
+
 class Modele():
     def __init__(self):
         #self.bd = BaseDonnees

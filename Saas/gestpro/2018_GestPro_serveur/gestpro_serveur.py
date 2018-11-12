@@ -207,7 +207,7 @@ class  BaseDonnees():
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.insertion('stocks', [1])
-        self.connecteur.close()
+        #self.connecteur.close()
         
     
     def genererListeTables(self):

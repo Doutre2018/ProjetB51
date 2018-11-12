@@ -305,6 +305,8 @@ class  BaseDonnees():
         connecteur = sqlite3.connect('SAAS.db')
         curseur = connecteur.cursor()
         listeData=[]
+        print(stringSelect)
+        print(curseur.execute(stringSelect))
         for rangee in curseur.execute(stringSelect):
             print(rangee)
             listeData.append(rangee)

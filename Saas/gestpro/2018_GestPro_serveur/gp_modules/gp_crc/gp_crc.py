@@ -22,7 +22,6 @@ class Controleur():
         self.connectionServeurCourant()
         self.serveur = ServerProxy(self.adresseServeur)
         print(self.serveur)
-        #self.serveur.
 
         #connection = sqlite3.connect("SAAS.db")
         #curseur = connection.cursor()
@@ -43,17 +42,17 @@ class Modele():
             self.nombreCartes+=1        
     
     def insertCarte(self,listeValeur):
-        bd.insertionPerso("""INSERT INTO Cartes(id_projet,classe, id_carte_heritage, ordre) VALUES(  """ + listeValeur[0] + """, """ + listeValeur[1] + """, """ + listeValeur[2] + """, """ + listeValeur[3] + """, """ + listeValeur[4] + """ )""")
+        self.serveur.insertionPerso("""INSERT INTO Cartes(id_projet,classe, id_carte_heritage, ordre) VALUES(  """ + listeValeur[0] + """, """ + listeValeur[1] + """, """ + listeValeur[2] + """, """ + listeValeur[3] + """, """ + listeValeur[4] + """ )""")
     
     def selectClassesCartes(self):
         commande ="""SELECT classe FROM Cartes"""
         #Retourne une liste de String de cartes
-        return bd.selection(commande)
+        return self.serveur.selection(commande)
     
     def selectIdCarte(self,classe):
         commande ="""SELECT id FROM Cartes WHERE classe="""
         commande+=classe
-        ID = bd.selection(commande)
+        ID = self.serveur.selection(commande)
         return ID
     
     def selectAttributDeCarte(self,idCarte):
@@ -63,7 +62,7 @@ class Modele():
         return bd.selection(commande)
     
     def insertAttributsDeCarte(self,id_classe):
-        listeValeur
+        #listeValeur
         bd.insertion("AttributsCRC")
     
 if __name__ == '__main__':

@@ -10,6 +10,7 @@ import math
 from gp_crc_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
+from xmlrpc.client import ServerProxy
 
 parentPath = os.path.abspath("../..")
 if parentPath not in sys.path:
@@ -19,10 +20,16 @@ from gestpro_serveur import BaseDonnees as bd
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
+        self.connectionServeurCourant()
+        self.serveur = ServerProxy(self.adresseServeur)
         self.createurId=Id
         self.modele=None
         self.vue=Vue(self)
         self.vue.root.mainloop()
+        
+    def connectionServeurCourant(self):  
+        with open("../adresseServeurCourant.txt", "r") as fichier:
+            self.adresseServeur = fichier.read()  
 
 class Modele():
     def __init__(self):

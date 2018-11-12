@@ -11,6 +11,7 @@ from gp_crc_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
+import sqlite3
 
 
 class Controleur():
@@ -20,6 +21,8 @@ class Controleur():
         if cwd is "2018_GestPro_client":
             self.connectionServeurCourant()
             self.serveur = ServerProxy(self.adresseServeur)
+        connection = sqlite3.connect("SAAS.db")
+        curseur = connection.cursor()
         self.createurId=Id
         self.modele=None
         self.vue=Vue(self)

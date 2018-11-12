@@ -11,22 +11,28 @@ from gp_crc_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
+#import sqlite3
 
 
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         cwd = os.getcwd()
-        if cwd is "2018_GestPro_client":
-            self.connectionServeurCourant()
-            self.serveur = ServerProxy(self.adresseServeur)
+        #if cwd is "2018_GestPro_client":
+        self.connectionServeurCourant()
+        self.serveur = ServerProxy(self.adresseServeur)
+        print(self.serveur)
+        self.serveur.
+
+        #connection = sqlite3.connect("SAAS.db")
+        #curseur = connection.cursor()
         self.createurId=Id
         self.modele=None
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
     def connectionServeurCourant(self):  
-        with open("../adresseServeurCourant.txt", "r") as fichier:
+        with open("../../../2018_Gestpro_client/adresseServeurCourant.txt", "r") as fichier:
             self.adresseServeur = fichier.read()  
 
 class Modele():

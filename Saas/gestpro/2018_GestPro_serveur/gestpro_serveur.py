@@ -57,6 +57,7 @@ class ModeleService(object):
         daemon.register_function(self.requeteMiseAJour)
         daemon.register_function(self.requeteInsertionPerso)
         daemon.register_introspection_functions()
+        self.baseDonnees.selection("select * from stocks")
         
     def creerclient(self,nom):
         if nom in self.clients.keys(): # on assure un nom unique
@@ -123,10 +124,9 @@ class ModeleService(object):
     
     #méthode tampon qui retourne une liste. Chaque élément de la liste correspond à une rangée du select demandé.
     def requeteSelection(self, stringSelect):
-        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db')
-        self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
+        print("in requete selection")
         listeSelect  = self.baseDonnees.selection(stringSelect)
-        self.baseDonnees.connecteur.close()
+        print("listeSelect:", listeSelect)
         return listeSelect
     
     def getAdresse(self):
@@ -208,6 +208,7 @@ class  BaseDonnees():
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.insertion('stocks', [1])
         self.connecteur.close()
+        self.selection("select * from stocks")
         
     
     def genererListeTables(self):
@@ -303,10 +304,14 @@ class  BaseDonnees():
     
     
     def selection(self, stringSelect = ""):
+        connecteur = sqlite3.connect('SAAS.db')
+        curseur = connecteur.cursor()
         listeData=[]
-        for rangee in self.curseur.execute(stringSelect):
+        for rangee in curseur.execute(stringSelect):
             print(rangee)
             listeData.append(rangee)
+        print("listeData", listeData)
+        connecteur.close()
         return listeData
             
     def alterTable(self,listeConst):

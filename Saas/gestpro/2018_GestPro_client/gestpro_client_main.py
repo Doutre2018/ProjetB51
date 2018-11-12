@@ -65,7 +65,6 @@ class Controleur():
             with open("adresseServeurCourant.txt",'w') as fichierServeur:
                 fichierServeur.write(self.serveur.getAdresse())
             self.serveur.requeteSelection("select * from stocks")
-
                     
     def requetemodule(self,mod):
         rep=self.serveur.requetemodule(mod)

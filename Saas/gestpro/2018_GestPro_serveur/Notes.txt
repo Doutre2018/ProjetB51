@@ -1,0 +1,5 @@
+Test de db:
+
+Select - self.serveur.requeteSelection("select * from stocks")
+Mise à jour - ^^^^^
+Insertion - "nomTable", ["valeurs en ordre(peu importe le type)"]

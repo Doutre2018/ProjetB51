@@ -74,15 +74,8 @@ class ModeleService(object):
         
         for n in temp:
             liste.append(n[0])      # Change la liste de tuples (nom,) à une liste de nom String (nom)
-        
-        #f = open("inscriptionTest.txt", "r")        # Ouvre le fichier contenant les noms d'utilisateurs
-        #data = f.readlines()                        # Sépare les noms par ligne
-        
-        #for line in data:
-        #    n = line.rstrip('\n')                   # Enlève les changements de ligne ('\n') de chaque noms
-        #    liste.append(n)                         # Ajoute les noms dans la liste
           
-        return liste                                # Retourne la liste de nom
+        return liste                            # Retourne la liste de nom
     
     def nomUnique(self, nom):
         liste = self.listeNoms()                # Tire la liste d'utilisateurs de la BD
@@ -91,7 +84,7 @@ class ModeleService(object):
             if n == nom:                        # Compare le nom à la liste de nom
                 return False                    # Nom existe déjà, donc pas unique 
         
-        self.requeteInsertionPerso("INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES " + "'" + nom + "'" + ", NULL, NULL")      # Insert dans la DB du nouvel utilisateur
+        self.requeteInsertionPerso("INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES (" + "'" + nom + "'" + ", NULL, NULL)")      # Insert dans la DB du nouvel utilisateur
         return True                             # Si le nom n'est pas trouvé dans la liste
     
     def nomExiste(self, nom):
@@ -114,7 +107,7 @@ class ModeleService(object):
     def requeteInsertionPerso(self,commande):
         self.baseDonnees.connecteur = sqlite3.connect('SAAS.db')
         self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
-        self.baseDonnee.insertionPerso(commande)
+        self.baseDonnees.insertionPerso(commande)
         self.baseDonnees.connecteur.close()
         return True
     
@@ -320,6 +313,7 @@ class  BaseDonnees():
     
     def insertionPerso(self,commande):
         self.curseur.execute(commande)
+        self.connecteur.commit()
         
 if __name__ == "__main__":
     controleurServeur=ControleurServeur()

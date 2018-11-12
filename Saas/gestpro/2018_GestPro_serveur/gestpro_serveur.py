@@ -107,7 +107,10 @@ class ModeleService(object):
         return True
     
     def requeteInsertionPerso(self,commande):
+        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db')
+        self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
         self.baseDonnee.insertionPerso(commande)
+        self.baseDonnees.connecteur.close()
         return True
     
    #méthode tampon pour mettre à jour des données d'une table. Il faut passer une string représentant l'ensemble de la requête update dans la fonction

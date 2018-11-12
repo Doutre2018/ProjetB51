@@ -31,7 +31,7 @@ class Modele():
         for i in selectClassesCartes():
             self.nombreCartes+=1        
     
-    def insertCarte(self,nom="Cartes",listeValeur):
+    def insertCarte (self,listeValeur,nom="Cartes"):
         self.bd.insertion(nom,listeValeur)
     
     def selectClassesCartes(self):

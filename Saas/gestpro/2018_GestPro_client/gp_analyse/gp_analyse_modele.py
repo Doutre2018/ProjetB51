@@ -17,7 +17,7 @@ from gestpro_serveur import BaseDonnees as BD
 class Modele():
     def __init__(self, parent):
         print("Bienvenue dans le modele ..")
-        self.creerType()
+        self.bd = BD()
         self.listeType = ["Nom explicite",
                           "Verbe implicite",
                           "Adjectif supplementaire",
@@ -28,14 +28,18 @@ class Modele():
                           "Verbe explicite",
                           "Verbe supplementaire",]
         self.lesTypes = self.bd.selection("SELECT nom FROM TypeMot")
+        self.creerType()
+        
         
         
     def creerType(self):
-        for type in listeType:
-            if type in lesTypes:
+        for type in self.listeType:
+            if type in self.lesTypes:
                 pass
             else:
-                BD.curseur.execute("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
+                self.bd.curseur.execute("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
+
+                #self.bd.curseur.execute("")
             
         
         

@@ -91,10 +91,7 @@ class ModeleService(object):
             if n == nom:                        # Compare le nom à la liste de nom
                 return False                    # Nom existe déjà, donc pas unique 
         
-        self.requeteInsertion("Utilisateur", [1, nom, "NULL", "NULL"])      # Insert dans la DB du nouvel utilisateur
-        #f = open("inscriptionTest.txt", "a")
-        #f.write(nom + "\n")
-        #f.close()
+        self.requeteInsertionPerso("INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES " + "'" + nom + "'" + ", NULL, NULL")      # Insert dans la DB du nouvel utilisateur
         return True                             # Si le nom n'est pas trouvé dans la liste
     
     def nomExiste(self, nom):

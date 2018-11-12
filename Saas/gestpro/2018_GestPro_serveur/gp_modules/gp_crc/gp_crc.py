@@ -12,16 +12,14 @@ from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
 
-parentPath = os.path.abspath("../..")
-if parentPath not in sys.path:
-    sys.path.insert(0,parentPath)
-from gestpro_serveur import BaseDonnees as bd
 
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
-        self.connectionServeurCourant()
-        self.serveur = ServerProxy(self.adresseServeur)
+        cwd = os.getcwd()
+        if cwd is "2018_GestPro_client":
+            self.connectionServeurCourant()
+            self.serveur = ServerProxy(self.adresseServeur)
         self.createurId=Id
         self.modele=None
         self.vue=Vue(self)

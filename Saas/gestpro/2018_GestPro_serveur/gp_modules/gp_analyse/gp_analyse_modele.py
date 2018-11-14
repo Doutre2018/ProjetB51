@@ -12,7 +12,7 @@ from IdMaker import Id
 class Modele():
     def __init__(self, parent):
         print("Bienvenue dans le modele ..")
-        self.bd = BD()
+
         self.listeType = ["Nom explicite",
                           "Verbe implicite",
                           "Adjectif supplementaire",
@@ -22,9 +22,9 @@ class Modele():
                           "Nom supplementaire",
                           "Verbe explicite",
                           "Verbe supplementaire"]
-        self.creerType()
-        self.numProjet
-        self.typeDonnee
+        #self.creerType()
+       # self.numProjet
+        #self.typeDonnee
     
         
     def InsertInto(self,ligne, colonne, nomProjet, type):

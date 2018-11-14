@@ -58,8 +58,6 @@ class ModeleService(object):
         daemon.register_function(self.requeteMiseAJour)
         daemon.register_function(self.requeteInsertionPerso)
         daemon.register_introspection_functions()
-        #self.baseDonnees.selection("select * from stocks")
-        self.requeteSelection("select price from stocks")
         
     def creerclient(self,nom):
         if nom in self.clients.keys(): # on assure un nom unique
@@ -94,7 +92,7 @@ class ModeleService(object):
         for n in liste:                         # Parcours les noms dans la liste
             if n == nom:                        # Compare le nom à la liste de nom
                 return True                     # Nom existe déjà, donc pas unique 
-        
+
         return False                            # Si le nom n'est pas trouvé dans la liste
     # ---------------------------------------- #
             
@@ -123,9 +121,7 @@ class ModeleService(object):
     
     #méthode tampon qui retourne une liste. Chaque élément de la liste correspond à une rangée du select demandé.
     def requeteSelection(self, stringSelect):
-        print("in requete selection")
         listeSelect  = self.baseDonnees.selection(stringSelect)
-        print("listeSelect:", listeSelect)
         return listeSelect
     
     def getAdresse(self):
@@ -301,7 +297,6 @@ class  BaseDonnees():
         listeData=[]
         for rangee in curseur.execute(stringSelect):
             listeData.append(rangee)
-        print("listeData", listeData)
         connecteur.close()
         return listeData
             

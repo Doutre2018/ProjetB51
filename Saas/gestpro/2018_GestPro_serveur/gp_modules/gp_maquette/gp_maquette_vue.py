@@ -15,9 +15,10 @@ class Vue():
     def __init__(self,parent,largeur=1600,hauteur=1000):
         self.listeObjetMaquette = []
         
-        listederectangle = ["rectangle",150,150,200,300,"black","red","",Id.prochainid()]
-        listedecercle = ["ovale",500,500,200,300,"black","red","",Id.prochainid()]
-        listedetexte = ["texte",500,500,0,0,"black","white","Hello",Id.prochainid()]
+        #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
+        listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
+        listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
+        listedetexte = ["texte",500,500,0,0,"black","white","Hello","Arial 12",Id.prochainid()]
         self.textSize=12
         self.couleurCourante="red"
         self.bordureCourante="black"
@@ -99,12 +100,12 @@ class Vue():
         self.canevasMaquette.create_rectangle((10,110,self.largeur-10,self.hauteur-10),outline="black",fill="white")
         self.boutontrectangle = self.canevasMaquette.create_rectangle((200,20,260,80),outline="black", fill=self.couleurCourante,tags=(Id.prochainid(),"bouton","rectangle"))
         self.boutontovale = self.canevasMaquette.create_oval(((int(self.largeur/3))+200,20,(int(self.largeur/3))+260,80),outline="black", fill=self.couleurCourante,tags=(Id.prochainid(),"bouton","ovale"))
-        self.boutontTexte = self.canevasMaquette.create_text(int((self.largeur/3)*2)+200,55,text="T",font="Arial 50 bold",tags=(Id.prochainid(),"bouton","texte"))
+        self.boutontTexte = self.canevasMaquette.create_text(int((self.largeur/3)*2)+200,55,text="T",font="Arial 60",tags=(Id.prochainid(),"bouton","texte"))
         self.canevasMaquette.bind("<Button>",self.creerNouvelObjet)
         self.canevasMaquette.bind("<B1-Motion>",self.bougerObjet)
         self.canevasMaquette.bind("<Button-2>",self.detruitObjet)
         self.canevasMaquette.bind("<B3-Motion>",self.aggrandirObjet)
-        self.canevasMaquette.bind("<Double-Button-1>",self.changerTexte)
+        self.canevasMaquette.bind("<Double-Button-1>",self.modifierTexte)
 
         self.creerObjet()
     def creerNouvelObjet(self,evt):
@@ -114,12 +115,12 @@ class Vue():
             if t[0] != "current" and t[1] == "bouton":
                     nouvelid = Id.prochainid()
                     if t[2]=="rectangle":
-                        self.listeObjetMaquette.append( ["rectangle",(self.largeur/2)-50,(self.hauteur/2)-50,(self.largeur/2+50),((self.hauteur/2)+50),self.bordureCourante,self.couleurCourante,"",nouvelid])
+                        self.listeObjetMaquette.append( ["rectangle",(self.largeur/2)-50,(self.hauteur/2)-50,(self.largeur/2+50),((self.hauteur/2)+50),self.bordureCourante,self.couleurCourante,"","",nouvelid])
                     if t[2]=="ovale":
-                        self.listeObjetMaquette.append( ["ovale",(self.largeur/2)-50,(self.hauteur/2)-50,(self.largeur/2+50),((self.hauteur/2)+50),self.bordureCourante,self.couleurCourante,"",nouvelid])
+                        self.listeObjetMaquette.append( ["ovale",(self.largeur/2)-50,(self.hauteur/2)-50,(self.largeur/2+50),((self.hauteur/2)+50),self.bordureCourante,self.couleurCourante,"","",nouvelid])
 
                     if t[2]=="texte":
-                        self.listeObjetMaquette.append(["texte",(self.largeur/2),(self.hauteur/2),0,0,self.bordureCourante,self.couleurCourante,"Nouveau Texte",nouvelid])
+                        self.listeObjetMaquette.append(["texte",(self.largeur/2),(self.hauteur/2),0,0,self.bordureCourante,self.couleurCourante,"Nouveau Texte","Arial 12",nouvelid])
                     self.creerObjet()
             else:
                 print("pas d'objet")
@@ -144,7 +145,7 @@ class Vue():
                         self.canevasMaquette.coords(t[0],evt.x-(diffx/2), evt.y-(diffy/2),evt.x+(diffx/2),evt.y+(diffy/2))
                     
                     for objet in self.listeObjetMaquette :
-                        if (objet[8]==t[0]) :
+                        if (objet[9]==t[0]) :
                             objet[1]=evt.x-(diffx/2)
                             objet[2]=evt.y-(diffy/2)
                             objet[3]=evt.x+(diffx/2)
@@ -166,15 +167,30 @@ class Vue():
         if t :
             if  t[0] != "current" and t[1] == "objet" :
                     if t[2] == "texte" :
+                        size=""
+                        font = self.canevasMaquette.itemcget(t[0],'font')
+                        i=0
+                        for iFont in font:
+                            if(i>=6):
+                                size += iFont
+                                print(size)
+                            i+=1
+                            
+                        self.textSize= int(size)
                         if(self.previousX==None):
                             self.previousX=evt.x
                         if(self.previousX>evt.x):
                             self.textSize-=1
                         if(self.previousX<evt.x):
                             self.textSize+=1
-
-                        aFont = ("Purisa",self.textSize)
-                        self.canevasMaquette.itemconfig(t[0], font=aFont)
+                        size = str(self.textSize)
+                        font = "Arial "
+                        for i in size:
+                            font += i
+                        self.canevasMaquette.itemconfig(t[0], font=font)
+                        for objet in self.listeObjetMaquette :
+                            if (objet[9]==t[0]) :
+                                objet[8]=font
                         self.previousX=evt.x
 
 
@@ -183,7 +199,7 @@ class Vue():
                         x0, y0, x1, y1 = self.canevasMaquette.coords(t[0])
                         self.canevasMaquette.coords(t[0], x0,y0,evt.x,evt.y)
                         for objet in self.listeObjetMaquette :
-                            if (objet[8]==t[0]) :
+                            if (objet[9]==t[0]) :
                                 objet[3]=evt.x
                                 objet[4]=evt.y
 
@@ -196,7 +212,7 @@ class Vue():
         if t :
             if  t[0] != "current" and t[1] == "objet" :
                     for objet in self.listeObjetMaquette :
-                        if (objet[8]==t[0]) :
+                        if (objet[9]==t[0]) :
                             self.listeObjetMaquette.remove(objet)
                     self.canevasMaquette.delete(t[0])
                     
@@ -206,12 +222,30 @@ class Vue():
                 print("pas d'objet")
         else :
             print("no objet")
-    def changerTexte(self,evt):
+    def changerTexte(self):
+        self.canevasMaquette.itemconfig(self.idTexte, text=self.entreeModificationMot.get())
+        for objet in self.listeObjetMaquette :
+            if (objet[9]==self.idTexte) :
+                objet[7]=self.entreeModificationMot.get()
+        self.fenetreModificationMot.destroy()
+
+
+    def modifierTexte(self,evt):
         t=self.canevasMaquette.gettags(CURRENT)
         if t :
             if  t[0] != "current" and t[1] == "objet" and t[2]=="texte":
-                self.canevasMaquette.itemconfig(t[0], text="texte changer")
-
+                self.idTexte = t[0]
+                self.fenetreModificationMot = Toplevel(self.root, bg="#F8C471"  )
+                self.fenetreModificationMot.wm_title("Creer un Cas d'utilisation")
+                
+                self.texteModificationMot = Label(self.fenetreModificationMot, text="Mot a entrer :", bg="#F8C471")
+                self.texteModificationMot.grid(row=1,column=1, padx=50, pady=(30,10))
+                
+                self.entreeModificationMot = Entry(self.fenetreModificationMot)
+                self.entreeModificationMot.grid(row=2,column=1, padx=50, pady=(0,10))
+                
+                self.boutonModificationMot = Button(self.fenetreModificationMot, text="Modifier Mot", bg="#E67E22",command=self.changerTexte)
+                self.boutonModificationMot.grid(row=3,column=1, padx=50, pady=(0,30))
 
     def creerObjet(self):
 
@@ -220,9 +254,9 @@ class Vue():
             if(objet[0]=="rectangle"):
                 self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[8]),"objet","rectangle"))
             if(objet[0]=="ovale"):
-                self.canevasMaquette.create_oval((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[8]),"objet","ovale"))
+                self.canevasMaquette.create_oval((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[9]),"objet","ovale"))
             if(objet[0]=="texte"):
-                self.canevasMaquette.create_text(objet[1],objet[2],text=objet[7],fill=objet[5],tags=((objet[8]),"objet","texte"))
+                self.canevasMaquette.create_text(objet[1],objet[2],text=objet[7],fill=objet[6],tags=((objet[9]),"objet","texte"),font=(objet[8]))
     def getColor(self):
         self.couleurCourante = askcolor()[1]
         print(self.couleurCourante)

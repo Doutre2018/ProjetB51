@@ -26,7 +26,7 @@ class Controleur():
         #connection = sqlite3.connect("SAAS.db")
         #curseur = connection.cursor()
         self.createurId=Id
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
@@ -36,11 +36,11 @@ class Controleur():
 
 class Modele():
     def __init__(self):
-        #self.bd = BaseDonnees
-        self.nombreCartes=0
-        for i in selectClassesCartes():
-            self.nombreCartes+=1        
-    
+        self.listeCartes=selectClassesCartes()
+        self.listeIDCartes=selectIdCarte()
+        for i in self.listeIDCartes:
+            self.listeAttributs.append(selectAttributDeCarte(i))
+        
     def insertCarte(self,listeValeur):
         self.serveur.insertionPerso("""INSERT INTO Cartes(id_projet,classe, id_carte_heritage, ordre) VALUES(  """ + listeValeur[0] + """, """ + listeValeur[1] + """, """ + listeValeur[2] + """, """ + listeValeur[3] + """, """ + listeValeur[4] + """ )""")
     

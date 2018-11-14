@@ -58,7 +58,8 @@ class ModeleService(object):
         daemon.register_function(self.requeteMiseAJour)
         daemon.register_function(self.requeteInsertionPerso)
         daemon.register_introspection_functions()
-        self.baseDonnees.selection("select * from stocks")
+        #self.baseDonnees.selection("select * from stocks")
+        self.requeteSelection("select price from stocks")
         
     def creerclient(self,nom):
         if nom in self.clients.keys(): # on assure un nom unique
@@ -204,9 +205,10 @@ class  BaseDonnees():
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.insertion('stocks', [1])
+        self.connecteur.commit()
+        #self.selection("select * from stocks")
         self.connecteur.close()
-        self.selection("select * from stocks")
-        #self.connecteur.close()
+
         
     
     def genererListeTables(self):
@@ -267,24 +269,16 @@ class  BaseDonnees():
         return listeConst
         
     def creerTables(self, listeTables, listeConst):
-        try:
-            for table in listeTables:
-                stringDropTable = "DROP TABLE "
-                stringDropTable += table[0]
-                self.curseur.execute(stringDropTable)
-        except:
-            pass
-        finally:
-            for table in listeTables:
-                stringCreate = "CREATE TABLE IF NOT EXISTS " + table[0] + "(" 
-                for indiceEntrees in range(len(table)):
-                    if indiceEntrees > 0:
-                        stringCreate +=  table[indiceEntrees][0] + " " + table[indiceEntrees][1] + " " + table[indiceEntrees][2]
-                        if indiceEntrees < len(table)-1:
-                            stringCreate += ", "
-                stringCreate += ")"
-                self.curseur.execute(stringCreate)
-            self.alterTable(listeConst)
+        for table in listeTables:
+            stringCreate = "CREATE TABLE IF NOT EXISTS " + table[0] + "(" 
+            for indiceEntrees in range(len(table)):
+                if indiceEntrees > 0:
+                    stringCreate +=  table[indiceEntrees][0] + " " + table[indiceEntrees][1] + " " + table[indiceEntrees][2]
+                    if indiceEntrees < len(table)-1:
+                        stringCreate += ", "
+            stringCreate += ")"
+            self.curseur.execute(stringCreate)
+        self.alterTable(listeConst)
                 
     
     def insertion(self, nomTable = "", listeValeurs=[]):
@@ -305,19 +299,19 @@ class  BaseDonnees():
         connecteur = sqlite3.connect('SAAS.db')
         curseur = connecteur.cursor()
         listeData=[]
-        print(stringSelect)
-        print(curseur.execute(stringSelect))
         for rangee in curseur.execute(stringSelect):
-            print(rangee)
             listeData.append(rangee)
         print("listeData", listeData)
         connecteur.close()
         return listeData
             
     def alterTable(self,listeConst):
-        for contrainte in listeConst:
-            stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
-            self.curseur.execute(stringAlterTable)
+        try:
+            for contrainte in listeConst:
+                stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
+                self.curseur.execute(stringAlterTable)
+        except:
+            print("contraintes existent")
     
     def insertionPerso(self,commande):
         self.curseur.execute(commande)

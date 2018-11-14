@@ -188,32 +188,12 @@ class Vue():
         self.canevasMaquette.delete("objet")
         for objet in self.listeObjetMaquette:
             if(objet[0]=="rectangle"):
-<<<<<<< HEAD
-<<<<<<< HEAD
-                self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=(objet[8]))
-                
-            if(objet[0]=="ovale"):
-                self.canevasMaquette.create_oval((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=(objet[8]))
-            if(objet[0]=="texte"):
-                texte=Label(self.canevasMaquette,fg=objet[5],bg=objet[6], text=objet[7],tags=(objet[8]))
-=======
-                self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=str((objet[8])))
-                
-=======
                 self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[8]),"objet","rectangle"))
->>>>>>> 4ff516f71b8829100706118292b11e7ba1bbbe40
             if(objet[0]=="ovale"):
                 self.canevasMaquette.create_oval((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[8]),"objet","ovale"))
             if(objet[0]=="texte"):
-<<<<<<< HEAD
-                texte=Label(self.canevasMaquette,fg=objet[5],bg=objet[6], text=objet[7],tags=str((objet[8])))
->>>>>>> f08a15c066688db539cd4bee089a338cc2d957a1
-                texte.pack()
-                texte.place(x=objet[1],y=objet[2])
-=======
                 self.canevasMaquette.create_text(objet[1],objet[2],text=objet[7],fill=objet[5],tags=((objet[8]),"objet","texte"))
 
->>>>>>> 4ff516f71b8829100706118292b11e7ba1bbbe40
     def sauvegarde(self):
         pass #Envoyer self.listeObjetMaquette dans BD
     def salutations(self):

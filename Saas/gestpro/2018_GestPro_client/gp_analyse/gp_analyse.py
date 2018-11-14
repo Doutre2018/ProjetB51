@@ -11,6 +11,7 @@ from gp_analyse_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 from gp_analyse_modele import *
+from xmlrpc.client import ServerProxy
 
 parentPath = os.path.abspath("../..")
 if parentPath not in sys.path:

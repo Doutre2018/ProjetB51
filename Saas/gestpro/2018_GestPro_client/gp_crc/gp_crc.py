@@ -13,7 +13,10 @@ from IdMaker import Id
 from xmlrpc.client import ServerProxy
 import sqlite3
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4ff516f71b8829100706118292b11e7ba1bbbe40
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")

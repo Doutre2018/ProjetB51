@@ -1,0 +1,73 @@
+﻿
+===============================================
+ ::::::::      :::         :::      ::::::::  
+:+:    :+:   :+: :+:     :+: :+:   :+:    :+: 
++:+         +:+   +:+   +:+   +:+  +:+        
++#++:++#++ +#++:++#++: +#++:++#++: +#++:++#++ 
+       +#+ +#+     +#+ +#+     +#+        +#+ 
+#+#    #+# #+#     #+# #+#     #+# #+#    #+# 
+ ########  ###     ### ###     ###  ########  
+===============================================
+
+VERSION 1.1 (Sprint 1)
+
+I. PROJET
+===============================
+Membres:
+	- Claudia Roy
+	- Danick Massicotte
+	- Jean-François Lessard
+	- Joé Bourgeois-Paquin
+	- Ludovic Doutre-Guay
+	- Marylène Beaudin
+	- Simon Voyer-Poitras
+
+1. Programme:
+Le présent logiciel en est un de gestion de logiciels de type SAAS. 
+Il s'inscrit dans le programme de cours B51 où les étudiants 
+sont amenés à concevoir le gestionnaire de logiciels ainsi que 
+les logiciels (modules) qui le supportent.
+
+2. Outils:
+- Python
+- Eclipse
+- SQLite
+
+II. MODE D'EMPLOI
+===============================
+Pour accéder à la version client, ouvrir gestpro_serveur.py 
+dans le répertoire "2018_GestPro_serveur". Ensuite, ouvrir 
+gestpro_client_main.py dans le répertoire "2018_GestPro_client".
+
+- À l'ouverture du SAAS, si vous n'avez pas d'utilisateur:
+		-Cliquez sur "Nouveau Client"
+		-Entrez votre nom d'usager (entrez l'adresse IP du serveur manuellement)
+		-Cliquez ensuite sur "Annuler" pour retourner à l'utilitaire de connexion
+		-Entrez le nom d'utilisateur et l'IP du serveur.
+
+Une fois le gestionnaire ouvert, choisissez un module:
+- La Maquette :
+	L'interface s'ouvre, on peut déplacer les formes mais le module n'est pas encore fonctionnel
+- Cas d'usage/Scénarii :
+	Le module s'ouvre dans l'interface.
+	- On peut ajouter une nouveau cas d'usage/scénarii, mais les fonctions ne sont pas implantées.
+- CRC
+	Le module s'ouvre avec le nom des cartes CRC
+	- En cliquant sur une carte, ça ouvre une fenêtre dans laquelle on peut entrer
+	  les informations pertinentes.
+	- Les fonctionnalitées de la BD ne sont pas implantées encore.
+
+============================================
+Liens importants :
+
+GOOGLE DRIVE
+------------
+https://drive.google.com/open?id=19ApvuLyyQ_dxoAq6Wf16ftQztCfKQwXD
+
+TRELLO
+------------
+https://trello.com/b/xubbDZPn/devsys
+
+GITHUB
+------------
+https://github.com/Doutre2018/ProjetB51.git

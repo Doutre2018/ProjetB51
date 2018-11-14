@@ -159,6 +159,7 @@ class Vue():
         self.usager.append(self.entreeCreationUtilisateur.get())
         self.machine.append(self.entreeCreationMachine.get())
         self.fenetreCreationScenarii.destroy()
+
     def fermerfenetre(self):
         print("ON FERME la fenetre")
         self.root.destroy()

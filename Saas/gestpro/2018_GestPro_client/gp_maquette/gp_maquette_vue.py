@@ -97,8 +97,13 @@ class Vue():
         self.canevasMaquette=Canvas(self.root,width=self.largeur,height=self.hauteur)
         self.canevasMaquette.create_rectangle((10,10,self.largeur-10,100),fill="green")
         self.canevasMaquette.create_rectangle((10,110,self.largeur-10,self.hauteur-10),outline="black",fill="white")
+<<<<<<< HEAD
         self.boutontrectangle = self.canevasMaquette.create_rectangle((200,20,260,80),outline="black", fill=self.couleurCourante,tags=(Id.prochainid(),"bouton","rectangle"))
         self.boutontovale = self.canevasMaquette.create_oval(((int(self.largeur/3))+200,20,(int(self.largeur/3))+260,80),outline="black", fill=self.couleurCourante,tags=(Id.prochainid(),"bouton","ovale"))
+=======
+        self.boutontrectangle = self.canevasMaquette.create_rectangle((200,20,260,80),outline="black", fill="black",tags=(Id.prochainid(),"bouton","rectangle"))
+        self.boutontovale = self.canevasMaquette.create_oval(((int(self.largeur/3))+200,20,(int(self.largeur/3))+260,80),outline="black", fill="black",tags=(Id.prochainid(),"bouton","ovale"))
+>>>>>>> 4ff516f71b8829100706118292b11e7ba1bbbe40
         self.boutontTexte = self.canevasMaquette.create_text(int((self.largeur/3)*2)+200,55,text="T",font="Arial 50 bold",tags=(Id.prochainid(),"bouton","texte"))
         self.canevasMaquette.bind("<Button>",self.creerNouvelObjet)
         self.canevasMaquette.bind("<B1-Motion>",self.bougerObjet)
@@ -135,6 +140,7 @@ class Vue():
                     diffx = x1-x0
                     diffy = y1-y0
 
+<<<<<<< HEAD
                     self.canevasMaquette.coords(t[0],evt.x-(diffx/2), evt.y-(diffy/2),evt.x+(diffx/2),evt.y+(diffy/2))
 
                     for objet in self.listeObjetMaquette :
@@ -143,6 +149,16 @@ class Vue():
                             objet[2]=evt.y-(diffy/2)
                             objet[3]=evt.x+(diffx/2)
                             objet[4]=evt.y+(diffy/2)
+=======
+                    self.canevasMaquette.coords(t[0],evt.x, evt.y,evt.x+diffx,evt.y+diffy)
+
+                    for objet in self.listeObjetMaquette :
+                        if (objet[8]==t[0]) :
+                            objet[1]=evt.x
+                            objet[2]=evt.y
+                            objet[3]=evt.x+diffx
+                            objet[4]=evt.y+diffy
+>>>>>>> 4ff516f71b8829100706118292b11e7ba1bbbe40
                             
                     self.objetSelectionnerX=evt.x
                     self.objetSelectionnerY=evt.y

@@ -11,11 +11,6 @@ from gp_crc_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 
-parentPath = os.path.abspath("../..")
-if parentPath not in sys.path:
-    sys.path.insert(0,parentPath)
-from gestpro_serveur import BaseDonnees
-
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")

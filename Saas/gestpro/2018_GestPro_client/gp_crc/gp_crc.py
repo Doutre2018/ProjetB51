@@ -11,7 +11,7 @@ from gp_crc_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
-import sqlite3
+#import sqlite3
 
 
 class Controleur():
@@ -21,9 +21,11 @@ class Controleur():
         #if cwd is "2018_GestPro_client":
         self.connectionServeurCourant()
         print(self.serveur)
-        self.serveur.requeteSelection("select price from stocks")
+
+        #connection = sqlite3.connect("SAAS.db")
+        #curseur = connection.cursor()
         self.createurId=Id
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
@@ -48,37 +50,36 @@ class Controleur():
             print(erreur)
             sys.exit(0)
 
+
 class Modele():
     def __init__(self):
-        #self.bd = BaseDonnees
-        self.nombreCartes=0
-        for i in selectClassesCartes():
-            self.nombreCartes+=1        
-    
-
+        self.listeCartes=selectClassesCartes()
+        self.listeIDCartes=selectIdCarte()
+        for i in self.listeIDCartes:
+            self.listeAttributs.append(selectAttributDeCarte(i))
+        
     def insertCarte(self,listeValeur):
-        bd.insertionPerso("""INSERT INTO Cartes(id_projet,classe, id_carte_heritage, ordre) VALUES(  """ + listeValeur[0] + """, """ + listeValeur[1] + """, """ + listeValeur[2] + """, """ + listeValeur[3] + """, """ + listeValeur[4] + """ )""")
-
+        self.serveur.insertionPerso("""INSERT INTO Cartes(id_projet,classe, id_carte_heritage, ordre) VALUES(  """ + listeValeur[0] + """, """ + listeValeur[1] + """, """ + listeValeur[2] + """, """ + listeValeur[3] + """, """ + listeValeur[4] + """ )""")
     
     def selectClassesCartes(self):
         commande ="""SELECT classe FROM Cartes"""
         #Retourne une liste de String de cartes
-        return bd.selection(commande)
+        return self.serveur.selection(commande)
     
     def selectIdCarte(self,classe):
         commande ="""SELECT id FROM Cartes WHERE classe="""
         commande+=classe
-        ID = bd.selection(commande)
+        ID = self.serveur.selection(commande)
         return ID
     
     def selectAttributDeCarte(self,idCarte):
         commande = """SELECT nomAttributs FROM AttributsCRC WHERE id_classe="""
         commande+=idCarte
         #Retourne une liste de String des attributs d'UNE carte
-        return bd.selection(commande)
+        return self.serveur.selection(commande)
     
     def insertAttributsDeCarte(self,id_classe):
-        listeValeur
+        #listeValeur
         bd.insertion("AttributsCRC")
     
 if __name__ == '__main__':

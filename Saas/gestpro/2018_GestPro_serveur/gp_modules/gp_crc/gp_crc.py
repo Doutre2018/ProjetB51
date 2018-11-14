@@ -11,20 +11,30 @@ from gp_crc_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
+<<<<<<< HEAD
 
 #import sqlite3
+=======
+>>>>>>> 965da4147cad485168561d84b8fa9188cb111e85
 
 
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
+<<<<<<< HEAD
         cwd = os.getcwd()
+=======
+>>>>>>> 965da4147cad485168561d84b8fa9188cb111e85
         self.connectionServeurCourant()
         print(self.serveur)
+<<<<<<< HEAD
         liste = self.serveur.requeteSelection("select price from stocks")
         print(liste)
+=======
+
+>>>>>>> 965da4147cad485168561d84b8fa9188cb111e85
         self.createurId=Id
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
@@ -51,11 +61,11 @@ class Controleur():
 
 class Modele():
     def __init__(self):
-        #self.bd = BaseDonnees
-        self.nombreCartes=0
-        for i in selectClassesCartes():
-            self.nombreCartes+=1        
-    
+        self.listeCartes=selectClassesCartes()
+        self.listeIDCartes=selectIdCarte()
+        for i in self.listeIDCartes:
+            self.listeAttributs.append(selectAttributDeCarte(i))
+        
     def insertCarte(self,listeValeur):
         self.serveur.insertionPerso("""INSERT INTO Cartes(id_projet,classe, id_carte_heritage, ordre) VALUES(  """ + listeValeur[0] + """, """ + listeValeur[1] + """, """ + listeValeur[2] + """, """ + listeValeur[3] + """, """ + listeValeur[4] + """ )""")
     

@@ -2,11 +2,9 @@
 
 import os,os.path
 import sys
-#import Pyro4
 import socket
 from subprocess import Popen 
 import math
-#from sm_projet_modele import *
 from gp_analyse_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
@@ -16,11 +14,15 @@ parentPath = os.path.abspath("../..")
 if parentPath not in sys.path:
     sys.path.insert(0, parentPath)
 from gestpro_serveur import BaseDonnees as BD
-    
+
+
 
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
+        self.connectionServeurCourant()
+        self.serveur = ServerProxy(self.adresseServeur)
+        
         self.createurId=Id
         self.connectionServeurCourant()
         self.modele=Modele(self)
@@ -47,6 +49,6 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)        
-    
+
 if __name__ == '__main__':
     c=Controleur()

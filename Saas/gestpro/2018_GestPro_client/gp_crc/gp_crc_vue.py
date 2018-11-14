@@ -16,7 +16,7 @@ class Vue():
         self.root.attributes("-fullscreen", False)
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
-        self.modele=None
+        self.modele=parent.modele
         
         self.largeurDefault=largeur
         self.hauteurDefault=hauteur
@@ -68,9 +68,14 @@ class Vue():
         self.AjouterCRC = Button(self.cadrecrc ,text= "+", font= "arial, 20",command=self.ajoutCRC, height=1)
         self.AjouterCRC.grid(row=1, column=2)
         self.ListeCRC= Listbox(self.cadrecrc,selectmode=SINGLE)
+        
+        valeur=0
+        for i in self.modele.listeCartes:
+            self.ListeCRC.insert(valeur+1,i)
+        
+        
         self.ListeCRC.insert(0, "Modele")
-        self.ListeCRC.insert(1, "Vue")
-        self.ListeCRC.insert(2, "Controleur")
+
         self.ListeCRC.grid(row=1, column=1)
         self.ListeCRC.bind("<ButtonRelease-1>",self.modifierCRC)
         self.ListeCRC.select_set(0)

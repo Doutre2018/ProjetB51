@@ -51,11 +51,11 @@ Une fois le gestionnaire ouvert, choisissez un module:
 - Cas d'usage/Scénarii :
 	Le module s'ouvre dans l'interface.
 	- On peut ajouter une nouveau cas d'usage/scénarii, mais les fonctions ne sont pas implantées.
-
-
-
-
-
+- CRC
+	Le module s'ouvre avec le nom des cartes CRC
+	- En cliquant sur une carte, ça ouvre une fenêtre dans laquelle on peut entrer
+	  les informations pertinentes.
+	- Les fonctionnalitées de la BD ne sont pas implantées encore.
 
 ============================================
 Liens importants :

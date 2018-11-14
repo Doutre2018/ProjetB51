@@ -46,10 +46,12 @@ gestpro_client_main.py dans le répertoire "2018_GestPro_client".
 		-Entrez le nom d'utilisateur et l'IP du serveur.
 
 Une fois le gestionnaire ouvert, choisissez un module:
-- CRC :
-	À REMPLIR
+- La Maquette :
+	L'interface s'ouvre, on peut déplacer les formes mais le module n'est pas encore fonctionnel
 - Cas d'usage/Scénarii :
-	À REMPLIR
+	Le module s'ouvre dans l'interface.
+	- On peut ajouter une nouveau cas d'usage/scénarii, mais les fonctions ne sont pas implantées.
+
 
 
 

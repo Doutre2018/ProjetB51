@@ -55,6 +55,7 @@ class ModeleService(object):
         daemon.register_function(self.requeteInsertion)
         daemon.register_function(self.requeteSelection)
         daemon.register_function(self.requeteMiseAJour)
+        daemon.register_function(self.requeteInsertionPerso)
         daemon.register_introspection_functions()
         
     def creerclient(self,nom):
@@ -103,6 +104,10 @@ class ModeleService(object):
         self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
         self.baseDonnees.insertion(nomTable, listeValeurs)
         self.baseDonnees.connecteur.close()
+        return True
+    
+    def requeteInsertionPerso(self,commande):
+        self.baseDonnee.insertionPerso(commande)
         return True
     
    #méthode tampon pour mettre à jour des données d'une table. Il faut passer une string représentant l'ensemble de la requête update dans la fonction
@@ -200,30 +205,30 @@ class  BaseDonnees():
     
     def genererListeTables(self):
         listeTables = [ 
-            ['stocks', ['price', 'integer', '']],
-            ['Serveurs', ['id','integer','PRIMARY KEY'], ['IP','integer',''], ['nom','text','UNIQUE']],
-            ['Utilisateur', ['id','integer','PRIMARY KEY'], ['nomUtilisateur','text','UNIQUE'], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
-            ['Projet', ['id','integer','PRIMARY KEY'], ['nom','text','UNIQUE']],
+            ['stocks', ['price', 'INTEGER', '']],
+            ['Serveurs', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['IP','INTEGER',''], ['nom','text','UNIQUE']],
+            ['Utilisateur', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomUtilisateur','text','UNIQUE'], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
+            ['Projet', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','UNIQUE']],
             ['Liaison_Util_Projet', ['role','text','']],
-            ['AnalyseTextuelle', ['id','integer','PRIMARY KEY'], ['ligne','integer',''],['colonne','integer','']],
-            ['TypeMot', ['id','integer','PRIMARY KEY'], ['nom','text','']],
-            ['LigneChat', ['id','integer','PRIMARY KEY'], ['date','date',''],['texte','text','']],
-            ['CasUsage', ['id','integer','PRIMARY KEY'],['ligne','text',''],['texte','text','']],
-            ['Scenarii', ['id','integer','PRIMARY KEY'],['ligne','text','']],
-            ['FonctionsCRC', ['id','integer','PRIMARY KEY'],['fonction','text','']],
-            ['CollaboCRC', ['id','integer','PRIMARY KEY']],
-            ['FilDeDiscussion', ['id','integer','PRIMARY KEY']],
-            ['TypeForme', ['id','integer','PRIMARY KEY'], ['nom','text','']],
-            ['Objet_Maquette', ['i d','integer','PRIMARY KEY'], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
-            ['ColonnesScenarii', ['id','integer','PRIMARY KEY'], ['nom','text',''], ['numero_position','integer','']],
-            ['Cartes', ['id','integer','PRIMARY KEY'], ['classe','text',''], ['ordre','integer','']],
-            ['AttributsCRC', ['id','integer','PRIMARY KEY'], ['nomAttributs','text','']],
-            ['Sprint', ['id','integer','PRIMARY KEY'], ['ordre','integer',''], ['date','date','']],
-            ['Tache_Sprint', ['id','integer','PRIMARY KEY'], ['description','text',''], ['nom','text',''], ['duree','integer','']],
-            ['Taches_Terlow', ['id','integer','PRIMARY KEY'], ['ordre','integer',''], ['texte','text','DEFAULT NULL']],
-            ['Colonnes_Terlow', ['id','integer','PRIMARY KEY'], ['type','text','']],
-            ['Objet_Texte', ['id','integer','PRIMARY KEY'], ['texte','text','']],
-            ['Position',['id','integer','PRIMARY KEY'],['x','real','NOT NULL'],['y','real','NOT NULL']]
+            ['AnalyseTextuelle', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ligne','INTEGER',''],['colonne','INTEGER','']],
+            ['TypeMot', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','']],
+            ['LigneChat', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['date','date',''],['texte','text','']],
+            ['CasUsage', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['ligne','text',''],['texte','text','']],
+            ['Scenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['ligne','text','']],
+            ['FonctionsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['fonction','text','']],
+            ['CollaboCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT']],
+            ['FilDeDiscussion', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT']],
+            ['TypeForme', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','']],
+            ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
+            ['ColonnesScenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text',''], ['numero_position','INTEGER','']],
+            ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['classe','text',''], ['ordre','INTEGER','']],
+            ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],
+            ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date','']],
+            ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER','']],
+            ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
+            ['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['type','text','']],
+            ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
+            ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']]
             ]
         return listeTables
     
@@ -291,14 +296,20 @@ class  BaseDonnees():
     
     
     def selection(self, stringSelect = ""):
+        listeData=[]
         for rangee in self.curseur.execute(stringSelect):
             print(rangee)
+            listeData.append(rangee)
+        return listeData
             
     def alterTable(self,listeConst):
         for contrainte in listeConst:
             stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
             self.curseur.execute(stringAlterTable)
-
+    
+    def insertionPerso(self,commande):
+        self.curseur.execute(commande)
+        
 if __name__ == "__main__":
     controleurServeur=ControleurServeur()
     #atexit.register(controleurServeur.fermer)

@@ -1,29 +1,45 @@
+from xmlrpc.client import ServerProxy
+
+
 class Modele():
+    #def __init__(self,parent,joueurs,dd):
     def __init__(self,parent,joueurs,dd):
+        print("Hey ho")
         self.parent=parent
-        self.conn = sqlite3.connect('SAAS.db') #establish connection...
-        self.curseur = self.conn.cursor()
-        self.createurId=self.parent.createurId
+        self.connectionServeurCourant()
+        self.serveur = ServerProxy(self.adresseServeur)
+        #self.conn = sqlite3.connect('SAAS.db') #establish connection...
+       # self.curseur = self.conn.cursor()
+       
+       # self.createurId=self.parent.createurId
         self.nomProjetValidation = None
-        self.projects = Project(self, parent);
+        self.projects=[]
+        self.projects.append(Project(self, self.parent))
         
-        
+    def connectionServeurCourant(self):  
+        with open("adresseServeurCourant.txt", "r") as fichier:
+            self.adresseServeur = fichier.read()  
         
         
 class Project():                                            
-    def __init__(self, parent, controlleur):
+    def __init__(self, parent, controleur):
         self.parent = parent
-        self.controlleur = controlleur
-        
-        
-        self.id = controlleur.trouverIP()
+        self.controleur = controleur
+        ###################### self.id = controleur.trouverIP()
         self.nom = None
         ######print#####
         testZeroProject = 0
         print(testZeroProject)
-        self.curseur.execute('''select COUNT(id) from project''') #if project table is empty, fill with Default name project
-        testZeroProject = self.curseur.fetchall()
-        print(testZeroProject)
+        #self.curseur.execute('''select COUNT(id) from project''') #if project table is empty, fill with Default name project
+        #testZeroProject = self.curseur.fetchall()
+        #self.controleur.serveur
+        print(self.parent.serveur)
+        ListeResult = [10, 'attempt']
+        valueBool = self.parent.serveur.requeteInsertion("projet", ListeResult)
+        print(valueBool)
+        ListeSel = []
+        ListeSel.append(self.parent.serveur.requeteSelection('''Select * from projet'''))
+        print("post Select")
         
         
         if testZeroProject:
@@ -58,5 +74,8 @@ class Project():
                 return NameFailure
             else:
                 self.curseur.execute('''insert into project values (NULL, (?))''', self.ProjectNameToValidate)  #ajouter autres vars de projet
-        
+                
+   
+if __name__=="__main__":
+    mod=Modele(1, 2, 2)       
                 

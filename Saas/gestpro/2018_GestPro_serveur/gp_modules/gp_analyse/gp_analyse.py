@@ -10,12 +10,19 @@ import math
 from gp_analyse_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
+from gp_analyse_modele import *
+
+parentPath = os.path.abspath("../..")
+if parentPath not in sys.path:
+    sys.path.insert(0, parentPath)
+from gestpro_serveur import BaseDonnees as BD
+    
 
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.createurId=Id
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         

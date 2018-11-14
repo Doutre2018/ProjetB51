@@ -1,20 +1,29 @@
+# -*- encoding: utf-8 -*-
+
 import random
 import sqlite3
 import math
+from xmlrpc.client import ServerProxy
 from helper import Helper as hlp
 from test.test_importlib.util import case_insensitive_tests
 from cgitb import text
 
 class Scenarii():
     def __init__(self, parent):
+        self.parent = parent
         self.id = parent.project.id
         self.ListeTitleCase = []        # liste grand cas selectionnables
         self.DetailsUser = []
         self.DetailsMachine = []
-        self.selectedCase = 0           # le Cas selectionné
+        self.connectionServeurCourant()
+        self.serveur = ServerProxy(self.adresseServeur)
+        self.selectedCase = 0           # le Cas selectionne
         self.projectID = parent.projectID
+        self.lignes = 0
        
-        
+    def connectionServeurCourant(self):  
+        with open("adresseServeurCourant.txt", "r") as fichier:
+            self.adresseServeur = fichier.read()  
         
     def affichageTableau(self):
         self.conn = sqlite3.connect('exemplesSQLITEData.jmd') #establish connection...
@@ -26,23 +35,32 @@ class Scenarii():
         for i in range(countCases):
             self.curseur.execute('''select texte from CasUsage JOIN Projet ON Projet.id = CasUsage.id_projet where CasUsage.id = ?''', i)
             self.ListeTitleCase[i] = self.curseur.fetchall
-            parent.Vue.afficherScenarii(self.ListeTitleCase)
+            self.parent.Vue.afficherScenarii(self.ListeTitleCase)
         
         self.curseur.execute('''Select MAX(ligne) from Scenarii JOIN CasUsage ON Scenarii.id_casUsage = CasUsage.id JOIN Projet ON Projet.id = CasUsage.id_projet''')
-        maxLines = self.curseur.fetchall() 
+        maxLines = self.curseur.fetchall()
+
+        TxtColScenarii = [[]]
+        
         for k in range(3):
             for j in range(maxLines):
-                self.curseur.execute('''Select texte from TypeDonnéScénario JOIN Scenarii ON TypeDonnéeScénario.id = Scenarii.id_donnees where id_colonne = ?''', k)
-                TxtColScenariiself[k][j].append(self.curseur.fetchall())
+                self.curseur.execute('''Select texte from TypeDonnï¿½Scï¿½nario JOIN Scenarii ON TypeDonnï¿½eScï¿½nario.id = Scenarii.id_donnees where id_colonne = ?''', k)
+                TxtColScenarii[k][j].append(self.curseur.fetchall())
             
         
     def newDataEnteredScenarii(self, textColonne, ScenariiNo, colonneNo, currentCase, lineNb):
-        if(ScenariiSelected):
             self.currentProject = self.projectID
             self.currentCase = currentCase;
             for k in range(3):
                 self.curseur.execute('''insert into Scenarii values (NULL, ?,  ?,  ?, ?''', self.currentCase, lineNb, textColonne, k)
+        #current project
         
+    def effaceData(self, eraseLine):
+        self.eraseline = eraseline
+        for i in range(lignes):
+            self.serveur.dequeteMiseAJour("UPDATE ")
+            
+            
 
     def newDataEnteredCase(self, nomCase, lineAt):
         self.lineAt = lineAt

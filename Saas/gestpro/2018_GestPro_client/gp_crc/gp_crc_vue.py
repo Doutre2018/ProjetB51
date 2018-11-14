@@ -2,7 +2,7 @@
 from tkinter import *
 from tkinter import tix
 from tkinter import ttk
-from PIL import Image,ImageDraw, ImageTk
+#from PIL import Image,ImageDraw, ImageTk
 import os,os.path
 import math
 from helper import Helper as hlp
@@ -41,6 +41,8 @@ class Vue():
         self.fullscreen=True
         self.creercadres()
         self.changecadre(self.cadrebase)
+        self.compteurBouton=3;
+        self.dicBouton={}
         
     def changemode(self,cadre):
         if self.modecourant:
@@ -167,41 +169,22 @@ class Vue():
     def creercadrebase(self):
         self.cadrebase=Frame(self.root)
 
-        self.scroll = Scrollbar(self.root)
-        self.mandatTexte = Text(self.root,bg="#09436B",height=int(self.hauteur/4),foreground="white")
-        self.scroll.grid(row=1,column=3,rowspan=4)
-        self.mandatTexte.grid(row=1,column=3,columnspan=6)
-        self.scroll.config(command=self.mandatTexte.yview)
-        self.mandatTexte.config(yscrollcommand=self.scroll.set)
-        self.mandatTexte.insert(INSERT, "MANDAT :")
-        self.mandatTexte.config(state=DISABLED)
+        self.lTitreCRC= Label(self.cadrebase, text= "CRC",font= "arial, 20")
+        self.lTitreCRC.grid(padx=100 ,row=0, column=0,  columnspan=2)
+        self.AjouterCRC = Button(self.cadrebase ,text= "+", font= "arial, 20",command=self.ajoutCRC, height=1)
+        self.AjouterCRC.grid(row=1, column=2)
+        self.ListeCRC= Listbox(self.cadrebase,selectmode=SINGLE)
+        self.ListeCRC.insert(0, "Modele")
+        self.ListeCRC.insert(1, "Vue")
+        self.ListeCRC.insert(2, "Controleur")
+        self.ListeCRC.grid(row=1, column=1)
+        self.ListeCRC.bind("<ButtonRelease-1>",self.modifierCRC)
+        self.ListeCRC.select_set(0)
+        self.SupprimerCRC = Button(self.cadrebase ,text= "-", font= "arial, 20",command=self.delCRC, height=1, width=2)
+        self.SupprimerCRC.grid(row=1, column=3, padx=(10,0))
 
-        #self.fontTitle = tkFont.Font(family="Helvetica",size=36,weight="bold")
-        self.projetTexte = Entry(self.root,foreground="black",font="-size 34", width=32,background="#526EFF",justify='center')
-        self.projetTexte.grid(row=5,column=2,columnspan=8)
-        self.projetTexte.insert(INSERT, self.projetName)
-        self.projetTexte.config(state=DISABLED)
-        
-        self.listeSprint = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/6))
-        self.listeSprint.grid(row=6,column=4,rowspan=4,columnspan=4)
-        for sprint in self.dicodesprint.keys():
-                 self.listeSprint.insert(END,"Sprint " + str(sprint) + "................."+self.dicodesprint[sprint])
-        
-        
-        self.listeTexte = Entry(self.root,foreground="black", font="-size 16",width=80,background="#526EFF",justify='center')
-        self.listeTexte.grid(row=10,column=2,columnspan=8)
-        self.listeTexte.insert(INSERT, "Membre \t\t\t\t Travail sur")
-        self.listeTexte.config(state=DISABLED)
-        
-        self.listeMembre = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/5))
-        self.listeMembre.grid(row=11,column=3,rowspan=5,columnspan=4)
-        for membre in self.utilisateursEtRole.keys():
-                 self.listeMembre.insert(END,membre )
-        self.listeOccupation = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/5))
-        self.listeOccupation.grid(row=11,column=6,rowspan=5,columnspan=4)
-        for membre in self.utilisateursEtRole.keys():
-                 self.listeOccupation.insert(END,self.utilisateursEtRole[membre])
         self.cadrebaseExiste=True
+
     def accesScrum(self):
         ad="http://"+ipserveur+":"+self.nodeport
         self.serveur=ServerProxy(ad)
@@ -212,4 +195,135 @@ class Vue():
     def fermerfenetre(self):
         print("ON FERME la fenetre")
         self.root.destroy()
+        
+        def ajoutCRC(self):
+        self.carteCRC =Toplevel(self.root)
+        self.frameCarteCRC = Frame(self.carteCRC)
+        self.frameCarteCRC.grid()
+        
+        self.labelNomClasse= Label(self.frameCarteCRC, text="Classe: ")
+        self.labelNomClasse.grid()
+        self.entryNomClasse= Entry(self.frameCarteCRC)
+        self.entryNomClasse.grid()
+        
+        self.frameInterieur= Frame(self.frameCarteCRC,)
+        self.frameInterieur.grid()
+        
+        #Partie du frame pour heritage et responsable
+        self.frameHeriatageResponsable= Frame(self.frameInterieur)
+        self.frameHeriatageResponsable.grid(row=0,column=1)
+        self.labelHeritage= Label(self.frameHeriatageResponsable, text="Héritage: ")
+        self.labelHeritage.grid(row=0,column=1,pady=(10,0))
+        self.entryHeritage=Entry(self.frameHeriatageResponsable)
+        self.entryHeritage.grid(row=0, column=2,pady=(10,0))
+        self.labelResponsable= Label(self.frameHeriatageResponsable, text="Responsable: ")
+        self.labelResponsable.grid(row=1, column=1)
+        self.entryResponsable= Entry(self.frameHeriatageResponsable)
+        self.entryResponsable.grid(row=1, column=2)
+        
+        #Partie du frame pour les fonction, Attribut , objet
+        self.frameFonction= Frame(self.frameInterieur)
+        self.frameFonction.grid(row=1,column=1)
+        self.labelFonction= Label(self.frameFonction, text="Fonction")
+        self.labelFonction.grid(row=0, column=1)
+        self.labelAttribut= Label(self.frameFonction, text="Attribut")
+        self.labelAttribut.grid(row=0, column=2)
+        self.labelObjet= Label(self.frameFonction, text="Objet")
+        self.labelObjet.grid(row=0, column=3)
+        self.textFonction = Text(self.frameFonction, height = 10, width=15)
+        self.textFonction.grid(row=1, column=1)
+        self.textAttribut = Text(self.frameFonction, height = 10, width=15)
+        self.textAttribut.grid(row=1, column=2)
+        self.textObjet = Text(self.frameFonction, height = 10, width=15)
+        self.textObjet.grid(row=1, column=3)
+        
+        #partie du frame pour Collaboration
+        self.frameCollaboration= Frame(self.frameInterieur)
+        self.frameCollaboration.grid(row=0 , column= 2, rowspan=2)
+        self.labelCollaboration= Label(self.frameCollaboration, text="Collaboration")
+        self.labelCollaboration.grid()
+        self.textCollaboration=Text(self.frameCollaboration,height = 15, width=15)
+        self.textCollaboration.grid()
+        
+        
+        #Bouton Ajouter
+        self.boutonAjouter= Button(self.frameCarteCRC, text="Ajouter", command=self.nouveauCRC)
+        self.boutonAjouter.grid()
+
+    def nouveauCRC(self):
+       
+        texteboutton=self.entryNomClasse.get()
+        
+        self.ListeCRC.insert(self.compteurBouton, texteboutton)
+        
+        self.carteCRC.destroy()
+        
+        self.compteurBouton=self.compteurBouton+1
+        
+    def modifierCRC(self,evt):
+        a=()
+        a=self.ListeCRC.curselection()
+        b=self.ListeCRC.get(a)
+        
+        
+        
+        self.carteCRC =Toplevel(self.root)
+        self.frameCarteCRC = Frame(self.carteCRC)
+        self.frameCarteCRC.grid()
+        
+        self.labelNomClasse= Label(self.frameCarteCRC, text="Classe: ")
+        self.labelNomClasse.grid()
+        self.entryNomClasse= Entry(self.frameCarteCRC)
+        self.entryNomClasse.grid()
+        
+        self.frameInterieur= Frame(self.frameCarteCRC,)
+        self.frameInterieur.grid()
+        
+        #Partie du frame pour heritage et responsable
+        self.frameHeriatageResponsable= Frame(self.frameInterieur)
+        self.frameHeriatageResponsable.grid(row=0,column=1)
+        self.labelHeritage= Label(self.frameHeriatageResponsable, text="Héritage: ")
+        self.labelHeritage.grid(row=0,column=1,pady=(10,0))
+        self.entryHeritage=Entry(self.frameHeriatageResponsable)
+        self.entryHeritage.grid(row=0, column=2,pady=(10,0))
+        self.labelResponsable= Label(self.frameHeriatageResponsable, text="Responsable: ")
+        self.labelResponsable.grid(row=1, column=1)
+        self.entryResponsable= Entry(self.frameHeriatageResponsable)
+        self.entryResponsable.grid(row=1, column=2)
+        
+        #Partie du frame pour les fonction, Attribut , objet
+        self.frameFonction= Frame(self.frameInterieur)
+        self.frameFonction.grid(row=1,column=1)
+        self.labelFonction= Label(self.frameFonction, text="Fonction")
+        self.labelFonction.grid(row=0, column=1)
+        self.labelAttribut= Label(self.frameFonction, text="Attribut")
+        self.labelAttribut.grid(row=0, column=2)
+        self.labelObjet= Label(self.frameFonction, text="Objet")
+        self.labelObjet.grid(row=0, column=3)
+        self.textFonction = Text(self.frameFonction, height = 10, width=15)
+        self.textFonction.grid(row=1, column=1)
+        self.textAttribut = Text(self.frameFonction, height = 10, width=15)
+        self.textAttribut.grid(row=1, column=2)
+        self.textObjet = Text(self.frameFonction, height = 10, width=15)
+        self.textObjet.grid(row=1, column=3)
+        
+        #partie du frame pour Collaboration
+        self.frameCollaboration= Frame(self.frameInterieur)
+        self.frameCollaboration.grid(row=0 , column= 2, rowspan=2)
+        self.labelCollaboration= Label(self.frameCollaboration, text="Collaboration")
+        self.labelCollaboration.grid()
+        self.textCollaboration=Text(self.frameCollaboration,height = 15, width=15)
+        self.textCollaboration.grid()
+        
+        
+        #Bouton Ajouter
+        self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.ModfiCRC)
+        self.boutonModifier.grid()
+        
+
+    def delCRC(self):
+        a=()
+        a=self.ListeCRC.curselection()
+        #b=self.ListeCRC.get(a)
+        self.ListeCRC.delete(a)
     

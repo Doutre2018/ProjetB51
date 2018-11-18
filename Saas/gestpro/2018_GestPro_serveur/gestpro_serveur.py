@@ -68,25 +68,26 @@ class ModeleService(object):
         return [1,"Bienvenue",list(self.modulesdisponibles.keys())]
     
     # -------------------DM------------------- #
-    def listeNoms(self):
-        liste = []
-        temp = self.requeteSelection("SELECT nomUtilisateur FROM Utilisateur")      # Demande les nom des utilisateurs de la BD
+    def inscription(self, nom, motPasse):
+        if self.nomUnique(nom):                       # Vérifie que le nom d'utilisateur est unique
+            commande = "INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES ('" + nom + "', '" + motPasse + "', NULL)"
+            self.requeteInsertionPerso(commande)      # Insert dans la DB du nouvel utilisateur
+            rep = nom + " inscrit!"
+            return  rep
         
-        for n in temp:
-            liste.append(n[0])      # Change la liste de tuples (nom,) à une liste de nom String (nom)
-          
-        return liste                            # Retourne la liste de nom
+        else:
+            rep = nom + " n'est pas disponible"
+            return rep
     
     def nomUnique(self, nom):
-        liste = self.listeNoms()                # Tire la liste d'utilisateurs de la BD
-
-        for n in liste:                         # Parcours les noms dans la liste
-            if n == nom:                        # Compare le nom à la liste de nom
-                return False                    # Nom existe déjà, donc pas unique 
+        commande = "SELECT nomUtilisateur FROM Utilisateur WHERE nomUtilisateur = '" + nom + "'"
+        rep = self.requeteSelection(commande)        # Requête de SELECT à la BD pour chercher le nom transmis
         
-        self.requeteInsertionPerso("INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES (" + "'" + nom + "'" + ", NULL, NULL)")      # Insert dans la DB du nouvel utilisateur
-        return True                             # Si le nom n'est pas trouvé dans la liste
-    
+        if rep:
+            return False                             # Si le nom est trouvé dans la BD (rep non vide)
+        else:
+            return True                              # Si le nom n'est pas dans la BD (rep vide)
+        
     def nomExiste(self, nom):
         liste = self.listeNoms()
         for n in liste:                         # Parcours les noms dans la liste
@@ -94,6 +95,14 @@ class ModeleService(object):
                 return True                     # Nom existe déjà, donc pas unique 
         
         return False                            # Si le nom n'est pas trouvé dans la liste
+    
+    def test(self, nom):
+        rep = self.requeteSelection("SELECT nomUtilisateur FROM Utilisateur WHERE nomUtilisateur = " + "'" + nom + "'")
+        
+        if rep:
+            return True
+        else:
+            return False
     # ---------------------------------------- #
             
     #méthode tampon pour insert les données dans la table de la BD du serveur selon le format suivant: nomTable = "string représentant nom", liste valeurs = [10, 'texte1', 50.3]
@@ -144,14 +153,17 @@ class ControleurServeur(object):
         return rep
     
     # ------------------DM-------------------- #
-    def nomUnique(self, nom):
-        if self.modele.nomUnique(nom):
+    def inscription(self, nom, motPasse):
+        return self.modele.inscription(nom, motPasse)
+        
+    def nomExiste(self, nom):
+        if self.modele.nomExiste(nom):
             return True
         else:
             return False
         
-    def nomExiste(self, nom):
-        if self.modele.nomExiste(nom):
+    def test(self, nom):
+        if self.modele.test(nom):
             return True
         else:
             return False

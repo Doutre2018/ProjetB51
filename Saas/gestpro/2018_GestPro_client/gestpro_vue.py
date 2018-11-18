@@ -143,11 +143,17 @@ class Vue():
         self.NouveauNom= Entry(self.cadreNouvelleUtilisateur,bg="white")
         self.NouveauNom.grid(pady=(0,20))
         
+        self.NouveauPassword= Entry(self.cadreNouvelleUtilisateur,bg="white")       # Champ texte pour le mot de passe
+        self.NouveauPassword.grid(pady=(0,20))
+        
+        self.PasswordConfirm= Entry(self.cadreNouvelleUtilisateur,bg="white")       # Champ texte pour la confirmation du mot de passe
+        self.PasswordConfirm.grid(pady=(0,20))
+        
         self.ipsplash=Entry(self.cadreNouvelleUtilisateur,bg="white")
         self.ipsplash.insert(0, self.monip)
         self.ipsplash.grid()
 
-        self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT,command=self.fetchNom, width=15)
+        self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT,command=self.inscription, width=15)
         self.confirmerIB.grid(row= 5, column= 0,pady=(25,20), padx=(0,122))
         
         self.annuleIB=Button(self.cadreNouvelleUtilisateur,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal, width=15)
@@ -363,19 +369,25 @@ class Vue():
         print("hello")
         
     # ---------------DM----------------- #     
-    def fetchNom(self):                               # Méthode pour inscrire un nouvel utilisateur
-        username = self.NouveauNom.get()              # Prend le string de la textbox "self.NouveauNom"
-        ipserveur = self.ipsplash.get()               # Prend le IP de la textbox "self.ipsplash"
+    def inscription(self):
+        username = self.NouveauNom.get()            # Nom d'utilisateur à inscrire
+        password = self.NouveauPassword.get()       # Mot de passe de l'utilisateur à inscrire
+        pwConfirm = self.PasswordConfirm.get()      # 2e mot de passe; pour confirmation
+        ipserveur = self.ipsplash.get()             # Addresse ip de l'utilisateur
         
-        if self.nomConforme(username):
-            if self.parent.nomUnique(ipserveur, username):      # Méthode pour vérifier que le nom est unique et inscrit l'utilisateur
-                print(username + " inscrit!")
-                
+        if self.nomConforme(username):              # Vérifie que le nom d'utilisateur désiré est conforme
+            if self.motPasseConforme(password):     # Vérifie que le mot de passe de l'utilisateur est conforme
+                if password == pwConfirm:           # Confirme le mot de passe désiré
+                    rep = self.parent.inscription(username, password, ipserveur)
+                    print(rep)
+                    
+                else:
+                    print("Mots de passe non identiques")
             else:
-                print ("Nom d'utilisateur non disponible")
-        
+                print("Mot de passe non conforme")
         else:
-            print("Nom d'utilisateur invalide")
+            print("Nom d'utilisateur non conforme")
+    
        
     def nomConforme(self, nom):             # Vérifie que le nom d'utilisateur est conforme (regex)
         if len(nom) > 12:                   # Si le nom a plus de 12 caractères
@@ -383,6 +395,16 @@ class Vue():
         else:
             pattern = "\w+"                 # A-Z, a-z, 0-9 et _ au moins une fois
             if (re.match(pattern, nom)):    # Compare le nom transmis au pattern
+                return True
+            else:
+                return False
+            
+    def motPasseConforme(self, password):       # Vérifie que le mot de passe de l'utilisateur est conforme (regex)
+        if len(password) < 8:                   # Si le mot de passe a moins de 8 caractères
+            return False
+        else:
+            pattern = "\w+"                     # A-Z, a-z, 0-9 et _ au moins une fois
+            if (re.match(pattern, password)):   # Compare le mot de passe transmi au pattern
                 return True
             else:
                 return False
@@ -441,6 +463,6 @@ class Vue():
             self.placeHolderEntryNom=True
     
 if __name__ == '__main__':
-    m=Vue(0,"Employe007","127.0.0.1")
+    m=Vue(0,"127.0.0.1")
     m.root.mainloop()
     

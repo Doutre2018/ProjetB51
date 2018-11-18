@@ -33,15 +33,12 @@ class Controleur():
 
     
     # ----------------DM------------------------ #
-    def nomUnique(self, ipserveur, nom):
+    def inscription(self, nom, motPasse, ipserveur):
         if ipserveur and nom:
             ad = "http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
             
-            if self.serveur.nomUnique(nom):
-                return True
-            else:
-                return False
+            return self.serveur.inscription(nom, motPasse)
             
     def nomExiste(self, ipserveur, nom):
         if ipserveur and nom:

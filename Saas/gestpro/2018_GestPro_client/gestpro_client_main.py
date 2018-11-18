@@ -37,31 +37,38 @@ class Controleur():
         if ipserveur and nom:
             ad = "http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
-            
             return self.serveur.inscription(nom, motPasse)
-            
-    def nomExiste(self, ipserveur, nom):
+        
+    def connexion(self, nom, motPasse, ipserveur):
         if ipserveur and nom:
             ad = "http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
+            rep = self.serveur.connexion(nom, motPasse)
             
-            if self.serveur.nomExiste(nom):
-                return True
-            else:
-                return False
+            if rep == False:        # Erreur d'utilisateur et/ou de mot de passe
+                r = "Nom d'utilisateur ou mot de passe erroné"
+                return r
+            
+            else:                   # Utilisateur et mot de passe acceptés
+                print("reponse du serveur",rep)
+                self.vue.chargercentral(rep[2])
+                with open("adresseServeurCourant.txt",'w') as fichierServeur:
+                    fichierServeur.write(self.serveur.getAdresse())
+                r = nom + " connecté!"
+                return r
     # ------------------------------------------ #
     
-    def loginclient(self,ipserveur,nom):
-        if ipserveur and nom:
-            ad="http://"+ipserveur+":"+self.nodeport
-            self.serveur=ServerProxy(ad)
-            self.monnom=nom
-            rep=self.serveur.loginauserveur(self.monnom)    # on averti le serveur de nous inscrire
-            print("reponse du serveur",rep)
-            self.vue.chargercentral(rep[2])
-            with open("adresseServeurCourant.txt",'w') as fichierServeur:
-                fichierServeur.write(self.serveur.getAdresse())
-            self.serveur.requeteSelection("select * from stocks")
+    #def loginclient(self,ipserveur,nom):
+    #    if ipserveur and nom:
+    #        ad="http://"+ipserveur+":"+self.nodeport
+    #        self.serveur=ServerProxy(ad)
+    #        self.monnom=nom
+    #        rep=self.serveur.loginauserveur(self.monnom)    # on averti le serveur de nous inscrire
+    #        print("reponse du serveur",rep)
+    #        self.vue.chargercentral(rep[2])
+    #        with open("adresseServeurCourant.txt",'w') as fichierServeur:
+    #            fichierServeur.write(self.serveur.getAdresse())
+    #        self.serveur.requeteSelection("select * from stocks")
                     
     def requetemodule(self,mod):
         rep=self.serveur.requetemodule(mod)

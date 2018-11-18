@@ -113,6 +113,11 @@ class Vue():
         self.nomsplash.bind('<FocusIn>', self.clickEntryNom)
         self.nomsplash.bind('<FocusOut>',self.puClickEntryNom)
         
+        # Champ texte pour le mot de passe
+        self.motPassesplash=Entry(self.cadresplash,bg="white", justify=CENTER,)
+        self.motPassesplash.insert(0,"")
+        self.motPassesplash.grid(pady=(10,10),padx=100)
+        
         
         self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre ip",font='arial 12',)
         self.labelIp.grid()
@@ -123,7 +128,7 @@ class Vue():
         self.frameButton= Frame(self.cadresplash,bg="#E5E7F4")
         self.frameButton.grid()
         
-        self.btnconnecter=Button(self.frameButton,text="Connexion",bg="#FFFFFF",command=self.loginclient,relief=FLAT, width=15)
+        self.btnconnecter=Button(self.frameButton,text="Connexion",bg="#FFFFFF",command=self.connexion,relief=FLAT, width=15)
         self.btnconnecter.grid(row= 5, column= 1,pady=(25,50), padx=(0,10))
         
         self.inscriptionB = Button(self.frameButton,text="Nouveau Client",bg="#FFFFFF",command=self.AllerAInscription,relief=FLAT,width=15)
@@ -370,19 +375,34 @@ class Vue():
         
     # ---------------DM----------------- #     
     def inscription(self):
-        username = self.NouveauNom.get()            # Nom d'utilisateur à inscrire
-        password = self.NouveauPassword.get()       # Mot de passe de l'utilisateur à inscrire
-        pwConfirm = self.PasswordConfirm.get()      # 2e mot de passe; pour confirmation
+        nom = self.NouveauNom.get()                 # Nom d'utilisateur à inscrire
+        motPasse = self.NouveauPassword.get()       # Mot de passe de l'utilisateur à inscrire
+        mpConfirm = self.PasswordConfirm.get()      # 2e mot de passe; pour confirmation
         ipserveur = self.ipsplash.get()             # Addresse ip de l'utilisateur
         
-        if self.nomConforme(username):              # Vérifie que le nom d'utilisateur désiré est conforme
-            if self.motPasseConforme(password):     # Vérifie que le mot de passe de l'utilisateur est conforme
-                if password == pwConfirm:           # Confirme le mot de passe désiré
-                    rep = self.parent.inscription(username, password, ipserveur)
+        if self.nomConforme(nom):                   # Vérifie que le nom d'utilisateur désiré est conforme
+            if self.motPasseConforme(motPasse):     # Vérifie que le mot de passe de l'utilisateur est conforme
+                if motPasse == mpConfirm:           # Confirme le mot de passe désiré
+                    rep = self.parent.inscription(nom, motPasse, ipserveur)
                     print(rep)
                     
                 else:
                     print("Mots de passe non identiques")
+            else:
+                print("Mot de passe non conforme")
+        else:
+            print("Nom d'utilisateur non conforme")
+            
+    def connexion(self):
+        nom = self.nomsplash.get()
+        motPasse = self.motPassesplash.get()
+        ipserveur = self.ipsplash.get()
+        
+        if self.nomConforme(nom):
+            if self.motPasseConforme(motPasse):
+                rep = self.parent.connexion(nom, motPasse, ipserveur)
+                print(rep)
+                
             else:
                 print("Mot de passe non conforme")
         else:
@@ -408,25 +428,6 @@ class Vue():
                 return True
             else:
                 return False
-            
-    def loginclient(self):                          # Méthode pour la connexion d'un utilisateur existant
-        username = self.nomsplash.get()             # Prend le string de la textbox "self.nomsplash"
-        ipserveur = self.ipsplash.get()             # Prend le IP de la textbox "self.ipsplash"
-        
-        if self.nomConforme(username):
-            if self.parent.nomExiste(ipserveur, username):      # Vérifie que le nom existe dans la DB
-                print("Bienvenue, " + username + "!")
-                self.parent.loginclient(ipserveur, username)    # Login de l'utilisateur
-            
-            else:
-                print("Utilisateur inexistant")
-                
-        else:
-            print("Nom d'utilisateur invalide")
-        
-        #ipserveur=self.ipsplash.get() # lire le IP dans le champ du layout
-        #nom=self.nomsplash.get() # noter notre nom
-        #self.parent.loginclient(ipserveur,nom)
     # --------------------------------- #   
         
     def AllerAInscription(self):

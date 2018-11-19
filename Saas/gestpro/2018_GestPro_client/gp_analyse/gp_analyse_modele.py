@@ -25,6 +25,7 @@ class Modele():
         self.creerType()
         self.numProjet
         self.typeDonnee
+        self.lesTypes = []
     
         
     def InsertInto(self,ligne, colonne, nomProjet, type):
@@ -34,13 +35,12 @@ class Modele():
         
         
     def creerType(self):
-        #self.lesTypes = self.BD.selection("SELECT nom FROM TypeMot")
-        for type in self.listeType :
-            if type in lesTypes:
-                pass
-            else:
-                BD.insertionPerso("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
-                
+        try:
+            self.lesTypes = self.BD.selection("SELECT nom FROM TypeMot")
+        except:
+            for type in self.listeType :
+                    BD.insertionPerso("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
+                    
         print("SELECT * FROM TypeMot")
             
         

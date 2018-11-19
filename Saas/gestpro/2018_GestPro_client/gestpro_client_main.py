@@ -37,6 +37,7 @@ class Controleur():
         if ipserveur and nom:
             ad = "http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
+            self.monnom=nom
             return self.serveur.inscription(nom, motPasse)
         
     def connexion(self, nom, motPasse, ipserveur):

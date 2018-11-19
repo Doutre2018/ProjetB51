@@ -114,12 +114,15 @@ class Vue():
         self.nomsplash.bind('<FocusOut>',self.puClickEntryNom)
         
         # Champ texte pour le mot de passe
-        self.motPassesplash=Entry(self.cadresplash,bg="white", justify=CENTER,)
-        self.motPassesplash.insert(0,"")
-        self.motPassesplash.grid(pady=(10,10),padx=100)
+        
+        self.labelmotPassesplash=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre mot de passe",font='arial 12')
+        self.labelmotPassesplash.grid()
+        self.entrymotPassesplash=Entry(self.cadresplash,bg="white", justify=CENTER,)
+        self.entrymotPassesplash.insert(0,"")
+        self.entrymotPassesplash.grid(pady=(10,10),padx=100)
         
         
-        self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre ip",font='arial 12',)
+        self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez l'adresse ip de votre serveur",font='arial 12',)
         self.labelIp.grid()
         self.ipsplash=Entry(self.cadresplash,bg="white",justify=CENTER,)
         self.ipsplash.insert(0, self.monip)
@@ -148,21 +151,27 @@ class Vue():
         self.NouveauNom= Entry(self.cadreNouvelleUtilisateur,bg="white")
         self.NouveauNom.grid(pady=(0,20))
         
+        self.labelNouveauPassword= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre mot de passe",font='arial 12',bg="#E5E7F4")
+        self.labelNouveauPassword.grid()
         self.NouveauPassword= Entry(self.cadreNouvelleUtilisateur,bg="white")       # Champ texte pour le mot de passe
         self.NouveauPassword.grid(pady=(0,20))
         
+        self.labelPasswordConfirm= Label(self.cadreNouvelleUtilisateur,text="Veuillez confirmer votre mot de passe",font='arial 12',bg="#E5E7F4")
+        self.labelPasswordConfirm.grid()
         self.PasswordConfirm= Entry(self.cadreNouvelleUtilisateur,bg="white")       # Champ texte pour la confirmation du mot de passe
         self.PasswordConfirm.grid(pady=(0,20))
         
+        self.labelIpServuer=Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer l'adresse de votre serveur",font='arial 12',bg="#E5E7F4")
+        self.labelIpServuer.grid()
         self.ipsplash=Entry(self.cadreNouvelleUtilisateur,bg="white")
         self.ipsplash.insert(0, self.monip)
         self.ipsplash.grid()
 
         self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT,command=self.inscription, width=15)
-        self.confirmerIB.grid(row= 5, column= 0,pady=(25,20), padx=(0,122))
+        self.confirmerIB.grid(row= 10, column= 0,pady=(25,20), padx=(0,122))
         
         self.annuleIB=Button(self.cadreNouvelleUtilisateur,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal, width=15)
-        self.annuleIB.grid(row= 5,pady=(25,20) ,padx=(122,0))
+        self.annuleIB.grid(row= 10,pady=(25,20) ,padx=(122,0))
         
         
     def closeprocess(self):
@@ -385,6 +394,7 @@ class Vue():
                 if motPasse == mpConfirm:           # Confirme le mot de passe désiré
                     rep = self.parent.inscription(nom, motPasse, ipserveur)
                     print(rep)
+                    self.retourMenuPrincipal()
                     
                 else:
                     print("Mots de passe non identiques")
@@ -395,7 +405,7 @@ class Vue():
             
     def connexion(self):
         nom = self.nomsplash.get()
-        motPasse = self.motPassesplash.get()
+        motPasse = self.entrymotPassesplash.get()
         ipserveur = self.ipsplash.get()
         
         if self.nomConforme(nom):

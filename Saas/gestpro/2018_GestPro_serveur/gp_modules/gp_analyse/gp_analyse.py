@@ -22,7 +22,7 @@ class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.createurId=Id
-        self.modele=Modele(self)
+        #self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         

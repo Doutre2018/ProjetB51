@@ -252,13 +252,18 @@ class Vue():
         
         
         #Bouton Ajouter
-        self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.ModifCrc)
+        self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.modifierCRC)
         self.boutonModifier.grid()
         
 
     def delCRC(self):
         a=()
         a=self.ListeCRC.curselection()
+        nomClasse = str(self.ListeCRC.get(a))
         #b=self.ListeCRC.get(a)
+        print(nomClasse)
+        #Supprime la rangée de la BD
+        self.modele.supprimerCarte(nomClasse)
+        
         self.ListeCRC.delete(a)
     

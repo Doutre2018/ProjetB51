@@ -64,13 +64,13 @@ class Modele():
         return self.serveur.requeteSelection(commande)
     
     def selectIdCarte(self,classe):
-        commande ="""SELECT id FROM Cartes WHERE classe="""
+        commande ="SELECT id FROM Cartes WHERE classe="
         commande+=classe
         ID = self.serveur.requeteSelection(commande)
         return ID
     
     def selectAttributDeCarte(self,idCarte):
-        commande = """SELECT nomAttributs FROM AttributsCRC WHERE id_classe="""
+        commande = "SELECT nomAttributs FROM AttributsCRC WHERE id_classe="
         commande+=idCarte
         #Retourne une liste de String des attributs d'UNE carte
         return self.serveur.requeteSelection(commande)
@@ -80,17 +80,23 @@ class Modele():
         self.serveur.requeteInsertionPerso("INSERT INTO Cartes(id_projet, classe, carte_heritage, ordre, nom_responsable) VALUES(  " + str(listeValeur[0]) + ",'" + str(listeValeur[1]) + "','" + str(listeValeur[2]) + "'," + str(listeValeur[3]) + ",'" + str(listeValeur[4]) + "');")
     
     def insertAttributsDeCarte(self,listeValeur):
-        self.serveur.requeteInsertionPerso("INSERT INTO AttributsCRC(nomAttributs) VALUES(" + str(listeValeur[0]) + ") WHERE id_classe="  + str(listeValeur[1]) + ");")
+        self.serveur.requeteInsertionPerso("INSERT INTO AttributsCRC(nomAttributs) VALUES('" + str(listeValeur[0]) + "') WHERE id_classe="  + str(listeValeur[1]) + ");")
         
     def insertCollaboDeCarte(self,listeValeur):
-        self.serveur.requeteInsertionPerso("""INSERT INTO CollaboCRC(id_classe,textCollabo) VALUES(""" + str(listeValeur[0]) + ""","""+ str(listeValeur[1]) +""") ;""")
+        self.serveur.requeteInsertionPerso("INSERT INTO CollaboCRC(id_classe,textCollabo) VALUES(" + str(listeValeur[0]) + ",'"+ str(listeValeur[1]) +"') ;")
     
     def insertFonctionDeCarte(self,listeValeur):
-        self.serveur.requeteInsertionPerso("""INSERT INTO FonctionsCRC(id_classe,fonction) VALUES(""" + str(listeValeur[0]) + ""","""+ str(listeValeur[1]) +""");""")
+        self.serveur.requeteInsertionPerso("INSERT INTO FonctionsCRC(id_classe,fonction) VALUES(" + str(listeValeur[0]) + ","+ str(listeValeur[1]) +");")
                                                                                                                                       
     def selectResponsableCarte(self,id_classe):
-        commande="""SELECT nom FROM Utilisateur"""
+        commande="SELECT nom FROM Utilisateur;"
         return self.serveur.requeteSelection(commande)
+    
+    def supprimerCarte(self,nomCarte):
+        commande="DELETE FROM Cartes WHERE classe='"
+        commande=commande+str(nomCarte)+"';"
+        self.serveur.requeteInsertionPerso(commande)
+        print("Carte supprimée")
     
 if __name__ == '__main__':
     c=Controleur()

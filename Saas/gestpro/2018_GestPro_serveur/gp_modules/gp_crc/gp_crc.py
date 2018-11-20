@@ -50,9 +50,11 @@ class Controleur():
             sys.exit(0)
 
 class Modele():
-    def __init__(self):
-        self.listeCartes=selectClassesCartes()
-        self.listeIDCartes=selectIdCarte()
+    def __init__(self,parent):
+        self.parent=parent
+        self.serveur=parent.serveur
+        self.listeCartes=self.selectClassesCartes()
+        self.listeIDCartes=self.selectIdCarte()
         for i in self.listeIDCartes:
             self.listeAttributs.append(selectAttributDeCarte(i))
         

@@ -21,6 +21,7 @@ class Controleur():
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
+
     def connectionServeurCourant(self):  
         try:
             with open("../adresseServeurCourant.txt", "r") as fichier:
@@ -41,7 +42,6 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
-        
     
 if __name__ == '__main__':
     c=Controleur()

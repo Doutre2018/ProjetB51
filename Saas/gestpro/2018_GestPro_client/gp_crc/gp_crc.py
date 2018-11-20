@@ -14,16 +14,15 @@ from xmlrpc.client import ServerProxy
 #import sqlite3
 
 
+
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         cwd = os.getcwd()
-        #if cwd is "2018_GestPro_client":
         self.connectionServeurCourant()
         print(self.serveur)
-
-        #connection = sqlite3.connect("SAAS.db")
-        #curseur = connection.cursor()
+        liste = self.serveur.requeteSelection("select price from stocks")
+        print(liste)
         self.createurId=Id
         self.modele=Modele(self)
         self.vue=Vue(self)
@@ -50,11 +49,12 @@ class Controleur():
             print(erreur)
             sys.exit(0)
 
-
 class Modele():
-    def __init__(self):
-        self.listeCartes=selectClassesCartes()
-        self.listeIDCartes=selectIdCarte()
+    def __init__(self,parent):
+        self.parent=parent
+        self.serveur=parent.serveur
+        self.listeCartes=self.selectClassesCartes()
+        self.listeIDCartes=self.selectIdCarte()
         for i in self.listeIDCartes:
             self.listeAttributs.append(selectAttributDeCarte(i))
         
@@ -78,9 +78,12 @@ class Modele():
         #Retourne une liste de String des attributs d'UNE carte
         return self.serveur.selection(commande)
     
-    def insertAttributsDeCarte(self,id_classe):
-        #listeValeur
-        bd.insertion("AttributsCRC")
+    def insertAttributsDeCarte(self,listeValeur):
+        self.serveur.insertionPerso("""INSERT INTO AttributsCRC(nomAttributs) VALUES(""" + listeValeur[0] + """) WHERE id_classe= """ + listeValeur[1] + """;""")
+        
+    def selectResponsableCarte(self,id_classe):
+        commande="""SELECT nom FROM Utilisateur"""
+        return self.serveur.selection(commande)
     
 if __name__ == '__main__':
     c=Controleur()

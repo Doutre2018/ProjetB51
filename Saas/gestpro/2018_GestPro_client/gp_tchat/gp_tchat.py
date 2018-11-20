@@ -20,7 +20,7 @@ class Controleur():
         self.modele=None
         self.vue=Vue(self)
         self.vue.root.mainloop()
-        
+
     def connectionServeurCourant(self):  
         try:
             with open("../adresseServeurCourant.txt", "r") as fichier:

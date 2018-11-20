@@ -59,7 +59,7 @@ class Modele():
             #self.listeAttributs.append(selectAttributDeCarte(i))
         
     def insertCarte(self,listeValeur):
-        self.serveur.insertionPerso("""INSERT INTO Cartes(id_projet,classe, id_carte_heritage, ordre) VALUES(  """ + listeValeur[0] + """, """ + listeValeur[1] + """, """ + listeValeur[2] + """, """ + listeValeur[3] + """, """ + listeValeur[4] + """ )""")
+        self.serveur.requeteInsertionPerso("""INSERT INTO Cartes(id_projet, classe, id_carte_heritage, ordre) VALUES(  """ + str(listeValeur[0]) + """, """ + str(listeValeur[1]) + """, """ + str(listeValeur[2]) + """, """ + str(listeValeur[3]) + """);""")
     
     def selectClassesCartes(self):
         commande ="SELECT classe FROM Cartes"
@@ -78,9 +78,16 @@ class Modele():
         #Retourne une liste de String des attributs d'UNE carte
         return self.serveur.requeteSelection(commande)
     
+    #Les insertions
     def insertAttributsDeCarte(self,listeValeur):
-        self.serveur.requeteInsertionPerso("""INSERT INTO AttributsCRC(nomAttributs) VALUES(""" + listeValeur[0] + """) WHERE id_classe= """ + listeValeur[1] + """;""")
+        self.serveur.requeteInsertionPerso("""INSERT INTO AttributsCRC(nomAttributs) VALUES(""" + str(str(listeValeur[0])) + """) WHERE id_classe= """ + str(listeValeur[1]) + """;""")
         
+    def insertCollaboDeCarte(self,listeValeur):
+        self.serveur.requeteInsertionPerso("""INSERT INTO CollaboCRC(id_classe,textCollabo) VALUES(""" + str(listeValeur[0]) + ""","""+ str(listeValeur[1]) +""") ;""")
+    
+    def insertFonctionDeCarte(self,listeValeur):
+        self.serveur.requeteInsertionPerso("""INSERT INTO FonctionsCRC(id_classe,fonction) VALUES(""" + str(listeValeur[0]) + ""","""+ str(listeValeur[1]) +""");""")
+                                                                                                                                      
     def selectResponsableCarte(self,id_classe):
         commande="""SELECT nom FROM Utilisateur"""
         return self.serveur.requeteSelection(commande)

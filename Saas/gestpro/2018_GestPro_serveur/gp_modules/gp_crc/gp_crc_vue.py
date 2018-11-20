@@ -145,8 +145,46 @@ class Vue():
         self.boutonAjouter.grid()
 
     def nouveauCRC(self):
-       
         texteboutton=self.entryNomClasse.get()
+        texteResponsable=self.entryResponsable.get()
+        
+        #AJOUT DE LA CARTE À LA BD
+        #id du projet
+        listeValeurCarte=[None]*4
+        listeValeurCarte[0]=0 
+        #nom de la classe
+        listeValeurCarte[1]=texteboutton
+        #responsable
+        listeValeurCarte[2]=texteResponsable
+        #ordre
+        listeValeurCarte[3]=0
+        #insertion des infos de base de la carte dans la BD
+        self.modele.insertCarte(listeValeurCarte)
+        #id de la carte qui vient d'être ajoutée
+        idCarteAjoutee=self.modele.selectIdCarte(texteboutton)
+        
+        texteAtt = self.textAttribut.get()
+        listeValeurAttribut=[None]*2
+        listeValeurAttribut[0]=texteAtt
+        listeValeurAttribut[1]=idCarteAjoutee
+        #insertion des attributs de la carte
+        self.modele.insertAttributsDeCarte(listeValeurAttribut)
+        
+        
+        #COLLABO
+        texteCollabo = self.textCollaboration.get()
+        listeValeurCollabo=[None]*2
+        listeValeurCollabo[0]=idCarteAjoutee
+        listeValeurCollabo[1]=texteCollabo
+        #insertion des collaborations de la carte
+        self.modele.insertCollaboDeCarte(listeValeurCollabo)
+        
+        #FONCTIONS
+        texteFonction = self.textFonction.get()
+        listeValeurFonct=[None]*2
+        listeValeurFonct[0]=idCarteAjoutee
+        listeValeurFonct[1]=textFonction
+        self.modele.insertFonctionDeCarte(listeValeurFonct)
         
         self.ListeCRC.insert(self.compteurBouton, texteboutton)
         

@@ -57,10 +57,7 @@ class Modele():
         #self.listeIDCartes=self.selectIdCarte()
         #for i in self.listeIDCartes:
             #self.listeAttributs.append(selectAttributDeCarte(i))
-        
-    def insertCarte(self,listeValeur):
-        self.serveur.requeteInsertionPerso("""INSERT INTO Cartes(id_projet, classe, id_carte_heritage, ordre) VALUES(  """ + str(listeValeur[0]) + """, """ + str(listeValeur[1]) + """, """ + str(listeValeur[2]) + """, """ + str(listeValeur[3]) + """);""")
-    
+            
     def selectClassesCartes(self):
         commande ="SELECT classe FROM Cartes"
         #Retourne une liste de String de cartes
@@ -79,8 +76,11 @@ class Modele():
         return self.serveur.requeteSelection(commande)
     
     #Les insertions
+    def insertCarte(self,listeValeur):
+        self.serveur.requeteInsertionPerso("INSERT INTO Cartes(id_projet, classe, carte_heritage, ordre, nom_responsable) VALUES(  " + str(listeValeur[0]) + ",'" + str(listeValeur[1]) + "','" + str(listeValeur[2]) + "'," + str(listeValeur[3]) + ",'" + str(listeValeur[4]) + "');")
+    
     def insertAttributsDeCarte(self,listeValeur):
-        self.serveur.requeteInsertionPerso("""INSERT INTO AttributsCRC(nomAttributs) VALUES(""" + str(str(listeValeur[0])) + """) WHERE id_classe= """ + str(listeValeur[1]) + """;""")
+        self.serveur.requeteInsertionPerso("INSERT INTO AttributsCRC(nomAttributs) VALUES(" + str(listeValeur[0]) + ") WHERE id_classe="  + str(listeValeur[1]) + ");")
         
     def insertCollaboDeCarte(self,listeValeur):
         self.serveur.requeteInsertionPerso("""INSERT INTO CollaboCRC(id_classe,textCollabo) VALUES(""" + str(listeValeur[0]) + ""","""+ str(listeValeur[1]) +""") ;""")

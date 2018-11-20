@@ -69,14 +69,14 @@ class Vue():
         self.AjouterCRC.grid(row=1, column=2)
         self.ListeCRC= Listbox(self.cadrecrc,selectmode=SINGLE)
         
-        valeur=0
-        for i in self.modele.listeCartes:
-            self.ListeCRC.insert(valeur+1,i)
+        #valeur=0
+        #for i in self.modele.listeCartes:
+           # self.listeCRC.insert(valeur+1,i)
         
         
         #self.ListeCRC.insert(0, "Modele")
         for nom in self.modele.listeCartes:
-            self.listeCRC.insert(0,nom)
+            self.ListeCRC.insert(0,nom)
 
         self.ListeCRC.grid(row=1, column=1)
         self.ListeCRC.bind("<ButtonRelease-1>",self.modifierCRC)
@@ -147,17 +147,20 @@ class Vue():
     def nouveauCRC(self):
         texteboutton=self.entryNomClasse.get()
         texteResponsable=self.entryResponsable.get()
-        
+        texteHeritage=self.entryHeritage.get()
         #AJOUT DE LA CARTE À LA BD
         #id du projet
-        listeValeurCarte=[None]*4
-        listeValeurCarte[0]=0 
+        listeValeurCarte=[None]*5
+        listeValeurCarte[0]=0
+        
         #nom de la classe
         listeValeurCarte[1]=texteboutton
         #responsable
-        listeValeurCarte[2]=texteResponsable
+        listeValeurCarte[2]=texteHeritage
         #ordre
         listeValeurCarte[3]=0
+        
+        listeValeurCarte[4]=texteResponsable
         #insertion des infos de base de la carte dans la BD
         self.modele.insertCarte(listeValeurCarte)
         #id de la carte qui vient d'être ajoutée
@@ -165,8 +168,8 @@ class Vue():
         
         texteAtt = self.textAttribut.get()
         listeValeurAttribut=[None]*2
-        listeValeurAttribut[0]=texteAtt
-        listeValeurAttribut[1]=idCarteAjoutee
+        listeValeurAttribut[0]="'"+texteAtt+"'"
+        listeValeurAttribut[1]="'"+idCarteAjoutee+"'"
         #insertion des attributs de la carte
         self.modele.insertAttributsDeCarte(listeValeurAttribut)
         
@@ -174,16 +177,16 @@ class Vue():
         #COLLABO
         texteCollabo = self.textCollaboration.get()
         listeValeurCollabo=[None]*2
-        listeValeurCollabo[0]=idCarteAjoutee
-        listeValeurCollabo[1]=texteCollabo
+        listeValeurCollabo[0]="'"+idCarteAjoutee+"'"
+        listeValeurCollabo[1]="'"+texteCollabo+"'"
         #insertion des collaborations de la carte
         self.modele.insertCollaboDeCarte(listeValeurCollabo)
         
         #FONCTIONS
         texteFonction = self.textFonction.get()
         listeValeurFonct=[None]*2
-        listeValeurFonct[0]=idCarteAjoutee
-        listeValeurFonct[1]=textFonction
+        listeValeurFonct[0]="'"+idCarteAjoutee+"'"
+        listeValeurFonct[1]="'"+textFonction+"'"
         self.modele.insertFonctionDeCarte(listeValeurFonct)
         
         self.ListeCRC.insert(self.compteurBouton, texteboutton)

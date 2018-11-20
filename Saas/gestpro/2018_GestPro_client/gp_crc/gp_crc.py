@@ -54,36 +54,36 @@ class Modele():
         self.parent=parent
         self.serveur=parent.serveur
         self.listeCartes=self.selectClassesCartes()
-        self.listeIDCartes=self.selectIdCarte()
-        for i in self.listeIDCartes:
-            self.listeAttributs.append(selectAttributDeCarte(i))
+        #self.listeIDCartes=self.selectIdCarte()
+        #for i in self.listeIDCartes:
+            #self.listeAttributs.append(selectAttributDeCarte(i))
         
     def insertCarte(self,listeValeur):
         self.serveur.insertionPerso("""INSERT INTO Cartes(id_projet,classe, id_carte_heritage, ordre) VALUES(  """ + listeValeur[0] + """, """ + listeValeur[1] + """, """ + listeValeur[2] + """, """ + listeValeur[3] + """, """ + listeValeur[4] + """ )""")
     
     def selectClassesCartes(self):
-        commande ="""SELECT classe FROM Cartes"""
+        commande ="SELECT classe FROM Cartes"
         #Retourne une liste de String de cartes
-        return self.serveur.selection(commande)
+        return self.serveur.requeteSelection(commande)
     
     def selectIdCarte(self,classe):
         commande ="""SELECT id FROM Cartes WHERE classe="""
         commande+=classe
-        ID = self.serveur.selection(commande)
+        ID = self.serveur.requeteSelection(commande)
         return ID
     
     def selectAttributDeCarte(self,idCarte):
         commande = """SELECT nomAttributs FROM AttributsCRC WHERE id_classe="""
         commande+=idCarte
         #Retourne une liste de String des attributs d'UNE carte
-        return self.serveur.selection(commande)
+        return self.serveur.requeteSelection(commande)
     
     def insertAttributsDeCarte(self,listeValeur):
-        self.serveur.insertionPerso("""INSERT INTO AttributsCRC(nomAttributs) VALUES(""" + listeValeur[0] + """) WHERE id_classe= """ + listeValeur[1] + """;""")
+        self.serveur.requeteInsertionPerso("""INSERT INTO AttributsCRC(nomAttributs) VALUES(""" + listeValeur[0] + """) WHERE id_classe= """ + listeValeur[1] + """;""")
         
     def selectResponsableCarte(self,id_classe):
         commande="""SELECT nom FROM Utilisateur"""
-        return self.serveur.selection(commande)
+        return self.serveur.requeteSelection(commande)
     
 if __name__ == '__main__':
     c=Controleur()

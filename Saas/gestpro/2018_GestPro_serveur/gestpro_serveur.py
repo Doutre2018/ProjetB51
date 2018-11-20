@@ -291,7 +291,7 @@ class  BaseDonnees():
         self.curseur.execute(stringInsert)
     
     
-    def selection(self, stringSelect = ""):
+    def selection(self, stringSelect):
         connecteur = sqlite3.connect('SAAS.db')
         curseur = connecteur.cursor()
         listeData=[]

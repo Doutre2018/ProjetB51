@@ -33,6 +33,7 @@ encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_budget/gp_budget_vue.p
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_casdusage/gp_casdusage.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_casdusage/gp_casdusage_vue.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_connexion/gp_connexion.py=utf-8
+encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_connexion/gp_connexion_vue.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_crc/gp_crc.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_crc/gp_crc_vue.py=utf-8
 encoding//Saas/gestpro/2018_GestPro_serveur/gp_modules/gp_inscription/gp_inscription.py=utf-8

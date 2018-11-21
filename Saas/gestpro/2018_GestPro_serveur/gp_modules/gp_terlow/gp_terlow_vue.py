@@ -8,7 +8,6 @@ import math
 from helper import Helper as hlp
 from msilib.schema import Font
 from IdMaker import Id
-
 class Vue():
     def __init__(self,parent,largeur=1200,hauteur=800):
 

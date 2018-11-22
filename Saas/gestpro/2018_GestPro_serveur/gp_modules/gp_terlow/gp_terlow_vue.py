@@ -7,6 +7,7 @@ import os,os.path
 import math
 from helper import Helper as hlp
 from msilib.schema import Font
+from IdMaker import Id
 
 class Vue():
     def __init__(self,parent,largeur=1200,hauteur=800):
@@ -23,7 +24,9 @@ class Vue():
         self.hauteurEcran=self.root.winfo_screenmmheight()
         
         self.cadreterlowExiste=False
-
+        self.tableauDeColonne=[]
+        self.tableauDeCarte=[]
+        self.nbListe=0
         self.images={}
         self.cadreactif=None
         self.fullscreen=True
@@ -108,11 +111,42 @@ class Vue():
         self.root.overrideredirect(True) #Enleve la bordure
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
-        self.cadreterlow=Canvas(self.root,width=self.largeur,height=self.hauteur)
+        self.cadreterlow=Frame(self.root,width=self.largeur,height=self.hauteur)
         self.cadreterlow.grid()
-        self.afficherImage()
+        #self.afficherImage()
         
+        self.boutonAjoutListe = Button(self.cadreterlow, text="Ajouter Colonne",command=self.ajouterListe)
+        self.boutonAjoutListe.grid()
         self.cadreterlowExiste=True
+    def ajouterListe(self):
+        self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="white",bd=4,highlightcolor="red",highlightthickness=1))
+        liste = self.tableauDeColonne[self.nbListe]
+        
+        titre = Entry(liste, width=32)
+        titre.insert(END, "Titre")
+        noListe=self.nbListe
+        boutonAjoutCarte = Button(liste, text="Ajouter Carte",command= lambda: self.ajouterCarte(noListe))
+        
+        liste.grid(column=self.nbListe,row=1,padx=10)
+        titre.grid(row=0)
+        boutonAjoutCarte.grid(row=1)
+        self.nbListe+=1
+
+        
+        
+    def ajouterCarte(self, noListe):
+        noCarte=0
+        colonne = self.tableauDeColonne[noListe]
+        noCarte+=1
+        self.tableauDeCarte[noListe][noCarte]=Entry(colonne,width=32)
+        noCarte=1
+        contenu = self.tableauDeCarte[noListe][noCarte]
+        contenu.bind("<Button-1>",command= lambda : self.modifierCarte(noCarte,noListe))
+        contenu.grid()
+    def modifierCarte(self,noCarte,noListe):
+        carte = self.tableauDeCarte[noListe][noCarte]
+        
+        
     def accesScrum(self):
         ad="http://"+ipserveur+":"+self.nodeport
         self.serveur=ServerProxy(ad)

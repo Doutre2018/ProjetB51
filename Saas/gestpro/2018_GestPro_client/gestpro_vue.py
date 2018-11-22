@@ -113,8 +113,16 @@ class Vue():
         self.nomsplash.bind('<FocusIn>', self.clickEntryNom)
         self.nomsplash.bind('<FocusOut>',self.puClickEntryNom)
         
+        # Champ texte pour le mot de passe
         
-        self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre ip",font='arial 12',)
+        self.labelmotPassesplash=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre mot de passe",font='arial 12')
+        self.labelmotPassesplash.grid()
+        self.entrymotPassesplash=Entry(self.cadresplash,bg="white", justify=CENTER,)
+        self.entrymotPassesplash.insert(0,"")
+        self.entrymotPassesplash.grid(pady=(10,10),padx=100)
+        
+        
+        self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez l'adresse ip de votre serveur",font='arial 12',)
         self.labelIp.grid()
         self.ipsplash=Entry(self.cadresplash,bg="white",justify=CENTER,)
         self.ipsplash.insert(0, self.monip)
@@ -123,7 +131,7 @@ class Vue():
         self.frameButton= Frame(self.cadresplash,bg="#E5E7F4")
         self.frameButton.grid()
         
-        self.btnconnecter=Button(self.frameButton,text="Connexion",bg="#FFFFFF",command=self.loginclient,relief=FLAT, width=15)
+        self.btnconnecter=Button(self.frameButton,text="Connexion",bg="#FFFFFF",command=self.connexion,relief=FLAT, width=15)
         self.btnconnecter.grid(row= 5, column= 1,pady=(25,50), padx=(0,10))
         
         self.inscriptionB = Button(self.frameButton,text="Nouveau Client",bg="#FFFFFF",command=self.AllerAInscription,relief=FLAT,width=15)
@@ -143,15 +151,27 @@ class Vue():
         self.NouveauNom= Entry(self.cadreNouvelleUtilisateur,bg="white")
         self.NouveauNom.grid(pady=(0,20))
         
+        self.labelNouveauPassword= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre mot de passe",font='arial 12',bg="#E5E7F4")
+        self.labelNouveauPassword.grid()
+        self.NouveauPassword= Entry(self.cadreNouvelleUtilisateur,bg="white")       # Champ texte pour le mot de passe
+        self.NouveauPassword.grid(pady=(0,20))
+        
+        self.labelPasswordConfirm= Label(self.cadreNouvelleUtilisateur,text="Veuillez confirmer votre mot de passe",font='arial 12',bg="#E5E7F4")
+        self.labelPasswordConfirm.grid()
+        self.PasswordConfirm= Entry(self.cadreNouvelleUtilisateur,bg="white")       # Champ texte pour la confirmation du mot de passe
+        self.PasswordConfirm.grid(pady=(0,20))
+        
+        self.labelIpServuer=Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer l'adresse de votre serveur",font='arial 12',bg="#E5E7F4")
+        self.labelIpServuer.grid()
         self.ipsplash=Entry(self.cadreNouvelleUtilisateur,bg="white")
         self.ipsplash.insert(0, self.monip)
         self.ipsplash.grid()
 
-        self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT,command=self.fetchNom, width=15)
-        self.confirmerIB.grid(row= 5, column= 0,pady=(25,20), padx=(0,122))
+        self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT,command=self.inscription, width=15)
+        self.confirmerIB.grid(row= 10, column= 0,pady=(25,20), padx=(0,122))
         
         self.annuleIB=Button(self.cadreNouvelleUtilisateur,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal, width=15)
-        self.annuleIB.grid(row= 5,pady=(25,20) ,padx=(122,0))
+        self.annuleIB.grid(row= 10,pady=(25,20) ,padx=(122,0))
         
         
     def closeprocess(self):
@@ -363,19 +383,41 @@ class Vue():
         print("hello")
         
     # ---------------DM----------------- #     
-    def fetchNom(self):                               # Méthode pour inscrire un nouvel utilisateur
-        username = self.NouveauNom.get()              # Prend le string de la textbox "self.NouveauNom"
-        ipserveur = self.ipsplash.get()               # Prend le IP de la textbox "self.ipsplash"
+    def inscription(self):
+        nom = self.NouveauNom.get()                 # Nom d'utilisateur à inscrire
+        motPasse = self.NouveauPassword.get()       # Mot de passe de l'utilisateur à inscrire
+        mpConfirm = self.PasswordConfirm.get()      # 2e mot de passe; pour confirmation
+        ipserveur = self.ipsplash.get()             # Addresse ip de l'utilisateur
         
-        if self.nomConforme(username):
-            if self.parent.nomUnique(ipserveur, username):      # Méthode pour vérifier que le nom est unique et inscrit l'utilisateur
-                print(username + " inscrit!")
+        if self.nomConforme(nom):                   # Vérifie que le nom d'utilisateur désiré est conforme
+            if self.motPasseConforme(motPasse):     # Vérifie que le mot de passe de l'utilisateur est conforme
+                if motPasse == mpConfirm:           # Confirme le mot de passe désiré
+                    rep = self.parent.inscription(nom, motPasse, ipserveur)
+                    print(rep)
+                    self.retourMenuPrincipal()
+                    
+                else:
+                    print("Mots de passe non identiques")
+            else:
+                print("Mot de passe non conforme")
+        else:
+            print("Nom d'utilisateur non conforme")
+            
+    def connexion(self):
+        nom = self.nomsplash.get()
+        motPasse = self.entrymotPassesplash.get()
+        ipserveur = self.ipsplash.get()
+        
+        if self.nomConforme(nom):
+            if self.motPasseConforme(motPasse):
+                rep = self.parent.connexion(nom, motPasse, ipserveur)
+                print(rep)
                 
             else:
-                print ("Nom d'utilisateur non disponible")
-        
+                print("Mot de passe non conforme")
         else:
-            print("Nom d'utilisateur invalide")
+            print("Nom d'utilisateur non conforme")
+    
        
     def nomConforme(self, nom):             # Vérifie que le nom d'utilisateur est conforme (regex)
         if len(nom) > 12:                   # Si le nom a plus de 12 caractères
@@ -387,24 +429,15 @@ class Vue():
             else:
                 return False
             
-    def loginclient(self):                          # Méthode pour la connexion d'un utilisateur existant
-        username = self.nomsplash.get()             # Prend le string de la textbox "self.nomsplash"
-        ipserveur = self.ipsplash.get()             # Prend le IP de la textbox "self.ipsplash"
-        
-        if self.nomConforme(username):
-            if self.parent.nomExiste(ipserveur, username):      # Vérifie que le nom existe dans la DB
-                print("Bienvenue, " + username + "!")
-                self.parent.loginclient(ipserveur, username)    # Login de l'utilisateur
-            
-            else:
-                print("Utilisateur inexistant")
-                
+    def motPasseConforme(self, password):       # Vérifie que le mot de passe de l'utilisateur est conforme (regex)
+        if len(password) < 8:                   # Si le mot de passe a moins de 8 caractères
+            return False
         else:
-            print("Nom d'utilisateur invalide")
-        
-        #ipserveur=self.ipsplash.get() # lire le IP dans le champ du layout
-        #nom=self.nomsplash.get() # noter notre nom
-        #self.parent.loginclient(ipserveur,nom)
+            pattern = "\w+"                     # A-Z, a-z, 0-9 et _ au moins une fois
+            if (re.match(pattern, password)):   # Compare le mot de passe transmi au pattern
+                return True
+            else:
+                return False
     # --------------------------------- #   
         
     def AllerAInscription(self):
@@ -441,6 +474,6 @@ class Vue():
             self.placeHolderEntryNom=True
     
 if __name__ == '__main__':
-    m=Vue(0,"Employe007","127.0.0.1")
+    m=Vue(0,"127.0.0.1")
     m.root.mainloop()
     

@@ -137,21 +137,35 @@ class Vue():
     def ajouterCarte(self, noListe):
         noCarte=0
         colonne = self.tableauDeColonne[noListe]
-        noCarte+=1
-        self.tableauDeCarte[noListe][noCarte]=Entry(colonne,width=32)
-        noCarte=1
-        contenu = self.tableauDeCarte[noListe][noCarte]
-        contenu.bind("<Button-1>",command= lambda : self.modifierCarte(noCarte,noListe))
+        contenu = Entry(colonne,width=32)
+        contenu.bind("<Button-1>", self.modifierCarte(noCarte,colonne))
         contenu.grid()
-    def modifierCarte(self,noCarte,noListe):
-        carte = self.tableauDeCarte[noListe][noCarte]
+        noCarte+=1
+
         
+    def changerCarte(self,noCarte):
+        listeInfoCarte = [self.entreeModificationCarte.get()]
+
+        self.tableauDeCarte[noCarte]=listeInfoCarte;
+        self.fenetreModificationCarte.destroy()
+
+
+    def modifierCarte(self,noCarte,colonne):
+        self.tableauDeCarte.append([])
+
+        self.fenetreModificationCarte = Toplevel(self.root )
+        self.fenetreModificationCarte.wm_title("Modification de Carte")
+            
+        self.texteModificationCarte = Label(self.fenetreModificationCarte, text="Nom de la carte :",)
+        self.texteModificationCarte.grid(row=1,column=1, padx=50, pady=(30,10))
+              
+        self.entreeModificationCarte = Entry(self.fenetreModificationCarte)
+        self.entreeModificationCarte.grid(row=2,column=1, padx=50, pady=(0,10))
+                
+        self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte",command= lambda:self.changerCarte(noCarte))
+        self.boutonModificationCarte.grid(row=3,column=1, padx=50, pady=(0,30))
+
         
-    def accesScrum(self):
-        ad="http://"+ipserveur+":"+self.nodeport
-        self.serveur=ServerProxy(ad)
-        mod = self.serveur.requetemodule()
-        self.requetemodule(mod)    
     def salutations(self):
         pass
     def fermerfenetre(self):

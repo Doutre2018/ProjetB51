@@ -2,7 +2,7 @@
 from tkinter import *
 from tkinter import tix
 from tkinter import ttk
-from PIL import Image,ImageDraw, ImageTk
+#from PIL import Image,ImageDraw, ImageTk
 import os,os.path
 import math
 from helper import Helper as hlp
@@ -10,37 +10,27 @@ from msilib.schema import Font
 
 class Vue():
     def __init__(self,parent,largeur=800,hauteur=600):
-        #Variable de BD
-        self.projetName="Projet de Gestion de Projet"
-        self.utilisateursEtRole ={"Joé":"Donnée",
-                                  "Claudia":"Maquette",
-                                  "Ludovic":"Maquette",
-                                  "JF":"Rien",
-                                  "Simon":"Rien",
-                                  "Danick":"Maquette",
-                                  "Marylene":"Rien",}
-        self.dicodesprint={1:"29 oct. 2018",
-                           2:"29 oct. 2018",
-                           3:"29 oct. 2018"}
-        
-        
+
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.attributes("-fullscreen", False)
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
         self.modele=None
-        self.largeurDefault=largeur/7
-        self.hauteurDefault=hauteur/4.5
-        self.largeur=self.root.winfo_screenwidth()/7
-        self.hauteur=self.root.winfo_screenmmheight()/4.5
-        self.cadrebaseExiste=False
+        
+        self.largeurDefault=largeur
+        self.hauteurDefault=hauteur
+        self.largeurEcran=self.root.winfo_screenwidth()
+        self.hauteurEcran=self.root.winfo_screenmmheight()
+        
+        self.cadrecrcExiste=False
 
         self.images={}
         self.cadreactif=None
-        self.fullscreen=True
         self.creercadres()
-        self.changecadre(self.cadrebase)
+        self.changecadre(self.cadreAnalyse)
+
+
         
     def changemode(self,cadre):
         if self.modecourant:
@@ -59,157 +49,232 @@ class Vue():
     
         
     def creercadres(self):
-        self.creercadrebase()
+        self.creercadreAnalyse()
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
-        
-    def requetemodule(self,mod):
-        rep=self.serveur.requetemodule(mod)
-        if rep:
-            print(rep[0])
-            cwd=os.getcwd()
-            lieuApp="/gp_"+rep[0]
-            lieu=cwd+lieuApp
-            print(lieu)
-            if not os.path.exists(lieu):
-                os.mkdir(lieu) #plante s'il exist deja
-            reso=rep[1]
-            print(rep[1])
-            for i in rep[2]:
-                if i[0]=="fichier":
-                    nom=reso+i[1]
-                    rep=self.serveur.requetefichier(nom)
-                    fiche=open(lieu+"/"+i[1],"wb")
-                    fiche.write(rep.data)
-                    fiche.close()
-            chaineappli="."+lieuApp+lieuApp+".py"
-
-            self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport],shell=0) 
-        else:
-            print("RIEN") 
-            
-    def creermenu(self):
-        self.menubar = Menu(self.root)
-
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Nouveau Projet", command=self.salutations)
-        self.filemenu.add_command(label="Ouvrir", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer sous ...", command=self.salutations)
-        self.filemenu.add_separator()
-        self.filemenu.add_command(label="Fermer", command=self.root.quit)
-        self.menubar.add_cascade(label="Fichier", menu=self.filemenu)
-        
-        self.editmenu = Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Undo", command=self.salutations)
-        self.editmenu.add_command(label="Redo", command=self.salutations)
-        self.editmenu.add_separator()
-        self.editmenu.add_command(label="Copier", command=self.salutations)
-        self.editmenu.add_command(label="Couper", command=self.salutations)
-        self.editmenu.add_command(label="Coller", command=self.salutations)
-        self.menubar.add_cascade(label="Edition", menu=self.editmenu)
-        
-        self.aidemenu = Menu(self.menubar, tearoff=0)
-        self.aidemenu.add_command(label="Read-Me 1", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 2", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 3", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 4", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 5", command=self.salutations)
-        self.menubar.add_cascade(label="Aide", menu=self.aidemenu)
-        
-        self.affichagemenu = Menu(self.menubar, tearoff=0)
-        self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode)
-        self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
-        
-        self.menubar.add_command(label="Fermer", command=self.root.quit)
-        self.menu = Menu(self.root, tearoff=0)
-        self.menu.add_command(label="Nom", command=self.salutations)
-        self.menu.add_command(label="Verbe", command=self.salutations)
-        
-        #self.frame = Frame(self.root, width=512, height=512)
-        #self.frame.pack()
-        #self.frame.bind("<Button-3>", self.popup)
-        self.root.config(menu=self.menubar) 
-    def fullScreenMode(self): 
-        if(self.fullscreen):
-            self.fullscreen=False
-            self.largeur=self.largeurDefault
-            self.hauteur=self.hauteurDefault
-            self.root.attributes("-fullscreen", False)
-            self.creercadres()
-            self.changecadre(self.cadrebase)
-        else:
-             self.fullscreen=True
-             self.largeur=self.root.winfo_screenwidth()/7
-             self.hauteur=self.root.winfo_screenmmheight()/4.5
-             self.root.attributes("-fullscreen", True)
-             self.creercadres()
-             self.changecadre(self.cadrebase)
-    def destroyCadreBase(self):
-        self.cadrebase.destroy()
-        self.boutonAnalyse.destroy()
-        self.affichagemenu.destroy()
-        self.boutonBudget.destroy()
-        self.boutonCasUsage.destroy()
-        self.boutonCrc.destroy()
-        self.boutonDonnee.destroy()
-        self.boutonMandat.destroy()
-        self.boutonMaquette.destroy()
-        self.boutonProjet1.destroy()
-        self.boutonProjet2.destroy()                        
-        self.boutonProjet3.destroy()
-        self.boutonScrum.destroy()
-        self.boutonTchat.destroy()
-        self.boutonTerlow.destroy()                      
+                         
               
-    def creercadrebase(self):
-        self.cadrebase=Frame(self.root)
+    def creercadreAnalyse(self):
+        #permet d'intégrer l'application dans l'application de base
+        self.root.overrideredirect(True) #Enleve la bordure
+        self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
-        self.scroll = Scrollbar(self.root)
-        self.mandatTexte = Text(self.root,bg="#09436B",height=int(self.hauteur/4),foreground="white")
-        self.scroll.grid(row=1,column=3,rowspan=4)
-        self.mandatTexte.grid(row=1,column=3,columnspan=6)
-        self.scroll.config(command=self.mandatTexte.yview)
-        self.mandatTexte.config(yscrollcommand=self.scroll.set)
-        self.mandatTexte.insert(INSERT, "MANDAT :")
-        self.mandatTexte.config(state=DISABLED)
+        self.cadreAnalyse=Frame(self.root)
 
-        #self.fontTitle = tkFont.Font(family="Helvetica",size=36,weight="bold")
-        self.projetTexte = Entry(self.root,foreground="black",font="-size 34", width=32,background="#526EFF",justify='center')
-        self.projetTexte.grid(row=5,column=2,columnspan=8)
-        self.projetTexte.insert(INSERT, self.projetName)
-        self.projetTexte.config(state=DISABLED)
-        
-        self.listeSprint = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/6))
-        self.listeSprint.grid(row=6,column=4,rowspan=4,columnspan=4)
-        for sprint in self.dicodesprint.keys():
-                 self.listeSprint.insert(END,"Sprint " + str(sprint) + "................."+self.dicodesprint[sprint])
+        self.lTitreCRC= Label(self.cadreAnalyse, text= "Analyse",font= "arial, 20")
+        self.lTitreCRC.grid(padx=100 ,row=0, column=0,  columnspan=2)
         
         
-        self.listeTexte = Entry(self.root,foreground="black", font="-size 16",width=80,background="#526EFF",justify='center')
-        self.listeTexte.grid(row=10,column=2,columnspan=8)
-        self.listeTexte.insert(INSERT, "Membre \t\t\t\t Travail sur")
-        self.listeTexte.config(state=DISABLED)
+        self.lVerbe = Label(self.cadreAnalyse, text= "Verbe",font= "arial, 12")
+        self.lVerbe.grid(row=1, column=1,)
+        self.lNom = Label(self.cadreAnalyse, text= "Nom",font= "arial, 12")
+        self.lNom.grid(row=1, column=2,)
+        self.lAjectif = Label(self.cadreAnalyse, text= "Ajectif",font= "arial, 12")
+        self.lAjectif.grid(row=1, column=3,)
         
-        self.listeMembre = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/5))
-        self.listeMembre.grid(row=11,column=3,rowspan=5,columnspan=4)
-        for membre in self.utilisateursEtRole.keys():
-                 self.listeMembre.insert(END,membre )
-        self.listeOccupation = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/5))
-        self.listeOccupation.grid(row=11,column=6,rowspan=5,columnspan=4)
-        for membre in self.utilisateursEtRole.keys():
-                 self.listeOccupation.insert(END,self.utilisateursEtRole[membre])
-        self.cadrebaseExiste=True
-    def accesScrum(self):
-        ad="http://"+ipserveur+":"+self.nodeport
-        self.serveur=ServerProxy(ad)
-        mod = self.serveur.requetemodule()
-        self.requetemodule(mod)    
-    def salutations(self):
-        pass
+        
+        self.lexplicite = Label(self.cadreAnalyse, text= "Explicite",font= "arial, 12")
+        self.lexplicite.grid(row=3, column=0,)
+        self.lImplicite = Label(self.cadreAnalyse, text= "Implicite",font= "arial, 12")
+        self.lImplicite.grid(row=5, column=0,)
+        self.lSuplementaire = Label(self.cadreAnalyse, text= "Suplementaire",font= "arial, 12")
+        self.lSuplementaire.grid(row=7, column=0,)
+        
+        self.BVerbeExplicite= Label(self.cadreAnalyse, text ="+", font= "arial, 16")
+        self.BVerbeExplicite.grid(row=2, column=1)
+        self.BVerbeImplicite= Label(self.cadreAnalyse, text ="+", font= "arial, 16")
+        self.BVerbeImplicite.grid(row=4, column=1)
+        self.BVerbeSuplementaire=Label(self.cadreAnalyse, text ="+", font= "arial, 16")
+        self.BVerbeSuplementaire.grid(row=6, column=1)
+        self.BNomExplicite =Label(self.cadreAnalyse, text ="+", font= "arial, 16")
+        self.BNomExplicite.grid(row=2, column= 2);
+        self.BNomImplicite =Label(self.cadreAnalyse, text ="+", font= "arial, 16")
+        self.BNomImplicite.grid(row=4, column= 2);
+        self.BNomSuplementaire =Label(self.cadreAnalyse, text ="+", font= "arial, 16")
+        self.BNomSuplementaire.grid(row=6, column= 2);
+        self.BAdjectifExplicite =Label(self.cadreAnalyse, text ="+", font= "arial, 16")
+        self.BAdjectifExplicite.grid(row=2, column= 3);
+        self.BAjdectifImplicite =Label(self.cadreAnalyse, text ="+", font= "arial, 16")
+        self.BAjdectifImplicite.grid(row=4, column= 3);
+        self.BAjdectifSuplementaire =Label(self.cadreAnalyse, text ="+", font= "arial, 16")
+        self.BAjdectifSuplementaire.grid(row=6, column= 3);
+        
+        self.BVerbeExplicite.bind("<ButtonRelease-1>",self.NouveauVerbeExplicite)
+        self.BVerbeImplicite.bind("<ButtonRelease-1>",self.NouveauVerbeImplicite)
+        self.BVerbeSuplementaire.bind("<ButtonRelease-1>",self.NouveauVerbeSuplementaire)
+        
+        self.BNomExplicite.bind("<ButtonRelease-1>",self.NouveauNomExplicite)
+        self.BNomImplicite.bind("<ButtonRelease-1>",self.NouveauNomImplicite)
+        self.BNomSuplementaire.bind("<ButtonRelease-1>",self.NouveauNomSuplementaire)
+        
+        self.BAdjectifExplicite.bind("<ButtonRelease-1>",self.NouveauAjectifExplicite)
+        self.BAjdectifImplicite.bind("<ButtonRelease-1>",self.NouveauAjectifImplicite)
+        self.BAjdectifSuplementaire.bind("<ButtonRelease-1>",self.NouveauAjectifSupplementaire)
+        
+        
+        self.lBVerbeExplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=7)
+        self.lBVerbeExplicite.grid(row=3, column= 1);
+        self.lBVerbeImplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=7)
+        self.lBVerbeImplicite.grid(row=5, column= 1);
+        self.lBVerbeSuplementaire = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=7)
+        self.lBVerbeSuplementaire.grid(row=7, column= 1);
+        self.lBNomExplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=7)
+        self.lBNomExplicite.grid(row=3, column= 2);
+        self.lBNomImplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=7)
+        self.lBNomImplicite.grid(row=5, column= 2);
+        self.lBNomSuplementaire = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=7)
+        self.lBNomSuplementaire.grid(row=7, column= 2);
+        self.lBAdjectifExplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=7)
+        self.lBAdjectifExplicite.grid(row=3, column= 3);
+        self.lBAjdectifImplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=7)
+        self.lBAjdectifImplicite.grid(row=5, column= 3);
+        self.lBAjdectifSuplementaire = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=7)
+        self.lBAjdectifSuplementaire.grid(row=7, column= 3);
+
+
+
+        self.cadrecrcExiste=True
+
     def fermerfenetre(self):
         print("ON FERME la fenetre")
         self.root.destroy()
+      
+    def NouveauVerbeExplicite(self,evt):  
+        self.frameNouveauVerbeExplicite =Toplevel(self.root)
+        self.lTitre=Label(self.frameNouveauVerbeExplicite, text="Nouveau Verbe Explicite",font= "arial, 20")
+        self.lTitre.grid();
+        self.entryNew = Entry(self.frameNouveauVerbeExplicite)
+        self.entryNew.grid()
+        
+        self.bAjouter= Button(self.frameNouveauVerbeExplicite, text="Ajouter" ,command=self.AjouterNouveauVerbeExplicite)
+        self.bAjouter.grid();     
+        
+    def NouveauVerbeImplicite(self,evt): 
+        self.frameNouveauVerbeImplicite =Toplevel(self.root) 
+        self.lTitre=Label(self.frameNouveauVerbeImplicite, text="Nouveau Verbe Implicite",font= "arial, 20")
+        self.lTitre.grid();
+        self.entryNew = Entry(self.frameNouveauVerbeImplicite)
+        self.entryNew.grid()
+           
+        self.bAjouter= Button(self.frameNouveauVerbeImplicite, text="Ajouter" ,command=self.AjouterNouveauVerbeImplicite)
+        self.bAjouter.grid();   
+        
+    def NouveauVerbeSuplementaire(self,evt):  
+        self.frameNouveauVerbeSuplementaire =Toplevel(self.root)
+        self.lTitre=Label(self.frameNouveauVerbeSuplementaire, text="Nouveau Verbe supplementaire",font= "arial, 20")
+        self.lTitre.grid();
+        self.entryNew = Entry(self.frameNouveauVerbeSuplementaire)
+        self.entryNew.grid()
+         
+        self.bAjouter= Button(self.frameNouveauVerbeSuplementaire, text="Ajouter" ,command=self.AjouterNouveauVerbeSupplementaire)
+        self.bAjouter.grid();   
+        
+    def NouveauNomExplicite(self,evt):  
+        self.frameNouveauNomExplicite =Toplevel(self.root)
+        self.lTitre=Label(self.frameNouveauNomExplicite, text="Nouveau nom explicite",font= "arial, 20")
+        self.lTitre.grid();
+        self.entryNew = Entry(self.frameNouveauNomExplicite)
+        self.entryNew.grid()
+         
+        self.bAjouter= Button(self.frameNouveauNomExplicite, text="Ajouter" ,command=self.AjouterNouveauNomExplicite)
+        self.bAjouter.grid();  
     
+    def NouveauNomImplicite(self,evt): 
+        self.frameNouveauNomImplicite =Toplevel(self.root) 
+        self.lTitre=Label(self.frameNouveauNomImplicite, text="Nouveau Nom Implicite",font= "arial, 20")
+        self.lTitre.grid();
+        self.entryNew = Entry(self.frameNouveauNomImplicite)
+        self.entryNew.grid()
+           
+        self.bAjouter= Button(self.frameNouveauNomImplicite, text="Ajouter" ,command=self.AjouterNouveauNomImplicite)
+        self.bAjouter.grid(); 
+     
+    def NouveauNomSuplementaire(self,evt):  
+        self.frameNouveauNomSuplementaire =Toplevel(self.root)
+        self.lTitre=Label(self.frameNouveauNomSuplementaire, text="Nouveau Nom supplementaire",font= "arial, 20")
+        self.lTitre.grid();
+        self.entryNew = Entry(self.frameNouveauNomSuplementaire)
+        self.entryNew.grid()
+         
+        self.bAjouter= Button(self.frameNouveauNomSuplementaire, text="Ajouter" ,command=self.AjouterNouveauNomSupplementaire)
+        self.bAjouter.grid();      
+   
+    def NouveauAjectifExplicite(self,evt):  
+        self.frameNouveauAjectifExplicite =Toplevel(self.root)
+        self.lTitre=Label(self.frameNouveauAjectifExplicite, text="Nouvelle adjectif explicite",font= "arial, 20")
+        self.lTitre.grid();
+        self.entryNew = Entry(self.frameNouveauAjectifExplicite)
+        self.entryNew.grid()
+         
+        self.bAjouter= Button(self.frameNouveauAjectifExplicite, text="Ajouter" ,command=self.AjouterNouveauAdjectifExplicite)
+        self.bAjouter.grid();   
+       
+    def NouveauAjectifImplicite(self,evt):  
+        self.frameNouveauAjectifImplicite =Toplevel(self.root)
+        self.lTitre=Label(self.frameNouveauAjectifImplicite, text="Nouvelle adjectif implicite",font= "arial, 20")
+        self.lTitre.grid();
+        self.entryNew = Entry(self.frameNouveauAjectifImplicite)
+        self.entryNew.grid()
+         
+        self.bAjouter= Button(self.frameNouveauAjectifImplicite, text="Ajouter" ,command=self.AjouterNouveauAdjectifImplicite)
+        self.bAjouter.grid();  
+        
+    def NouveauAjectifSupplementaire(self,evt):  
+        self.frameNouveauAjectifSupplementaire =Toplevel(self.root)
+        self.lTitre=Label(self.frameNouveauAjectifSupplementaire, text="Nouvelle adjectif supplementaire",font= "arial, 20")
+        self.lTitre.grid();
+        self.entryNew = Entry(self.frameNouveauAjectifSupplementaire)
+        self.entryNew.grid()
+         
+        self.bAjouter= Button(self.frameNouveauAjectifSupplementaire, text="Ajouter" ,command=self.AjouterNouveauAdjectifSupplementaire)
+        self.bAjouter.grid();  
+        
+        
+       
+       
+       
+        
+    def AjouterNouveauVerbeExplicite(self):  
+        self.newInsert=self.entryNew.get();
+        self.lBVerbeExplicite.insert(END, self.newInsert)
+        self.frameNouveauVerbeExplicite.destroy()
+        
+    def AjouterNouveauVerbeImplicite(self):  
+        self.newInsert=self.entryNew.get();
+        self.lBVerbeImplicite.insert(END, self.newInsert)
+        self.frameNouveauVerbeImplicite.destroy()
+       
+    def AjouterNouveauVerbeSupplementaire(self):  
+        self.newInsert=self.entryNew.get();
+        self.lBVerbeSuplementaire.insert(END, self.newInsert)
+        self.frameNouveauVerbeSuplementaire.destroy()
+        
+    def AjouterNouveauNomExplicite(self):  
+        self.newInsert=self.entryNew.get();
+        self.lBNomExplicite.insert(END, self.newInsert)
+        self.frameNouveauNomExplicite.destroy()
+        
+    def AjouterNouveauNomImplicite(self):  
+        self.newInsert=self.entryNew.get();
+        self.lBNomImplicite.insert(END, self.newInsert)
+        self.frameNouveauNomImplicite.destroy()
+    
+    def AjouterNouveauNomSupplementaire(self):  
+        self.newInsert=self.entryNew.get();
+        self.lBNomSuplementaire.insert(END, self.newInsert)
+        self.frameNouveauNomSuplementaire.destroy()
+        
+    def AjouterNouveauAdjectifExplicite(self):  
+        self.newInsert=self.entryNew.get();
+        self.lBAdjectifExplicite.insert(END, self.newInsert)
+        self.frameNouveauAjectifExplicite.destroy()
+        
+    def AjouterNouveauAdjectifImplicite(self):  
+        self.newInsert=self.entryNew.get();
+        self.lBAjdectifImplicite.insert(END, self.newInsert)
+        self.frameNouveauAjectifImplicite.destroy()
+        
+    def AjouterNouveauAdjectifSupplementaire(self):  
+        self.newInsert=self.entryNew.get();
+        self.lBAjdectifSuplementaire.insert(END, self.newInsert)
+        self.frameNouveauAjectifSupplementaire.destroy()

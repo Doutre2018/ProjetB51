@@ -96,7 +96,7 @@ class Modele():
         commande="DELETE FROM Cartes WHERE classe='"
         commande=commande+str(nomCarte)+"';"
         self.serveur.requeteInsertionPerso(commande)
-        print("supprimée")
+        print("Carte supprimée")
     
 if __name__ == '__main__':
     c=Controleur()

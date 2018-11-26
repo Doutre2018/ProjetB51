@@ -76,7 +76,8 @@ class Vue():
         
         #self.ListeCRC.insert(0, "Modele")
         for nom in self.modele.listeCartes:
-            self.ListeCRC.insert(0,nom)
+            for i in nom:
+                self.ListeCRC.insert(0,i)
 
         self.ListeCRC.grid(row=1, column=1)
         self.ListeCRC.bind("<ButtonRelease-1>",self.modifierCRC)

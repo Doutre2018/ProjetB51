@@ -11,7 +11,6 @@ from IdMaker import Id
 from gp_analyse_modele import *
 from xmlrpc.client import ServerProxy
 
-
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")

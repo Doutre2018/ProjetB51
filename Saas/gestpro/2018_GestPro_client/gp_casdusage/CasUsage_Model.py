@@ -21,12 +21,14 @@ class Scenarii():
         self.projectID = parent.projectID
         self.lignes = 0
         
+    
+        
        
     def connectionServeurCourant(self):  
         with open("adresseServeurCourant.txt", "r") as fichier:
             self.adresseServeur = fichier.read()  
         
-    def affichageTableau(self):
+    def fetchCas(self, parent):
         #self.conn = sqlite3.connect('exemplesSQLITEData.jmd') #establish connection...
         #self.curseur = self.conn.cursor()
         
@@ -38,8 +40,9 @@ class Scenarii():
         
         
         ListeContenu = []
+        ListeContenu.append("test")
         
-        for i in range(countCases):
+        for i in range(nbCasUsage):
             #self.parent.serveur.requeteInsertion("Projet", ListeInsert)    
             ListeContenu.append(self.parent.serveur.requeteSelection('''"select texte from CasUsage JOIN Projet ON Projet.id = CasUsage.id_projet where CasUsage.id = ?", i'''))
             
@@ -50,16 +53,17 @@ class Scenarii():
             '''
         
         
-        self.curseur.execute('''Select MAX(ligne) from Scenarii JOIN CasUsage ON Scenarii.id_casUsage = CasUsage.id JOIN Projet ON Projet.id = CasUsage.id_projet''')
-        maxLines = self.curseur.fetchall()
+        #self.curseur.execute('''Select MAX(ligne) from Scenarii JOIN CasUsage ON Scenarii.id_casUsage = CasUsage.id JOIN Projet ON Projet.id = CasUsage.id_projet''')
+       # maxLines = self.curseur.fetchall()
 
-        TxtColScenarii = [[]]
-        
+        #TxtColScenarii = [[]]
+        '''
         for k in range(3):
             for j in range(maxLines):
-                self.curseur.execute('''Select texte from TypeDonn�Sc�nario JOIN Scenarii ON TypeDonn�eSc�nario.id = Scenarii.id_donnees where id_colonne = ?''', k)
+                self.curseur.execute(Select texte from TypeDonn�Sc�nario JOIN Scenarii ON TypeDonn�eSc�nario.id = Scenarii.id_donnees where id_colonne = ?, k)
                 TxtColScenarii[k][j].append(self.curseur.fetchall())
-            
+        '''    
+        return ListeContenu
         
     def newDataEnteredScenarii(self, textColonne, ScenariiNo, colonneNo, currentCase, lineNb):
             self.currentProject = self.projectID

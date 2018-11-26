@@ -19,7 +19,8 @@ class Controleur():
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
-        
+    def fetch(self):
+        pass
     
 if __name__ == '__main__':
     c=Controleur()

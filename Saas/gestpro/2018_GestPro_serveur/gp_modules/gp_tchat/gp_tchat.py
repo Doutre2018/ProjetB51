@@ -19,8 +19,11 @@ class Controleur():
        # self.connectionServeurCourant()
         self.modele=None
         self.vue=Vue(self)
+        self.reloadMessageBD()
         self.vue.root.mainloop()
-
+    def reloadMessageBD(self):
+        self.vue.ajoutMessageBD()
+        self.vue.root.after(100,self.reloadMessageBD)
     def connectionServeurCourant(self):  
         try:
             with open("adresseServeurCourant.txt", "r") as fichier:

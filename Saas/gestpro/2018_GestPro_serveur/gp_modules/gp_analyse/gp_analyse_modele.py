@@ -12,7 +12,6 @@ from IdMaker import Id
 class Modele():
     def __init__(self, parent):
         print("Bienvenue dans le modele ..")
-        #self.bd = BD()
         self.listeType = ["Nom explicite",
                           "Verbe implicite",
                           "Adjectif supplementaire",
@@ -21,20 +20,42 @@ class Modele():
                           "Nom implicite",
                           "Nom supplementaire",
                           "Verbe explicite",
-                          "Verbe supplementaire",]
-        #self.lesTypes = self.bd.selection("SELECT nom FROM TypeMot")
+                          "Verbe supplementaire"]
         self.creerType()
+        self.numProjet
+        self.typeDonnee
+        self.lesTypes = []
+        self.lesVerbesImp = []
+        self.lesNomsImp = []
+        self.lesAdjectifsImp =[]
+        self.lesVerbesSup = []
+        self.lesNomsSup = []
+        self.lesAdjectifSup =[]
+        self.lesVerbesEx = []
+        self.lesNomsEx
+        self.lesAdjectifsEx
+        self.selectAffichage()
+
+
+    
         
+    def InsertInto(self,ligne, colonne, nomProjet, type):
+        self.numProjet = BD.selection("SELECT id FROM Projet WHERE nom = " + nomProjet)
+        self.typeDonnee = BD.selection("SELECT id FROM TypeMot WHERE nom = " + type)
+        BD.insertionPerso("INSERT INTO AnalyseTextuelle(ligne, colonne, id_projet, id_type) VALUES( " + ligne + ", " + colonne + ", " + numProjet + ", " + typeDonnee + " )") 
         
         
     def creerType(self):
-        for type in self.listeType:
-            if type in self.lesTypes:
-                pass
-            else:
-                self.bd.curseur.execute("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
-
-                #self.bd.curseur.execute("")
+        try:
+            self.lesTypes = self.BD.selection("SELECT nom FROM TypeMot")
+        except:
+            for type in self.listeType :
+                    BD.insertionPerso("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
+                    
+    def selectAffichage(self):
+        self.lesVerbesImp = self.BD.selection("SELECT ligne,colonne")
+        
+        
             
         
         

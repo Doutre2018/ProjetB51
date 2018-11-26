@@ -8,6 +8,7 @@ import math
 from helper import Helper as hlp
 from msilib.schema import Font
 from IdMaker import Id
+from tkinter.tix import COLUMN
 
 class Vue():
     def __init__(self,parent,largeur=1200,hauteur=800):
@@ -121,7 +122,10 @@ class Vue():
     def ajouterListe(self):
         self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="white",bd=4,highlightcolor="red",highlightthickness=1))
         liste = self.tableauDeColonne[self.nbListe]
-        
+
+        liste.bind('<Button-3>', lambda evt: self.deplacerColonneRight(evt, liste,self.nbListe))
+        liste.bind('<Button-2>', lambda evt: self.deplacerColonneLeft(evt, liste,self.nbListe))
+
         titre = Entry(liste, width=32)
         titre.insert(END, "Titre")
         noListe=self.nbListe
@@ -129,6 +133,7 @@ class Vue():
         
         liste.grid(column=self.nbListe,row=1,padx=10)
         titre.grid(row=0)
+
         boutonAjoutCarte.grid(row=1)
         self.nbListe+=1
 
@@ -137,33 +142,80 @@ class Vue():
     def ajouterCarte(self, noListe):
         noCarte=0
         colonne = self.tableauDeColonne[noListe]
-        contenu = Entry(colonne,width=32)
-        contenu.bind("<Button-1>", self.modifierCarte(noCarte,colonne))
+        contenuText =StringVar()
+        contenu = Entry(colonne,width=32,text=contenuText)
+        self.tableauDeCarte.append([])
+        contenu.bind("<Double-Button-1>", lambda evt: self.modifierCarte(evt,noCarte,colonne,contenuText))
         contenu.grid()
         noCarte+=1
 
+    def deplacerColonneRight(self,evt,colonne,noliste):
+        g = colonne.grid_info()
         
-    def changerCarte(self,noCarte):
-        listeInfoCarte = [self.entreeModificationCarte.get()]
+        if(g['column'] < self.nbListe):
+            colonne.grid(column=g['column']+1,row=g['row'])
+            colonne.bind('<Button-3>', lambda evts: self.deplacerColonneRight(evts, colonne,g['column']+1))
+    
+            if 'self.tableauDeColonne[self.nbListe+1]' in globals():
+                colonne2=self.tableauDeColonne[g['column']+1]
+                colonne2.grid(column=g['column'],row=g['row'])
+                colonne2.bind('<Button-3>', lambda evts: self.deplacerColonneRight(evts, colonne,g['column']))
 
+                temp = self.tableauDeColonne[self.nbListe]
+                self.tableauDeColonne[self.nbListe] = self.tableauDeColonne[self.nbListe+1]
+                self.tableauDeColonne[self.nbListe+1]=temp
+    def deplacerColonneLeft(self,evt,colonne,noliste):
+        g = colonne.grid_info()
+        
+        if(g['column'] < self.nbListe):
+            colonne.grid(column=g['column']+1,row=g['row'])
+            colonne.bind('<Button-2>', lambda evts: self.deplacerColonneLeft(evts, colonne,g['column']-1))
+    
+            if 'self.tableauDeColonne[self.nbListe+1]' in globals():
+                colonne2=self.tableauDeColonne[g['column']-1]
+                colonne2.grid(column=g['column'],row=g['row'])
+                colonne2.bind('<Button-2>', lambda evts: self.deplacerColonneLeft(evts, colonne,g['column']))
+
+                temp = self.tableauDeColonne[self.nbListe]
+                self.tableauDeColonne[self.nbListe] = self.tableauDeColonne[self.nbListe-1]
+                self.tableauDeColonne[self.nbListe-1]=temp
+            
+    def changerCarte(self,noCarte,contenuText):
+        listeInfoCarte = []
+        listeInfoCarte.append(self.entreeNomCarte.get())
+        listeInfoCarte.append(self.entreeDescriptionCarte.get("1.0",END))
+        listeInfoCarte.append(self.entreeeProprietaireCarte.get())
         self.tableauDeCarte[noCarte]=listeInfoCarte;
+        contenuText.set(listeInfoCarte[0])
         self.fenetreModificationCarte.destroy()
 
 
-    def modifierCarte(self,noCarte,colonne):
+    def modifierCarte(self,evt,noCarte,colonne,contenuText):
         self.tableauDeCarte.append([])
 
         self.fenetreModificationCarte = Toplevel(self.root )
         self.fenetreModificationCarte.wm_title("Modification de Carte")
             
-        self.texteModificationCarte = Label(self.fenetreModificationCarte, text="Nom de la carte :",)
-        self.texteModificationCarte.grid(row=1,column=1, padx=50, pady=(30,10))
+        self.texteNomCarte = Label(self.fenetreModificationCarte, text="Nom de la carte :",)
+        self.texteNomCarte.grid(row=1,column=1, padx=50, pady=(30,10))
               
-        self.entreeModificationCarte = Entry(self.fenetreModificationCarte)
-        self.entreeModificationCarte.grid(row=2,column=1, padx=50, pady=(0,10))
+        self.entreeNomCarte = Entry(self.fenetreModificationCarte)
+        self.entreeNomCarte.grid(row=2,column=1, padx=50, pady=(0,10))
+        
+        self.texteDescriptionCarte = Label(self.fenetreModificationCarte, text="Description :",)
+        self.texteDescriptionCarte.grid(row=3,column=1, padx=50, pady=(30,10))
+              
+        self.entreeDescriptionCarte = Text(self.fenetreModificationCarte)
+        self.entreeDescriptionCarte.grid(row=4,column=1, padx=50, pady=(0,10))
+        
+        self.texteProprietaireCarte = Label(self.fenetreModificationCarte, text="Proprietaire :",)
+        self.texteProprietaireCarte.grid(row=5,column=1, padx=50, pady=(30,10))
+              
+        self.entreeeProprietaireCarte = Entry(self.fenetreModificationCarte)
+        self.entreeeProprietaireCarte.grid(row=6,column=1, padx=50, pady=(0,10))
                 
-        self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte",command= lambda:self.changerCarte(noCarte))
-        self.boutonModificationCarte.grid(row=3,column=1, padx=50, pady=(0,30))
+        self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte",command= lambda:self.changerCarte(noCarte,contenuText))
+        self.boutonModificationCarte.grid(row=7,column=1, padx=50, pady=(0,30))
 
         
     def salutations(self):

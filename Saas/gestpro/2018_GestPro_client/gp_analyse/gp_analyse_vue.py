@@ -109,7 +109,7 @@ class Vue():
         
         self.BAdjectifExplicite.bind("<ButtonRelease-1>",self.NouveauAjectifExplicite)
         self.BAjdectifImplicite.bind("<ButtonRelease-1>",self.NouveauAjectifImplicite)
-        #self.BAjdectifSuplementaire.bind("<ButtonRelease-1>",self.NouveauAjectifSuplementaire)
+        self.BAjdectifSuplementaire.bind("<ButtonRelease-1>",self.NouveauAjectifSupplementaire)
         
         
         self.lBVerbeExplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=7)
@@ -219,6 +219,16 @@ class Vue():
         self.bAjouter= Button(self.frameNouveauAjectifImplicite, text="Ajouter" ,command=self.AjouterNouveauAdjectifImplicite)
         self.bAjouter.grid();  
         
+    def NouveauAjectifSupplementaire(self,evt):  
+        self.frameNouveauAjectifSupplementaire =Toplevel(self.root)
+        self.lTitre=Label(self.frameNouveauAjectifSupplementaire, text="Nouvelle adjectif supplementaire",font= "arial, 20")
+        self.lTitre.grid();
+        self.entryNew = Entry(self.frameNouveauAjectifSupplementaire)
+        self.entryNew.grid()
+         
+        self.bAjouter= Button(self.frameNouveauAjectifSupplementaire, text="Ajouter" ,command=self.AjouterNouveauAdjectifSupplementaire)
+        self.bAjouter.grid();  
+        
         
        
        
@@ -267,4 +277,4 @@ class Vue():
     def AjouterNouveauAdjectifSupplementaire(self):  
         self.newInsert=self.entryNew.get();
         self.lBAjdectifSuplementaire.insert(END, self.newInsert)
-        self.frameNouveauAjectifImplicite.destroy()
+        self.frameNouveauAjectifSupplementaire.destroy()

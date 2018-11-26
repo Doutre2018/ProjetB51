@@ -15,7 +15,7 @@ from gp_analyse_modele import *
 parentPath = os.path.abspath("../..")
 if parentPath not in sys.path:
     sys.path.insert(0, parentPath)
-from gestpro_serveur import BaseDonnees as BD
+#from gestpro_serveur import BaseDonnees as BD
     
 
 class Controleur():

@@ -211,9 +211,9 @@ class  BaseDonnees():
         self.connecteur = sqlite3.connect('SAAS.db')
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
-        self.insertion('stocks', [1])
+        #self.insertion('stocks', [1])
         self.connecteur.commit()
-        #self.selection("select * from stocks")
+        self.selection("select * from stocks")
         self.connecteur.close()
 
         
@@ -241,7 +241,7 @@ class  BaseDonnees():
             ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date','']],
             ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER','']],
             ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
-            ['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['type','text','']],
+            #['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre', 'INTEGER', ''], ['titre','text','']],
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']]
             ]
@@ -283,7 +283,9 @@ class  BaseDonnees():
             stringCreate += ")"
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
                 
+    
     
     def insertion(self, nomTable = "", listeValeurs=[]):
         stringInsert = "INSERT INTO " + nomTable + " VALUES("

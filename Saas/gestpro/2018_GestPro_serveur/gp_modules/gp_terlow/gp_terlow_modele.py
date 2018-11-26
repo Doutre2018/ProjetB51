@@ -5,15 +5,49 @@ from datetime import datetime
 class Modele():
     def __init__(self, referenceControleur):
         self.referenceControleur = referenceControleur
+        #self.tests()
+        self.data = self.fetchDataBD()
+        self.listeColonnes = []
+        self.creationColonne()
+        #self.testPrint()
+        #self.suppressionColonne(2)
+       # self.testPrint()
     
+    def tests(self):
+        self.referenceControleur.serveur.requeteInsertionPerso("DELETE FROM Colonnes_Terlow")
+        self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (1, 'test1')")
+        self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (2, 'test2')")
+        self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (3, 'test3')")
+        self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (4, 'test4')")
+        
+    #méthode qui va chercher les données pour la création des colonnes
     def fetchDataBD(self):
-        pass
-    
+        data = self.referenceControleur.serveur.requeteSelection("SELECT * FROM Colonnes_Terlow")
+        print(data)
+        return data
+        
     def creationColonne(self):
-        pass
- 
-    def suppressionColonne(self):
-        pass
+        for colonne in self.data:
+            self.listeColonnes.append(Colonne(colonne[0], colonne[1], colonne[2]))
+
+    def suppressionColonne(self, numColonneASupprimer):
+        for i, colonne in enumerate(self.listeColonnes):
+            if colonne.ordre == numColonneASupprimer:
+                del self.listeColonnes[i]
+                break
+        for i, colonne in enumerate(self.listeColonnes):
+            colonne.ordre = i+1
+            
+            
+    def testPrint(self):
+        for i, colonne in enumerate(self.listeColonnes):
+            print("colonne", i+1)
+            print("id=", colonne.id)
+            print("ordre = ", colonne.ordre)
+            print ("titre = ", colonne.titre)
+                
+                
+                
     
     def creationCarte(self):
         pass
@@ -21,12 +55,12 @@ class Modele():
     def suppressionCarte(self):
         pass
     
-#r�f�rence db
 #['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
 #['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['type','text','']],
 
 class Colonne():
-    def __init__(self, ordre, titre, listeCartes):
+    def __init__(self, id, ordre, titre, listeCartes = []):
+        self.id = id
         self.ordre = ordre
         self.titre = titre
         self.listeCartes = listeCartes

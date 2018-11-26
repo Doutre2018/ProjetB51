@@ -65,7 +65,7 @@ class Modele():
     
     def selectIdCarte(self,classe):
         commande ="SELECT id FROM Cartes WHERE classe="
-        commande+=classe
+        commande+= "'" + classe + "'"
         ID = self.serveur.requeteSelection(commande)
         return ID
     

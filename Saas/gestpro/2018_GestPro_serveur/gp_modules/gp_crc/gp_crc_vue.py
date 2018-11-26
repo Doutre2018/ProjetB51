@@ -167,7 +167,7 @@ class Vue():
         #id de la carte qui vient d'être ajoutée
         idCarteAjoutee=self.modele.selectIdCarte(texteboutton)
         
-        texteAtt = self.textAttribut.get()
+        texteAtt = self.textAttribut.get(1.0, "end-1c")
         listeValeurAttribut=[None]*2
         listeValeurAttribut[0]="'"+texteAtt+"'"
         listeValeurAttribut[1]="'"+idCarteAjoutee+"'"

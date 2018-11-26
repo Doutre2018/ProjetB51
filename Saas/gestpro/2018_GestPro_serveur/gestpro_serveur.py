@@ -83,6 +83,7 @@ class ModeleService(object):
         commande = "SELECT nomUtilisateur FROM Utilisateur WHERE nomUtilisateur = '" + nom + "'"
         sql = self.requeteSelection(commande)        # Requête de SELECT à la BD pour chercher le nom transmis
         
+<<<<<<< HEAD
         if sql:
             return False                             # Si le nom est trouvé dans la BD (rep non vide)
         else:
@@ -98,6 +99,18 @@ class ModeleService(object):
                 return True
             
         return False                                # Si au moins une condition n'est pas bonne
+=======
+        self.requeteInsertionPerso("INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES (" + "'" + nom + "'" + ", NULL, NULL)")      # Insert dans la DB du nouvel utilisateur
+        return True                             # Si le nom n'est pas trouvé dans la liste
+    
+    def nomExiste(self, nom):
+        liste = self.listeNoms()
+        for n in liste:                         # Parcours les noms dans la liste
+            if n == nom:                        # Compare le nom à la liste de nom
+                return True                     # Nom existe déjà, donc pas unique 
+
+        return False                            # Si le nom n'est pas trouvé dans la liste
+>>>>>>> BD
     # ---------------------------------------- #
             
     #méthode tampon pour insert les données dans la table de la BD du serveur selon le format suivant: nomTable = "string représentant nom", liste valeurs = [10, 'texte1', 50.3]
@@ -125,10 +138,7 @@ class ModeleService(object):
     
     #méthode tampon qui retourne une liste. Chaque élément de la liste correspond à une rangée du select demandé.
     def requeteSelection(self, stringSelect):
-        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db')
-        self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
         listeSelect  = self.baseDonnees.selection(stringSelect)
-        self.baseDonnees.connecteur.close()
         return listeSelect
     
     def getAdresse(self):
@@ -205,7 +215,10 @@ class  BaseDonnees():
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.insertion('stocks', [1])
-        #self.connecteur.close()
+        self.connecteur.commit()
+        #self.selection("select * from stocks")
+        self.connecteur.close()
+
         
     
     def genererListeTables(self):
@@ -221,12 +234,12 @@ class  BaseDonnees():
             ['CasUsage', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['ligne','text',''],['texte','text','']],
             ['Scenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['ligne','text','']],
             ['FonctionsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['fonction','text','']],
-            ['CollaboCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT']],
+            ['CollaboCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['textCollabo','text','']],
             ['FilDeDiscussion', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT']],
             ['TypeForme', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','']],
             ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
             ['ColonnesScenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text',''], ['numero_position','INTEGER','']],
-            ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['classe','text',''], ['ordre','INTEGER','']],
+            ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['classe','text',''], ['ordre','INTEGER',''],['carte_heritage','text',''],['nom_responsable','text','']],
             ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],
             ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date','']],
             ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER','']],
@@ -246,14 +259,11 @@ class  BaseDonnees():
             ['Liaison_Util_Projet', 'id_util','INTEGER', 'Utilisateur', 'id'],
             ['Liaison_Util_Projet', 'id_projet','INTEGER', 'Projet', 'id'],
             ['FilDeDiscussion', 'id_projet','INTEGER', 'Projet', 'id'],
-            ['CollaboCRC', 'idClasse1','INTEGER', 'Cartes', 'id'],
-            ['CollaboCRC', 'idClasse2','INTEGER', 'Cartes', 'id'],
+            ['CollaboCRC', 'id_classe','INTEGER', 'Cartes', 'id'],
             ['FonctionsCRC', 'id_classe','INTEGER', 'Cartes', 'id'],
             ['Scenarii', 'id_casUsage','INTEGER', 'CasUsage', 'id'],
             ['Scenarii', 'id_colonne','INTEGER', 'ColonnesScenarii', 'id'],
             ['AttributsCRC', 'id_classe','INTEGER', 'Cartes', 'id'],
-            ['Cartes', 'id_carte_heritage','INTEGER', 'Cartes', 'id'],
-            ['Cartes', 'idResponsable','INTEGER', 'Utilisateur', 'id'],
             ['Cartes', 'id_projet','INTEGER', 'Projet', 'id'],
             ['Objet_Maquette', 'id_position','INTEGER', 'Position', 'id'],
             ['Objet_Maquette', 'id_type','INTEGER', 'TypeForme', 'id'],
@@ -266,24 +276,16 @@ class  BaseDonnees():
         return listeConst
         
     def creerTables(self, listeTables, listeConst):
-        try:
-            for table in listeTables:
-                stringDropTable = "DROP TABLE "
-                stringDropTable += table[0]
-                self.curseur.execute(stringDropTable)
-        except:
-            pass
-        finally:
-            for table in listeTables:
-                stringCreate = "CREATE TABLE IF NOT EXISTS " + table[0] + "(" 
-                for indiceEntrees in range(len(table)):
-                    if indiceEntrees > 0:
-                        stringCreate +=  table[indiceEntrees][0] + " " + table[indiceEntrees][1] + " " + table[indiceEntrees][2]
-                        if indiceEntrees < len(table)-1:
-                            stringCreate += ", "
-                stringCreate += ")"
-                self.curseur.execute(stringCreate)
-            self.alterTable(listeConst)
+        for table in listeTables:
+            stringCreate = "CREATE TABLE IF NOT EXISTS " + table[0] + "(" 
+            for indiceEntrees in range(len(table)):
+                if indiceEntrees > 0:
+                    stringCreate +=  table[indiceEntrees][0] + " " + table[indiceEntrees][1] + " " + table[indiceEntrees][2]
+                    if indiceEntrees < len(table)-1:
+                        stringCreate += ", "
+            stringCreate += ")"
+            self.curseur.execute(stringCreate)
+        self.alterTable(listeConst)
                 
     
     def insertion(self, nomTable = "", listeValeurs=[]):
@@ -300,17 +302,22 @@ class  BaseDonnees():
         self.curseur.execute(stringInsert)
     
     
-    def selection(self, stringSelect = ""):
+    def selection(self, stringSelect):
+        connecteur = sqlite3.connect('SAAS.db')
+        curseur = connecteur.cursor()
         listeData=[]
-        for rangee in self.curseur.execute(stringSelect):
-            print(rangee)
+        for rangee in curseur.execute(stringSelect):
             listeData.append(rangee)
+        connecteur.close()
         return listeData
             
     def alterTable(self,listeConst):
-        for contrainte in listeConst:
-            stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
-            self.curseur.execute(stringAlterTable)
+        try:
+            for contrainte in listeConst:
+                stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
+                self.curseur.execute(stringAlterTable)
+        except:
+            print("contraintes existent")
     
     def insertionPerso(self,commande):
         self.curseur.execute(commande)

@@ -12,7 +12,6 @@ from IdMaker import Id
 class Modele():
     def __init__(self, parent):
         print("Bienvenue dans le modele ..")
-        self.bd = BD()
         self.listeType = ["Nom explicite",
                           "Verbe implicite",
                           "Adjectif supplementaire",
@@ -22,26 +21,44 @@ class Modele():
                           "Nom supplementaire",
                           "Verbe explicite",
                           "Verbe supplementaire"]
+        #self.creerType()
+        #self.numProjet
+        #self.typeDonnee
         self.creerType()
         self.numProjet
         self.typeDonnee
         self.lesTypes = []
+        self.lesVerbesImp = []
+        self.lesNomsImp = []
+        self.lesAdjectifsImp =[]
+        self.lesVerbesSup = []
+        self.lesNomsSup = []
+        self.lesAdjectifSup =[]
+        self.lesVerbesEx = []
+        self.lesNomsEx
+        self.lesAdjectifsEx
+        self.selectAffichage()
+
+
     
         
-    def InsertInto(self,ligne, colonne, nomProjet, type):
-        self.numProjet = BD.selection("SELECT id FROM Projet WHERE nom = " + nomProjet)
-        self.typeDonnee = BD.selection("SELECT id FROM TypeMot WHERE nom = " + type)
-        BD.insertionPerso("INSERT INTO AnalyseTextuelle(ligne, colonne, id_projet, id_type) VALUES( " + ligne + ", " + colonne + ", " + numProjet + ", " + typeDonnee + " )") 
+    #def InsertInto(self,ligne, colonne, nomProjet, type):
+    #    self.numProjet = BD.selection("SELECT id FROM Projet WHERE nom = " + nomProjet)
+    #    self.typeDonnee = BD.selection("SELECT id FROM TypeMot WHERE nom = " + type)
+    #    BD.insertionPerso("INSERT INTO AnalyseTextuelle(ligne, colonne, id_projet, id_type) VALUES( " + ligne + ", " + colonne + ", " + numProjet + ", " + typeDonnee + " )") 
         
         
-    def creerType(self):
-        try:
-            self.lesTypes = self.BD.selection("SELECT nom FROM TypeMot")
-        except:
-            for type in self.listeType :
-                    BD.insertionPerso("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
+    #def creerType(self):
+    #    try:
+    #        self.lesTypes = self.BD.selection("SELECT nom FROM TypeMot")
+    #    except:
+    #        for type in self.listeType :
+    #                BD.insertionPerso("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
                     
-        print("SELECT * FROM TypeMot")
+    #def selectAffichage(self):
+    #    self.lesVerbesImp = self.BD.selection("SELECT ligne,colonne")
+        
+        
             
         
         

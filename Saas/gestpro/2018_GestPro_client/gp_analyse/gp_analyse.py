@@ -10,11 +10,6 @@ from helper import Helper as hlp
 from IdMaker import Id
 from gp_analyse_modele import *
 from xmlrpc.client import ServerProxy
-parentPath = os.path.abspath("../..")
-if parentPath not in sys.path:
-    sys.path.insert(0, parentPath)
-from gestpro_serveur import BaseDonnees as BD
-
 
 
 class Controleur():
@@ -25,13 +20,14 @@ class Controleur():
         
         self.createurId=Id
         self.connectionServeurCourant()
+        print(self.serveur)
         self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
-    def connectionServeurCourant(self):  
+    def connectionServeurCourant(self):
         try:
-            with open("../adresseServeurCourant.txt", "r") as fichier:
+            with open("adresseServeurCourant.txt", "r") as fichier:
                 self.adresseServeur = fichier.read()       
         except Exception as erreur:
             print(erreur)
@@ -48,7 +44,8 @@ class Controleur():
         except Exception as erreur:
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
-            sys.exit(0)        
+            sys.exit(0)
+
 
 if __name__ == '__main__':
     c=Controleur()

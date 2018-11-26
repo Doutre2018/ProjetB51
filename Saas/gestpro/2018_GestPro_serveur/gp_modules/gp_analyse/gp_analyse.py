@@ -25,9 +25,9 @@ class Controleur():
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
-    def connectionServeurCourant(self):  
+    def connectionServeurCourant(self):
         try:
-            with open("../adresseServeurCourant.txt", "r") as fichier:
+            with open("adresseServeurCourant.txt", "r") as fichier:
                 self.adresseServeur = fichier.read()       
         except Exception as erreur:
             print(erreur)

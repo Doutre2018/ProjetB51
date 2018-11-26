@@ -22,7 +22,7 @@ class Modele():
                           "Verbe explicite",
                           "Verbe supplementaire"]
         #self.creerType()
-       # self.numProjet
+        #self.numProjet
         #self.typeDonnee
         self.creerType()
         self.numProjet

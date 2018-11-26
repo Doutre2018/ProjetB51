@@ -24,7 +24,7 @@ class Vue():
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
         
-        self.cadreterlowExiste=False
+        self.cadrescrumExiste=False
         self.tableauDeColonne=[]
         self.tableauDeCarte=[]
         self.nbListe=0
@@ -32,7 +32,7 @@ class Vue():
         self.cadreactif=None
         self.fullscreen=True
         self.creercadres()
-        self.changecadre(self.cadreterlow)
+        self.changecadre(self.cadrescrum)
         
     def changemode(self,cadre):
         if self.modecourant:
@@ -51,127 +51,81 @@ class Vue():
     
         
     def creercadres(self):
-        self.creercadreterlow()
+        self.creercadrescrum()
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
-    def afficherImage(self):
-        image= Image.open("./terlow.png")
-        image= image.resize((self.largeur, self.hauteur), Image.ANTIALIAS)
-
-        self.img=ImageTk.PhotoImage(image)
-        self.cadreterlow.create_image(0,0,image=self.img,anchor=NW)
               
-    def creercadreterlow(self):
+    def creercadrescrum(self):
         #permet d'intégrer l'application dans l'application de base
         self.root.overrideredirect(True) #Enleve la bordure
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
-        self.cadreterlow=Frame(self.root,width=self.largeur,height=self.hauteur)
-        self.cadreterlow.grid()
-        #self.afficherImage()
+        self.cadrescrum=Frame(self.root,width=self.largeur,height=self.hauteur)
+        self.cadrescrum.grid()
         
-        self.boutonAjoutListe = Button(self.cadreterlow, text="Ajouter Colonne",command=self.ajouterListe)
-        self.boutonAjoutListe.grid()
-        self.cadreterlowExiste=True
-    def ajouterListe(self):
-        self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="white",bd=4,highlightcolor="red",highlightthickness=1))
-        liste = self.tableauDeColonne[self.nbListe]
-
-        liste.bind('<Button-3>', lambda evt: self.deplacerColonneRight(evt, liste,self.nbListe))
-        liste.bind('<Button-2>', lambda evt: self.deplacerColonneLeft(evt, liste,self.nbListe))
-
-        titre = Entry(liste, width=32)
-        titre.insert(END, "Titre")
-        noListe=self.nbListe
-        boutonAjoutCarte = Button(liste, text="Ajouter Carte",command= lambda: self.ajouterCarte(noListe))
+        self.titreColonneDate = Label(self.cadrescrum,width=20,text="Date du Scrum", font= "Arial 18")
+        self.titreColonneDate.grid(column = 1, row=0,pady=(20,0))
+        self.listeDate = Listbox(self.cadrescrum,width=30, height = 30)
+        self.listeDate.grid(column = 1, row=1, padx=40,pady=0)
+        self.boutonAjoutDate = Button(self.cadrescrum, width = 10, command=self.creationDate,text="Ajout")
+        self.boutonAjoutDate.grid(column=1,row=2)
         
-        liste.grid(column=self.nbListe,row=1,padx=10)
-        titre.grid(row=0)
-
-        boutonAjoutCarte.grid(row=1)
-        self.nbListe+=1
-
+        self.titreColonneEmploye = Label(self.cadrescrum,width=20,text="Employés", font= "Arial 18")
+        self.titreColonneEmploye.grid(column = 2, row=0,pady=(20,0))
+        self.listeEmploye = Listbox(self.cadrescrum,width=30, height = 30)
+        self.listeEmploye.grid(column = 2, row=1, padx=40,pady=0)
+        self.boutonAjoutEmployer = Button(self.cadrescrum, width = 10, command=self.creationEmploye,text="Ajout")
+        self.boutonAjoutEmployer.grid(column=2,row=2)
         
-        
-    def ajouterCarte(self, noListe):
-        noCarte=0
-        colonne = self.tableauDeColonne[noListe]
-        contenuText =StringVar()
-        contenu = Entry(colonne,width=32,text=contenuText)
-        self.tableauDeCarte.append([])
-        contenu.bind("<Double-Button-1>", lambda evt: self.modifierCarte(evt,noCarte,colonne,contenuText))
-        contenu.grid()
-        noCarte+=1
+        self.titreSectionInfo = Label(self.cadrescrum,width=20,text="Information", font= "Arial 18")
+        self.titreSectionInfo.grid(column = 3, row=0,pady=(20,0))
+        self.infoEmploye = Frame(self.cadrescrum,width = self.largeur/2, height =(self.hauteur/3)*2, bg = "lightgray")
+        self.infoEmploye.grid(column = 3, row = 1,padx=40,pady=0)
 
-    def deplacerColonneRight(self,evt,colonne,noliste):
-        g = colonne.grid_info()
-        
-        if(g['column'] < self.nbListe):
-            colonne.grid(column=g['column']+1,row=g['row'])
-            colonne.bind('<Button-3>', lambda evts: self.deplacerColonneRight(evts, colonne,g['column']+1))
+        #ce qui a été fait
+        self.titreFait= Label(self.infoEmploye,width=20,text="Ce qui a été fait : ", font= "Arial 14", bg = "lightgray")
+        self.titreFait.grid(column = 0, row=1,pady=(10,0))
+        self.infoFait = Text(self.infoEmploye,width = 70, height=10)
+        self.infoFait.grid(column = 0, row = 2,padx=10,pady=(0,10))
+        #ce qui va être fait
+        self.titreAFaire= Label(self.infoEmploye,width=20,text="A faire aujourd'hui :", font= "Arial 14", bg = "lightgray")
+        self.titreAFaire.grid(column = 0, row=3,pady=(10,0))
+        self.infoAFaire = Text(self.infoEmploye,width = 70, height=10)
+        self.infoAFaire.grid(column = 0, row = 4,padx=10,pady=(0,10))
+        #probleme
+        self.titreProbleme= Label(self.infoEmploye,width=20,text="Problème :", font= "Arial 14", bg = "lightgray")
+        self.titreProbleme.grid(column = 0, row=5,pady=(10,0))
+        self.infoProbleme = Text(self.infoEmploye,width = 70, height=10)
+        self.infoProbleme.grid(column = 0, row = 6,padx=10,pady=(0,10))
     
-            if 'self.tableauDeColonne[self.nbListe+1]' in globals():
-                colonne2=self.tableauDeColonne[g['column']+1]
-                colonne2.grid(column=g['column'],row=g['row'])
-                colonne2.bind('<Button-3>', lambda evts: self.deplacerColonneRight(evts, colonne,g['column']))
-
-                temp = self.tableauDeColonne[self.nbListe]
-                self.tableauDeColonne[self.nbListe] = self.tableauDeColonne[self.nbListe+1]
-                self.tableauDeColonne[self.nbListe+1]=temp
-    def deplacerColonneLeft(self,evt,colonne,noliste):
-        g = colonne.grid_info()
+    def creationEmploye(self):
+        self.fenetreCreationEmploye = Toplevel(self.cadrescrum, bg="#F8C471"  )
+        self.fenetreCreationEmploye.wm_title("Creer un nouvel Employe")
         
-        if(g['column'] < self.nbListe):
-            colonne.grid(column=g['column']+1,row=g['row'])
-            colonne.bind('<Button-2>', lambda evts: self.deplacerColonneLeft(evts, colonne,g['column']-1))
+        self.titreEmploye= Label(self.fenetreCreationEmploye,width=20,text="Nom de l'Employe : ", font= "Arial 14", bg = "#F8C471")
+        self.titreEmploye.grid(column = 0, row=1,padx=20,pady=(20,5))
+        self.nomEmploye = Entry(self.fenetreCreationEmploye,width = 20)
+        self.nomEmploye.grid(column = 0, row = 2,padx=20,pady=(5,5))
     
-            if 'self.tableauDeColonne[self.nbListe+1]' in globals():
-                colonne2=self.tableauDeColonne[g['column']-1]
-                colonne2.grid(column=g['column'],row=g['row'])
-                colonne2.bind('<Button-2>', lambda evts: self.deplacerColonneLeft(evts, colonne,g['column']))
-
-                temp = self.tableauDeColonne[self.nbListe]
-                self.tableauDeColonne[self.nbListe] = self.tableauDeColonne[self.nbListe-1]
-                self.tableauDeColonne[self.nbListe-1]=temp
-            
-    def changerCarte(self,noCarte,contenuText):
-        listeInfoCarte = []
-        listeInfoCarte.append(self.entreeNomCarte.get())
-        listeInfoCarte.append(self.entreeDescriptionCarte.get("1.0",END))
-        listeInfoCarte.append(self.entreeeProprietaireCarte.get())
-        self.tableauDeCarte[noCarte]=listeInfoCarte;
-        contenuText.set(listeInfoCarte[0])
-        self.fenetreModificationCarte.destroy()
-
-
-    def modifierCarte(self,evt,noCarte,colonne,contenuText):
-        self.tableauDeCarte.append([])
-
-        self.fenetreModificationCarte = Toplevel(self.root )
-        self.fenetreModificationCarte.wm_title("Modification de Carte")
-            
-        self.texteNomCarte = Label(self.fenetreModificationCarte, text="Nom de la carte :",)
-        self.texteNomCarte.grid(row=1,column=1, padx=50, pady=(30,10))
-              
-        self.entreeNomCarte = Entry(self.fenetreModificationCarte)
-        self.entreeNomCarte.grid(row=2,column=1, padx=50, pady=(0,10))
+        self.boutonCreerEmploye = Button(self.fenetreCreationEmploye, width = 10, command=self.ajouterEmploye,text="Ajout")
+        self.boutonCreerEmploye.grid(column=0,row=3,padx=20,pady=20)
+    def ajouterEmploye(self):
+        self.listeEmploye.insert(END,self.nomEmploye.get())
+        self.fenetreCreationEmploye.destroy()
+    def creationDate(self):
+        self.fenetreCreationDate = Toplevel(self.cadrescrum, bg="#F8C471"  )
+        self.fenetreCreationDate.wm_title("Ajouter une nouvelle Date")
         
-        self.texteDescriptionCarte = Label(self.fenetreModificationCarte, text="Description :",)
-        self.texteDescriptionCarte.grid(row=3,column=1, padx=50, pady=(30,10))
-              
-        self.entreeDescriptionCarte = Text(self.fenetreModificationCarte)
-        self.entreeDescriptionCarte.grid(row=4,column=1, padx=50, pady=(0,10))
+        self.titreDate= Label(self.fenetreCreationDate,width=20,text="Date : ", font= "Arial 14", bg = "#F8C471")
+        self.titreDate.grid(column = 0, row=1,padx=20,pady=(20,5))
+        self.nomDate = Entry(self.fenetreCreationDate,width = 20)
+        self.nomDate.grid(column = 0, row = 2,padx=20,pady=(5,5))
         
-        self.texteProprietaireCarte = Label(self.fenetreModificationCarte, text="Proprietaire :",)
-        self.texteProprietaireCarte.grid(row=5,column=1, padx=50, pady=(30,10))
-              
-        self.entreeeProprietaireCarte = Entry(self.fenetreModificationCarte)
-        self.entreeeProprietaireCarte.grid(row=6,column=1, padx=50, pady=(0,10))
-                
-        self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte",command= lambda:self.changerCarte(noCarte,contenuText))
-        self.boutonModificationCarte.grid(row=7,column=1, padx=50, pady=(0,30))
-
-        
+        self.boutonCreerDate = Button(self.fenetreCreationDate, width = 10, command=self.ajouterDate,text="Ajout")
+        self.boutonCreerDate.grid(column=0,row=3,pady=20)
+    def ajouterDate(self):
+        self.listeDate.insert(END,self.nomDate.get())
+        self.fenetreCreationDate.destroy()
     def salutations(self):
         pass
     def fermerfenetre(self):

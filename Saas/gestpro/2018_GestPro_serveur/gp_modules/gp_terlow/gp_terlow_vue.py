@@ -66,7 +66,10 @@ class Vue():
         #permet d'intégrer l'application dans l'application de base
         self.root.overrideredirect(True) #Enleve la bordure
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
-
+        
+        #Enlever pour voir vrai logiciel
+        self.afficherImage()
+        
         self.cadreterlow=Frame(self.root,width=self.largeur,height=self.hauteur)
         self.cadreterlow.grid()
         
@@ -74,8 +77,7 @@ class Vue():
         self.boutonAjoutListe.grid()
         self.cadreterlowExiste=True
         
-        #Enlever pour voir vrai logiciel
-        self.afficherImage()
+
     def ajouterListe(self):
         self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="white",bd=4,highlightcolor="red",highlightthickness=1))
         liste = self.tableauDeColonne[self.nbListe]

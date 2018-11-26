@@ -236,7 +236,7 @@ class Vue():
         self.listeProjet.grid(row=1,column=0,rowspan=15)
         self.listeProjet.insert(END, "a list entry")
         #self.boutonProjet1=Button(self.cadrebase,text="Projet 1",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
-       # self.boutonProjet2=Button(self.cadrebase,text="Projet 2",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
+        #self.boutonProjet2=Button(self.cadrebase,text="Projet 2",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
         #self.boutonProjet3=Button(self.cadrebase,text="Projet 3",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
 
         self.boutonMandat=Button(self.cadrebase,text="Mandat",bg="#0B416C",command=self.requeteMandat,height=4,width=int(self.largeur/11))
@@ -265,6 +265,8 @@ class Vue():
         self.boutonDonnee.grid(row=0,column=9)
         self.boutonTerlow.grid(row=0,column=10)
     def nouveauProjet(self):
+       
+        
         self.fenetreCreationProjet = Toplevel(self.root, bg="#F8C471"  )
         self.fenetreCreationProjet.wm_title("Creer un Projet")
         
@@ -274,10 +276,26 @@ class Vue():
         self.entreeCreationProjet = Entry(self.fenetreCreationProjet)
         self.entreeCreationProjet.grid(row=2,column=1, padx=50, pady=(0,10))
         
+        
+        
         self.boutonCreationProjet = Button(self.fenetreCreationProjet, text="Creer Projet", bg="#E67E22",command=self.creerProjet)
         self.boutonCreationProjet.grid(row=3,column=1, padx=50, pady=(0,30))
+    
+    def failureNameProject(self):#creation douteuse
+        self.fenetreCreationProjet = Toplevel(self.root, bg="#F8C471"  )
+        self.fenetreCreationProjet.wm_title("NOM INVALIDE!!")
+        
+        self.texteCreationProjet = Label(self.fenetreCreationProjet, text="Désolé big, mauvais nom de projet :", bg="#F8C471")
+        self.texteCreationProjet.grid(row=1,column=1, padx=50, pady=(30,10))
+        
+        self.boutonCreationProjet = Button(self.fenetreCreationProjet, text="OK", bg="#E67E22",command=self.nouveauProjet)
+        self.boutonCreationProjet.grid(row=3,column=1, padx=50, pady=(0,30))
+        
+        
     def creerProjet(self):
-        pass   
+        self.savedNameTemp = self.entreeCreationProjet.get()
+        self.parent.sendProjectName(self.savedNameTemp)
+         
     def requeteMandat(self):
         if(self.parent.pid):
             self.parent.fermerprocessus()

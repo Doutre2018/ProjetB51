@@ -15,12 +15,13 @@ class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.createurId=Id
-        self.modele=None
+        self.modele=Modele(1,2,2)
         self.serveur=None
         self.pid=None
         self.monip=self.trouverIP()
         self.nodeport="9999"
         self.vue=Vue(self,self.monip)
+        #self.connecteservice(1)
         self.vue.root.mainloop()
 
         
@@ -99,7 +100,7 @@ class Controleur():
         if rep[1][0][0]=="connecte":
             #print("REP",rep)
             self.modele=Modele(self,rep[1][0][1],rep[1][0][2]) # on cree le modele
-            self.vue.afficherinitpartie(self.modele)
+           # self.vue.afficherinitpartie(self.modele)
             
             
     def fermeserveur(self):
@@ -109,6 +110,13 @@ class Controleur():
     def fermefenetre(self):
         print("Client GestPro quitte")
         self.vue.root.destroy()
+        
+    def sendProjectName(self, nomProjet):
+        self.modele.project.createProject(self, nomProjet)
+        
+    def failureProjectName(self):
+        self.vue.failureNameProject()
+        
         
         
         

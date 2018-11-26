@@ -11,6 +11,7 @@ from gestpro_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 
+
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
@@ -22,7 +23,6 @@ class Controleur():
         self.nodeport="9999"
         self.vue=Vue(self,self.monip)
         self.vue.root.mainloop()
-
         
     def trouverIP(self): # fonction pour trouver le IP en 'pignant' gmail
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # on cree un socket

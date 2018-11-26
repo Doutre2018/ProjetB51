@@ -82,8 +82,6 @@ class ModeleService(object):
     def nomUnique(self, nom):
         commande = "SELECT nomUtilisateur FROM Utilisateur WHERE nomUtilisateur = '" + nom + "'"
         sql = self.requeteSelection(commande)        # Requête de SELECT à la BD pour chercher le nom transmis
-        
-<<<<<<< HEAD
         if sql:
             return False                             # Si le nom est trouvé dans la BD (rep non vide)
         else:
@@ -99,7 +97,7 @@ class ModeleService(object):
                 return True
             
         return False                                # Si au moins une condition n'est pas bonne
-=======
+
         self.requeteInsertionPerso("INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES (" + "'" + nom + "'" + ", NULL, NULL)")      # Insert dans la DB du nouvel utilisateur
         return True                             # Si le nom n'est pas trouvé dans la liste
     
@@ -110,7 +108,6 @@ class ModeleService(object):
                 return True                     # Nom existe déjà, donc pas unique 
 
         return False                            # Si le nom n'est pas trouvé dans la liste
->>>>>>> BD
     # ---------------------------------------- #
             
     #méthode tampon pour insert les données dans la table de la BD du serveur selon le format suivant: nomTable = "string représentant nom", liste valeurs = [10, 'texte1', 50.3]

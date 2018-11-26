@@ -16,16 +16,8 @@ class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.connectionServeurCourant()
-        self.serveur = ServerProxy(self.adresseServeur)
-        
         self.createurId=Id
-<<<<<<< HEAD
-        #self.modele=Modele(self)
-=======
-        self.connectionServeurCourant()
-        print(self.serveur)
         self.modele=Modele(self)
->>>>>>> BD
         self.vue=Vue(self)
         self.vue.root.mainloop()
         

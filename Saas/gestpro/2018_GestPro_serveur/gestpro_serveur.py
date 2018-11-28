@@ -225,7 +225,7 @@ class  BaseDonnees():
             ['Utilisateur', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomUtilisateur','text','UNIQUE'], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
             ['Projet', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','UNIQUE']],
             ['Liaison_Util_Projet', ['role','text','']],
-            ['AnalyseTextuelle', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ligne','INTEGER',''],['colonne','INTEGER','']],
+            ['AnalyseTextuelle', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ligne','INTEGER',''],['colonne','INTEGER',''],['mot','text','']],
             ['TypeMot', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','']],
             ['LigneChat', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['date','date',''],['texte','text','']],
             ['CasUsage', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['ligne','text',''],['texte','text','']],

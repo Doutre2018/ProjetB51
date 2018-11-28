@@ -170,18 +170,7 @@ class Vue():
             for i in n:
                 idCarteAjoutee=str(i)
         
-        #texteAtt = self.textAttribut.get(1.0, "end-1c")
-        #listeValeurAttribut=[None]*2
-        #listeValeurAttribut[0]="'"+texteAtt+"'"
-        #listeValeurAttribut[1]="'"+idCarteAjoutee+"'"
-        ##insertion des attributs de la carte
-        #self.modele.insertAttributsDeCarte(listeValeurAttribut)
-        
         texteAtt = self.textAttribut.get(1.0, "end-1c")
-        #listeValeurAttribut=[None]*2
-        #listeValeurAttribut[0]="'"+texteAtt+"'"
-        #listeValeurAttribut[1]="'"+idCarteAjoutee+"'"
-        #insertion des attributs de la carte
         self.modele.insertAttributsDeCarte(texteAtt, idCarteAjoutee)
         
         #FONCTIONS
@@ -191,21 +180,9 @@ class Vue():
         listeValeurFonct[1]="'"+texteFonction+"'"
         self.modele.insertFonctionDeCarte(listeValeurFonct)
         
-        #texteAtt = self.textAttribut.get(1.0, "end-1c")
-        #listeValeurAttribut=[None]*2
-        #listeValeurAttribut[0]="'"+texteAtt+"'"
-        #listeValeurAttribut[1]="'"+idCarteAjoutee+"'"
-        ##insertion des attributs de la carte
-        #self.modele.insertAttributsDeCarte(listeValeurAttribut)
-        
-        
         #COLLABO
         texteCollabo = self.textCollaboration.get(1.0, "end-1c")
-        listeValeurCollabo=[None]*2
-        listeValeurCollabo[0]="'"+idCarteAjoutee+"'"
-        listeValeurCollabo[1]="'"+texteCollabo+"'"
-        #insertion des collaborations de la carte
-        self.modele.insertCollaboDeCarte(listeValeurCollabo)
+        self.modele.insertCollaboDeCarte(idCarteAjoutee,texteCollabo)
         
         
         

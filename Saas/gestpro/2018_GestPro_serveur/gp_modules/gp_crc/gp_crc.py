@@ -80,17 +80,12 @@ class Modele():
     def insertCarte(self,listeValeur):
         self.serveur.requeteInsertionPerso("INSERT INTO Cartes(id_projet, classe, carte_heritage, ordre, nom_responsable) VALUES(  " + str(listeValeur[0]) + ",'" + str(listeValeur[1]) + "','" + str(listeValeur[2]) + "'," + str(listeValeur[3]) + ",'" + str(listeValeur[4]) + "');")
     
-    # DEBUG
     def insertAttributsDeCarte(self,texte,id):
         self.serveur.requeteInsertionPerso("INSERT INTO AttributsCRC(nomAttributs, id_classe) VALUES('" + texte + "', " + id + ");")
-    
-    
-    def insertAttributsDeCarte1(self,listeValeur):
-        self.serveur.requeteInsertionPerso("INSERT INTO AttributsCRC(nomAttributs, id_classe) VALUES('" + str(listeValeur[0]) + "', " + listeValeur[1] + ");")
-        
-    def insertCollaboDeCarte(self,listeValeur):
-        self.serveur.requeteInsertionPerso("INSERT INTO CollaboCRC(id_classe,textCollabo) VALUES(" + str(listeValeur[0]) + ",'"+ str(listeValeur[1]) +"') ;")
-    
+ 
+    def insertCollaboDeCarte(self,id,texte):
+        self.serveur.requeteInsertionPerso("INSERT INTO CollaboCRC(id_classe,textCollabo) VALUES(" + id + ",'"+ texte +"') ;")
+            
     def insertFonctionDeCarte(self,listeValeur):
         self.serveur.requeteInsertionPerso("INSERT INTO FonctionsCRC(id_classe,fonction) VALUES(" + str(listeValeur[0]) + ","+ str(listeValeur[1]) +");")
                                                                                                                                       

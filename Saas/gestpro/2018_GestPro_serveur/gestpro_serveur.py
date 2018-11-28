@@ -98,8 +98,9 @@ class ModeleService(object):
             
         return False                                # Si au moins une condition n'est pas bonne
 
-        self.requeteInsertionPerso("INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES (" + "'" + nom + "'" + ", NULL, NULL)")      # Insert dans la DB du nouvel utilisateur
-        return True                             # Si le nom n'est pas trouvé dans la liste
+        # ???
+        #self.requeteInsertionPerso("INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES (" + "'" + nom + "'" + ", NULL, NULL)")      # Insert dans la DB du nouvel utilisateur
+        #return True                             # Si le nom n'est pas trouvé dans la liste
     
     def nomExiste(self, nom):
         liste = self.listeNoms()

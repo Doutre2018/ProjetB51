@@ -244,7 +244,8 @@ class  BaseDonnees():
             ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
             ['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['type','text','']],
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
-            ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']]
+            ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
+            ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']]
             ]
         return listeTables
     
@@ -270,6 +271,7 @@ class  BaseDonnees():
             ['Objet_Texte', 'id_position','INTEGER', 'Position', 'id'],
             ['Tache_Sprint','id_sprint','INTEGER', 'Sprint', 'id'],
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
+            ['Utilisateur', 'id_compagnie', 'INTEGER',  'Compagnie', 'id'],
             ]
         return listeConst
         

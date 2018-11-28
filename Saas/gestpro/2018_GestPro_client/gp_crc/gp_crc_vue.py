@@ -184,8 +184,6 @@ class Vue():
         texteCollabo = self.textCollaboration.get(1.0, "end-1c")
         self.modele.insertCollaboDeCarte(idCarteAjoutee,texteCollabo)
         
-        
-        
         self.ListeCRC.insert(self.compteurBouton, texteboutton)
         
         self.carteCRC.destroy()

@@ -67,8 +67,10 @@ class Modele():
         commande ="SELECT id FROM Cartes WHERE classe="
         commande+= "'" + classe + "'"
         ID = self.serveur.requeteSelection(commande)
-        print("boo")
         return ID
+    
+    def selectIdCartePlus(self,classe,id_user):
+        pass
     
     def selectAttributDeCarte(self,idCarte):
         commande = "SELECT nomAttributs FROM AttributsCRC WHERE id_classe="

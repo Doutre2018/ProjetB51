@@ -116,8 +116,6 @@ class Controleur():
         print("Client GestPro quitte")
         self.vue.root.destroy()
         
-        
-        
 if __name__=="__main__":
     c=Controleur()
     print("End GestPro")

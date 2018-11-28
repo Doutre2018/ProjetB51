@@ -146,6 +146,7 @@ class Vue():
         self.entryNew = Entry(self.frameNouveauVerbeExplicite)
         self.entryNew.grid()
         
+        
         self.bAjouter= Button(self.frameNouveauVerbeExplicite, text="Ajouter" ,command=self.AjouterNouveauVerbeExplicite)
         self.bAjouter.grid();     
         

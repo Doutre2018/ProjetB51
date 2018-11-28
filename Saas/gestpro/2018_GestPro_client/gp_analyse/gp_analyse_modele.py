@@ -13,7 +13,7 @@ class Modele():
         self.parent = parent
         self.BD=parent.serveur
         print("Bienvenue dans le modele ..")
-        self.listeType = ["Nom explicite",
+        self.listeType = ["Nom-explicite",
                           "Verbe implicite",
                           "Adjectif supplementaire",
                           "Adjectif implicite",
@@ -38,7 +38,7 @@ class Modele():
 
 
     
-        
+
     def InsertInto(self,ligne, colonne, nomProjet, type):
         self.numProjet = BD.requeteSelection("SELECT id FROM Projet WHERE nom = '" + nomProjet + "';")
         typeDonnee = BD.requeteSelection("SELECT id FROM TypeMot W.HERE nom = '" + type + "';")

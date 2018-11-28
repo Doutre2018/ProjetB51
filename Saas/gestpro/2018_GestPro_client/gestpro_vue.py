@@ -42,7 +42,11 @@ class Vue():
         self.listBoutonActif=[]
         self.listBoutonNonActif=[self.boutonMandat,self.boutonScrum,self.boutonAnalyse,self.boutonCasUsage,self.boutonMaquette,self.boutonCrc, self.boutonBudget,self.boutonTchat,self.boutonDonnee, self.boutonTerlow]
 
-        self.placeHolderEntryNom=True;
+        self.placeHolderEntryNom=True
+        self.placeHolderEntryMotDePasse=True
+        self.placeHolderEntryNomNouveauUtilisateur=True
+        self.placeHolderEntryMotDePasseNewUser=True
+        self.placeHolderEntryMotDePasseNewUserConfirm=True
 
 
         #Bloc pour que la fenetre de connexion sois centré avec l'écran
@@ -108,7 +112,7 @@ class Vue():
         self.labelNom=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre nom d'utilisateur",font='arial 12')
         self.labelNom.grid()
         self.nomsplash=Entry(self.cadresplash,bg="white", justify=CENTER, fg="grey")
-        self.nomsplash.insert(0,'Entrez votre nom')
+        self.nomsplash.insert(0,'Nom')
         self.nomsplash.grid(pady=(10,10),padx=100)
         self.nomsplash.bind('<FocusIn>', self.clickEntryNom)
         self.nomsplash.bind('<FocusOut>',self.puClickEntryNom)
@@ -117,17 +121,22 @@ class Vue():
         
         self.labelmotPassesplash=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre mot de passe",font='arial 12')
         self.labelmotPassesplash.grid()
-        self.entrymotPassesplash=Entry(self.cadresplash,bg="white", justify=CENTER,)
-        self.entrymotPassesplash.insert(0,"")
+        self.entrymotPassesplash=Entry(self.cadresplash,bg="white", justify=CENTER,fg="grey")
+        self.entrymotPassesplash.insert(0,"Mot de passe")
         self.entrymotPassesplash.grid(pady=(10,10),padx=100)
+        self.entrymotPassesplash.bind('<FocusIn>', self.clickEntryMotDePasse)
+        self.entrymotPassesplash.bind('<FocusOut>',self.puclickEntryMotDePasse)
         
+        self.labelProbleme=Label(self.cadresplash ,bg="#E5E7F4",fg="#E5E7F4", text="Nom d'utilisateur ou mot de passe erroné",font='arial 1')
+        self.labelProbleme.grid()
+
         
         self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez l'adresse ip de votre serveur",font='arial 12',)
         self.labelIp.grid()
         self.ipsplash=Entry(self.cadresplash,bg="white",justify=CENTER,)
         self.ipsplash.insert(0, self.monip)
         self.ipsplash.grid()
-                
+                                
         self.frameButton= Frame(self.cadresplash,bg="#E5E7F4")
         self.frameButton.grid()
         
@@ -140,38 +149,46 @@ class Vue():
         
     def creeNouvelleUtilisateur(self):    
         self.cadreNouvelleUtilisateur=Frame(self.root,bg="#E4E9F3")
-        self.titre1=Label(self.cadreNouvelleUtilisateur,text="Creation d'un nouvelle",font='arial 20',bg="#E5E7F4")
-        self.titre1.grid(row= 0,pady=(40,0),padx=72)
+        self.titre1=Label(self.cadreNouvelleUtilisateur,text="Creation d'un nouvel",font='arial 20',bg="#E5E7F4")
+        self.titre1.grid(row= 0,pady=(40,0),padx=82)
         self.titre2=Label(self.cadreNouvelleUtilisateur,text="utilisateur",font='arial 20',bg="#E5E7F4")
         self.titre2.grid(row= 1,pady=(2,10),padx=72)
         
-        self.EntrerNomTitre= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre nom",font='arial 12',bg="#E5E7F4")
-        self.EntrerNomTitre.grid(pady=(20,10),padx=100)
-        
-        self.NouveauNom= Entry(self.cadreNouvelleUtilisateur,bg="white")
+        #self.EntrerNomTitre= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre nom",font='arial 12',bg="#E5E7F4")
+        #self.EntrerNomTitre.grid(pady=(20,10),padx=100) 
+        self.NouveauNom= Entry(self.cadreNouvelleUtilisateur,bg="white", justify=CENTER,fg="grey",width=40)
         self.NouveauNom.grid(pady=(0,20))
+        self.NouveauNom.insert(0,'Nom d''utilisateur')
+        self.NouveauNom.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
+        self.NouveauNom.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
         
-        self.labelNouveauPassword= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre mot de passe",font='arial 12',bg="#E5E7F4")
-        self.labelNouveauPassword.grid()
-        self.NouveauPassword= Entry(self.cadreNouvelleUtilisateur,bg="white")       # Champ texte pour le mot de passe
+        #self.labelNouveauPassword= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre mot de passe",font='arial 12',bg="#E5E7F4")
+        #self.labelNouveauPassword.grid()
+        self.NouveauPassword= Entry(self.cadreNouvelleUtilisateur,bg="white",justify=CENTER,fg="grey",width=40)       # Champ texte pour le mot de passe
+        self.NouveauPassword.insert(0,"Nouveau Mot de passe")
         self.NouveauPassword.grid(pady=(0,20))
+        self.NouveauPassword.bind('<FocusIn>', self.clickEntryMotDePasseNewUser)
+        self.NouveauPassword.bind('<FocusOut>',self.puClickEntryMotDePasseNewUser)
         
-        self.labelPasswordConfirm= Label(self.cadreNouvelleUtilisateur,text="Veuillez confirmer votre mot de passe",font='arial 12',bg="#E5E7F4")
-        self.labelPasswordConfirm.grid()
-        self.PasswordConfirm= Entry(self.cadreNouvelleUtilisateur,bg="white")       # Champ texte pour la confirmation du mot de passe
+        #self.labelPasswordConfirm= Label(self.cadreNouvelleUtilisateur,text="Veuillez confirmer votre mot de passe",font='arial 12',bg="#E5E7F4")
+        #self.labelPasswordConfirm.grid()
+        self.PasswordConfirm= Entry(self.cadreNouvelleUtilisateur,bg="white",justify=CENTER,fg="grey",width=40)       # Champ texte pour la confirmation du mot de passe
+        self.PasswordConfirm.insert(0,"Confirmer le mot de passe")
         self.PasswordConfirm.grid(pady=(0,20))
+        self.PasswordConfirm.bind('<FocusIn>', self.clickEntryMotDePasseNewUserConfirm)
+        self.PasswordConfirm.bind('<FocusOut>',self.puclickEntryMotDePasseNewUserConfirm)
         
         self.labelIpServuer=Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer l'adresse de votre serveur",font='arial 12',bg="#E5E7F4")
         self.labelIpServuer.grid()
-        self.ipsplash=Entry(self.cadreNouvelleUtilisateur,bg="white")
+        self.ipsplash=Entry(self.cadreNouvelleUtilisateur,bg="white",width=40,justify=CENTER)
         self.ipsplash.insert(0, self.monip)
         self.ipsplash.grid()
 
         self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT,command=self.inscription, width=15)
-        self.confirmerIB.grid(row= 10, column= 0,pady=(25,20), padx=(0,122))
+        self.confirmerIB.grid(row= 10, column= 0,pady=(30,35), padx=(0,122))
         
         self.annuleIB=Button(self.cadreNouvelleUtilisateur,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal, width=15)
-        self.annuleIB.grid(row= 10,pady=(25,20) ,padx=(122,0))
+        self.annuleIB.grid(row= 10,pady=(30,35) ,padx=(122,0))
         
         
     def closeprocess(self):
@@ -389,6 +406,11 @@ class Vue():
         mpConfirm = self.PasswordConfirm.get()      # 2e mot de passe; pour confirmation
         ipserveur = self.ipsplash.get()             # Addresse ip de l'utilisateur
         
+        if motPasse=="Nouveau Mot de passe":
+            motPasse=""
+        if mpConfirm=="Confirmer le mot de passe":
+            mpConfirm=""
+        
         if self.nomConforme(nom):                   # Vérifie que le nom d'utilisateur désiré est conforme
             if self.motPasseConforme(motPasse):     # Vérifie que le mot de passe de l'utilisateur est conforme
                 if motPasse == mpConfirm:           # Confirme le mot de passe désiré
@@ -397,10 +419,25 @@ class Vue():
                     self.retourMenuPrincipal()
                     
                 else:
+                    self.PasswordConfirm.delete(0, "end")
+                    self.PasswordConfirm.config(fg="red",show="")
+                    self.PasswordConfirm.insert(0,"Mots de passe non identiques")
+                    self.placeHolderEntryMotDePasseNewUserConfirm=True
+                    self.confirmerIB.focus()
                     print("Mots de passe non identiques")
             else:
+                self.NouveauPassword.delete(0, "end")
+                self.NouveauPassword.config(fg="red",show="")
+                self.NouveauPassword.insert(0,"Mot de passe non conforme")
+                self.placeHolderEntryMotDePasseNewUser=True
+                self.confirmerIB.focus()
                 print("Mot de passe non conforme")
         else:
+            self.NouveauNom.delete(0, "end")
+            self.NouveauNom.config(fg="red")
+            self.NouveauNom.insert(0,"Le nom n'est pas comforme")
+            self.placeHolderEntryNomNouveauUtilisateur=True
+            self.confirmerIB.focus()
             print("Nom d'utilisateur non conforme")
             
     def connexion(self):
@@ -411,6 +448,7 @@ class Vue():
         if self.nomConforme(nom):
             if self.motPasseConforme(motPasse):
                 rep = self.parent.connexion(nom, motPasse, ipserveur)
+                self.labelProbleme.config(fg="red",font='arial 9')
                 print(rep)
                 
             else:
@@ -469,9 +507,57 @@ class Vue():
     
     def puClickEntryNom(self,evt):
         if  self.nomsplash.get() == '':
-            self.nomsplash.insert(0, "Entrez votre nom")
+            self.nomsplash.insert(0, "Nom d''utilisateur")
             self.nomsplash.config(fg = "grey")
             self.placeHolderEntryNom=True
+            
+    def clickEntryMotDePasse(self,evt):
+        if self.placeHolderEntryMotDePasse:
+            self.entrymotPassesplash.delete(0, "end")
+            self.entrymotPassesplash.config(fg="black",show="*")
+            self.placeHolderEntryMotDePasse=False    
+            
+    def puclickEntryMotDePasse(self,evt):
+        if  self.entrymotPassesplash.get() == '':
+            self.entrymotPassesplash.insert(0, "Mot de passe")
+            self.entrymotPassesplash.config(fg = "grey",show="")
+            self.placeHolderEntryMotDePasse=True
+            
+    def clickEntryNomNouveauUtilisateur(self,evt):
+        if self.placeHolderEntryNomNouveauUtilisateur:
+            self.NouveauNom.delete(0, "end")
+            self.NouveauNom.config(fg="black")
+            self.placeHolderEntryNomNouveauUtilisateur=False
+    
+    def puClickEntryNomNouveauUtilisateur(self,evt):
+        if  self.NouveauNom.get() == '':
+            self.NouveauNom.insert(0, "Nom d''utilisateur")
+            self.NouveauNom.config(fg = "grey")
+            self.placeHolderEntryNomNouveauUtilisateur=True
+            
+    def clickEntryMotDePasseNewUser(self,evt):
+        if self.placeHolderEntryMotDePasseNewUser:
+            self.NouveauPassword.delete(0, "end")
+            self.NouveauPassword.config(fg="black",show="*")
+            self.placeHolderEntryMotDePasseNewUser=False    
+            
+    def puClickEntryMotDePasseNewUser(self,evt):
+        if  self.NouveauPassword.get() == '':
+            self.NouveauPassword.insert(0, "Nouveau Mot de passe")
+            self.NouveauPassword.config(fg = "grey",show="")
+            self.placeHolderEntryMotDePasseNewUser=True
+            
+    def clickEntryMotDePasseNewUserConfirm(self,evt):
+        if self.placeHolderEntryMotDePasseNewUserConfirm:
+            self.PasswordConfirm.delete(0, "end")
+            self.PasswordConfirm.config(fg="black",show="*")
+            self.placeHolderEntryMotDePasseNewUserConfirm=False    
+            
+    def puclickEntryMotDePasseNewUserConfirm(self,evt):
+        if  self.PasswordConfirm.get() == '':
+            self.PasswordConfirm.insert(0, "Confirmer le mot de passe")
+            self.PasswordConfirm.config(fg = "grey",show="")
+            self.placeHolderEntryMotDePasseNewUserConfirm=True
     
 if __name__ == '__main__':
     m=Vue(0,"127.0.0.1")

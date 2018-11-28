@@ -25,7 +25,7 @@ class Vue():
         self.cadreExiste=False
 
         self.usager= ["Lorem", "", "", "Ipsum Lorem"]
-        self.casdusage= ["Lorem", "Ipsum", "Lorem Ipsum", "Ipsum Lorem"]
+        self.casdusage= self.parent.fetchCases()                                        #["Lorem", "Ipsum", "Lorem Ipsum", "Ipsum Lorem"]
         self.machine= ["", "Ipsum", "Lorem Ipsum", ""]
 
         self.images={}

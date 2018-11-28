@@ -92,6 +92,21 @@ class Modele():
         commande="SELECT nom FROM Utilisateur;"
         return self.serveur.requeteSelection(commande)
     
+    def supprimerAttributsDeCarte(self,idCarte):
+        commande="DELETE FROM AttributsCRC WHERE id_classe="
+        commande+=idCarte
+        self.serveur.requeteInsertionPerso(commande)
+        
+    def supprimerCollaboDeCarte(self,idCarte):
+        commande="DELETE FROM CollaboCRC WHERE id_classe="
+        commande+=idCarte
+        self.serveur.requeteInsertionPerso(commande)
+        
+    def supprimerFonctionDeCarte(self,idCarte):
+        commande="DELETE FROM FonctionsCRC WHERE id_classe="
+        commande+=idCarte
+        self.serveur.requeteInsertionPerso(commande)     
+        
     def supprimerCarte(self,nomCarte):
         commande="DELETE FROM Cartes WHERE classe='"
         commande=commande+str(nomCarte)+"';"

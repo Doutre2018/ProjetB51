@@ -273,9 +273,13 @@ class Vue():
         a=()
         a=self.ListeCRC.curselection()
         nomClasse = str(self.ListeCRC.get(a))
-        #b=self.ListeCRC.get(a)
-        print(nomClasse)
-        #Supprime la rangée de la BD
+        for i in self.modele.selectIdCarte(nomClasse):
+            for n in i:
+                idCarteCourante=str(n)
+        #Supprime la rangée de la BD pour toutess les composantes
+        self.modele.supprimerAttributsDeCarte(idCarteCourante)
+        self.modele.supprimerCollaboDeCarte(idCarteCourante)
+        self.modele.supprimerFonctionDeCarte(idCarteCourante)
         self.modele.supprimerCarte(nomClasse)
         
         self.ListeCRC.delete(a)

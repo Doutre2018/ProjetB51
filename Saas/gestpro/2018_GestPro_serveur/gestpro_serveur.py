@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 
-#import Pyro4
 from xmlrpc.server import SimpleXMLRPCServer
 
 import xmlrpc.client

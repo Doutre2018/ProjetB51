@@ -227,7 +227,7 @@ class Vue():
         self.entryNew.grid()
          
         self.bAjouter= Button(self.frameNouveauAjectifSupplementaire, text="Ajouter" ,command=self.AjouterNouveauAdjectifSupplementaire)
-        self.bAjouter.grid();  
+        self.bAjouter.grid();
         
         
        

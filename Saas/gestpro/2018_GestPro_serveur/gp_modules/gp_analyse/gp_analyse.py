@@ -42,8 +42,8 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
-    def insertion(self,ligne,colonne,nomProjet, type):
-        self.modele.InsertInto(self,ligne,colonne,nomProjet, type)
+    def insertion(self,ligne,colonne,nomProjet, type, mot):
+        self.modele.InsertInto(ligne,colonne,nomProjet, type, mot)
     
     def afficher(self):
         self.modele.selectAffichage(self)

@@ -23,7 +23,7 @@ class Modele():
                           "Verbe explicite",
                           "Verbe supplementaire"]
         self.creerType()
-        self.numProjet=1
+        self.numProjet="1"
         self.lesTypes = []
         self.lesVerbesImp = []
         self.lesNomsImp = []
@@ -39,10 +39,13 @@ class Modele():
 
     
         
-    def InsertInto(self,ligne, colonne, nomProjet, type):
-        self.numProjet = BD.requeteSelection("SELECT id FROM Projet WHERE nom = '" + nomProjet + "';")
-        typeDonnee = BD.requeteSelection("SELECT id FROM TypeMot W.HERE nom = '" + type + "';")
-        self.BD.requeteInsertionPerso("INSERT INTO AnalyseTextuelle(ligne, colonne, id_projet, id_type) VALUES( " + ligne + ", " + colonne + ", " + self.numProjet + ", " + typeDonnee + " )")
+    def InsertInto(self,ligne, colonne, numProjet, type, mot):
+        typeDonnee = self.BD.requeteSelection("SELECT id FROM TypeMot WHERE nom = '" + type + "';")
+        print(mot)
+        for i in typeDonnee:
+            for n in i:
+                typeDonnee = n
+        self.BD.requeteInsertionPerso("INSERT INTO AnalyseTextuelle(ligne, colonne, id_projet, id_type, mot) VALUES( '" + str(ligne) + "', '" + str(colonne) + "', '" + str(self.numProjet) + "', '" + str(typeDonnee) + "', '" + str(mot) + "');")
         self.selectAffichage()
         
         

@@ -146,6 +146,7 @@ class Vue():
         self.entryNew = Entry(self.frameNouveauVerbeExplicite)
         self.entryNew.grid()
         
+        
         self.bAjouter= Button(self.frameNouveauVerbeExplicite, text="Ajouter" ,command=self.AjouterNouveauVerbeExplicite)
         self.bAjouter.grid();     
         
@@ -227,7 +228,7 @@ class Vue():
         self.entryNew.grid()
          
         self.bAjouter= Button(self.frameNouveauAjectifSupplementaire, text="Ajouter" ,command=self.AjouterNouveauAdjectifSupplementaire)
-        self.bAjouter.grid();  
+        self.bAjouter.grid();
         
         
        
@@ -237,6 +238,7 @@ class Vue():
     def AjouterNouveauVerbeExplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBVerbeExplicite.insert(END, self.newInsert)
+        self.parent.insertion(1,1,1,"Verbe explicite",self.newInsert)
         self.frameNouveauVerbeExplicite.destroy()
         
     def AjouterNouveauVerbeImplicite(self):  

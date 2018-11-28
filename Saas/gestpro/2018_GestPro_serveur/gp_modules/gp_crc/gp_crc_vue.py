@@ -197,7 +197,10 @@ class Vue():
         a=self.ListeCRC.curselection()
         b=self.ListeCRC.get(a)
         
-        
+        # ------------- DM -------------
+        id = self.modele.selectIdCarte(b)
+        attribut = self.modele.selectAttributDeCarte(id)
+        # ------------------------------
         
         self.carteCRC =Toplevel(self.root)
         self.frameCarteCRC = Frame(self.carteCRC)
@@ -223,6 +226,10 @@ class Vue():
         self.entryResponsable= Entry(self.frameHeriatageResponsable)
         self.entryResponsable.grid(row=1, column=2)
         
+        # ------------- DM -------------
+        self.entryNomClasse.insert(0, b)
+        # ------------------------------
+        
         #Partie du frame pour les fonction, Attribut , objet
         self.frameFonction= Frame(self.frameInterieur)
         self.frameFonction.grid(row=1,column=1)
@@ -239,6 +246,10 @@ class Vue():
         self.textObjet = Text(self.frameFonction, height = 10, width=15)
         self.textObjet.grid(row=1, column=3)
         
+        # ------------- DM -------------
+        self.textAttribut.insert(0, attribut)
+        # ------------------------------
+        
         #partie du frame pour Collaboration
         self.frameCollaboration= Frame(self.frameInterieur)
         self.frameCollaboration.grid(row=0 , column= 2, rowspan=2)
@@ -249,8 +260,13 @@ class Vue():
         
         
         #Bouton Ajouter
-        self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.modifierCRC)
+        self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.modifierCarteCRC)
         self.boutonModifier.grid()
+        
+    # ---------------- DM ----------------
+    def modifierCarteCRC(self):
+        pass
+    # ------------------------------------
         
 
     def delCRC(self):

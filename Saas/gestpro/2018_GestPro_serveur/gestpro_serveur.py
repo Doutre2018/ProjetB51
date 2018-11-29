@@ -57,6 +57,7 @@ class ModeleService(object):
         daemon.register_function(self.requeteSelection)
         daemon.register_function(self.requeteMiseAJour)
         daemon.register_function(self.requeteInsertionPerso)
+        daemon.register_function(self.requeteFichier)
         daemon.register_introspection_functions()
         
     def creerclient(self,nom):
@@ -140,6 +141,11 @@ class ModeleService(object):
     
     def getAdresse(self):
         return self.adresseServeur
+    
+    def requeteFichier(self, cheminFichier):
+        with open(cheminFichier, "rb") as handle:
+            return xmlrpc.client.Binary(handle.read())
+
     
 class ControleurServeur(object):
     def __init__(self):

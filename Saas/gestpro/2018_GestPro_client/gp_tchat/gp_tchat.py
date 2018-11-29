@@ -19,6 +19,7 @@ class Controleur():
         self.connectionServeurCourant()
         self.modele=None
         self.vue=Vue(self)
+        self.recevoirFichiers()
         self.vue.root.mainloop()
 
     def connectionServeurCourant(self):  
@@ -41,6 +42,16 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
+    
+    def recevoirFichiers(self):
+        # pour utiliser, entrez le nom des fichiers que vous voulez dans la liste chemins (1 à n chemins) ********le fichier batman.jpg est évidemment que pour tests
+        listeChemins = ["batman.jpg"]
+        for chemin in listeChemins:
+            try:
+                with open(chemin, "wb") as handle:
+                    handle.write(self.serveur.requeteFichier(chemin).data)
+            except: 
+                print("Problème lors du téléchargement du fichier", chemin)
         
     
 if __name__ == '__main__':

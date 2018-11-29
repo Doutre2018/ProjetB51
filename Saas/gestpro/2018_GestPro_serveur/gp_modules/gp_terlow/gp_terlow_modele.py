@@ -8,7 +8,8 @@ class Modele():
         #self.tests()
         self.data = self.fetchDataBD()
         self.listeColonnes = []
-        self.creationColonne()
+        self.generationColonnes()
+        self.generationCartes()
         #self.testPrint()
         #self.suppressionColonne(2)
        # self.testPrint()
@@ -22,11 +23,14 @@ class Modele():
         
     #méthode qui va chercher les données pour la création des colonnes
     def fetchDataBD(self):
-        data = self.referenceControleur.serveur.requeteSelection("SELECT * FROM Colonnes_Terlow")
-        print(data)
-        return data
-        
-    def creationColonne(self):
+        try:
+            data = self.referenceControleur.serveur.requeteSelection("SELECT * FROM Colonnes_Terlow")
+            print(data)
+            return data
+        except Exception as erreur:
+            print(erreur)
+            
+    def generationColonnes(self):
         for colonne in self.data:
             self.listeColonnes.append(Colonne(colonne[0], colonne[1], colonne[2]))
 
@@ -37,26 +41,31 @@ class Modele():
                 break
         for i, colonne in enumerate(self.listeColonnes):
             colonne.ordre = i+1
-            
-            
+    #à tester
+    def generationCartes(self):
+        for colonne in self.listeColonnes:
+            #stringSelect = "SELECT * FROM Cartes_Terlow WHERE id_colonne = " + colonne.id
+            dataCartes = self.referenceControleur.serveur.requeteSelection("SELECT * FROM Cartes_Terlow WHERE id_colonne = " + colonne.id)
+            for carte in dataCartes:
+                colonne.listeCartes.append(Carte(carte[0], carte[1], carte[2],  carte[3], carte[4], carte[5]))
+                
+    #à tester
+    #méthode tente de supprimer la carte correspondante, si tout fonctionne, elle retourne true       
+    def suppressionCarte(self, numColonneDeCarte, numCarteASupprimer): #p-ê passer l'objet directement?
+        for i, colonne in enumerate(self.listeColonnes):
+            if colonne.ordre == numColonneDeCarte:
+                for j, carte in enumerate(colonne.listeCartes):
+                    if carte.ordre == numCarteASupprimer:
+                        del colonne.listeCartes[j]
+                        return True
+        return False
+                    
     def testPrint(self):
         for i, colonne in enumerate(self.listeColonnes):
             print("colonne", i+1)
             print("id=", colonne.id)
             print("ordre = ", colonne.ordre)
             print ("titre = ", colonne.titre)
-                
-                
-                
-    
-    def creationCarte(self):
-        pass
-    
-    def suppressionCarte(self):
-        pass
-    
-#['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
-#['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['type','text','']],
 
 class Colonne():
     def __init__(self, id, ordre, titre, listeCartes = []):
@@ -65,9 +74,9 @@ class Colonne():
         self.titre = titre
         self.listeCartes = listeCartes
 
-
 class Carte():
-    def __init__(self, ordre, texte, dateCreation, estimationTemps = 0, datePrevueFin = None):
+    def __init__(self, id, ordre, texte, dateCreation, estimationTemps = 0, datePrevueFin = None):
+        self.id = id
         self.ordre = ordre
         self.texte = texte
         self.dateCreation = dateCreation

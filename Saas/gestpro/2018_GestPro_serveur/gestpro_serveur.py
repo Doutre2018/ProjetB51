@@ -68,6 +68,18 @@ class ModeleService(object):
         return [1,"Bienvenue",list(self.modulesdisponibles.keys())]
     
     # -------------------DM------------------- #
+    def fetchCompagnies(self):
+        commande = "SELECT nomCompagnie FROM Compagnie"
+        l = self.baseDonnees.selection(commande)
+        compagnies = []
+        
+        for nom in l:
+            print("boo")
+            compagnies.append(nom)
+            
+        return compagnies
+        
+    
     def inscription(self, nom, motPasse):
         if self.nomUnique(nom):                       # Vérifie que le nom d'utilisateur est unique
             commande = "INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES ('" + nom + "', '" + motPasse + "', NULL)"
@@ -156,6 +168,9 @@ class ControleurServeur(object):
         return rep
     
     # ------------------DM-------------------- #
+    def fetchCompagnies(self):
+        return self.modele.fetchCompagnies()
+    
     def inscription(self, nom, motPasse):
         return self.modele.inscription(nom, motPasse)
     

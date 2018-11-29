@@ -33,6 +33,12 @@ class Controleur():
 
     
     # ----------------DM------------------------ #
+    def fetchCompagnies(self, ipserveur):
+        if ipserveur:
+            ad = "http://"+ipserveur+":"+self.nodeport
+            self.serveur=ServerProxy(ad)
+            return self.serveur.fetchCompagnies()
+        
     def inscription(self, nom, motPasse, ipserveur):
         if ipserveur and nom:
             ad = "http://"+ipserveur+":"+self.nodeport

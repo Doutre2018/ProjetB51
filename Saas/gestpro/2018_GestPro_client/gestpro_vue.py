@@ -129,7 +129,6 @@ class Vue():
         
         self.labelProbleme=Label(self.cadresplash ,bg="#E5E7F4",fg="#E5E7F4", text="Nom d'utilisateur ou mot de passe erroné",font='arial 1')
         self.labelProbleme.grid()
-
         
         self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez l'adresse ip de votre serveur",font='arial 12',)
         self.labelIp.grid()
@@ -177,6 +176,13 @@ class Vue():
         self.PasswordConfirm.grid(pady=(0,20))
         self.PasswordConfirm.bind('<FocusIn>', self.clickEntryMotDePasseNewUserConfirm)
         self.PasswordConfirm.bind('<FocusOut>',self.puclickEntryMotDePasseNewUserConfirm)
+        
+        # ------------- DM -------------
+        compagnies = self.fetchCompagnies()
+        self.compagniesplash=ttk.Combobox(self.cadreNouvelleUtilisateur,width=40,justify=CENTER,values=compagnies)
+        self.compagniesplash.insert(0,"<Sélectionner votre entreprise>")
+        self.compagniesplash.grid()
+        # ------------------------------
         
         self.labelIpServuer=Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer l'adresse de votre serveur",font='arial 12',bg="#E5E7F4")
         self.labelIpServuer.grid()
@@ -399,7 +405,11 @@ class Vue():
     def salutations(self):
         print("hello")
         
-    # ---------------DM----------------- #     
+    # ---------------DM----------------- #
+    def fetchCompagnies(self):
+        ipserveur = self.ipsplash.get()
+        return self.parent.fetchCompagnies(ipserveur)
+            
     def inscription(self):
         nom = self.NouveauNom.get()                 # Nom d'utilisateur à inscrire
         motPasse = self.NouveauPassword.get()       # Mot de passe de l'utilisateur à inscrire

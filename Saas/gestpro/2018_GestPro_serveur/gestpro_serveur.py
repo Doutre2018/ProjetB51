@@ -12,6 +12,7 @@ import socket
 import time
 import random
 import sqlite3
+from datetime import datetime
 
 
 
@@ -112,14 +113,14 @@ class ModeleService(object):
             
     #méthode tampon pour insert les données dans la table de la BD du serveur selon le format suivant: nomTable = "string représentant nom", liste valeurs = [10, 'texte1', 50.3]
     def requeteInsertion(self, nomTable, listeValeurs ):
-        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db')
+        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
         self.baseDonnees.insertion(nomTable, listeValeurs)
         self.baseDonnees.connecteur.close()
         return True
     
     def requeteInsertionPerso(self,commande):
-        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db')
+        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
         self.baseDonnees.insertionPerso(commande)
         self.baseDonnees.connecteur.close()
@@ -127,7 +128,7 @@ class ModeleService(object):
     
    #méthode tampon pour mettre à jour des données d'une table. Il faut passer une string représentant l'ensemble de la requête update dans la fonction
     def requeteMiseAJour(self,stringUpdate):
-        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db')
+        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
         self.baseDonnees.miseAJour(stringUpdate)
         self.baseDonnees.connecteur.close()
@@ -208,7 +209,7 @@ class  BaseDonnees():
             #os.remove("SAAS.db")
         #else:
             #print("Creation du fichier SAAS.db initial")
-        self.connecteur = sqlite3.connect('SAAS.db')
+        self.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         #self.insertion('stocks', [1])
@@ -240,7 +241,7 @@ class  BaseDonnees():
             ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],
             ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date','']],
             ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER','']],
-            ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
+           # ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
             #['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre', 'INTEGER', ''], ['titre','text','']],
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']]
@@ -264,8 +265,8 @@ class  BaseDonnees():
             ['Cartes', 'id_projet','INTEGER', 'Projet', 'id'],
             ['Objet_Maquette', 'id_position','INTEGER', 'Position', 'id'],
             ['Objet_Maquette', 'id_type','INTEGER', 'TypeForme', 'id'],
-            ['Taches_Terlow', 'id_projet','INTEGER', 'Projet', 'id'],
-            ['Taches_Terlow', 'id_colonne_terlow','INTEGER', 'Colonnes_Terlow', 'id'],
+            #['Taches_Terlow', 'id_projet','INTEGER', 'Projet', 'id'],
+            #['Taches_Terlow', 'id_colonne_terlow','INTEGER', 'Colonnes_Terlow', 'id'],
             ['Objet_Texte', 'id_position','INTEGER', 'Position', 'id'],
             ['Tache_Sprint','id_sprint','INTEGER', 'Sprint', 'id'],
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
@@ -284,7 +285,7 @@ class  BaseDonnees():
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-                
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, texte text, dateCreation timestamp, estimationTemps timestamp, datePrevueFin timestamp, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
     
     
     def insertion(self, nomTable = "", listeValeurs=[]):
@@ -302,7 +303,7 @@ class  BaseDonnees():
     
     
     def selection(self, stringSelect):
-        connecteur = sqlite3.connect('SAAS.db')
+        connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         curseur = connecteur.cursor()
         listeData=[]
         for rangee in curseur.execute(stringSelect):

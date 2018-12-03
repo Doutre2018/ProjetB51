@@ -5,7 +5,7 @@ from datetime import datetime
 class Modele():
     def __init__(self, referenceControleur):
         self.referenceControleur = referenceControleur
-        self.fetchDataBD()
+        #self.fetchDataBD()
     def fetchDataBD(self):
         data = self.referenceControleur.serveur.insertionPerso("INSERT INTO Colonnes_Terlow (type) VALUES 'test'")
         print(data)

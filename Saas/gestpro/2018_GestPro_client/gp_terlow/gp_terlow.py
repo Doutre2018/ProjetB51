@@ -12,6 +12,7 @@ from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
 from gp_terlow_modele import *
+from datetime import datetime
 
 class Controleur():
     def __init__(self):
@@ -42,6 +43,7 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
+        
         
     
 if __name__ == '__main__':

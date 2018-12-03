@@ -129,14 +129,21 @@ class Vue():
         
         self.labelProbleme=Label(self.cadresplash ,bg="#E5E7F4",fg="#E5E7F4", text="Nom d'utilisateur ou mot de passe erroné",font='arial 1')
         self.labelProbleme.grid()
-
         
         self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez l'adresse ip de votre serveur",font='arial 12',)
-        self.labelIp.grid()
         self.ipsplash=Entry(self.cadresplash,bg="white",justify=CENTER,)
         self.ipsplash.insert(0, self.monip)
+        
+        # ---------------- DM ----------------
+        cies = self.fetchCompagnies()
+        self.ciessplash=ttk.Combobox(self.cadresplash,width=40,justify=CENTER,values=cies)
+        self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
+        self.ciessplash.grid()
+        # ------------------------------------                      
+        
+        self.labelIp.grid()
         self.ipsplash.grid()
-                                
+        
         self.frameButton= Frame(self.cadresplash,bg="#E5E7F4")
         self.frameButton.grid()
         
@@ -179,12 +186,20 @@ class Vue():
         self.PasswordConfirm.bind('<FocusOut>',self.puclickEntryMotDePasseNewUserConfirm)
         
         self.labelIpServuer=Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer l'adresse de votre serveur",font='arial 12',bg="#E5E7F4")
-        self.labelIpServuer.grid()
         self.ipsplash=Entry(self.cadreNouvelleUtilisateur,bg="white",width=40,justify=CENTER)
         self.ipsplash.insert(0, self.monip)
+        
+        # ------------- DM -------------
+        compagnies = self.fetchCompagnies()
+        self.compagniesplash=ttk.Combobox(self.cadreNouvelleUtilisateur,width=40,justify=CENTER,values=compagnies)
+        self.compagniesplash.insert(0,"< Sélectionner votre entreprise >")
+        self.compagniesplash.grid()
+        # ------------------------------
+        
+        self.labelIpServuer.grid()
         self.ipsplash.grid()
 
-        self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmé",bg="#FFFFFF",relief=FLAT,command=self.inscription, width=15)
+        self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.inscription, width=15)
         self.confirmerIB.grid(row= 10, column= 0,pady=(30,35), padx=(0,122))
         
         self.annuleIB=Button(self.cadreNouvelleUtilisateur,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal, width=15)
@@ -399,11 +414,16 @@ class Vue():
     def salutations(self):
         print("hello")
         
-    # ---------------DM----------------- #     
+    # ---------------DM----------------- #
+    def fetchCompagnies(self):
+        ipserveur = self.ipsplash.get()
+        return self.parent.fetchCompagnies(ipserveur)
+            
     def inscription(self):
         nom = self.NouveauNom.get()                 # Nom d'utilisateur à inscrire
         motPasse = self.NouveauPassword.get()       # Mot de passe de l'utilisateur à inscrire
         mpConfirm = self.PasswordConfirm.get()      # 2e mot de passe; pour confirmation
+        compagnie = self.compagniesplash.get()      # Nom de la compagnie lié à l'utilisateur
         ipserveur = self.ipsplash.get()             # Addresse ip de l'utilisateur
         
         if motPasse=="Nouveau Mot de passe":
@@ -414,9 +434,13 @@ class Vue():
         if self.nomConforme(nom):                   # Vérifie que le nom d'utilisateur désiré est conforme
             if self.motPasseConforme(motPasse):     # Vérifie que le mot de passe de l'utilisateur est conforme
                 if motPasse == mpConfirm:           # Confirme le mot de passe désiré
-                    rep = self.parent.inscription(nom, motPasse, ipserveur)
-                    print(rep)
-                    self.retourMenuPrincipal()
+                    if compagnie != "< Sélectionner votre entreprise >":
+                        rep = self.parent.inscription(nom, motPasse, compagnie, ipserveur)
+                        print(rep)
+                        self.retourMenuPrincipal()
+                        
+                    else:
+                        print("Choisir une compagnie s.v.p.")
                     
                 else:
                     self.PasswordConfirm.delete(0, "end")
@@ -443,14 +467,18 @@ class Vue():
     def connexion(self):
         nom = self.nomsplash.get()
         motPasse = self.entrymotPassesplash.get()
+        compagnie = self.ciessplash.get()
         ipserveur = self.ipsplash.get()
         
         if self.nomConforme(nom):
             if self.motPasseConforme(motPasse):
-                rep = self.parent.connexion(nom, motPasse, ipserveur)
-                self.labelProbleme.config(fg="red",font='arial 9')
-                print(rep)
-                
+                if compagnie != "< Sélectionner votre entreprise >":
+                    rep = self.parent.connexion(nom, motPasse, compagnie, ipserveur)
+                    self.labelProbleme.config(fg="red",font='arial 9')
+                    print(rep)
+                    
+                else:
+                    print("Choisir une compagnie s.v.p.")
             else:
                 print("Mot de passe non conforme")
         else:

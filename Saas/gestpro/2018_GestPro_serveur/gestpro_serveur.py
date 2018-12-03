@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 
-#import Pyro4
 from xmlrpc.server import SimpleXMLRPCServer
 
 import xmlrpc.client
@@ -12,6 +11,7 @@ import socket
 import time
 import random
 import sqlite3
+from numpy.distutils.cpuinfo import command_by_line
 import csv
 from datetime import datetime
 import atexit
@@ -71,9 +71,28 @@ class ModeleService(object):
         return [1,"Bienvenue",list(self.modulesdisponibles.keys())]
     
     # -------------------DM------------------- #
-    def inscription(self, nom, motPasse):
+    def fetchCompagnies(self):
+        commande = "SELECT nomCompagnie FROM Compagnie"
+        l = self.baseDonnees.selection(commande)
+        compagnies = []
+        
+        for nom in l:
+            for n in nom:
+                compagnies.append(n)
+            
+        return compagnies
+        
+    
+    def inscription(self, nom, motPasse, compagnie):
         if self.nomUnique(nom):                       # Vérifie que le nom d'utilisateur est unique
-            commande = "INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES ('" + nom + "', '" + motPasse + "', NULL)"
+            commande = "SELECT id FROM Compagnie WHERE nomCompagnie = '" + compagnie + "';"
+            idCie = self.baseDonnees.selection(commande)
+            
+            for i in idCie:
+                for n in i:
+                    idCie = n
+            
+            commande = "INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv, id_compagnie) VALUES ('" + nom + "', '" + motPasse + "', NULL," + str(idCie) + ")"
             self.requeteInsertionPerso(commande)      # Insert dans la DB du nouvel utilisateur
             rep = nom + " inscrit!"
             return  rep
@@ -90,14 +109,22 @@ class ModeleService(object):
         else:
             return True                              # Si le nom n'est pas dans la BD (rep vide)
         
-    def userExiste(self, nom, motPasse):
-        commande = "SELECT motDePasse FROM Utilisateur WHERE nomUtilisateur = '" + nom + "'"
+    def userExiste(self, nom, motPasse, compagnie):
+        commande = "SELECT id FROM Compagnie WHERE nomCompagnie = '" + compagnie + "';"
+        idCie = self.requeteSelection(commande)
+        
+        for i in idCie:
+            for n in i:
+                idCie = n
+        
+        commande = "SELECT motDePasse, id_compagnie FROM Utilisateur WHERE nomUtilisateur = '" + nom + "'"
         sql = self.requeteSelection(commande)       # Requête à la BD pour chercher le mot de passe associé au nom d'utilisateur
         
         if sql:                                     # Si le nom d'utilisateur a été trouvé
             temp = sql[0]                           # Change le tuple en liste
             if motPasse in temp:                    # Cherche le mot de passe transmis dans la liste
-                return True
+                if idCie in temp:
+                    return True
             
         return False                                # Si au moins une condition n'est pas bonne
 
@@ -170,11 +197,16 @@ class ControleurServeur(object):
         return rep
     
     # ------------------DM-------------------- #
-    def inscription(self, nom, motPasse):
-        return self.modele.inscription(nom, motPasse)
+    def fetchCompagnies(self):
+        return self.modele.fetchCompagnies()
     
-    def connexion(self, nom, motPasse):
-        if self.modele.userExiste(nom, motPasse):       # Vérifie le nom d'utilisateur et mot de passe
+    def inscription(self, nom, motPasse, compagnie):
+        return self.modele.inscription(nom, motPasse, compagnie)
+    
+    def connexion(self, nom, motPasse, compagnie):
+        self.monnom = nom
+        self.macompagnie = compagnie
+        if self.modele.userExiste(nom, motPasse, compagnie):       # Vérifie le nom d'utilisateur et mot de passe
             return self.loginauserveur(nom)
         else:
             return False
@@ -227,6 +259,7 @@ class  BaseDonnees():
         self.connecteur = sqlite3.connect('SAAS.db')
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
+        self.creerListeCompagnies()
         #self.insertion('stocks', [1])
         self.connecteur.commit()
         self.selection("select * from stocks")
@@ -289,6 +322,21 @@ class  BaseDonnees():
             ['Utilisateur', 'id_compagnie', 'INTEGER',  'Compagnie', 'id'],
             ]
         return listeConst
+    
+    # ----------------- DM -----------------
+    def creerListeCompagnies(self):
+        compagnies = ["Unity", "Ubisoft", "Google", "GOTO.INC"]
+        commande = "SELECT * FROM Compagnie"
+        l = self.selection(commande)
+        
+        if (l):
+            pass
+                
+        else:
+            for cie in compagnies:
+                commande = "INSERT INTO Compagnie(nomCompagnie) VALUES ('" + cie + "')"
+                self.insertionPerso(commande)
+    # --------------------------------------
         
     def creerTables(self, listeTables, listeConst):
         for table in listeTables:

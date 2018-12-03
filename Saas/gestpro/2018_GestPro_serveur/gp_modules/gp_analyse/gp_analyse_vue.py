@@ -29,8 +29,30 @@ class Vue():
         self.cadreactif=None
         self.creercadres()
         self.changecadre(self.cadreAnalyse)
+        
+        self.lectureBD()
 
 
+    def lectureBD(self):
+        for mot in self.parent.modele.lesVerbesEx:
+            self.lBVerbeExplicite.insert(END, mot)
+        for mot in self.parent.modele.lesVerbesImp:
+            self.lBVerbeImplicite.insert(END, mot)
+        for mot in self.parent.modele.lesNomsImp:
+            self.lBNomImplicite.insert(END, mot)
+        for mot in self.parent.modele.lesAdjectifsImp:
+            self.lBAjdectifImplicite.insert(END, mot)
+        for mot in self.parent.modele.lesVerbesSup:
+            self.lBVerbeSuplementaire.insert(END, mot)
+        for mot in self.parent.modele.lesNomsSup:
+            self.lBNomSuplementaire.insert(END, mot)
+        for mot in self.parent.modele.lesAdjectifSup:
+            self.lBAjdectifSuplementaire.insert(END, mot)
+        for mot in self.parent.modele.lesNomsEx:
+            self.lBNomExplicite.insert(END, mot)
+        for mot in self.parent.modele.lesAdjectifsEx:
+            self.lBAdjectifExplicite.insert(END, mot)
+        
         
     def changemode(self,cadre):
         if self.modecourant:
@@ -146,6 +168,7 @@ class Vue():
         self.entryNew = Entry(self.frameNouveauVerbeExplicite)
         self.entryNew.grid()
         
+        
         self.bAjouter= Button(self.frameNouveauVerbeExplicite, text="Ajouter" ,command=self.AjouterNouveauVerbeExplicite)
         self.bAjouter.grid();     
         
@@ -227,7 +250,7 @@ class Vue():
         self.entryNew.grid()
          
         self.bAjouter= Button(self.frameNouveauAjectifSupplementaire, text="Ajouter" ,command=self.AjouterNouveauAdjectifSupplementaire)
-        self.bAjouter.grid();  
+        self.bAjouter.grid();
         
         
        
@@ -237,44 +260,53 @@ class Vue():
     def AjouterNouveauVerbeExplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBVerbeExplicite.insert(END, self.newInsert)
+        self.parent.insertion(1,1,1,"Verbe explicite",self.newInsert)
         self.frameNouveauVerbeExplicite.destroy()
         
     def AjouterNouveauVerbeImplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBVerbeImplicite.insert(END, self.newInsert)
+        self.parent.insertion(1,1,1,"Verbe implicite",self.newInsert)
         self.frameNouveauVerbeImplicite.destroy()
        
     def AjouterNouveauVerbeSupplementaire(self):  
         self.newInsert=self.entryNew.get();
         self.lBVerbeSuplementaire.insert(END, self.newInsert)
+        self.parent.insertion(1,1,1,"Verbe supplementaire",self.newInsert)
         self.frameNouveauVerbeSuplementaire.destroy()
         
     def AjouterNouveauNomExplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBNomExplicite.insert(END, self.newInsert)
+        self.parent.insertion(1,1,1,"Nom explicite",self.newInsert)
         self.frameNouveauNomExplicite.destroy()
         
     def AjouterNouveauNomImplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBNomImplicite.insert(END, self.newInsert)
+        self.parent.insertion(1,1,1,"Nom implicite",self.newInsert)
         self.frameNouveauNomImplicite.destroy()
     
     def AjouterNouveauNomSupplementaire(self):  
         self.newInsert=self.entryNew.get();
         self.lBNomSuplementaire.insert(END, self.newInsert)
+        self.parent.insertion(1,1,1,"Nom supplementaire",self.newInsert)
         self.frameNouveauNomSuplementaire.destroy()
         
     def AjouterNouveauAdjectifExplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBAdjectifExplicite.insert(END, self.newInsert)
+        self.parent.insertion(1,1,1,"Adjectif explicite",self.newInsert)
         self.frameNouveauAjectifExplicite.destroy()
         
     def AjouterNouveauAdjectifImplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBAjdectifImplicite.insert(END, self.newInsert)
+        self.parent.insertion(1,1,1,"Adjectif implicite",self.newInsert)
         self.frameNouveauAjectifImplicite.destroy()
         
     def AjouterNouveauAdjectifSupplementaire(self):  
         self.newInsert=self.entryNew.get();
         self.lBAjdectifSuplementaire.insert(END, self.newInsert)
+        self.parent.insertion(1,1,1,"Adjectif supplementaire",self.newInsert)
         self.frameNouveauAjectifSupplementaire.destroy()

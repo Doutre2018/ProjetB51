@@ -74,7 +74,31 @@ class Modele():
     
     def selectAttributDeCarte(self,idCarte):
         commande = "SELECT nomAttributs FROM AttributsCRC WHERE id_classe="
-        commande+=idCarte
+        commande+=str(idCarte)
+        #Retourne une liste de String des attributs d'UNE carte
+        return self.serveur.requeteSelection(commande)
+    
+    def selectCollaboDeCarte(self,idCarte):
+        commande = "SELECT fonction FROM FonctionsCRC WHERE id_classe="
+        commande+=str(idCarte)
+        #Retourne une liste de String des attributs d'UNE carte
+        return self.serveur.requeteSelection(commande)
+    
+    def selectFonctionsDeCarte(self,idCarte):
+        commande = "SELECT fonction FROM FonctionsCRC WHERE id_classe="
+        commande+=str(idCarte)
+        #Retourne une liste de String des attributs d'UNE carte
+        return self.serveur.requeteSelection(commande)
+    
+    def selectCarteHeritage(self,idCarte):
+        commande = "SELECT carte_heritage FROM Cartes WHERE id="
+        commande+=str(idCarte)
+        #Retourne une liste de String des attributs d'UNE carte
+        return self.serveur.requeteSelection(commande)
+    
+    def selectCarteResponsable(self,idCarte):
+        commande = "SELECT nom_responsable FROM Cartes WHERE id="
+        commande+=str(idCarte)
         #Retourne une liste de String des attributs d'UNE carte
         return self.serveur.requeteSelection(commande)
     

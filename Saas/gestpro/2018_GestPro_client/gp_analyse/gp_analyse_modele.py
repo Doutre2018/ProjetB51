@@ -24,12 +24,9 @@ class Modele():
                           "Nom supplementaire",
                           "Verbe explicite",
                           "Verbe supplementaire"]
-<<<<<<< HEAD
-=======
         #self.creerType()
         #self.numProjet
         #self.typeDonnee
->>>>>>> 5ed4b1e2bf07c711a742a4480e48d71936b48b78
         self.creerType()
         self.numProjet=1
         self.lesTypes = []
@@ -47,26 +44,6 @@ class Modele():
 
     
         
-<<<<<<< HEAD
-    def InsertInto(self,ligne, colonne, nomProjet, type):
-        self.numProjet = BD.selection("SELECT id FROM Projet WHERE nom = " + nomProjet)
-        self.typeDonnee = BD.selection("SELECT id FROM TypeMot WHERE nom = " + type)
-        BD.insertionPerso("INSERT INTO AnalyseTextuelle(ligne, colonne, id_projet, id_type) VALUES( " + ligne + ", " + colonne + ", " + numProjet + ", " + typeDonnee + " )") 
-        
-        
-    def creerType(self):
-        try:
-            self.lesTypes = self.BD.selection("SELECT nom FROM TypeMot")
-        except:
-            for type in self.listeType :
-                    BD.insertionPerso("INSERT INTO TypeMot(nom) VALUES(" + type + " )")
-                    
-    def selectAffichage(self):
-        self.lesVerbesImp = self.BD.selection("SELECT ligne,colonne")
-        
-        
-            
-=======
     #def InsertInto(self,ligne, colonne, nomProjet, type):
         #self.numProjet = BD.requeteSelection("SELECT id FROM Projet WHERE nom = " + nomProjet)
     #    typeDonnee = BD.requeteSelection("SELECT id FROM TypeMot WHERE nom = " + type)
@@ -90,7 +67,6 @@ class Modele():
         self.lesNomsSup = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[6] + "');")
         self.lesVerbesEx = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[7] + "');")
         self.lesVerbesSup = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[8] + "');")
->>>>>>> 5ed4b1e2bf07c711a742a4480e48d71936b48b78
         
         
         

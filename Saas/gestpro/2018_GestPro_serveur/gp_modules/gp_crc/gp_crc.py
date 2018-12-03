@@ -75,8 +75,6 @@ class Modele():
     def selectAttributDeCarte(self,idCarte):
         commande = "SELECT nomAttributs FROM AttributsCRC WHERE id_classe="
         commande+=str(idCarte)
-<<<<<<< HEAD
-=======
         #Retourne une liste de String des attributs d'UNE carte
         return self.serveur.requeteSelection(commande)
     
@@ -101,7 +99,7 @@ class Modele():
     def selectCarteResponsable(self,idCarte):
         commande = "SELECT nom_responsable FROM Cartes WHERE id="
         commande+=str(idCarte)
->>>>>>> c7f0af30c5cf7e2daf25eea140be71dfab85a1ba
+
         #Retourne une liste de String des attributs d'UNE carte
         return self.serveur.requeteSelection(commande)
     

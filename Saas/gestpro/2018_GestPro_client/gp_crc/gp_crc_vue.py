@@ -76,7 +76,8 @@ class Vue():
         
         #self.ListeCRC.insert(0, "Modele")
         for nom in self.modele.listeCartes:
-            self.ListeCRC.insert(0,nom)
+            for i in nom:
+                self.ListeCRC.insert(0,i)
 
         self.ListeCRC.grid(row=1, column=1)
         self.ListeCRC.bind("<ButtonRelease-1>",self.modifierCRC)
@@ -164,30 +165,24 @@ class Vue():
         #insertion des infos de base de la carte dans la BD
         self.modele.insertCarte(listeValeurCarte)
         #id de la carte qui vient d'être ajoutée
-        idCarteAjoutee=self.modele.selectIdCarte(texteboutton)
+        temp = self.modele.selectIdCarte(texteboutton)
+        for n in temp:
+            for i in n:
+                idCarteAjoutee=str(i)
         
-        texteAtt = self.textAttribut.get()
-        listeValeurAttribut=[None]*2
-        listeValeurAttribut[0]="'"+texteAtt+"'"
-        listeValeurAttribut[1]="'"+idCarteAjoutee+"'"
-        #insertion des attributs de la carte
-        self.modele.insertAttributsDeCarte(listeValeurAttribut)
-        
-        
-        #COLLABO
-        texteCollabo = self.textCollaboration.get()
-        listeValeurCollabo=[None]*2
-        listeValeurCollabo[0]="'"+idCarteAjoutee+"'"
-        listeValeurCollabo[1]="'"+texteCollabo+"'"
-        #insertion des collaborations de la carte
-        self.modele.insertCollaboDeCarte(listeValeurCollabo)
+        texteAtt = self.textAttribut.get(1.0, "end-1c")
+        self.modele.insertAttributsDeCarte(texteAtt, idCarteAjoutee)
         
         #FONCTIONS
-        texteFonction = self.textFonction.get()
+        texteFonction = self.textFonction.get(1.0, "end-1c")
         listeValeurFonct=[None]*2
         listeValeurFonct[0]="'"+idCarteAjoutee+"'"
-        listeValeurFonct[1]="'"+textFonction+"'"
+        listeValeurFonct[1]="'"+texteFonction+"'"
         self.modele.insertFonctionDeCarte(listeValeurFonct)
+        
+        #COLLABO
+        texteCollabo = self.textCollaboration.get(1.0, "end-1c")
+        self.modele.insertCollaboDeCarte(idCarteAjoutee,texteCollabo)
         
         self.ListeCRC.insert(self.compteurBouton, texteboutton)
         
@@ -200,7 +195,13 @@ class Vue():
         a=self.ListeCRC.curselection()
         b=self.ListeCRC.get(a)
         
-        
+        # ------------- DM -------------
+        id = self.modele.selectIdCarte(b)
+        for i in id:
+            for j in i :
+                id=j
+        attribut = self.modele.selectAttributDeCarte(id)
+        # ------------------------------
         
         self.carteCRC =Toplevel(self.root)
         self.frameCarteCRC = Frame(self.carteCRC)
@@ -226,6 +227,10 @@ class Vue():
         self.entryResponsable= Entry(self.frameHeriatageResponsable)
         self.entryResponsable.grid(row=1, column=2)
         
+        # ------------- DM -------------
+        self.entryNomClasse.insert(0, b)
+        # ------------------------------
+        
         #Partie du frame pour les fonction, Attribut , objet
         self.frameFonction= Frame(self.frameInterieur)
         self.frameFonction.grid(row=1,column=1)
@@ -242,6 +247,10 @@ class Vue():
         self.textObjet = Text(self.frameFonction, height = 10, width=15)
         self.textObjet.grid(row=1, column=3)
         
+        # ------------- DM -------------
+        self.textAttribut.insert(0, attribut)
+        # ------------------------------
+        
         #partie du frame pour Collaboration
         self.frameCollaboration= Frame(self.frameInterieur)
         self.frameCollaboration.grid(row=0 , column= 2, rowspan=2)
@@ -252,17 +261,26 @@ class Vue():
         
         
         #Bouton Ajouter
-        self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.modifierCRC)
+        self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.modifierCarteCRC)
         self.boutonModifier.grid()
+        
+    # ---------------- DM ----------------
+    def modifierCarteCRC(self):
+        pass
+    # ------------------------------------
         
 
     def delCRC(self):
         a=()
         a=self.ListeCRC.curselection()
         nomClasse = str(self.ListeCRC.get(a))
-        #b=self.ListeCRC.get(a)
-        print(nomClasse)
-        #Supprime la rangée de la BD
+        for i in self.modele.selectIdCarte(nomClasse):
+            for n in i:
+                idCarteCourante=str(n)
+        #Supprime la rangée de la BD pour toutess les composantes
+        self.modele.supprimerAttributsDeCarte(idCarteCourante)
+        self.modele.supprimerCollaboDeCarte(idCarteCourante)
+        self.modele.supprimerFonctionDeCarte(idCarteCourante)
         self.modele.supprimerCarte(nomClasse)
         
         self.ListeCRC.delete(a)

@@ -37,8 +37,6 @@ class Modele():
         self.selectAffichage()
 
 
-    
-        
     def InsertInto(self,ligne, colonne, numProjet, type, mot):
         typeDonnee = self.BD.requeteSelection("SELECT id FROM TypeMot WHERE nom = '" + type + "';")
         print(mot)

@@ -121,10 +121,10 @@ class ModeleService(object):
         self.baseDonnees.connecteur.close()
         return True
     
-    def requeteInsertionPerso(self,commande):
+    def requeteInsertionPerso(self,commande, tupleValeurs = -1):
         self.baseDonnees.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
-        self.baseDonnees.insertionPerso(commande)
+        self.baseDonnees.insertionPerso(commande, tupleValeurs)
         self.baseDonnees.connecteur.close()
         return True
     
@@ -342,8 +342,11 @@ class  BaseDonnees():
         except:
             print("contraintes existent")
     
-    def insertionPerso(self,commande):
-        self.curseur.execute(commande)
+    def insertionPerso(self,commande, tupleOptionnel =-1):
+        if tupleOptionnel == -1:
+            self.curseur.execute(commande)
+        else:
+            self.curseur.execute(commande, tupleOptionnel)
         self.connecteur.commit()
         
 

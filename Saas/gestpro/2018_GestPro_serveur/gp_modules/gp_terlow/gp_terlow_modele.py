@@ -8,11 +8,10 @@ class Modele():
         self.tests()
         self.listeColonnes = []
         self.generationColonnes()
+        self.creationColonne("test nouvelle creation")
         self.generationCartes()
         self.testPrint()
-        #self.suppressionColonne(2)
-       # self.testPrint()
-    
+        
     def tests(self):
         self.referenceControleur.serveur.requeteInsertionPerso("DELETE FROM Colonnes_Terlow")
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (1, 'test1')")
@@ -21,15 +20,27 @@ class Modele():
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (4, 'test4')")
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Cartes_Terlow (id_colonne, ordre, texte) VALUES (1, 1, 'test_carte1')")
         
-
-       
+    def creationColonne(self, titre):
+        if self.listeColonnes:
+            ordre = self.listeColonnes[-1].ordre +1
+        else:
+            ordre = 1
+        print("ordre nouvelle colonne", ordre)
+        tupleValeurs = (ordre,titre,)
+        self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (?, ?)", tupleValeurs )
+        self.generationColonnes()
+    
+    
+    def creationCarte(self):
+        pass
     
     def generationColonnes(self):
         try:
             data = self.referenceControleur.serveur.requeteSelection("SELECT * FROM Colonnes_Terlow")
-            #print(data)
-            for colonne in data:
-                self.listeColonnes.append(Colonne(colonne[0], colonne[1], colonne[2], []))
+            if data:
+                self.listeColonnes.clear()
+                for colonne in data:
+                    self.listeColonnes.append(Colonne(colonne[0], colonne[1], colonne[2], []))
         except Exception as erreur:
             print(erreur)   # ->log
        

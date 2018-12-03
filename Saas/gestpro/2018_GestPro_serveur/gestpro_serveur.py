@@ -76,7 +76,9 @@ class ModeleService(object):
         compagnies = []
         
         for nom in l:
-            compagnies.append(nom)
+            for n in nom:
+                compagnies.append(n)
+            
             
         return compagnies
         

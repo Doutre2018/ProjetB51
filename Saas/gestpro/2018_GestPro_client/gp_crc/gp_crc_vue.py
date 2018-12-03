@@ -200,7 +200,27 @@ class Vue():
         for i in id:
             for n in i:
                 id=n
-        attribut = self.modele.selectAttributDeCarte(n)
+        attribut = self.modele.selectAttributDeCarte(id)
+        for i in attribut:
+            for n in i:
+                attribut=n
+        nom_responsable = self.modele.selectCarteResponsable(id)
+        for i in nom_responsable:
+            for n in i:
+                nom_responsable=n
+        heritage = self.modele.selectCarteHeritage(id)
+        for i in heritage:
+            for n in i:
+                heritage=n
+        fonctions = self.modele.selectFonctionsDeCarte(id)
+        for i in fonctions:
+            for n in i:
+                fonctions=n
+                
+        collabos  = self.modele.selectCollaboDeCarte(id)
+        for i in collabos:
+            for n in i:
+                collabos=n
         # ------------------------------
         
         self.carteCRC =Toplevel(self.root)
@@ -229,6 +249,8 @@ class Vue():
         
         # ------------- DM -------------
         self.entryNomClasse.insert(0, b)
+        self.entryHeritage.insert(0,heritage)
+        self.entryResponsable.insert(0,nom_responsable)
         # ------------------------------
         
         #Partie du frame pour les fonction, Attribut , objet
@@ -248,7 +270,9 @@ class Vue():
         self.textObjet.grid(row=1, column=3)
         
         # ------------- DM -------------
-        self.textAttribut.insert(0, attribut)
+        self.textAttribut.insert(INSERT, attribut)
+        self.textFonction.insert(INSERT, fonctions)
+        self.textObjet.insert(INSERT, attribut)
         # ------------------------------
         
         #partie du frame pour Collaboration
@@ -259,6 +283,9 @@ class Vue():
         self.textCollaboration=Text(self.frameCollaboration,height = 15, width=15)
         self.textCollaboration.grid()
         
+        # ------------- DM -------------
+        self.textCollaboration.insert(INSERT, collabos)
+        # ------------------------------
         
         #Bouton Ajouter
         self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.modifierCarteCRC)

@@ -138,23 +138,23 @@ class Vue():
         y = (hauteurEcran/2)-(220/2)
         self.nouveauSprint.geometry("+%d+%d" % (x, y))
         
-        self.FramenouveauSprint = Frame(self.nouveauSprint)
+        self.FramenouveauSprint = Frame(self.nouveauSprint,bg="#234078")
         self.FramenouveauSprint.grid()
-        self.labeltitre= Label(self.FramenouveauSprint, text="Sprint "+str(self.compteur),font= "arial, 20")
+        self.labeltitre= Label(self.FramenouveauSprint, text="Sprint "+str(self.compteur),font= "arial, 20",bg="#234078", fg="white")
         self.labeltitre.grid(row=1, column=1,columnspan=5,pady=(10,10));
-        self.labeldate= Label(self.FramenouveauSprint, text="Date: ",font= "arial, 12")
-        self.labeldate.grid(row=2, column=1,padx=(10,0));
-        self.entryJour = Entry(self.FramenouveauSprint, width=2)
+        self.labeldate= Label(self.FramenouveauSprint, text="Date: ",font= "arial, 12",bg="#234078", fg="white")
+        self.labeldate.grid(row=2, column=1,padx=(40,0));
+        self.entryJour = Entry(self.FramenouveauSprint, width=2, relief=FLAT)
         self.entryJour.grid(row=2, column=3);
-        self.entryMois= Entry(self.FramenouveauSprint)
-        self.entryMois.grid(row=2, column=4, padx=(0,10))
+        self.entryMois= Entry(self.FramenouveauSprint, relief=FLAT)
+        self.entryMois.grid(row=2, column=4, padx=(0,40))
         
-        self.labelJour = Label(self.FramenouveauSprint, text="Jour",font= "arial, 10")
+        self.labelJour = Label(self.FramenouveauSprint, text="Jour",font= "arial, 10",bg="#234078", fg="white")
         self.labelJour.grid(row=3, column=3)
-        self.labelJour = Label(self.FramenouveauSprint, text="Mois(Lettre)",font= "arial, 10")
-        self.labelJour.grid(row=3, column=4)
+        self.labelJour = Label(self.FramenouveauSprint, text="Mois(Lettre)",font= "arial, 10",bg="#234078", fg="white")
+        self.labelJour.grid(row=3, column=4,padx=(0,40))
         
-        self.boutonOk = Button(self.FramenouveauSprint,text="Ajouter", command = self.insertion)
+        self.boutonOk = Button(self.FramenouveauSprint,text="Ajouter", command = self.insertion,relief=FLAT, bg="white")
         self.boutonOk.grid(row=4, column=1,columnspan=5,pady=10)
        
         
@@ -169,54 +169,69 @@ class Vue():
     def delete(self):
         a=()
         a=self.listeSprint.curselection()
+        
+        if a==():
+            pass
+        else:
+            self.listeSprint.delete(a)   
+        
         #Supprime la rangée de la BD
         #self.modele.supprimerCarte(nomClasse)
                 
-        self.listeSprint.delete(a)
+       
     
     def modifier(self):
-        self.nouveauSprint =Toplevel(self.root)
         
-        largeurEcran = self.root.winfo_screenwidth()
-        hauteurEcran = self.root.winfo_screenheight()
-        x = (largeurEcran/2)-(220/2)
-        y = (hauteurEcran/2)-(220/2)
-        self.nouveauSprint.geometry("+%d+%d" % (x, y))
+        self.SelectionSprint=();
+        self.SelectionSprint=self.listeSprint.curselection();
         
-        self.FrameModifierSprint = Frame(self.nouveauSprint)
-        self.FrameModifierSprint.grid()
-        self.labeltitre= Label(self.FrameModifierSprint, text="Sprint ",font= "arial, 20")
-        self.labeltitre.grid(row=1, column=1,columnspan=4,pady=(10,10));
+        if self.SelectionSprint==():
+            pass
+        else:
+            self.nouveauSprint =Toplevel(self.root)
         
-        self.entryNumeroSprint = Entry(self.FrameModifierSprint, width=3)
-        self.entryNumeroSprint.grid(row=1, column=4)
-        
-        
-        self.labeldate= Label(self.FrameModifierSprint, text="Date: ",font= "arial, 12")
-        self.labeldate.grid(row=2, column=1,padx=(10,0));
-        self.entryJour = Entry(self.FrameModifierSprint, width=2)
-        self.entryJour.grid(row=2, column=3);
-        self.entryMois= Entry(self.FrameModifierSprint)
-        self.entryMois.grid(row=2, column=4, padx=(0,10))
-        
-        self.labelJour = Label(self.FrameModifierSprint, text="Jour",font= "arial, 10")
-        self.labelJour.grid(row=3, column=3)
-        self.labelJour = Label(self.FrameModifierSprint, text="Mois(Lettre)",font= "arial, 10")
-        self.labelJour.grid(row=3, column=4)
-        
-        self.boutonOk = Button(self.FrameModifierSprint,text="Modifier", command = self.modifInsertion)
-        self.boutonOk.grid(row=4, column=1,columnspan=5,pady=10)
+            largeurEcran = self.root.winfo_screenwidth()
+            hauteurEcran = self.root.winfo_screenheight()
+            x = (largeurEcran/2)-(220/2)
+            y = (hauteurEcran/2)-(220/2)
+            self.nouveauSprint.geometry("+%d+%d" % (x, y))
+            
+            self.FrameModifierSprint = Frame(self.nouveauSprint,bg="#234078")
+            self.FrameModifierSprint.grid()
+            self.labeltitre= Label(self.FrameModifierSprint, text="Sprint ",font= "arial, 20",bg="#234078",fg="white")
+            self.labeltitre.grid(row=1, column=1,columnspan=4,pady=(10,10));
+            
+            self.entryNumeroSprint = Entry(self.FrameModifierSprint, width=3,relief=FLAT)
+            self.entryNumeroSprint.grid(row=1, column=4)
+            
+            
+            self.labeldate= Label(self.FrameModifierSprint, text="Date: ",font= "arial, 12",bg="#234078",fg="white")
+            self.labeldate.grid(row=2, column=1,padx=(40,0));
+            self.entryJour = Entry(self.FrameModifierSprint, width=2,relief=FLAT)
+            self.entryJour.grid(row=2, column=3);
+            self.entryMois= Entry(self.FrameModifierSprint,relief=FLAT)
+            self.entryMois.grid(row=2, column=4, padx=(0,40))
+            
+            self.labelJour = Label(self.FrameModifierSprint, text="Jour",font= "arial, 10",bg="#234078",fg="white")
+            self.labelJour.grid(row=3, column=3)
+            self.labelJour = Label(self.FrameModifierSprint, text="Mois(Lettre)",font= "arial, 10",bg="#234078",fg="white")
+            self.labelJour.grid(row=3, column=4,padx=(0,40))
+            
+    
+            
+            self.boutonOk = Button(self.FrameModifierSprint,text="Modifier", command = self.modifInsertion,relief=FLAT,bg="white")
+            self.boutonOk.grid(row=4, column=1,columnspan=5,pady=10)  
+            
+
         
         
     def modifInsertion(self):
-        a=()
-        a=self.listeSprint.curselection()
-        
+       
         Date= self.entryJour.get() +" "+ self.entryMois.get() 
         ligneAjout= "Sprint " + str(self.compteur) +" : "+ Date
         
-        self.listeSprint.delete(a)
-        self.listeSprint.insert(a, ligneAjout)
+        self.listeSprint.delete(self.SelectionSprint)
+        self.listeSprint.insert(self.SelectionSprint, ligneAjout)
         
         self.nouveauSprint.destroy()
         
@@ -224,23 +239,23 @@ class Vue():
         self.nouveauMembre =Toplevel(self.root)
         largeurEcran = self.root.winfo_screenwidth()
         hauteurEcran = self.root.winfo_screenheight()
-        x = (largeurEcran/2)-(440/2)
+        x = (largeurEcran/2)-(340/2)
         y = (hauteurEcran/2)-(220/2)
         self.nouveauMembre.geometry("+%d+%d" % (x, y))
         
-        self.FrameAjoutMembre = Frame(self.nouveauMembre)
+        self.FrameAjoutMembre = Frame(self.nouveauMembre,bg="#234078")
         self.FrameAjoutMembre.grid()
         
-        self.labelMembre = Label(self.FrameAjoutMembre, text="Ajouter un Nouveau Membre",font= "arial, 20")
+        self.labelMembre = Label(self.FrameAjoutMembre, text="Ajouter un Nouveau Membre",font= "arial, 20",bg="#234078",fg="white")
         self.labelMembre.grid(row=0,column=0,columnspan=3,padx= 25,pady=(20,10))
         
         
-        self.labelnom= Label(self.FrameAjoutMembre, text="Nom: ")
+        self.labelnom= Label(self.FrameAjoutMembre, text="Nom: ",bg="#234078",fg="white")
         self.labelnom.grid(row=1, column=0,padx=(90,0))
-        self.entryNom = Entry(self.FrameAjoutMembre)
+        self.entryNom = Entry(self.FrameAjoutMembre,relief=FLAT)
         self.entryNom.grid(row=1, column=1,padx=(0,75));
         
-        self.labelTravailSur= Label(self.FrameAjoutMembre, text="Travail sur: ")
+        self.labelTravailSur= Label(self.FrameAjoutMembre, text="Travail sur: ",bg="#234078",fg="white")
         self.labelTravailSur.grid(row=2, column=0,padx=(90,0))
         self.comboModule = ttk.Combobox(self.FrameAjoutMembre,values=[
                                     "Scrum", 
@@ -254,7 +269,7 @@ class Vue():
         self.comboModule.grid(row=2, column=1,padx=(0,75),pady=10)
     
         
-        self.boutonAjoutMembre= Button(self.FrameAjoutMembre, text="Ajouter",command=self.InsertionMembre)
+        self.boutonAjoutMembre= Button(self.FrameAjoutMembre, text="Ajouter",command=self.InsertionMembre,bg="white",relief=FLAT)
         self.boutonAjoutMembre.grid(row=3,column=0,columnspan=3,pady=10);
         
     def InsertionMembre(self):
@@ -278,41 +293,38 @@ class Vue():
         #Supprime la rangée de la BD
         #self.modele.supprimerCarte(nomClasse)
     def ModifMembre(self):
-        self.nouveauMembre =Toplevel(self.root)
-        largeurEcran = self.root.winfo_screenwidth()
-        hauteurEcran = self.root.winfo_screenheight()
-        x = (largeurEcran/2)-(440/2)
-        y = (hauteurEcran/2)-(220/2)
-        self.nouveauMembre.geometry("+%d+%d" % (x, y))
-        
-        self.FrameAjoutMembre = Frame(self.nouveauMembre)
-        self.FrameAjoutMembre.grid()
-        
-        self.labelMembre = Label(self.FrameAjoutMembre, text="Modifier un membre",font= "arial, 20")
-        self.labelMembre.grid(row=0,column=0,columnspan=3,padx= 25,pady=(20,10))
-        
-        
-        self.labelnom= Label(self.FrameAjoutMembre, text="Nom: ")
-        self.labelnom.grid(row=1, column=0,padx=(90,0))
-        self.entryNom = Entry(self.FrameAjoutMembre)
-        self.entryNom.grid(row=1, column=1,padx=(0,75));
         
         self.selctionMembre=() #a
         self.selctionMembre=self.listeMembre.curselection()
         self.selctionOccupation=()#b
         self.selctionOccupation=self.listeOccupation.curselection()
-        
-        if  self.selctionMembre==():
-            self.entryNom.insert(self.selctionOccupation, self.listeMembre.get(self.selctionOccupation))
+
+
+        if self.selctionMembre==() and self.selctionOccupation==():
+            pass
         else:
-           self.entryNom.insert(self.selctionMembre, self.listeMembre.get(self.selctionMembre))
-
-        
-
-        
-        self.labelTravailSur= Label(self.FrameAjoutMembre, text="Travail sur: ")
-        self.labelTravailSur.grid(row=2, column=0,padx=(90,0))
-        self.comboModule = ttk.Combobox(self.FrameAjoutMembre,values=[
+            self.nouveauMembre =Toplevel(self.root)
+            largeurEcran = self.root.winfo_screenwidth()
+            hauteurEcran = self.root.winfo_screenheight()
+            x = (largeurEcran/2)-(340/2)
+            y = (hauteurEcran/2)-(220/2)
+            self.nouveauMembre.geometry("+%d+%d" % (x, y))
+            
+            self.FrameAjoutMembre = Frame(self.nouveauMembre,bg="#234078")
+            self.FrameAjoutMembre.grid()
+            
+            self.labelMembre = Label(self.FrameAjoutMembre, text="Modifier un membre",font= "arial, 20",bg="#234078",fg="white")
+            self.labelMembre.grid(row=0,column=0,columnspan=3,padx= 25,pady=(20,10))
+            
+            
+            self.labelnom= Label(self.FrameAjoutMembre, text="Nom: ",bg="#234078",fg="white")
+            self.labelnom.grid(row=1, column=0,padx=(90,0))
+            self.entryNom = Entry(self.FrameAjoutMembre)
+            self.entryNom.grid(row=1, column=1,padx=(0,75));
+           
+            self.labelTravailSur= Label(self.FrameAjoutMembre, text="Travail sur: ",bg="#234078",fg="white")
+            self.labelTravailSur.grid(row=2, column=0,padx=(90,0))
+            self.comboModule = ttk.Combobox(self.FrameAjoutMembre,values=[
                                     "Scrum", 
                                     "Analyse Textuelle",
                                     "Maquette",
@@ -320,12 +332,22 @@ class Vue():
                                     "Budget",
                                     "Modélisation de Donné",
                                     "Libre"] , justify=CENTER)
-        self.comboModule.current(6)
-        self.comboModule.grid(row=2, column=1,padx=(0,75),pady=10)
+            self.comboModule.current(6)
+            self.comboModule.grid(row=2, column=1,padx=(0,75),pady=10)
     
         
-        self.boutonAjoutMembre= Button(self.FrameAjoutMembre, text="Modifier",command=self.InsertionModifMembre)
-        self.boutonAjoutMembre.grid(row=3,column=0,columnspan=3,pady=10);        
+            self.boutonAjoutMembre= Button(self.FrameAjoutMembre, text="Modifier",command=self.InsertionModifMembre,bg="white",relief=FLAT)
+            self.boutonAjoutMembre.grid(row=3,column=0,columnspan=3,pady=10)
+        
+            if  self.selctionMembre==():
+                self.entryNom.insert(self.selctionOccupation, self.listeMembre.get(self.selctionOccupation))
+            else:
+                self.entryNom.insert(self.selctionMembre, self.listeMembre.get(self.selctionMembre))
+           
+                  
+
+        
+      
     
     def InsertionModifMembre(self):
         

@@ -54,6 +54,9 @@ class Modele():
         self.parent=parent
         self.serveur=parent.serveur
         self.listeCartes=self.selectClassesCartes()
+        print(self.serveur.fetchNomUtilisateurCourant())
+        print(self.serveur.fetchNomCompagnie())
+        print("JUSTE EN HAUT DE MOI")
         #self.listeIDCartes=self.selectIdCarte()
         #for i in self.listeIDCartes:
             #self.listeAttributs.append(selectAttributDeCarte(i))
@@ -127,7 +130,7 @@ class Modele():
     
     def supprimerAttributsDeCarte(self,idCarte):
         commande="DELETE FROM AttributsCRC WHERE id_classe="
-        commande+=idCarte
+        commande+=str(idCarte)
         self.serveur.requeteInsertionPerso(commande)
         
     def supprimerCollaboDeCarte(self,idCarte):

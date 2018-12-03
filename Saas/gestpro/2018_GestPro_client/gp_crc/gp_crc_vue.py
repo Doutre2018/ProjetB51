@@ -200,6 +200,7 @@ class Vue():
         for i in id:
             for n in i:
                 id=n
+
         attribut = self.modele.selectAttributDeCarte(id)
         for i in attribut:
             for n in i:

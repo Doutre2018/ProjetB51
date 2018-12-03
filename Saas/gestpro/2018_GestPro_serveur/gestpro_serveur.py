@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 
-#import Pyro4
 from xmlrpc.server import SimpleXMLRPCServer
 
 import xmlrpc.client
@@ -13,7 +12,9 @@ import time
 import random
 import sqlite3
 from numpy.distutils.cpuinfo import command_by_line
-
+import csv
+from datetime import datetime
+import atexit
 
 
 #s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -48,7 +49,6 @@ class ModeleService(object):
                                  "tchat":"gp_tchat",
                                  "modelisation":"gp_modelisation",
                                  "terlow":"gp_terlow",
-
                                  "inscription":"gp_inscription"}
         self.clients={}
         self.baseDonnees = BaseDonnees()
@@ -59,6 +59,7 @@ class ModeleService(object):
         daemon.register_function(self.requeteMiseAJour)
         daemon.register_function(self.requeteInsertionPerso)
         daemon.register_function(self.requeteFichier)
+        daemon.register_function(self.logErreur)
         daemon.register_introspection_functions()
         
     def creerclient(self,nom):
@@ -78,7 +79,6 @@ class ModeleService(object):
         for nom in l:
             for n in nom:
                 compagnies.append(n)
-            
             
         return compagnies
         
@@ -176,11 +176,18 @@ class ModeleService(object):
         with open(cheminFichier, "rb") as handle:
             return xmlrpc.client.Binary(handle.read())
 
-    
+    def logErreur(self,date, adresseIP, message):
+        with open("log.csv", 'a+', newline = '') as handler:
+            writer = csv.writer(handler, delimiter = ';') 
+            row =[date,  adresseIP,  message]
+            writer.writerow(row)
+        return True
+            
 class ControleurServeur(object):
     def __init__(self):
         rand=random.randrange(1000)+1000
         self.modele=ModeleService(self,rand)
+        self.monom=""
 
      
     def checkBase(self):
@@ -198,12 +205,20 @@ class ControleurServeur(object):
         return self.modele.inscription(nom, motPasse, compagnie)
     
     def connexion(self, nom, motPasse, compagnie):
+        self.monnom=nom
+        self.macompagnie = compagnie
         if self.modele.userExiste(nom, motPasse, compagnie):       # Vérifie le nom d'utilisateur et mot de passe
             return self.loginauserveur(nom)
         else:
             return False
     # ---------------------------------------- #
-
+    
+    def fetchNomUtilisateurCourant(self):
+        return self.monnom
+    
+    def fetchNomCompagnie(self):
+        return self.macompagnie
+    
     def requetemodule(self,mod):
         if mod in self.modele.modulesdisponibles.keys():
             cwd=os.getcwd()
@@ -225,7 +240,6 @@ class ControleurServeur(object):
         contenub=fiche.read()
         fiche.close()
         return xmlrpc.client.Binary(contenub)
-            
         
     def quitter(self):
         timerFermeture = Timer(1,self.fermer).start()

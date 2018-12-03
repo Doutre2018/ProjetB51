@@ -11,13 +11,14 @@ from gp_terlow_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
+from gp_terlow_modele import *
 
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.createurId=Id
-        #self.connectionServeurCourant()
-        self.modele=None
+        self.connectionServeurCourant()
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
 

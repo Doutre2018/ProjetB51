@@ -57,6 +57,7 @@ class ModeleService(object):
         daemon.register_function(self.requeteSelection)
         daemon.register_function(self.requeteMiseAJour)
         daemon.register_function(self.requeteInsertionPerso)
+        daemon.register_function(self.requeteFichier)
         daemon.register_introspection_functions()
         
     def creerclient(self,nom):
@@ -154,6 +155,11 @@ class ModeleService(object):
     def getAdresse(self):
         return self.adresseServeur
     
+    def requeteFichier(self, cheminFichier):
+        with open(cheminFichier, "rb") as handle:
+            return xmlrpc.client.Binary(handle.read())
+
+    
 class ControleurServeur(object):
     def __init__(self):
         rand=random.randrange(1000)+1000
@@ -227,9 +233,9 @@ class  BaseDonnees():
         self.connecteur = sqlite3.connect('SAAS.db')
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
-        self.insertion('stocks', [1])
+        #self.insertion('stocks', [1])
         self.connecteur.commit()
-        #self.selection("select * from stocks")
+        self.selection("select * from stocks")
         self.connecteur.close()
 
         
@@ -257,7 +263,7 @@ class  BaseDonnees():
             ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date','']],
             ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER','']],
             ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
-            ['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['type','text','']],
+            #['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre', 'INTEGER', ''], ['titre','text','']],
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
             ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']]
@@ -301,7 +307,9 @@ class  BaseDonnees():
             stringCreate += ")"
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
                 
+    
     
     def insertion(self, nomTable = "", listeValeurs=[]):
         stringInsert = "INSERT INTO " + nomTable + " VALUES("
@@ -332,7 +340,8 @@ class  BaseDonnees():
                 stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
                 self.curseur.execute(stringAlterTable)
         except:
-            print("contraintes existent")
+            pass
+            #print("contraintes existent")
     
     def insertionPerso(self,commande):
         self.curseur.execute(commande)

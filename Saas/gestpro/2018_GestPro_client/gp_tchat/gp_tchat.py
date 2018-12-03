@@ -41,6 +41,8 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
+    
+
         
     
 if __name__ == '__main__':

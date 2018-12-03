@@ -24,7 +24,7 @@ class Modele():
                           "Verbe supplementaire"]
         self.creerType()
         self.numProjet="1"
-        self.lesTypes = []
+        self.lesTypes
         self.lesVerbesImp = []
         self.lesNomsImp = []
         self.lesAdjectifsImp =[]
@@ -56,15 +56,15 @@ class Modele():
                     self.BD.requeteInsertionPerso("INSERT INTO TypeMot(nom) VALUES('" + type + "' );")
                     
     def selectAffichage(self):
-        self.lesVerbesImp = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[1] + "');")
-        self.lesNomsEx = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[0] + "');")
-        self.lesAdjectifSup = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[2] + "');")
-        self.lesAdjectifsImp = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[3] + "');")
-        self.lesAdjectifsEx = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[4] + "');")
-        self.lesNomsImp = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[5] + "');")
-        self.lesNomsSup = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[6] + "');")
-        self.lesVerbesEx = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[7] + "');")
-        self.lesVerbesSup = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type IN (SELECT nom FROM TypeMot WHERE nom = '" + self.listeType[8] + "');")
+        self.lesVerbesImp = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[1] + "');")
+        self.lesNomsEx = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[0] + "');")
+        self.lesAdjectifSup = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[2] + "');")
+        self.lesAdjectifsImp = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[3] + "');")
+        self.lesAdjectifsEx = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[4] + "');")
+        self.lesNomsImp = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[5] + "');")
+        self.lesNomsSup = self.BD.requeteSelection("SELECT ligne,colonne FROM AnalyseTextuelle WHERE id_type = (SELECT id nom FROM TypeMot WHERE nom = '" + self.listeType[6] + "');")
+        self.lesVerbesEx = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[7] + "');")
+        self.lesVerbesSup = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[8] + "');")
         
         
         

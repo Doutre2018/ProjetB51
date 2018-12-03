@@ -29,8 +29,30 @@ class Vue():
         self.cadreactif=None
         self.creercadres()
         self.changecadre(self.cadreAnalyse)
+        
+        self.lectureBD()
 
 
+    def lectureBD(self):
+        for mot in self.parent.modele.lesVerbesEx:
+            self.lBVerbeExplicite.insert(END, mot)
+        for mot in self.parent.modele.lesVerbesImp:
+            self.lBVerbeImplicite.insert(END, mot)
+        for mot in self.parent.modele.lesNomsImp:
+            self.lBNomImplicite.insert(END, mot)
+        for mot in self.parent.modele.lesAdjectifsImp:
+            self.lBAjdectifImplicite.insert(END, mot)
+        for mot in self.parent.modele.lesVerbesSup:
+            self.lBVerbeSuplementaire.insert(END, mot)
+        for mot in self.parent.modele.lesNomsSup:
+            self.lBNomSuplementaire.insert(END, mot)
+        for mot in self.parent.modele.lesAdjectifSup:
+            self.lBAjdectifSuplementaire.insert(END, mot)
+        for mot in self.parent.modele.lesNomsEx:
+            self.lBNomExplicite.insert(END, mot)
+        for mot in self.parent.modele.lesAdjectifsEx:
+            self.lBAdjectifExplicite.insert(END, mot)
+        
         
     def changemode(self,cadre):
         if self.modecourant:

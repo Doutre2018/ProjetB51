@@ -16,11 +16,17 @@ class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.createurId=Id
-       # self.connectionServeurCourant()
+        self.connectionServeurCourant()
+        self.recevoirFichiers()
         self.modele=None
         self.vue=Vue(self)
+        self.reloadMessageBD()
         self.vue.root.mainloop()
-
+        
+    def reloadMessageBD(self):
+        self.vue.ajoutMessageBD()
+        self.vue.root.after(100,self.reloadMessageBD)
+        
     def connectionServeurCourant(self):  
         try:
             with open("adresseServeurCourant.txt", "r") as fichier:
@@ -41,9 +47,16 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
-    
-
         
+    def recevoirFichiers(self):
+        # pour utiliser, entrez le nom des fichiers que vous voulez dans la liste chemins (1 à n chemins) 
+        listeChemins = ["chat.jpg"]
+        for chemin in listeChemins:
+            try:
+                with open(chemin, "wb") as handle:
+                    handle.write(self.serveur.requeteFichier(chemin).data)
+            except Exception as erreur: 
+                print("Problème lors du téléchargement du fichier", chemin, '\n', erreur)
     
 if __name__ == '__main__':
     c=Controleur()

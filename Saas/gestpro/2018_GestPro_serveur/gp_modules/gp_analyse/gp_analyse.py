@@ -17,7 +17,6 @@ class Controleur():
         self.connectionServeurCourant()
         
         self.createurId=Id
-        print(self.serveur)
         self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()

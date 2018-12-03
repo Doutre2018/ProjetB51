@@ -260,9 +260,8 @@ class  BaseDonnees():
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
             ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']],
-            ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT']],
-            ['MembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', '']],
-            ['EquipeScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT']]
+            ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['date', 'text', '']],
+            ['MembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', ''], ['nom', 'text', '']]
             ]
         return listeTables
     
@@ -290,10 +289,7 @@ class  BaseDonnees():
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
             ['Utilisateur', 'id_compagnie', 'INTEGER',  'Compagnie', 'id'],
             ['Scrum', 'id_projet', 'INTEGER', 'Projet', 'id'],
-            ['Scrum', 'id_equipe', 'INTEGER', 'EquipeScrum', 'id'],
-            ['EquipeScrum', 'id_membreScrum', 'INTEGER', 'MembreScrum', 'id'],
-            ['EquipeScrum', 'id_scrum', 'INTEGER', 'Scrum', 'id'],
-            ['MembreScrum', 'id_utilisateur', 'INTEGER', 'Utilisateur', 'id']
+            ['MembreScrum', 'id_scrum', 'INTEGER', 'Scrum', 'id']
             ]
         return listeConst
         

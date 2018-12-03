@@ -8,6 +8,7 @@ from subprocess import Popen
 import math
 #from sm_projet_modele import *
 from gp_scrum_vue import *
+from gp_scrum_modele import *
 from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
@@ -15,9 +16,10 @@ from xmlrpc.client import ServerProxy
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
+        self.connectionServeurCourant()
+        
         self.createurId=Id
-        #self.connectionServeurCourant()
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         

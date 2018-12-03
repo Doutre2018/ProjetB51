@@ -12,7 +12,6 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         self.BD=parent.serveur
-        print("Bienvenue dans le modele ..")
         self.listeType = ["Nom explicite",
                           "Verbe implicite",
                           "Adjectif supplementaire",

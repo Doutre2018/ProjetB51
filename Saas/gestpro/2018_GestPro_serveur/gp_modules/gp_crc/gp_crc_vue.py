@@ -197,7 +197,11 @@ class Vue():
         
         # ------------- DM -------------
         id = self.modele.selectIdCarte(b)
+        for i in id:
+            for n in i:
+                id=n
         attribut = self.modele.selectAttributDeCarte(id)
+        
         # ------------------------------
         
         self.carteCRC =Toplevel(self.root)

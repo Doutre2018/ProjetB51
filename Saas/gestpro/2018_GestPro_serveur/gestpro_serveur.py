@@ -51,13 +51,15 @@ class ModeleService(object):
 
                                  "inscription":"gp_inscription"}
         self.clients={}
-        self.baseDonnees = BaseDonnees()
+        self.baseDonnees = BaseDonnees(self)
         self.adresseServeur = "http://"+str(IP) + ":" + str(9999)
         daemon.register_function(self.getAdresse)
         daemon.register_function(self.requeteInsertion)
         daemon.register_function(self.requeteSelection)
         daemon.register_function(self.requeteMiseAJour)
         daemon.register_function(self.requeteInsertionPerso)
+        daemon.register_function(self.requeteSpeciale)
+        daemon.register_function(self.genererDate)
         daemon.register_introspection_functions()
         
     def creerclient(self,nom):
@@ -135,12 +137,24 @@ class ModeleService(object):
         return True
     
     #méthode tampon qui retourne une liste. Chaque élément de la liste correspond à une rangée du select demandé.
-    def requeteSelection(self, stringSelect):
-        listeSelect  = self.baseDonnees.selection(stringSelect)
+    def requeteSelection(self, stringSelect, valeurs = -1):
+        listeSelect  = self.baseDonnees.selection(stringSelect, valeurs)
         return listeSelect
     
     def getAdresse(self):
         return self.adresseServeur
+    
+    def requeteSpeciale(self, stringRequete):
+        connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+        curseur = connecteur.cursor(stringRequete, (datetime.today()))
+        curseur.execute()
+        connecteur.close()
+    
+        
+    
+    def genererDate(self, typeDate):
+        dictDate = {"maintenant" : datetime.today()}
+        return dictDate[typeDate]
     
 class ControleurServeur(object):
     def __init__(self):
@@ -204,20 +218,24 @@ class ControleurServeur(object):
         daemon.shutdown()
 
 class  BaseDonnees():
-    def __init__(self):
+    def __init__(self, referenceServeur):
         #if os.path.exists("SAAS.db"):
             #os.remove("SAAS.db")
         #else:
             #print("Creation du fichier SAAS.db initial")
+        self.referenceServeur = referenceServeur
         self.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
-        #self.insertion('stocks', [1])
+        #self.testDate()
         self.connecteur.commit()
-        self.selection("select * from stocks")
         self.connecteur.close()
 
-        
+    def testDate(self):
+        self.curseur.execute("INSERT INTO test_date VALUES (?,?)", (1, datetime.today()) )
+        data = self.selection("SELECT * from test_date")
+        for element in data:
+            print(element)
     
     def genererListeTables(self):
         listeTables = [ 
@@ -285,8 +303,8 @@ class  BaseDonnees():
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, texte text, dateCreation timestamp, estimationTemps timestamp, datePrevueFin timestamp, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-    
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text)") #, estimationTemps timestamp, datePrevueFin timestamp, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
+        #self.curseur.execute("CREATE TABLE IF NOT EXISTS test_date (num INTEGER, date TIMESTAMP)")
     
     def insertion(self, nomTable = "", listeValeurs=[]):
         stringInsert = "INSERT INTO " + nomTable + " VALUES("
@@ -302,12 +320,17 @@ class  BaseDonnees():
         self.curseur.execute(stringInsert)
     
     
-    def selection(self, stringSelect):
-        connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+    def selection(self, stringSelect, valeurs = -1):
+        connecteur = sqlite3.connect('SAAS.db', detect_types = sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         curseur = connecteur.cursor()
         listeData=[]
-        for rangee in curseur.execute(stringSelect):
-            listeData.append(rangee)
+        if valeurs == -1:
+            for rangee in curseur.execute(stringSelect):
+                listeData.append(rangee)
+        else:
+            for rangee in curseur.execute(stringSelect, (valeurs,) ):
+                listeData.append(rangee)
+            
         connecteur.close()
         return listeData
             
@@ -322,6 +345,9 @@ class  BaseDonnees():
     def insertionPerso(self,commande):
         self.curseur.execute(commande)
         self.connecteur.commit()
+        
+
+
         
 if __name__ == "__main__":
     controleurServeur=ControleurServeur()

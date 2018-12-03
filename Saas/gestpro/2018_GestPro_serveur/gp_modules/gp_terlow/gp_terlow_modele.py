@@ -5,11 +5,11 @@ from datetime import datetime
 class Modele():
     def __init__(self, referenceControleur):
         self.referenceControleur = referenceControleur
-        #self.tests()
+        self.tests()
         self.listeColonnes = []
         self.generationColonnes()
         self.generationCartes()
-        #self.testPrint()
+        self.testPrint()
         #self.suppressionColonne(2)
        # self.testPrint()
     
@@ -19,13 +19,17 @@ class Modele():
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (2, 'test2')")
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (3, 'test3')")
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (4, 'test4')")
-            
+        self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Cartes_Terlow (id_colonne, ordre, texte) VALUES (1, 1, 'test_carte1')")
+        
+
+       
+    
     def generationColonnes(self):
         try:
             data = self.referenceControleur.serveur.requeteSelection("SELECT * FROM Colonnes_Terlow")
             #print(data)
             for colonne in data:
-                self.listeColonnes.append(Colonne(colonne[0], colonne[1], colonne[2]))
+                self.listeColonnes.append(Colonne(colonne[0], colonne[1], colonne[2], []))
         except Exception as erreur:
             print(erreur)   # ->log
        
@@ -41,11 +45,13 @@ class Modele():
     #à tester
     def generationCartes(self):
         for colonne in self.listeColonnes:
-            #stringSelect = "SELECT * FROM Cartes_Terlow WHERE id_colonne = " + colonne.id
-            dataCartes = self.referenceControleur.serveur.requeteSelection("SELECT * FROM Cartes_Terlow WHERE id_colonne = " + colonne.id)
+            stringSelect = "SELECT * FROM Cartes_Terlow WHERE id_colonne = ?" 
+            dataCartes = self.referenceControleur.serveur.requeteSelection(stringSelect, colonne.id )
             if dataCartes:
+                print("colonne id = ", colonne.id, "dataCartes = ", dataCartes)
                 for carte in dataCartes:
-                    colonne.listeCartes.append(Carte(carte[0], carte[1], carte[2],  carte[3], carte[4], carte[5]))
+                    colonne.listeCartes.append(Carte(carte[0], carte[1], carte[2],  carte[3]))
+                    print("appending")
                 
     #à tester
     #méthode tente de supprimer la carte correspondante, si tout fonctionne, elle retourne true       
@@ -64,17 +70,25 @@ class Modele():
             print("id=", colonne.id)
             print("ordre = ", colonne.ordre)
             print ("titre = ", colonne.titre)
+            for carte in colonne.listeCartes:
+                print("-------- cartes: -------")
+                print("carte id=", carte.id)
+                print("carte -> id_colonne = ", carte.id_colonne)
+                print("carte ordre = ", carte.ordre)
+                print ("carte texte = ", carte.texte)
+                
 
 class Colonne():
-    def __init__(self, id, ordre, titre, listeCartes = []):
+    def __init__(self, id, ordre, titre, listeCartes):
         self.id = id
         self.ordre = ordre
         self.titre = titre
         self.listeCartes = listeCartes
 
 class Carte():
-    def __init__(self, id, ordre, texte, dateCreation, estimationTemps = None, datePrevueFin = None):
+    def __init__(self, id, id_colonne, ordre, texte, dateCreation = None, estimationTemps = None, datePrevueFin = None):
         self.id = id
+        self.id_colonne = id_colonne
         self.ordre = ordre
         self.texte = texte
         self.dateCreation = dateCreation

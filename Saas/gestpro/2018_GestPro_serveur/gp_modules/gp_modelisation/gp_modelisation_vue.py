@@ -102,6 +102,7 @@ class Vue():
         autreChampEntry=Entry(self.creationTable, width = 20,textvariable = self.autreChampsCreer[self.nbChamps])
         autreChampEntry.grid(row=self.nbChamps+2,column=3)
 
+
         self.nbChamps+=1
     def ajouterTable(self):        
         textNom = Label(self.cadremodelisation,text="Nom de la table")
@@ -131,7 +132,10 @@ class Vue():
             j = i
         
         notable = self.nbTable
-        boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,self.nomTableCreer,self.nomsChampsCreer,self.typeChampsCreer,self.autreChampsCreer))
+        nomschamps=self.nomsChampsCreer
+        typeschamps=self.typeChampsCreer
+        autreschamps=self.autreChampsCreer
+        boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,nomTable,nomschamps,typeschamps,autreschamps))
         boutonModifier.grid(column=(self.nbTable*3),row=j+4)
         self.nbTable+=1
         self.creationTable.destroy()
@@ -147,10 +151,9 @@ class Vue():
         
         textNom = Label(self.modifTable,text="Nom de la table")
         textNom.grid(row=0,column=1)
-        print(str(nom.get()))
         self.nomTableCreer = Entry(self.modifTable)
         self.nomTableCreer.grid(row=0,column=2)
-        self.nomTableCreer.insert(0,"hello")
+        self.nomTableCreer.insert(0,nom.cget("text"))
         textNom = Label(self.modifTable,text="Nom du Champ",width=15)
         textNom.grid(row=1,column=1)
         textType = Label(self.modifTable,text="Type du Champ",width=15)
@@ -161,15 +164,15 @@ class Vue():
         for i in range(len(self.nomsChampsCreer)) :
             nomduchamp = Entry(self.modifTable, width = 20, text= self.nomsChampsCreer[i].get(),borderwidth=2, relief="groove")
             nomduchamp.grid(column=1, row=i+2,padx=(20,0))
-            nomduchamp.insert(0,str(self.autreChampsCreer[i]))
+            nomduchamp.insert(0,str(nomsChamps[i].get()))
 
             typeduchamp = Entry(self.modifTable, width = 20, text= self.typeChampsCreer[i].get(),borderwidth=2, relief="groove")
             typeduchamp.grid(column=2, row=i+2)
-            typeduchamp.insert(0,str(self.autreChampsCreer[i]))
+            typeduchamp.insert(0,str(typesChamps[i].get()))
 
             autre = Entry(self.modifTable, width = 20, text= str(self.autreChampsCreer[i].get()),borderwidth=2, relief="groove")
             autre.grid(column=3, row=i+2,padx=(0,20))
-            autre.insert(0,str(self.autreChampsCreer[i]))
+            autre.insert(0,str(autresChamps[i].get()))
             
             boutonEnlever = Button(self.modifTable,width =1, text = 'X', command = lambda:self.enleverChampsModifier(i, nomduchamp,typeduchamp,autre,boutonEnlever))
             boutonEnlever.grid(column=4,row=i+2)

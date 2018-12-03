@@ -76,7 +76,8 @@ class ModeleService(object):
         compagnies = []
         
         for nom in l:
-            compagnies.append(nom)
+            for n in nom:
+                compagnies.append(n)
             
         return compagnies
         
@@ -196,6 +197,8 @@ class ControleurServeur(object):
         return self.modele.inscription(nom, motPasse, compagnie)
     
     def connexion(self, nom, motPasse, compagnie):
+        self.monnom = nom
+        self.macompagnie = compagnie
         if self.modele.userExiste(nom, motPasse, compagnie):       # Vérifie le nom d'utilisateur et mot de passe
             return self.loginauserveur(nom)
         else:

@@ -39,19 +39,19 @@ class Controleur():
             self.serveur=ServerProxy(ad)
             return self.serveur.fetchCompagnies()
         
-    def inscription(self, nom, motPasse, ipserveur):
+    def inscription(self, nom, motPasse, compagnie, ipserveur):
         if ipserveur and nom:
             ad = "http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
             self.monnom=nom
-            return self.serveur.inscription(nom, motPasse)
+            return self.serveur.inscription(nom, motPasse, compagnie)
         
-    def connexion(self, nom, motPasse, ipserveur):
+    def connexion(self, nom, motPasse, compagnie, ipserveur):
         if ipserveur and nom:
             self.monnom=nom
             ad = "http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
-            rep = self.serveur.connexion(nom, motPasse)
+            rep = self.serveur.connexion(nom, motPasse, compagnie)
             
             if rep == False:        # Erreur d'utilisateur et/ou de mot de passe
                 r = "Nom d'utilisateur ou mot de passe erroné"

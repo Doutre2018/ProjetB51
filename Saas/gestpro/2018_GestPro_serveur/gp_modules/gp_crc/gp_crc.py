@@ -102,7 +102,7 @@ class Modele():
         
     def supprimerCollaboDeCarte(self,idCarte):
         commande="DELETE FROM CollaboCRC WHERE id_classe="
-        commande+=idCarte
+        commande+=str(idCarte)
         self.serveur.requeteInsertionPerso(commande)
         
     def supprimerFonctionDeCarte(self,idCarte):

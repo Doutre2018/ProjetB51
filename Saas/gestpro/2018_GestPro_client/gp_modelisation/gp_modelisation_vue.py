@@ -20,12 +20,12 @@ class Vue():
         self.hauteurDefault=hauteur
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
-        self.cadrebaseExiste=False
+        self.cadremodelisationExiste=False
 
         self.images={}
         self.cadreactif=None
         self.creercadres()
-        self.changecadre(self.cadrebase)
+        self.changecadre(self.cadremodelisation)
         
     def changemode(self,cadre):
         if self.modecourant:
@@ -44,18 +44,19 @@ class Vue():
     
         
     def creercadres(self):
-        self.creercadrebase()
+        self.creercadremodelisation()
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
     
             
         
               
-    def creercadrebase(self):
-        self.cadrebase=Frame(self.root)
+    def creercadremodelisation(self):
+        self.cadremodelisation=Frame(self.root)
         self.root.overrideredirect(True) #Enleve la bordure
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
-
+        
+        
     def fermerfenetre(self):
         print("ON FERME la fenetre")
         self.root.destroy()

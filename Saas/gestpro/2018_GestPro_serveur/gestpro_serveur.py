@@ -259,7 +259,10 @@ class  BaseDonnees():
             #['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre', 'INTEGER', ''], ['titre','text','']],
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
-            ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']]
+            ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']],
+            ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT']],
+            ['MembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', '']],
+            ['EquipeScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT']]
             ]
         return listeTables
     
@@ -286,6 +289,11 @@ class  BaseDonnees():
             ['Tache_Sprint','id_sprint','INTEGER', 'Sprint', 'id'],
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
             ['Utilisateur', 'id_compagnie', 'INTEGER',  'Compagnie', 'id'],
+            ['Scrum', 'id_projet', 'INTEGER', 'Projet', 'id'],
+            ['Scrum', 'id_equipe', 'INTEGER', 'EquipeScrum', 'id'],
+            ['EquipeScrum', 'id_membreScrum', 'INTEGER', 'MembreScrum', 'id'],
+            ['EquipeScrum', 'id_scrum', 'INTEGER', 'Scrum', 'id'],
+            ['MembreScrum', 'id_utilisateur', 'INTEGER', 'Utilisateur', 'id']
             ]
         return listeConst
         

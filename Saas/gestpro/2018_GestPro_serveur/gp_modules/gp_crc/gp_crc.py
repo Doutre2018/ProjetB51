@@ -97,7 +97,7 @@ class Modele():
     
     def supprimerAttributsDeCarte(self,idCarte):
         commande="DELETE FROM AttributsCRC WHERE id_classe="
-        commande+=idCarte
+        commande+=str(idCarte)
         self.serveur.requeteInsertionPerso(commande)
         
     def supprimerCollaboDeCarte(self,idCarte):

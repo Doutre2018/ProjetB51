@@ -69,6 +69,9 @@ class Modele():
         ID = self.serveur.requeteSelection(commande)
         return ID
     
+    def selectIdCartePlus(self,classe,id_user):
+        pass
+    
     def selectAttributDeCarte(self,idCarte):
         commande = "SELECT nomAttributs FROM AttributsCRC WHERE id_classe="
         commande+=idCarte
@@ -94,7 +97,7 @@ class Modele():
     
     def supprimerAttributsDeCarte(self,idCarte):
         commande="DELETE FROM AttributsCRC WHERE id_classe="
-        commande+=idCarte
+        commande+=str(idCarte)
         self.serveur.requeteInsertionPerso(commande)
         
     def supprimerCollaboDeCarte(self,idCarte):

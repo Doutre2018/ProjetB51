@@ -197,6 +197,9 @@ class Vue():
         
         # ------------- DM -------------
         id = self.modele.selectIdCarte(b)
+        for i in id:
+            for j in i :
+                id=j
         attribut = self.modele.selectAttributDeCarte(id)
         # ------------------------------
         

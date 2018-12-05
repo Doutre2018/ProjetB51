@@ -15,8 +15,20 @@ class Modele():
         print("Bienvenue dans le modele ..")
         self.numProjet="1"
         self.scrum = []
+        self.membres = []
         
         
-    def InsertScrum(self, date):
+        
+    def insertScrum(self, date):
+        self.BD.requeteInsertionPerso("INSERT INTO Scrum(id_projet, date) VALUES('" + str(self.numProjet) + "', '" + str(date) + ");")
+    
+    def insertMembresScrum(self):
+        self.BD.
+        membres = self.BD.requeteSelection("SELECT nomUtilisateur FROM Utilisateur WHERE ")
         pass
-        #self.BD.requeteInsetionPerso("INSERT INTO Scrum(id_projet, id_date) VALUES('" + str(self.numProjet) + "', '" + str(date));")
+   
+    def selectScrum(self, date):
+        pass
+    
+    def selectMembres(self, nom):
+        pass

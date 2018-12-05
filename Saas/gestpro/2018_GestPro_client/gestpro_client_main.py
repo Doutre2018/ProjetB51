@@ -98,7 +98,7 @@ class Controleur():
             print("RIEN")
             
     def fermerprocessus(self):
-        if self.pid is not None:
+        if self.pid iss not None:
             self.pid.kill()
         
     def connecteservice(self,rep):  # initalisation locale de la simulation, creation du modele, generation des assets et suppression du layout de lobby

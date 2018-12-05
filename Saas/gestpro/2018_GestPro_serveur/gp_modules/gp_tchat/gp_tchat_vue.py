@@ -19,7 +19,7 @@ class Vue():
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
-        self.modele=None
+        self.modele=parent.modele
         self.largeurDefault=largeur
         self.hauteurDefault=hauteur
         self.largeurEcran=self.root.winfo_screenwidth()

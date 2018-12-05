@@ -18,7 +18,7 @@ class Controleur():
         self.createurId=Id
         self.connectionServeurCourant()
         self.recevoirFichiers()
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.reloadMessageBD()
         self.vue.root.mainloop()
@@ -65,6 +65,20 @@ class Modele():
         self.listeCartes=self.selectClassesCartes()
         self.usager = self.serveur.fetchNomUtilisateurCourant()
         self.compagnie = self.serveur.fetchNomCompagnie()
+        self.FilDeDiscussionCourant = None
+        self.idUsager=self.idUtilisateur()
+        
+    def idUtilisateur(self):
+        commande="SELECT id FROM Utilisateur WHERE nomUtilisateur='"+self.usager+"';"
+        return self.serveur.requeteSelection(commande)
+        pass
+    
+    def insertLigneChat(self,texte,date):
+        self.serveur.requeteInsertionPerso("INSERT INTO LigneChat(date,texte,id_filDiscussion,id_utilisateur) VALUES("+date+",'"+texte+"',"+self.FilDeDiscussionCourant+","+self.idUsager+");")
+    
+    def insertFilDiscussion(self):
+        self.serveur.requeteInsertionPerso("INSERT INTO FilDeDiscussion(id_projet) VALUES("+");")
+
     
 if __name__ == '__main__':
     c=Controleur()

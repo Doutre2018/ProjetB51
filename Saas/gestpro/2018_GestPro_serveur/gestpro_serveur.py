@@ -169,6 +169,11 @@ class ModeleService(object):
         listeSelect  = self.baseDonnees.selection(stringSelect)
         return listeSelect
     
+    # --------------- DM ---------------
+    def requeteUpdate(self, stringSelect):
+        pass
+    # ----------------------------------
+    
     def getAdresse(self):
         return self.adresseServeur
     
@@ -393,7 +398,13 @@ class  BaseDonnees():
     def insertionPerso(self,commande):
         self.curseur.execute(commande)
         self.connecteur.commit()
-        
+    
+    # --------------- DM ---------------    
+    def miseAJour(self,commande):
+        self.curseur.execute(commande)
+        self.connecteur.commit()
+    # ----------------------------------
+    
 if __name__ == "__main__":
     controleurServeur=ControleurServeur()
     #atexit.register(controleurServeur.fermer)

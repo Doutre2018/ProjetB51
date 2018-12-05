@@ -294,7 +294,21 @@ class Vue():
         
     # ---------------- DM ----------------
     def modifierCarteCRC(self):
-        pass
+        a = self.ListeCRC.curselection()
+        classe = self.ListeCRC.get(a)
+        
+        listeCarte = []
+        listeCarte.append(self.entryNomClasse.get())
+        listeCarte.append(self.entryHeritage.get())
+        listeCarte.append(self.entryResponsable.get())
+        
+        id = self.modele.selectIdCarte(classe)
+        
+        for n in id:
+            for i in n:
+                id = str(i)
+        
+        self.modele.updateCRC(id, listeCarte)
     # ------------------------------------
         
 

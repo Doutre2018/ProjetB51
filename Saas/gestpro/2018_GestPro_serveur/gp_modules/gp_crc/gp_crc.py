@@ -125,9 +125,13 @@ class Modele():
         self.serveur.requeteInsertionPerso("INSERT INTO FonctionsCRC(id_classe,fonction) VALUES(" + str(listeValeur[0]) + ","+ str(listeValeur[1]) +");")
     
     #Les UPDATE
-    
-    def updateCarte(self,idCarte):
-        pass                                                                                                                    
+    # --------------- DM ---------------
+    def updateCRC(self, idCarte, listeCartes):
+        commande = "UPDATE Cartes" 
+        commande += " SET classe = '" + listeCartes[0] + "', carte_heritage = '" + listeCartes[1] + "', nom_responsable = '" + listeCartes[2] + "'"
+        commande += " WHERE id = " + idCarte
+        self.serveur.requeteMiseAJour(commande)
+    # ----------------------------------                                                                                        
     
     def supprimerAttributsDeCarte(self,idCarte):
         commande="DELETE FROM AttributsCRC WHERE id_classe="

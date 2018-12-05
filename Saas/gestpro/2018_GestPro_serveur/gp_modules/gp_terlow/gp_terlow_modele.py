@@ -5,7 +5,9 @@ from datetime import datetime
 class Modele():
     def __init__(self, referenceControleur):
         self.referenceControleur = referenceControleur
-        self.tests()
+        #self.tests()
+        self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, texte, dateCreation) VALUES (?, ?, ?, ?)", [1,1,"'test carte'"], "maintenant") 
+        print(self.referenceControleur.serveur.requeteSelection("select * from Cartes_Terlow"))
         self.listeColonnes = []
         self.generationColonnes()
         self.creationColonne("test nouvelle creation")
@@ -18,7 +20,8 @@ class Modele():
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (2, 'test2')")
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (3, 'test3')")
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (4, 'test4')")
-        self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Cartes_Terlow (id_colonne, ordre, texte) VALUES (1, 1, 'test_carte1')")
+        #self.referenceControleur.serveur.requeteInsertionDate(["INSERT INTO Cartes_Terlow (id_colonne, ordre, texte, dateCreation) VALUES (?, ?, ?, ?)", 1,1,"'test carte'", "maintenant"]) 
+        
         
     def creationColonne(self, titre):
         if self.listeColonnes:
@@ -56,12 +59,14 @@ class Modele():
     #à tester
     def generationCartes(self):
         for colonne in self.listeColonnes:
-            stringSelect = "SELECT * FROM Cartes_Terlow WHERE id_colonne = ?" 
-            dataCartes = self.referenceControleur.serveur.requeteSelection(stringSelect, colonne.id )
+            #stringSelect = "SELECT * FROM Cartes_Terlow WHERE id_colonne = ?" 
+            #dataCartes = self.referenceControleur.serveur.requeteSelection(stringSelect, colonne.id )
+            stringSelect = "SELECT * FROM Cartes_Terlow WHERE id_colonne = " + str(colonne.id )
+            dataCartes = self.referenceControleur.serveur.requeteSelection(stringSelect )
             if dataCartes:
                 print("colonne id = ", colonne.id, "dataCartes = ", dataCartes)
                 for carte in dataCartes:
-                    colonne.listeCartes.append(Carte(carte[0], carte[1], carte[2],  carte[3]))
+                    colonne.listeCartes.append(Carte(carte[0], carte[1], carte[2],  carte[3], carte[4] ))
                     print("appending")
                 
     #à tester
@@ -87,6 +92,7 @@ class Modele():
                 print("carte -> id_colonne = ", carte.id_colonne)
                 print("carte ordre = ", carte.ordre)
                 print ("carte texte = ", carte.texte)
+                print("carte date = ", carte.dateCreation)
                 
 
 class Colonne():

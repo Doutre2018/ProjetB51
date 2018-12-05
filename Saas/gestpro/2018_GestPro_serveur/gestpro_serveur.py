@@ -24,7 +24,7 @@ print("MON IP SERVEUR",IP)
 #s.close()
 
 #daemon = Pyro4.core.Daemon(host=monip,port=9999) 
-daemon= SimpleXMLRPCServer((IP,9999), logRequests = False)
+daemon= SimpleXMLRPCServer((IP,9999), logRequests = False, allow_none=True)
 
 
 class Client(object):
@@ -60,7 +60,10 @@ class ModeleService(object):
         daemon.register_function(self.requeteInsertionPerso)
         daemon.register_function(self.requeteSpeciale)
         daemon.register_function(self.genererDate)
+        daemon.register_function(self.requeteInsertionDate)
         daemon.register_introspection_functions()
+        #self.requeteInsertionDate("INSERT INTO test_date VALUES (?,?)",(1, ), "maintenant")
+        #print(self.requeteSelection("SELECT * FROM test_date"))
         
     def creerclient(self,nom):
         #if nom in self.clients.keys(): # on assure un nom unique
@@ -150,10 +153,25 @@ class ModeleService(object):
         curseur.execute()
         connecteur.close()
     
-        
+    def requeteInsertionDate(self, stringSelect, listeValeurs, typeDate):
+       # print(stringSelect, listeValeurs, typeDate)
+        date = self.genererDate(typeDate)
+       # print("date dans requet=",date)
+        listeValeurs.append(date)
+        #print("listevaleurs avec date",listeValeurs)
+        tupleData = tuple(listeValeurs)
+       # print("tuple data = ", tupleData)
+        connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+        curseur = connecteur.cursor()
+        curseur.execute(stringSelect, tupleData)
+        connecteur.commit()
+        connecteur.close()
+        return True
     
     def genererDate(self, typeDate):
+        print("dans genererDate, parametre recu = ", typeDate)
         dictDate = {"maintenant" : datetime.today()}
+        print("valeur dico = ", dictDate[typeDate])
         return dictDate[typeDate]
     
 class ControleurServeur(object):
@@ -303,8 +321,8 @@ class  BaseDonnees():
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text)") #, estimationTemps timestamp, datePrevueFin timestamp, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-        #self.curseur.execute("CREATE TABLE IF NOT EXISTS test_date (num INTEGER, date TIMESTAMP)")
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text, dateCreation timestamp)") #, estimationTemps timestamp, datePrevueFin timestamp, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS test_date (num INTEGER, date TIMESTAMP)") #****
     
     def insertion(self, nomTable = "", listeValeurs=[]):
         stringInsert = "INSERT INTO " + nomTable + " VALUES("

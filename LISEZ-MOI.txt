@@ -9,7 +9,7 @@
  ########  ###     ### ###     ###  ########  
 ===============================================
 
-VERSION 1.1 (Sprint 1)
+VERSION 2.0 (Sprint 2)
 
 I. PROJET
 ===============================
@@ -41,21 +41,59 @@ gestpro_client_main.py dans le répertoire "2018_GestPro_client".
 
 - À l'ouverture du SAAS, si vous n'avez pas d'utilisateur:
 		-Cliquez sur "Nouveau Client"
-		-Entrez votre nom d'usager (entrez l'adresse IP du serveur manuellement)
-		-Cliquez ensuite sur "Annuler" pour retourner à l'utilitaire de connexion
-		-Entrez le nom d'utilisateur et l'IP du serveur.
+		-Entrez votre nom d'usager
+		-Entrez votre mot de passe
+		-Confirmer le mot de passe (ne copier/coller pas le mot de passe d'au-dessus)
+		-Choisissez la compagnie dont vous êtes le représentant.
+- Pour vous connecter:
+		-Entrez le nom d'utilisateur, votre mdp, votre compagnie ainsi que l'adresse IP du serveur.
 
-Une fois le gestionnaire ouvert, choisissez un module:
+DANS LE GESTIONNAIRE:
+	POUR QUITTER LE PLEIN ÉCRAN: ACCÉDER AU MENU EN HAUT, OPTION «AFFICHAGE», «FULL SCREEN»
+
+CHOISSISEZ UN MODULE:
+- Mandat :
+	Innaccessible pour le moment (l'interface utilisateur n'est pas fonctionnelle)
+-SCRUM :
+	(BD pas connectée)
+	Cliquez sur le bouton ajouter en dessous des zones de texte pour ajouter le contenu.
+	Il n'y a pas de persistance de données.
+-Analyse textuelle:
+	Pour ajouter des mots/verbes/adjectifs, cliquez sur les petits "+" et ajoutez le contenu dans
+	la nouvelle fenêtre.
+	Il y a persistance des données, mais pas du tout au point
+-Cas d'usage:
+	Cliquez sur les cas à gauche pour faire afficher leur contenu dans les catégories à droite.
+	Cliquez sur les boutouns en dessous pour ajouter du contenu.
+	Il n'y a pas de persistance de données.
 - La Maquette :
-	L'interface s'ouvre, on peut déplacer les formes mais le module n'est pas encore fonctionnel
-- Cas d'usage/Scénarii :
-	Le module s'ouvre dans l'interface.
-	- On peut ajouter une nouveau cas d'usage/scénarii, mais les fonctions ne sont pas implantées.
+	Pour ajouter des formes/textes, cliquez sur les objets dans le menu.
+	Pour changer la couleur d'un objet, ouvrez le menu défilant en haut pour faire apparaitre la palette de couleur
+	Pour ajouter du texte, cliquez sur le grand "T"; le nouveau texte apparaitra au milieu du canvas. 
+		Ce texte est éditable en double cliquant dessus. Entrez le nouveau texte dans la nouvelle fenêtre.
+	Il n'y a pas de persistance de données.
 - CRC
 	Le module s'ouvre avec le nom des cartes CRC
-	- En cliquant sur une carte, ça ouvre une fenêtre dans laquelle on peut entrer
-	  les informations pertinentes.
-	- Les fonctionnalitées de la BD ne sont pas implantées encore.
+	En cliquant sur une carte, ça ouvre une fenêtre dans laquelle on peut entrer les informations pertinentes.
+	On peut ajouter des cartes, ajouter du contenu.
+	On peut supprimer des cartes (ce qui les supprime en BD aussi)
+	On ne peut PAS modifier le contenu des cartes existantes (prochaine implantation)
+	Il y a persistance des données (mais pas propre au "projet")
+-Budget
+	Pas implanté
+-Tchat
+	Interface est terminée, mais il n'y a pas de persistance de données et l'utilisateur n'est pas lié au module.
+	Il n'y a pas de persistance de données.
+-Modélisation de données
+	Pour ajouter une nouvelle classe, cliquer sur «Créer table»
+	Dans la nouvelle fenêtre, entrez le nouveau nom de la table.
+	Cliquez sur «Ajouter champs» pour ajouter un nouveau type de champ (données)
+	Pour ajouter cette table au projet, cliquez sur «Ajouter».
+	Il n'y a pas de persistance de données.
+-Terlow
+	On peut ajouter des colonnes, dans lesquelles on ajoute des classes.
+	Il n'y a pas de persistance de données
+	
 
 ============================================
 Liens importants :

@@ -54,6 +54,9 @@ class Modele():
         self.parent=parent
         self.serveur=parent.serveur
         self.listeCartes=self.selectClassesCartes()
+        print(self.serveur.fetchNomUtilisateurCourant())
+        print(self.serveur.fetchNomCompagnie())
+        print("JUSTE EN HAUT DE MOI")
         #self.listeIDCartes=self.selectIdCarte()
         #for i in self.listeIDCartes:
             #self.listeAttributs.append(selectAttributDeCarte(i))
@@ -74,9 +77,38 @@ class Modele():
     
     def selectAttributDeCarte(self,idCarte):
         commande = "SELECT nomAttributs FROM AttributsCRC WHERE id_classe="
-        commande+=idCarte
+        commande+=str(idCarte)
         #Retourne une liste de String des attributs d'UNE carte
         return self.serveur.requeteSelection(commande)
+    
+    def selectCollaboDeCarte(self,idCarte):
+        commande = "SELECT fonction FROM FonctionsCRC WHERE id_classe="
+        commande+=str(idCarte)
+        #Retourne une liste de String des attributs d'UNE carte
+        return self.serveur.requeteSelection(commande)
+    
+    def selectFonctionsDeCarte(self,idCarte):
+        commande = "SELECT fonction FROM FonctionsCRC WHERE id_classe="
+        commande+=str(idCarte)
+        #Retourne une liste de String des attributs d'UNE carte
+        return self.serveur.requeteSelection(commande)
+    
+    def selectCarteHeritage(self,idCarte):
+        commande = "SELECT carte_heritage FROM Cartes WHERE id="
+        commande+=str(idCarte)
+        #Retourne une liste de String des attributs d'UNE carte
+        return self.serveur.requeteSelection(commande)
+    
+    def selectCarteResponsable(self,idCarte):
+        commande = "SELECT nom_responsable FROM Cartes WHERE id="
+        commande+=str(idCarte)
+        #Retourne une liste de String des attributs d'UNE carte
+        return self.serveur.requeteSelection(commande)
+    
+    def selectResponsableCarte(self,id_classe):
+        commande="SELECT nom FROM Utilisateur;"
+        return self.serveur.requeteSelection(commande)
+    
     
     #Les insertions
     def insertCarte(self,listeValeur):
@@ -90,10 +122,11 @@ class Modele():
             
     def insertFonctionDeCarte(self,listeValeur):
         self.serveur.requeteInsertionPerso("INSERT INTO FonctionsCRC(id_classe,fonction) VALUES(" + str(listeValeur[0]) + ","+ str(listeValeur[1]) +");")
-                                                                                                                                      
-    def selectResponsableCarte(self,id_classe):
-        commande="SELECT nom FROM Utilisateur;"
-        return self.serveur.requeteSelection(commande)
+    
+    #Les UPDATE
+    
+    def updateCarte(self,idCarte):
+        pass                                                                                                                    
     
     def supprimerAttributsDeCarte(self,idCarte):
         commande="DELETE FROM AttributsCRC WHERE id_classe="

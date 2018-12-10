@@ -67,6 +67,9 @@ class Modele():
         self.FilDeDiscussionCourant = 0 #Tant qu'il n'y a pas de module Projet
         self.idProjetCourant = None
         self.idUsager=self.idUtilisateurCourant()
+        for i in self.idUsager:
+            for n in i:
+                self.idUsager=n
         
     def idUtilisateurCourant(self):
         commande="SELECT id FROM Utilisateur WHERE nomUtilisateur='"+self.usager+"';"
@@ -74,7 +77,7 @@ class Modele():
     
     #Insertions
     def insertLigneChat(self,texte):
-        self.serveur.requeteInsertionPerso("INSERT INTO LigneChat(texte,id_filDiscussion,id_utilisateur) VALUES('"+str(texte)+"',"+str(self.FilDeDiscussionCourant)+","+str(self.idUsager)+");")
+        self.serveur.requeteInsertionPerso("INSERT INTO LigneChat(texte,id_filDiscussion,id_utilisateur) VALUES('"+texte+"',"+str(self.FilDeDiscussionCourant)+","+str(self.idUsager)+");")
         
     def insertFilDiscussion(self):
         self.serveur.requeteInsertionPerso("INSERT INTO FilDeDiscussion(id_projet) VALUES("+str(self.idProjetCourant)+");")

@@ -93,14 +93,15 @@ class Vue():
                     
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
-        self.ajouterMessageBD()
+        print(self.message.get("1.0", END))
+        self.modele.insertLigneChat(self.message.get("1.0", END))
         self.message.delete("1.0", END)
         
     def ajoutMessageBD(self):
         self.listeMessage.delete(0, END)
         for message in self.messagesDeBD:
             self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
-        self.modele.insertLigneChat(self.listeMessage[1])    
+            
 
     def fermerfenetre(self):
         print("ON FERME la fenetre")

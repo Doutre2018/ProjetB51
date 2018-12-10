@@ -93,6 +93,8 @@ class Vue():
                     
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
+        print(self.message.get("1.0", END))
+        self.modele.insertLigneChat(self.message.get("1.0", END))
         self.message.delete("1.0", END)
         
     def ajoutMessageBD(self):

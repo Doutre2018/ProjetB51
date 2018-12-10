@@ -125,7 +125,6 @@ class Modele():
         self.serveur.requeteInsertionPerso("INSERT INTO FonctionsCRC(id_classe,fonction) VALUES(" + str(listeValeur[0]) + ","+ str(listeValeur[1]) +");")
     
     #Les UPDATE
-    
     def updateCarte(self,idCarte):
         pass                                                                                                                    
     

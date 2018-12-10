@@ -22,6 +22,8 @@ class Controleur():
         
     def fetchCases(self):
         return self.modele.fetchCas()
+        ListeRetourne = []
+        afficheCasUsage(ListeRetourne)
     
 if __name__ == '__main__':
     c=Controleur()

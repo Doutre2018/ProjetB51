@@ -196,7 +196,7 @@ class Vue():
         print("ON FERME la fenetre")
         self.root.destroy()
         
-        def ajoutCRC(self):
+    def ajoutCRC(self):
         self.carteCRC =Toplevel(self.root)
         self.frameCarteCRC = Frame(self.carteCRC)
         self.frameCarteCRC.grid()

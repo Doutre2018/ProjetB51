@@ -19,6 +19,7 @@ import sqlite3
 #s.connect(("gmail.com",80))
 #monip=s.getsockname()[0]
 IP = socket.gethostbyname(socket.getfqdn())
+IP = "192.168.0.101"
 print("MON IP SERVEUR",IP)
 #s.close()
 
@@ -50,6 +51,7 @@ class ModeleService(object):
                                  "inscription":"gp_inscription"}
         self.clients={}
         self.baseDonnees = BaseDonnees()
+
         self.adresseServeur = "http://"+str(IP) + ":" + str(9999)
         daemon.register_function(self.getAdresse)
         daemon.register_function(self.requeteInsertion)
@@ -313,7 +315,7 @@ class  BaseDonnees():
         self.curseur.execute(commande)
         
 #------------------------------------------------------JFL------------------------------------------------------------------------------#
-
+'''
 class ModeleProject():
     #def __init__(self,parent,joueurs,dd):
     def __init__(self,parent,joueurs,dd):
@@ -322,11 +324,6 @@ class ModeleProject():
         self.project = Project(self, self.parent)
         self.connectionServeurCourant()
         self.serveur = ServerProxy(self.adresseServeur)
-
-        #self.conn = sqlite3.connect('SAAS.db') #establish connection...
-        # self.curseur = self.conn.cursor()
-
-        #self.createurId=self.parent.createurId
         self.nomProjetValidation = None
         self.projects=[]
         self.projects.append(Project(self, self.parent))
@@ -340,48 +337,26 @@ class Project():
         self.parent = parent
         self.controleur = controleur
         self.modele = parent
-        ###################### self.id = controleur.trouverIP()
         self.nom = None
         ######print#####
         testZeroProject = 0
         
     def testZero(self):
         print(testZeroProject)
-        #self.curseur.execute(select COUNT(id) from project) #if project table is empty, fill with Default name project
-        #testZeroProject = self.curseur.fetchall()
-        #self.controleur.serveur
-        #print(self.parent.serveur)
-        #ListeResult = [10, 'attempt']
-        #valueBool = self.parent.serveur.requeteInsertion("projet", ListeResult)
-        #print(valueBool)
-        #ListeSel = []
-        #ListeSel.append(self.parent.serveur.requeteSelection("Select * from projet"))
-        #print("post Select")
-        
         commande = """SELECT COUNT(id) from Projet"""
         commande += self.ProjectNameToValidate
         testZeroProject = self.bd.selection(commande)
-        
-        '''
-         def selectAttributDeCarte(self,idCarte):
-        commande = """SELECT nomAttributs FROM AttributsCRC WHERE id_classe="""
-        commande+=idCarte
-        #Retourne une liste de String des attributs d'UNE carte
-        return self.bd.selection(commande)
-        '''
-        
-        if testZeroProject > 1:
+        if testZeroProject > 0:
             pass
         else:
-            parent.nomProjetValidation = 'Default Project Name'
-            createProject(parent, modele)
-                
-            
-        if(createProject(self, parent)):
+            #parent.nomProjetValidation = 'Default Project Name'
+            nom = 'Default Project Name'
+            createProject(self, nom)
+        if(createProject(self, nom)):
             return True
         else:
             return False
-
+    
     
     def createProject(self, parent, nomProjet):
         # self.project = project
@@ -389,66 +364,44 @@ class Project():
         self.NameFailure = False
         
         print(self.ProjectNameToValidate)
-        
-        commande = """SELECT COUNT(id) from Projet where nom LIKE ("""     #test nom de projet existant
+        #On veut valider que pour cette compagnie ce projet a un nom unique
+        commande = """SELECT COUNT(id) from Projet JOIN Liaison_Util_Projet ON id_projet = id_Util JOIN Utilisateur ON utilisateur.id = id_util where nom LIKE ("""     #test nom de projet existant
         commande += self.ProjectNameToValidate
-        commande+= """)"""
+        commande += """) and """
+        commande += "utilisateur.id_compagnie = 1"                          #hardcoded value 1 until finalization
+        
+        
+        
         if(self.bd.selection(commande)):                                    #return false si projet avec nouveau nom    
-            self.NameFailure = True                                         #
+            self.NameFailure = True             
+            print("mauvais nom de projet(déjà utilisé")
+            self.controleur.failureProjectName()                            #
         else:                                                         
             ListeInsert = []
             ListeInsert.append("NULL")
             ListeInsert.append("(?)", self.ProjectNameToValidate)
-            self.parent.serveur.requeteInsertion("Projet", ListeInsert)    
+            #self.parent.serveur.requeteInsertion("Projet", ListeInsert)    
+            self.serveur.requeteInsertion("Projet", ListeInsert)
+            
+            #test fonctionnalite
+        commande_sel = "Select COUNT(nom) from Projet "
+        commande_sel += "where Projet.nom LIKE ("
+        commande_sel += self.ProjectNameToValidate
+        commande_sel += ")"
         
-        if self.NameFailure:
-            self.controleur.failureProjectName()
+        print(requeteSelection(self, commande_sel))
         
-       
-        #self.curseur.execute('''select DISTINCT id from project''')
-        #total = self.curseur.fetchall()
-        
-        for compteur in range(total):
-            self.curseur.execute('''select DISTINCT name from project where id = (?)''', compteur)
-            nameInDB=self.curseur.fetchall()
-            if self.ProjectNameToValidate == nameInDB:
-                self.NameFailure = True
-                return NameFailure
-            else:
-                self.curseur.execute('''insert into project values (NULL, (?))''', self.ProjectNameToValidate)  #ajouter autres vars de projet
+'''
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
 if __name__ == "__main__":
     controleurServeur=ControleurServeur()
     #atexit.register(controleurServeur.fermer)
     daemon.register_instance(controleurServeur)  
     daemon.serve_forever()
+
+
+
+
+
+
+        

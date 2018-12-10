@@ -73,6 +73,8 @@ class Vue():
         self.boutonAjouterCas = Button(self.cadreUsage,text="Ajouter un Cas",bg="lightblue",command=self.ajouterCas)
         self.boutonAjouterCas.grid(row=2,column=1,pady=20,padx=20)
         
+        
+        
         #Scenarii
         self.cadreScenarii=Frame(self.cadreUsage,bg=self.defaultcolor,height=int((self.root.winfo_screenheight()/6)*5),width=int((self.root.winfo_screenwidth()/6)*5))
         

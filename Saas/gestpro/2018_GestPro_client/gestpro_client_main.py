@@ -6,8 +6,9 @@ from xmlrpc.client import ServerProxy
 import socket
 from subprocess import Popen 
 import math
-from gestpro_modele import *
+#from gestpro_projeccreator_main import *
 from gestpro_vue import *
+from gestpro_modele import *
 from helper import Helper as hlp
 from IdMaker import Id
 
@@ -15,7 +16,8 @@ class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.createurId=Id
-        self.modele=Modele(1,2,2)
+        self.modProject = ModeleProject(self)
+       # self.modele=Modele(1,2,2)
         self.serveur=None
         self.pid=None
         self.monip=self.trouverIP()
@@ -112,7 +114,7 @@ class Controleur():
         self.vue.root.destroy()
         
     def sendProjectName(self, nomProjet):
-        self.modele.project.createProject(self, nomProjet)
+        self.modProject.project.createProject(self, nomProjet)
         
     def failureProjectName(self):
         self.vue.failureNameProject()

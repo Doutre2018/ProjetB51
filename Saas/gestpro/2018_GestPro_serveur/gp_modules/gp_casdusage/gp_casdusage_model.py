@@ -22,7 +22,7 @@ class Scenarii():
         self.connectionServeurCourant()
         self.serveur = ServerProxy(self.adresseServeur)
         self.selectedCase = 0           # le Cas selectionne
-        #self.projectID = parent.projectID
+        self.projectID = parent.projectID
         self.lignes = 0
         
     
@@ -33,31 +33,24 @@ class Scenarii():
             self.adresseServeur = fichier.read()  
         
     def fetchCas(self):
-        #self.conn = sqlite3.connect('exemplesSQLITEData.jmd') #establish connection...
-        #self.curseur = self.conn.cursor()
+        commande = "select COUNT(id) from CasUsage where projet.id = "
+        commande += self.projectID + ";"
+        nbCasUsage = self.serveur.requeteSelection(commande)
         
-        #self.curseur.execute('''"select COUNT(id) from CasUsage where projet.id = ?", self.projectID''')
-           
-        #countCases = self.curseur.fetchall()
-        
-        nbCasUsage = self.serveur.requeteSelection('''"select COUNT(id) from CasUsage where projet.id = ?", self.projectID''')
-        
-        
+        #self.serveur.requeteInsertionPerso("INSERT INTO FonctionsCRC(id_classe,fonction) VALUES(" + str(listeValeur[0]) + ","+ str(listeValeur[1]) +");")
         ListeContenu = []
-        ListeContenu.append("test")
+        ListeContenu.append("test")             #DEBUG ONLY
         
         for i in range(nbCasUsage):
             #self.parent.serveur.requeteInsertion("Projet", ListeInsert)    
-            ListeContenu.append(self.serveur.requeteSelection('''"select texte from CasUsage JOIN Projet ON Projet.id = CasUsage.id_projet where CasUsage.id = ?", i'''))
+            commande = "select texte from CasUsage JOIN Projet ON Projet.id = CasUsage.id_projet where CasUsage.id = "
+            commande = i + ";"
+            ListeContenu.append(self.serveur.requeteSelection(commande))         #cree liste consultable
             
-            '''
-            self.curseur.execute(select texte from CasUsage JOIN Projet ON Projet.id = CasUsage.id_projet where CasUsage.id = ?, i)
-            self.ListeTitleCase[i] = self.curseur.fetchall
-            self.parent.Vue.afficherScenarii(self.ListeTitleCase)
-            '''
-        
-        
-        #self.curseur.execute('''Select MAX(ligne) from Scenarii JOIN CasUsage ON Scenarii.id_casUsage = CasUsage.id JOIN Projet ON Projet.id = CasUsage.id_projet''')
+        return ListeContenu    
+            
+            
+#self.curseur.execute('''Select MAX(ligne) from Scenarii JOIN CasUsage ON Scenarii.id_casUsage = CasUsage.id JOIN Projet ON Projet.id = CasUsage.id_projet''')
        # maxLines = self.curseur.fetchall()
 
         #TxtColScenarii = [[]]

@@ -9,7 +9,7 @@ from helper import Helper as hlp
 from msilib.schema import Font
 
 class Vue():
-    def __init__(self,parent,largeur=800,hauteur=600):
+    def __init__(self,parent,largeur=800,hauteur=700):
 
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
@@ -83,9 +83,10 @@ class Vue():
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
         self.cadreAnalyse=Frame(self.root,bg="#E4E9F3")
+        self.cadreAnalyse.grid(padx=(100,0))
 
-        self.lTitreCRC= Label(self.cadreAnalyse, text= "Analyse Textuelle",font= "arial, 20",bg="#E4E9F3")
-        self.lTitreCRC.grid(padx=100 ,row=0, column=0,  columnspan=4,pady=(0,10))
+        self.lTitreCRC= Label(self.cadreAnalyse, text= "Analyse Textuelle",font= "arial, 30",bg="#E4E9F3")
+        self.lTitreCRC.grid(padx=100 ,row=0, column=1,  columnspan=4,pady=(0,20))
         
         
         self.lVerbe = Label(self.cadreAnalyse, text= "Verbe",font= "arial, 12",bg="#E4E9F3")
@@ -176,23 +177,23 @@ class Vue():
         self.DelAjdectifSuplementaire.bind("<ButtonRelease-1>",self.SupAjectifSupplementaire)
         
         
-        self.lBVerbeExplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=8)
+        self.lBVerbeExplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=9,width=25)
         self.lBVerbeExplicite.grid(row=3, column= 1,pady=(0,10));
-        self.lBVerbeImplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=8)
+        self.lBVerbeImplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=9,width=25)
         self.lBVerbeImplicite.grid(row=5, column= 1,padx=(5,5),pady=(0,10));
-        self.lBVerbeSuplementaire = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=8)
+        self.lBVerbeSuplementaire = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=9,width=25)
         self.lBVerbeSuplementaire.grid(row=7, column= 1,pady=(0,10));
-        self.lBNomExplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=8)
+        self.lBNomExplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=9,width=25)
         self.lBNomExplicite.grid(row=3, column= 2,pady=(0,10));
-        self.lBNomImplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=8)
+        self.lBNomImplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=9,width=25)
         self.lBNomImplicite.grid(row=5, column= 2,padx=(5,5),pady=(0,10));
-        self.lBNomSuplementaire = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=8)
+        self.lBNomSuplementaire = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=9,width=25)
         self.lBNomSuplementaire.grid(row=7, column= 2,pady=(0,10));
-        self.lBAdjectifExplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=8)
+        self.lBAdjectifExplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=9,width=25)
         self.lBAdjectifExplicite.grid(row=3, column= 3,pady=(0,10));
-        self.lBAjdectifImplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=8)
+        self.lBAjdectifImplicite = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=9,width=25)
         self.lBAjdectifImplicite.grid(row=5, column= 3,padx=(5,5),pady=(0,10));
-        self.lBAjdectifSuplementaire = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=8)
+        self.lBAjdectifSuplementaire = Listbox(self.cadreAnalyse,selectmode=SINGLE,height=9,width=25)
         self.lBAjdectifSuplementaire.grid(row=7, column= 3,pady=(0,10));
 
 
@@ -205,6 +206,13 @@ class Vue():
       
     def NouveauVerbeExplicite(self,evt):  
         self.frameNouveauVerbeExplicite =Toplevel(self.root)
+        
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(220/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.frameNouveauVerbeExplicite.geometry("+%d+%d" % (x, y))
+        
         self.frameNouveauVerbeExplicite.config(bg="#234078")
         self.lTitre=Label(self.frameNouveauVerbeExplicite, text="Nouveau Verbe Explicite",font= "arial, 20",bg="#234078",fg="white")
         self.lTitre.grid(pady=(5,10),padx=10);
@@ -216,7 +224,14 @@ class Vue():
         self.bAjouter.grid(pady=10);     
         
     def NouveauVerbeImplicite(self,evt): 
-        self.frameNouveauVerbeImplicite =Toplevel(self.root) 
+        self.frameNouveauVerbeImplicite =Toplevel(self.root)
+        
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(220/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.frameNouveauVerbeImplicite.geometry("+%d+%d" % (x, y))
+         
         self.frameNouveauVerbeImplicite.config(bg="#234078")
         self.lTitre=Label(self.frameNouveauVerbeImplicite, text="Nouveau Verbe Implicite",font= "arial, 20",bg="#234078",fg="white")
         self.lTitre.grid(pady=(5,10),padx=10);
@@ -228,6 +243,13 @@ class Vue():
         
     def NouveauVerbeSuplementaire(self,evt):  
         self.frameNouveauVerbeSuplementaire =Toplevel(self.root)
+        
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(220/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.frameNouveauVerbeSuplementaire.geometry("+%d+%d" % (x, y))
+        
         self.frameNouveauVerbeSuplementaire.config(bg="#234078")
         self.lTitre=Label(self.frameNouveauVerbeSuplementaire, text="Nouveau Verbe supplementaire",font= "arial, 20",bg="#234078",fg="white")
         self.lTitre.grid(pady=(5,10),padx=10);
@@ -239,6 +261,13 @@ class Vue():
         
     def NouveauNomExplicite(self,evt):  
         self.frameNouveauNomExplicite =Toplevel(self.root)
+        
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(220/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.frameNouveauNomExplicite.geometry("+%d+%d" % (x, y))
+        
         self.frameNouveauNomExplicite.config(bg="#234078")
         self.lTitre=Label(self.frameNouveauNomExplicite, text="Nouveau nom explicite",font= "arial, 20",bg="#234078",fg="white")
         self.lTitre.grid(pady=(5,10),padx=10);
@@ -249,7 +278,14 @@ class Vue():
         self.bAjouter.grid(pady=10);  
     
     def NouveauNomImplicite(self,evt): 
-        self.frameNouveauNomImplicite =Toplevel(self.root) 
+        self.frameNouveauNomImplicite =Toplevel(self.root)
+        
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(220/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.frameNouveauNomImplicite.geometry("+%d+%d" % (x, y))
+         
         self.frameNouveauNomImplicite.config(bg="#234078")
         self.lTitre=Label(self.frameNouveauNomImplicite, text="Nouveau Nom Implicite",font= "arial, 20",bg="#234078",fg="white")
         self.lTitre.grid(pady=(5,10),padx=10);
@@ -261,6 +297,13 @@ class Vue():
      
     def NouveauNomSuplementaire(self,evt):  
         self.frameNouveauNomSuplementaire =Toplevel(self.root)
+        
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(220/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.frameNouveauNomSuplementaire.geometry("+%d+%d" % (x, y))
+        
         self.frameNouveauNomSuplementaire.config(bg="#234078")
         self.lTitre=Label(self.frameNouveauNomSuplementaire, text="Nouveau Nom supplementaire",font= "arial, 20",bg="#234078",fg="white")
         self.lTitre.grid(pady=(5,10),padx=10);
@@ -272,6 +315,13 @@ class Vue():
    
     def NouveauAjectifExplicite(self,evt):  
         self.frameNouveauAjectifExplicite =Toplevel(self.root)
+        
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(220/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.frameNouveauAjectifExplicite.geometry("+%d+%d" % (x, y))
+        
         self.frameNouveauAjectifExplicite.config(bg="#234078")
         self.lTitre=Label(self.frameNouveauAjectifExplicite, text="Nouvelle adjectif explicite",font= "arial, 20",bg="#234078",fg="white")
         self.lTitre.grid(pady=(5,10),padx=10);
@@ -283,6 +333,13 @@ class Vue():
        
     def NouveauAjectifImplicite(self,evt):  
         self.frameNouveauAjectifImplicite =Toplevel(self.root)
+        
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(220/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.frameNouveauAjectifImplicite.geometry("+%d+%d" % (x, y))
+        
         self.frameNouveauAjectifImplicite.config(bg="#234078")
         self.lTitre=Label(self.frameNouveauAjectifImplicite, text="Nouvelle adjectif implicite",font= "arial, 20",bg="#234078",fg="white")
         self.lTitre.grid(pady=(5,10),padx=10);
@@ -294,6 +351,13 @@ class Vue():
         
     def NouveauAjectifSupplementaire(self,evt):  
         self.frameNouveauAjectifSupplementaire =Toplevel(self.root)
+        
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(220/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.frameNouveauAjectifSupplementaire.geometry("+%d+%d" % (x, y))
+        
         self.frameNouveauAjectifSupplementaire.config(bg="#234078")
         self.lTitre=Label(self.frameNouveauAjectifSupplementaire, text="Nouvelle adjectif supplementaire",font= "arial, 20",bg="#234078",fg="white")
         self.lTitre.grid(pady=(5,10),padx=10);

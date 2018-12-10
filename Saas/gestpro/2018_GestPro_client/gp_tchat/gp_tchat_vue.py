@@ -14,7 +14,6 @@ class Vue():
         self.messagesDeBD = []
         self.messagesDeBD.append(["Employe001", "Bonjour a tous"])
         self.messagesDeBD.append(["Mr Paul", "..."])
-
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
@@ -25,7 +24,18 @@ class Vue():
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
         self.cadreTchatExiste=False
-
+        #Tout ce qui a été écrit en BD
+        self.listeNomParticipant = self.modele.selectTousUtilisateursLigneChat()
+        if self.listeNomParticipant is not None:
+            for i in self.listeNomParticipant:
+                for n in i:
+                    self.listeNomParticipant = n
+        for i in self.modele.triNomAvecIdUtilisateur(n):
+            for n in i:
+                self.listeNomParticipant = n
+                
+        print(self.listeNomParticipant)
+            
         self.images={}
         self.cadreactif=None
         self.creercadres()
@@ -84,12 +94,7 @@ class Vue():
         self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage)
         self.boutonMessage.grid(columnspan=5,column=0,row=6,padx=70)
         
-        #Affichage du contenu de la BD
-        self.listeNomParticipant = self.modele.selectTousUtilisateursLigneChat()
-        if self.listeNomParticipant is not None:
-            for i in self.listeNomParticipant:
-                for n in i:
-                    print(self.modele.triNomAvecIdUtilisateur(n))
+        
                     
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])

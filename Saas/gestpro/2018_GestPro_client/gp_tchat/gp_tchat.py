@@ -70,7 +70,6 @@ class Modele():
         for i in self.idUsager:
             for n in i:
                 self.idUsager=n
-        print(self.idUsager)
         
     def idUtilisateurCourant(self):
         commande="SELECT id FROM Utilisateur WHERE nomUtilisateur='"+self.usager+"';"
@@ -93,11 +92,11 @@ class Modele():
         
     def selectTousUtilisateursLigneChat(self):
         commande = "SELECT id_utilisateur FROM LigneChat;"
-        self.serveur.requeteSelection(commande)
+        return self.serveur.requeteSelection(commande)
         
     def triNomAvecIdUtilisateur(self,idUsager):
         commande = "SELECT nomUtilisateur FROM Utilisateur WHERE id="
-        self.serveur.requeteSelection(commande+str(isUsager))
+        return self.serveur.requeteSelection(commande+str(idUsager))
     
 if __name__ == '__main__':
     c=Controleur()

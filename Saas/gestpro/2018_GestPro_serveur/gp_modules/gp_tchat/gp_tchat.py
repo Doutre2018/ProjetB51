@@ -57,6 +57,14 @@ class Controleur():
                     handle.write(self.serveur.requeteFichier(chemin).data)
             except Exception as erreur: 
                 print("Problème lors du téléchargement du fichier", chemin, '\n', erreur)
+                
+class Modele():
+    def __init__(self,parent):
+        self.parent=parent
+        self.serveur=parent.serveur
+        self.listeCartes=self.selectClassesCartes()
+        self.usager = self.serveur.fetchNomUtilisateurCourant()
+        self.compagnie = self.serveur.fetchNomCompagnie()
     
 if __name__ == '__main__':
     c=Controleur()

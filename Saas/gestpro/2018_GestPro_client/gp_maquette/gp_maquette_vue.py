@@ -12,17 +12,8 @@ from tkinter.colorchooser import *
 
 
 class Vue():
-    def __init__(self,parent,largeur=1600,hauteur=1000):
-        self.listeObjetMaquette = []
-        
-        #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
-        listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
-        listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
-        listedetexte = ["texte",500,500,0,0,"white","black","Hello","Arial 12",Id.prochainid()]
-        self.listeObjetMaquette.append(listederectangle)
-        self.listeObjetMaquette.append(listedecercle)
-        self.listeObjetMaquette.append(listedetexte)
-        
+    def __init__(self,parent,modele,largeur=1600,hauteur=1000):
+
         
         self.textSize=12
         self.couleurCourante="black"
@@ -33,7 +24,7 @@ class Vue():
         self.root.attributes("-fullscreen", False)
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
-        self.modele=None
+        self.modele=modele
         self.largeur=self.largeurDefault=largeur
         self.hauteur=self.hauteurDefault=hauteur
         self.largeurEcran=self.root.winfo_screenwidth()
@@ -45,7 +36,16 @@ class Vue():
         self.images={}
         self.cadreactif=None
         
-    
+        self.listeObjetMaquette = self.modele.listeObjets
+        #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
+        listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
+        listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
+        listedetexte = ["texte",500,500,0,0,"white","black","Hello","Arial 12",Id.prochainid()]
+        self.listeObjetMaquette.append(listederectangle)
+        self.listeObjetMaquette.append(listedecercle)
+        self.listeObjetMaquette.append(listedetexte)
+        
+        
         self.creermenu()
 
         self.creercadres()

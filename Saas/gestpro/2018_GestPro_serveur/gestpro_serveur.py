@@ -283,7 +283,7 @@ class  BaseDonnees():
             ['CollaboCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['textCollabo','text','']],
             ['FilDeDiscussion', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT']],
             ['TypeForme', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','']],
-            ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
+            ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['Type','text',''], ['PosX','real',''], ['PosY','real',''],['X','real',''], ['Y','real',''], ['Bordure','real','NULL'], ['Interieur','real','NULL'],['Texte','text',''],['Font','text','']],
             ['ColonnesScenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text',''], ['numero_position','INTEGER','']],
             ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['classe','text',''], ['ordre','INTEGER',''],['carte_heritage','text',''],['nom_responsable','text','']],
             ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],

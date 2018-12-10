@@ -62,23 +62,38 @@ class Modele():
     def __init__(self,parent):
         self.parent=parent
         self.serveur=parent.serveur
-        self.listeCartes=self.selectClassesCartes()
         self.usager = self.serveur.fetchNomUtilisateurCourant()
         self.compagnie = self.serveur.fetchNomCompagnie()
         self.FilDeDiscussionCourant = None
-        self.idUsager=self.idUtilisateur()
+        self.idProjetCourant = None
+        self.idUsager=self.idUtilisateurCourant()
         
-    def idUtilisateur(self):
+    def idUtilisateurCourant(self):
         commande="SELECT id FROM Utilisateur WHERE nomUtilisateur='"+self.usager+"';"
         return self.serveur.requeteSelection(commande)
-        pass
     
+    #Insertions
     def insertLigneChat(self,texte,date):
         self.serveur.requeteInsertionPerso("INSERT INTO LigneChat(date,texte,id_filDiscussion,id_utilisateur) VALUES("+date+",'"+texte+"',"+self.FilDeDiscussionCourant+","+self.idUsager+");")
-    
+        
     def insertFilDiscussion(self):
-        self.serveur.requeteInsertionPerso("INSERT INTO FilDeDiscussion(id_projet) VALUES("+");")
+        self.serveur.requeteInsertionPerso("INSERT INTO FilDeDiscussion(id_projet) VALUES("+self.idProjetCourant+");")
 
+    #Select
+    def selectFilDiscussion(self):
+        pass
+    
+    def selectToutesLignesChat(self):
+        commande = "SELECT texte FROM LigneChat;"
+        self.serveur.requeteSelection(commande)
+        
+    def selectTousUtilisateursLigneChat(self):
+        commande = "SELECT id_utilisateur FROM LigneChat;"
+        self.serveur.requeteSelection(commande)
+        
+    def triNomAvecIdUtilisateur(self,idUsager):
+        commande = "SELECT nomUtilisateur FROM Utilisateur WHERE id="
+        self.serveur.requeteSelection(commande+str(isUsager))
     
 if __name__ == '__main__':
     c=Controleur()

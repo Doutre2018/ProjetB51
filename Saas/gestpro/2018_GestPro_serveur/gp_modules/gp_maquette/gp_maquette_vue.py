@@ -39,8 +39,9 @@ class Vue():
         
         self.images={}
         self.cadreactif=None
-        
         self.listeObjetMaquette = self.modele.listeObjets
+        self.creerObjet()
+
         #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
         listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
         listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
@@ -237,8 +238,9 @@ class Vue():
 
     def creerObjet(self):
 
-        self.canevasMaquette.delete("objet")
+        #self.canevasMaquette.delete("objet")
         for objet in self.listeObjetMaquette:
+            print(objet)
             if(objet[0]=="rectangle"):
                 self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[9]),"objet","rectangle"))
             if(objet[0]=="ovale"):

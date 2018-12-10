@@ -14,18 +14,12 @@ from tkinter.colorchooser import *
 class Vue():
     def __init__(self,parent,modele,largeur=1600,hauteur=1000):
 
-        
-<<<<<<< HEAD
-        self.textSize=12
-        self.couleurCourante="black"
-=======
         #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
         listederectangle = ["rectangle",150,150,200,300,"black","black","","",Id.prochainid()]
         listedecercle = ["ovale",500,500,200,300,"black","black","","",Id.prochainid()]
         listedetexte = ["texte",500,500,0,0,"white","black","Hello","Arial 12",Id.prochainid()]
         self.textSize=12
         self.couleurCourante="#FFC14C"
->>>>>>> 057d06c10d5366a49f9dcb9b00458b2c0ddbd3b3
         self.bordureCourante="black"
 
         self.root=tix.Tk()
@@ -45,8 +39,9 @@ class Vue():
         
         self.images={}
         self.cadreactif=None
-        
         self.listeObjetMaquette = self.modele.listeObjets
+        self.creerObjet()
+
         #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
         listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
         listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
@@ -115,12 +110,7 @@ class Vue():
         self.canevasMaquette.create_rectangle((10,110,self.largeur-10,self.hauteur-10),outline="black",fill="white")
         self.boutontrectangle = self.canevasMaquette.create_rectangle((200,20,260,80),outline="black", fill=self.couleurCourante,tags=(Id.prochainid(),"bouton","rectangle"))
         self.boutontovale = self.canevasMaquette.create_oval(((int(self.largeur/3))+200,20,(int(self.largeur/3))+260,80),outline="black", fill=self.couleurCourante,tags=(Id.prochainid(),"bouton","ovale"))
-<<<<<<< HEAD
-        self.boutontTexte = self.canevasMaquette.create_text(int((self.largeur/3)*2)+200,55,text="T",font="Arial 60",tags=(Id.prochainid(),"bouton","texte"))
-        
-=======
         self.boutontTexte = self.canevasMaquette.create_text(int((self.largeur/3)*2)+200,55,text="T",font="Arial 60",fill="#FFC14C",tags=(Id.prochainid(),"bouton","texte"))
->>>>>>> 057d06c10d5366a49f9dcb9b00458b2c0ddbd3b3
         self.canevasMaquette.bind("<Button>",self.creerNouvelObjet)
         self.canevasMaquette.bind("<B1-Motion>",self.bougerObjet)
         self.canevasMaquette.bind("<Button-2>",self.detruitObjet)
@@ -248,8 +238,9 @@ class Vue():
 
     def creerObjet(self):
 
-        self.canevasMaquette.delete("objet")
+        #self.canevasMaquette.delete("objet")
         for objet in self.listeObjetMaquette:
+            print(objet)
             if(objet[0]=="rectangle"):
                 self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[9]),"objet","rectangle"))
             if(objet[0]=="ovale"):

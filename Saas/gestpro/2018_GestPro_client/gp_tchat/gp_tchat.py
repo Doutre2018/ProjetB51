@@ -16,7 +16,7 @@ class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.createurId=Id
-        self.connectionServeurCourant()
+       # self.connectionServeurCourant()
         self.modele=None
         self.vue=Vue(self)
         self.vue.root.mainloop()
@@ -41,6 +41,8 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
+    
+
         
     
 if __name__ == '__main__':

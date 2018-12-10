@@ -55,70 +55,29 @@ class Vue():
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
     def afficherImage(self):
+        canvasImage = Canvas(self.root,width=self.largeur,height=self.hauteur)
         image= Image.open("./terlow.png")
         image= image.resize((self.largeur, self.hauteur), Image.ANTIALIAS)
 
         self.img=ImageTk.PhotoImage(image)
-        self.cadreterlow.create_image(0,0,image=self.img,anchor=NW)
-    def creermenu(self):
-        self.menubar = Menu(self.root)
-
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Nouvelle colonne", command=self.salutations)
-        self.filemenu.add_command(label="Ouvrir", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer", command=self.salutations)
-        self.filemenu.add_command(label="Enregistrer sous ...", command=self.salutations)
-        self.filemenu.add_separator()
-        self.filemenu.add_command(label="Fermer", command=self.root.quit)
-        self.menubar.add_cascade(label="Fichier", menu=self.filemenu)
-        
-        self.editmenu = Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Undo", command=self.salutations)
-        self.editmenu.add_command(label="Redo", command=self.salutations)
-        self.editmenu.add_separator()
-        self.editmenu.add_command(label="Copier", command=self.salutations)
-        self.editmenu.add_command(label="Couper", command=self.salutations)
-        self.editmenu.add_command(label="Coller", command=self.salutations)
-        self.menubar.add_cascade(label="Edition", menu=self.editmenu)
-        
-        self.aidemenu = Menu(self.menubar, tearoff=0)
-        self.aidemenu.add_command(label="Read-Me 1", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 2", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 3", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 4", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 5", command=self.salutations)
-        self.menubar.add_cascade(label="Aide", menu=self.aidemenu)
-        
-        self.affichagemenu = Menu(self.menubar, tearoff=0)
-        self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode)
-        self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
-        
-        self.menubar.add_command(label="Fermer", command=self.root.quit)
-        self.menu = Menu(self.root, tearoff=0)
-        self.menu.add_command(label="Nom", command=self.salutations)
-        self.menu.add_command(label="Verbe", command=self.salutations)
-        
-        #self.frame = Frame(self.root, width=512, height=512)
-        #self.frame.pack()
-        #self.frame.bind("<Button-3>", self.popup)
-        self.root.config(menu=self.menubar) 
-
-               
-              
+        canvasImage.create_image(0,0,image=self.img,anchor=NW)
+        canvasImage.grid()
     def creercadreterlow(self):
         #permet d'intégrer l'application dans l'application de base
         self.root.overrideredirect(True) #Enleve la bordure
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
-
+        
+        #Enlever pour voir vrai logiciel
+        self.afficherImage()
+        
         self.cadreterlow=Frame(self.root,width=self.largeur,height=self.hauteur)
         self.cadreterlow.grid()
-        #self.afficherImage()
         
         self.boutonAjoutListe = Button(self.cadreterlow, text="Ajouter Colonne",command=self.ajouterListe)
         self.boutonAjoutListe.grid()
         self.cadreterlowExiste=True
+        
+
     def ajouterListe(self):
         self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="white",bd=4,highlightcolor="red",highlightthickness=1))
         liste = self.tableauDeColonne[self.nbListe]

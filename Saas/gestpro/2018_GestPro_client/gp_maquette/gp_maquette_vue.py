@@ -18,7 +18,7 @@ class Vue():
         #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
         listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
         listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
-        listedetexte = ["texte",500,500,0,0,"black","white","Hello","Arial 12",Id.prochainid()]
+        listedetexte = ["texte",500,500,0,0,"white","black","Hello","Arial 12",Id.prochainid()]
         self.textSize=12
         self.couleurCourante="red"
         self.bordureCourante="black"
@@ -137,13 +137,12 @@ class Vue():
                         self.canevasMaquette.coords(t[0],evt.x, evt.y)
                         diffx = 0
                         diffy = 0
-                    else :
+                    else:
                         x0, y0, x1, y1 = self.canevasMaquette.coords(t[0])
                         diffx = x1-x0
                         diffy = y1-y0
 
                         self.canevasMaquette.coords(t[0],evt.x-(diffx/2), evt.y-(diffy/2),evt.x+(diffx/2),evt.y+(diffy/2))
-                    
                     for objet in self.listeObjetMaquette :
                         if (objet[9]==t[0]) :
                             objet[1]=evt.x-(diffx/2)
@@ -193,16 +192,16 @@ class Vue():
                                 objet[8]=font
                         self.previousX=evt.x
 
-
-                           
-                    else :                        
+                    else:
                         x0, y0, x1, y1 = self.canevasMaquette.coords(t[0])
                         self.canevasMaquette.coords(t[0], x0,y0,evt.x,evt.y)
                         for objet in self.listeObjetMaquette :
                             if (objet[9]==t[0]) :
+                                objet[1]=x0
+                                objet[2]=y0
                                 objet[3]=evt.x
                                 objet[4]=evt.y
-
+                        
             else:
                 print("pas d'objet")
         else :
@@ -252,7 +251,7 @@ class Vue():
         self.canevasMaquette.delete("objet")
         for objet in self.listeObjetMaquette:
             if(objet[0]=="rectangle"):
-                self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[8]),"objet","rectangle"))
+                self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[9]),"objet","rectangle"))
             if(objet[0]=="ovale"):
                 self.canevasMaquette.create_oval((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[9]),"objet","ovale"))
             if(objet[0]=="texte"):

@@ -42,6 +42,7 @@ class Controleur():
         
     def connexion(self, nom, motPasse, ipserveur):
         if ipserveur and nom:
+            self.monnom=nom
             ad = "http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
             rep = self.serveur.connexion(nom, motPasse)
@@ -114,8 +115,6 @@ class Controleur():
     def fermefenetre(self):
         print("Client GestPro quitte")
         self.vue.root.destroy()
-        
-        
         
 if __name__=="__main__":
     c=Controleur()

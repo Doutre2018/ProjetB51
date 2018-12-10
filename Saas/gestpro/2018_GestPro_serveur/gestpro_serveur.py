@@ -13,6 +13,7 @@ import time
 import random
 import sqlite3
 from datetime import datetime
+import csv
 
 
 
@@ -48,7 +49,6 @@ class ModeleService(object):
                                  "tchat":"gp_tchat",
                                  "modelisation":"gp_modelisation",
                                  "terlow":"gp_terlow",
-
                                  "inscription":"gp_inscription"}
         self.clients={}
         self.baseDonnees = BaseDonnees(self)
@@ -58,9 +58,10 @@ class ModeleService(object):
         daemon.register_function(self.requeteSelection)
         daemon.register_function(self.requeteMiseAJour)
         daemon.register_function(self.requeteInsertionPerso)
-        daemon.register_function(self.requeteSpeciale)
         daemon.register_function(self.genererDate)
         daemon.register_function(self.requeteInsertionDate)
+        daemon.register_function(self.requeteFichier)
+        daemon.register_function(self.logErreur)
         daemon.register_introspection_functions()
         #self.requeteInsertionDate("INSERT INTO test_date VALUES (?,?)",(1, ), "maintenant")
         #print(self.requeteSelection("SELECT * FROM test_date"))
@@ -104,8 +105,9 @@ class ModeleService(object):
             
         return False                                # Si au moins une condition n'est pas bonne
 
-        self.requeteInsertionPerso("INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES (" + "'" + nom + "'" + ", NULL, NULL)")      # Insert dans la DB du nouvel utilisateur
-        return True                             # Si le nom n'est pas trouvé dans la liste
+        # ???
+        #self.requeteInsertionPerso("INSERT INTO Utilisateur(nomUtilisateur, motDePasse, chemin_acces_csv) VALUES (" + "'" + nom + "'" + ", NULL, NULL)")      # Insert dans la DB du nouvel utilisateur
+        #return True                             # Si le nom n'est pas trouvé dans la liste
     
     def nomExiste(self, nom):
         liste = self.listeNoms()
@@ -147,21 +149,11 @@ class ModeleService(object):
     def getAdresse(self):
         return self.adresseServeur
     
-    def requeteSpeciale(self, stringRequete):
-        connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
-        curseur = connecteur.cursor(stringRequete, (datetime.today()))
-        curseur.execute()
-        connecteur.close()
-    
     #si on veut la date d'aujourd'hui, on passe une liste vide pour valeurs date. Si on veut une date précise, on passe 6 valeurs (année, mois, jour, heure, minute, seconde). 
     def requeteInsertionDate(self, stringSelect, listeValeurs, valeursDate):
-       # print(stringSelect, listeValeurs, typeDate)
         date = self.genererDate(valeursDate)
-       # print("date dans requet=",date)
         listeValeurs.append(date)
-        #print("listevaleurs avec date",listeValeurs)
         tupleData = tuple(listeValeurs)
-       # print("tuple data = ", tupleData)
         connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         curseur = connecteur.cursor()
         curseur.execute(stringSelect, tupleData)
@@ -175,6 +167,19 @@ class ModeleService(object):
         else:
             return datetime(valeursDate[0], valeursDate[1], valeursDate[2], valeursDate[3], valeursDate[4], valeursDate[5])
     
+
+    def requeteFichier(self, cheminFichier):
+        with open(cheminFichier, "rb") as handle:
+            return xmlrpc.client.Binary(handle.read())
+
+    def logErreur(self,date, adresseIP, message):
+        with open("log.csv", 'a+', newline = '') as handler:
+            writer = csv.writer(handler, delimiter = ';') 
+            row =[date,  adresseIP,  message]
+            writer.writerow(row)
+        return True
+            
+
 class ControleurServeur(object):
     def __init__(self):
         rand=random.randrange(1000)+1000
@@ -220,7 +225,8 @@ class ControleurServeur(object):
         contenub=fiche.read()
         fiche.close()
         return xmlrpc.client.Binary(contenub)
-            
+    
+
         
     def quitter(self):
         timerFermeture = Timer(1,self.fermer).start()
@@ -258,7 +264,7 @@ class  BaseDonnees():
             ['Utilisateur', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomUtilisateur','text','UNIQUE'], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
             ['Projet', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','UNIQUE']],
             ['Liaison_Util_Projet', ['role','text','']],
-            ['AnalyseTextuelle', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ligne','INTEGER',''],['colonne','INTEGER','']],
+            ['AnalyseTextuelle', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ligne','INTEGER',''],['colonne','INTEGER',''],['mot','text','']],
             ['TypeMot', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','']],
             ['LigneChat', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['date','date',''],['texte','text','']],
             ['CasUsage', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['ligne','text',''],['texte','text','']],
@@ -276,7 +282,8 @@ class  BaseDonnees():
            # ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
             #['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre', 'INTEGER', ''], ['titre','text','']],
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
-            ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']]
+            ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
+            ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']]
             ]
         return listeTables
     
@@ -302,6 +309,7 @@ class  BaseDonnees():
             ['Objet_Texte', 'id_position','INTEGER', 'Position', 'id'],
             ['Tache_Sprint','id_sprint','INTEGER', 'Sprint', 'id'],
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
+            ['Utilisateur', 'id_compagnie', 'INTEGER',  'Compagnie', 'id'],
             ]
         return listeConst
         
@@ -354,7 +362,8 @@ class  BaseDonnees():
                 stringAlterTable = "ALTER TABLE " + contrainte[0] + " ADD COLUMN " + contrainte[1] + " " + contrainte[2] + " REFERENCES " + contrainte[3] + "(" + contrainte[4] + ");"
                 self.curseur.execute(stringAlterTable)
         except:
-            print("contraintes existent")
+            pass
+            #print("contraintes existent")
     
     def insertionPerso(self,commande, tupleOptionnel =-1):
         if tupleOptionnel == -1:
@@ -368,6 +377,5 @@ class  BaseDonnees():
         
 if __name__ == "__main__":
     controleurServeur=ControleurServeur()
-    #atexit.register(controleurServeur.fermer)
     daemon.register_instance(controleurServeur)  
     daemon.serve_forever()

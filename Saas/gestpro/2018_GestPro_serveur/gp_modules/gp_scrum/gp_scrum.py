@@ -16,7 +16,7 @@ class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.createurId=Id
-        self.connectionServeurCourant()
+        #self.connectionServeurCourant()
         self.modele=None
         self.vue=Vue(self)
         self.vue.root.mainloop()

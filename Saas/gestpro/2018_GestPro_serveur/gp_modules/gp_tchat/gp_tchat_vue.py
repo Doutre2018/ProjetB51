@@ -14,18 +14,28 @@ class Vue():
         self.messagesDeBD = []
         self.messagesDeBD.append(["Employe001", "Bonjour a tous"])
         self.messagesDeBD.append(["Mr Paul", "..."])
-
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
-        self.modele=None
+        self.modele=parent.modele
         self.largeurDefault=largeur
         self.hauteurDefault=hauteur
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
         self.cadreTchatExiste=False
-
+        #Tout ce qui a été écrit en BD
+        self.listeIdParticipant = self.modele.selectTousUtilisateursLigneChat()
+        if self.listeIdParticipant is not None:
+            for i in self.listeIdParticipant:
+                for n in i:
+                    self.listeIdParticipant = n
+        for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
+            for n in i:
+                self.listeNomParticipant = n
+        
+        print(self.listeIdParticipant)
+        print(self.listeNomParticipant)
         self.images={}
         self.cadreactif=None
         self.creercadres()
@@ -84,10 +94,14 @@ class Vue():
         self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage,bg="Skyblue")
         self.boutonMessage.grid(columnspan=5,column=0,row=6,padx=70)
         
-    def ajouterMessage(self):
         
+                    
+    def ajouterMessage(self):
+        self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
+        self.modele.insertLigneChat(self.message.get("1.0", END))
         self.messagesDeBD.append([self.user, self.message.get("1.0", END)])
         self.message.delete("1.0", END)
+        
     def ajoutMessageBD(self):
         self.listeMessage.delete(0, END)
         for message in self.messagesDeBD:

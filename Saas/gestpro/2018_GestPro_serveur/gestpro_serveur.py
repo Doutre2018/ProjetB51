@@ -45,7 +45,7 @@ class ModeleService(object):
                                  "casdusage":"gp_casdusage",
                                  "maquette":"gp_maquette",
                                  "crc":"gp_crc",
-                                 "budget":"gp_budget",
+                                 "marketing":"gp_marketing",
                                  "tchat":"gp_tchat",
                                  "modelisation":"gp_modelisation",
                                  "terlow":"gp_terlow",
@@ -172,6 +172,11 @@ class ModeleService(object):
     def requeteSelection(self, stringSelect, valeurs = -1):
         listeSelect  = self.baseDonnees.selection(stringSelect, valeurs)
         return listeSelect
+    
+    # --------------- DM ---------------
+    def requeteUpdate(self, stringSelect):
+        pass
+    # ----------------------------------
     
     def getAdresse(self):
         return self.adresseServeur
@@ -313,7 +318,7 @@ class  BaseDonnees():
             ['CollaboCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['textCollabo','text','']],
             ['FilDeDiscussion', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT']],
             ['TypeForme', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','']],
-            ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
+            ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['Type','text',''], ['PosX','real',''], ['PosY','real',''],['X','real',''], ['Y','real',''], ['Bordure','real','NULL'], ['Interieur','real','NULL'],['Texte','text',''],['Font','text','']],
             ['ColonnesScenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text',''], ['numero_position','INTEGER','']],
             ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['classe','text',''], ['ordre','INTEGER',''],['carte_heritage','text',''],['nom_responsable','text','']],
             ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],
@@ -323,7 +328,8 @@ class  BaseDonnees():
             #['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre', 'INTEGER', ''], ['titre','text','']],
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
-            ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']]
+            ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']],
+            ['ObjetsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['objet','text','']],
             ]
         return listeTables
     
@@ -350,6 +356,7 @@ class  BaseDonnees():
             ['Tache_Sprint','id_sprint','INTEGER', 'Sprint', 'id'],
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
             ['Utilisateur', 'id_compagnie', 'INTEGER',  'Compagnie', 'id'],
+            ['ObjetsCRC', 'id_classe','INTEGER', 'Cartes', 'id'],
             ]
         return listeConst
     
@@ -426,10 +433,13 @@ class  BaseDonnees():
         else:
             self.curseur.execute(commande, tupleOptionnel)
         self.connecteur.commit()
-        
-
-
-        
+    
+    # --------------- DM ---------------    
+    def miseAJour(self,commande):
+        self.curseur.execute(commande)
+        self.connecteur.commit()
+    # ----------------------------------
+    
 if __name__ == "__main__":
     controleurServeur=ControleurServeur()
     daemon.register_instance(controleurServeur)  

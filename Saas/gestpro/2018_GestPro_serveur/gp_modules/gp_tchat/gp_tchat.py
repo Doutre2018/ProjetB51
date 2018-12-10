@@ -18,7 +18,7 @@ class Controleur():
         self.createurId=Id
         self.connectionServeurCourant()
         self.recevoirFichiers()
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.reloadMessageBD()
         self.vue.root.mainloop()
@@ -62,9 +62,41 @@ class Modele():
     def __init__(self,parent):
         self.parent=parent
         self.serveur=parent.serveur
-        self.listeCartes=self.selectClassesCartes()
         self.usager = self.serveur.fetchNomUtilisateurCourant()
         self.compagnie = self.serveur.fetchNomCompagnie()
+        self.FilDeDiscussionCourant = 0 #Tant qu'il n'y a pas de module Projet
+        self.idProjetCourant = None
+        self.idUsager=self.idUtilisateurCourant()
+        for i in self.idUsager:
+            for n in i:
+                self.idUsager=n
+        
+    def idUtilisateurCourant(self):
+        commande="SELECT id FROM Utilisateur WHERE nomUtilisateur='"+self.usager+"';"
+        return self.serveur.requeteSelection(commande)
+    
+    #Insertions
+    def insertLigneChat(self,texte):
+        self.serveur.requeteInsertionPerso("INSERT INTO LigneChat(texte,id_filDiscussion,id_utilisateur) VALUES('"+texte+"',"+str(self.FilDeDiscussionCourant)+","+str(self.idUsager)+");")
+        
+    def insertFilDiscussion(self):
+        self.serveur.requeteInsertionPerso("INSERT INTO FilDeDiscussion(id_projet) VALUES("+str(self.idProjetCourant)+");")
+
+    #Select
+    def selectFilDiscussion(self):
+        pass
+    
+    def selectToutesLignesChat(self):
+        commande = "SELECT texte FROM LigneChat;"
+        self.serveur.requeteSelection(commande)
+        
+    def selectTousUtilisateursLigneChat(self):
+        commande = "SELECT id_utilisateur FROM LigneChat;"
+        return self.serveur.requeteSelection(commande)
+        
+    def triNomAvecIdUtilisateur(self,idUsager):
+        commande = "SELECT nomUtilisateur FROM Utilisateur WHERE id="
+        return self.serveur.requeteSelection(commande+str(idUsager))
     
 if __name__ == '__main__':
     c=Controleur()

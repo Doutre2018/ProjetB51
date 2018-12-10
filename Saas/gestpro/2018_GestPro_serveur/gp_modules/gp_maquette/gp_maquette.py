@@ -8,6 +8,8 @@ from subprocess import Popen
 import math
 #from sm_projet_modele import *
 from gp_maquette_vue import *
+from gp_maquette_modele import *
+
 from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
@@ -17,8 +19,9 @@ class Controleur():
         print("IN CONTROLEUR")
         self.createurId=Id
         self.connectionServeurCourant()
-        self.modele=None
-        self.vue=Vue(self)
+        self.modele=Modele(self)
+        self.modele.selectAffichage()
+        self.vue=Vue(self,self.modele)
         self.vue.root.mainloop()
 
     def connectionServeurCourant(self):  
@@ -41,7 +44,9 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
-        
+    
+    def sauvegarde(self, listeObjet):
+        self.modele.sauvegarde(listeObjet)
     
 if __name__ == '__main__':
     c=Controleur()

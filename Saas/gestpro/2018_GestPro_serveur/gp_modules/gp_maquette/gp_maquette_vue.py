@@ -12,9 +12,8 @@ from tkinter.colorchooser import *
 
 
 class Vue():
-    def __init__(self,parent,largeur=1600,hauteur=1000):
-        self.listeObjetMaquette = []
-        
+    def __init__(self,parent,modele,largeur=1600,hauteur=1000):
+
         #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
         listederectangle = ["rectangle",150,150,200,300,"black","black","","",Id.prochainid()]
         listedecercle = ["ovale",500,500,200,300,"black","black","","",Id.prochainid()]
@@ -22,16 +21,14 @@ class Vue():
         self.textSize=12
         self.couleurCourante="#FFC14C"
         self.bordureCourante="black"
-        self.listeObjetMaquette.append(listederectangle)
-        self.listeObjetMaquette.append(listedecercle)
-        self.listeObjetMaquette.append(listedetexte)
+
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.attributes("-fullscreen", False)
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.root.config(bg="#E4E9F3")
         self.parent=parent
-        self.modele=None
+        self.modele=modele
         self.largeur=self.largeurDefault=largeur
         self.hauteur=self.hauteurDefault=hauteur
         self.largeurEcran=self.root.winfo_screenwidth()
@@ -43,7 +40,16 @@ class Vue():
         self.images={}
         self.cadreactif=None
         
-    
+        self.listeObjetMaquette = self.modele.listeObjets
+        #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
+        listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
+        listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
+        listedetexte = ["texte",500,500,0,0,"white","black","Hello","Arial 12",Id.prochainid()]
+        self.listeObjetMaquette.append(listederectangle)
+        self.listeObjetMaquette.append(listedecercle)
+        self.listeObjetMaquette.append(listedetexte)
+        
+        
         self.creermenu()
 
         self.creercadres()
@@ -111,6 +117,7 @@ class Vue():
         self.canevasMaquette.bind("<Double-Button-1>",self.modifierTexte)
 
         self.creerObjet()
+        
     def creerNouvelObjet(self,evt):
         t=self.canevasMaquette.gettags(CURRENT)
         print(t)
@@ -125,11 +132,7 @@ class Vue():
                     if t[2]=="texte":
                         self.listeObjetMaquette.append(["texte",(self.largeur/2),(self.hauteur/2),0,0,self.bordureCourante,self.couleurCourante,"Nouveau Texte","Arial 12",nouvelid])
                     self.creerObjet()
-            else:
-                print("pas d'objet")
-
-        else :
-            print("no objet")
+                    
     def bougerObjet(self,evt):
         t=self.canevasMaquette.gettags(CURRENT)
         if t :
@@ -155,13 +158,6 @@ class Vue():
                             
                     self.objetSelectionnerX=evt.x
                     self.objetSelectionnerY=evt.y
-                    
-                    
-
-            else:
-                print("pas d'objet")
-        else :
-            print("no objet")
 
     def aggrandirObjet(self,evt):
         t=self.canevasMaquette.gettags(CURRENT)
@@ -204,11 +200,7 @@ class Vue():
                                 objet[2]=y0
                                 objet[3]=evt.x
                                 objet[4]=evt.y
-                        
-            else:
-                print("pas d'objet")
-        else :
-            print("no objet")
+                                
     def detruitObjet(self,evt):
         t=self.canevasMaquette.gettags(CURRENT)
         if t :
@@ -217,13 +209,7 @@ class Vue():
                         if (objet[9]==t[0]) :
                             self.listeObjetMaquette.remove(objet)
                     self.canevasMaquette.delete(t[0])
-                    
-    
-
-            else:
-                print("pas d'objet")
-        else :
-            print("no objet")
+            
     def changerTexte(self):
         self.canevasMaquette.itemconfig(self.idTexte, text=self.entreeModificationMot.get())
         for objet in self.listeObjetMaquette :
@@ -263,7 +249,8 @@ class Vue():
         self.couleurCourante = askcolor()[1]
         print(self.couleurCourante)
     def sauvegarde(self):
-        pass #Envoyer self.listeObjetMaquette dans BD
+        self.parent.sauvegarde(self.listeObjetMaquette)
+       
     def salutations(self):
         print("hello")
     def fermerfenetre(self):

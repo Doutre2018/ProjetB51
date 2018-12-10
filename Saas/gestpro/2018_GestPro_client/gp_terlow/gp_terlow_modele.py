@@ -5,6 +5,20 @@ from datetime import datetime
 class Modele():
     def __init__(self, referenceControleur):
         self.referenceControleur = referenceControleur
+
+        #self.fetchDataBD()
+    def fetchDataBD(self):
+        data = self.referenceControleur.serveur.insertionPerso("INSERT INTO Colonnes_Terlow (type) VALUES 'test'")
+        print(data)
+    def creationColonne(self):
+        pass
+ 
+    def suppressionColonne(self):
+        pass
+    
+    def creationCarte(self):
+        pass
+
         #self.tests()
         self.data = self.fetchDataBD()
         self.listeColonnes = []
@@ -13,6 +27,7 @@ class Modele():
         #self.testPrint()
         #self.suppressionColonne(2)
        # self.testPrint()
+
     
     def tests(self):
         self.referenceControleur.serveur.requeteInsertionPerso("DELETE FROM Colonnes_Terlow")

@@ -85,9 +85,11 @@ class Vue():
         if self.cadreactif == self.cadrebase :
             self.root.attributes("-fullscreen", self.fullscreen)
 
+
+        
     def chargercentral(self,rep):
         for i in rep:
-            self.listemodules.insert(END,i)
+            self.listemodules.insert(END,i)    
         self.changecadre(self.cadrebase)
             
     def popup(self,event):
@@ -98,10 +100,10 @@ class Vue():
     
     def creercadres(self):
         self.creercadresplash()
-        
-        self.creeNouvelleUtilisateur()
         self.connexionProjet()
         self.nouveauProjet()
+        self.creeNouvelleUtilisateur()
+
         self.creercadrebase()
         #self.creercadrecentral()
                 
@@ -149,7 +151,7 @@ class Vue():
         self.frameButton= Frame(self.cadresplash,bg="#E5E7F4")
         self.frameButton.grid()
         
-        self.btnconnecter=Button(self.frameButton,text="Connexion",bg="#FFFFFF",command=self.connexion,relief=FLAT, width=15)
+        self.btnconnecter=Button(self.frameButton,text="Connexion",bg="#FFFFFF",command=self.chargerProjet,relief=FLAT, width=15)
         self.btnconnecter.grid(row= 5, column= 1,pady=(25,50), padx=(0,10))
         
         self.inscriptionB = Button(self.frameButton,text="Nouveau Client",bg="#FFFFFF",command=self.AllerAInscription,relief=FLAT,width=15)
@@ -208,90 +210,43 @@ class Vue():
         self.annuleIB.grid(row= 10,pady=(30,35) ,padx=(122,0))
         
     def connexionProjet(self):    
-        self.cadreNouveauProjet=Frame(self.root,bg="#E4E9F3")
-        self.titre1=Label(self.cadreNouvelleUtilisateur,text="Connexion a un Projet",font='arial 20',bg="#E5E7F4")
+        self.cadreProjet=Frame(self.root,bg="#E4E9F3")
+        self.titre1=Label(self.cadreProjet,text="Connexion a un Projet",font='arial 20',bg="#E5E7F4")
         self.titre1.grid(row= 0,pady=(40,0),padx=82)
         
-        self.titre2=Label(self.cadreNouvelleUtilisateur,text="Projet : ",font='arial 20',bg="#E5E7F4")
-        self.titre2.grid(row= 1,pady=(2,10),padx=72)
-        
-        self.nomProjet= Entry(self.cadreNouvelleUtilisateur,bg="white", justify=CENTER,fg="grey",width=40)
+        self.nomProjet= Entry(self.cadreProjet,bg="white", justify=CENTER,fg="grey",width=40)
         self.nomProjet.grid(pady=(0,20))
-        self.nomProjet.insert(0,'Nom d''utilisateur')
+        self.nomProjet.insert(0,'Nom du Projet')
         self.nomProjet.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
         self.nomProjet.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
 
-        self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.creercadrecentral, width=15)
+        self.confirmerIB=Button(self.cadreProjet,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.connexion, width=15)
         self.confirmerIB.grid(row= 10, column= 0,pady=(30,35), padx=(0,122))
         
-        self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Creer Nouveau Projet",bg="#FFFFFF",relief=FLAT,command=self.nouveauProjet, width=15)
-        self.confirmerIB.grid(row= 10, column= 2,pady=(30,35), padx=(0,122))
+        self.confirmerIB=Button(self.cadreProjet,text="Creer Nouveau Projet",bg="#FFFFFF",relief=FLAT,command=self.AllerANouveauProjet, width=15)
+        self.confirmerIB.grid(row= 11,pady=(30,35), padx=(0,122))
         
-        self.annuleIB=Button(self.cadreNouvelleUtilisateur,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal, width=15)
+        self.annuleIB=Button(self.cadreProjet,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal, width=15)
         self.annuleIB.grid(row= 10,pady=(30,35) ,padx=(122,0))    
     
-    def nouveauProjet(self):
-        self.fenetreCreationProjet = Toplevel(self.root, bg="#F8C471"  )
-        self.fenetreCreationProjet.wm_title("Creer un Projet")
-        
-        self.texteCreationProjet = Label(self.fenetreCreationProjet, text="Nom du nouveau projet :", bg="#F8C471")
-        self.texteCreationProjet.grid(row=1,column=1, padx=50, pady=(30,10))
-        
-        self.entreeCreationProjet = Entry(self.fenetreCreationProjet)
-        self.entreeCreationProjet.grid(row=2,column=1, padx=50, pady=(0,10))
-        
-        self.boutonCreationProjet = Button(self.fenetreCreationProjet, text="Creer Projet", bg="#E67E22",command=self.creerProjet)
-        self.boutonCreationProjet.grid(row=3,column=1, padx=50, pady=(0,30))
-        
-    def creationProjet(self):    
-        self.cadreNouvelleUtilisateur=Frame(self.root,bg="#E4E9F3")
-        self.titre1=Label(self.cadreNouvelleUtilisateur,text="Creation d'un nouveau projet",font='arial 20',bg="#E5E7F4")
+    def nouveauProjet(self):    
+        self.cadreNouveauProjet=Frame(self.root,bg="#E4E9F3")
+        self.titre1=Label(self.cadreNouveauProjet,text="Creation d'un nouveau projet",font='arial 20',bg="#E5E7F4")
         self.titre1.grid(row= 0,pady=(40,0),padx=82)
-        self.titre2=Label(self.cadreNouvelleUtilisateur,text="utilisateur",font='arial 20',bg="#E5E7F4")
-        self.titre2.grid(row= 1,pady=(2,10),padx=72)
         
         #self.EntrerNomTitre= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre nom",font='arial 12',bg="#E5E7F4")
         #self.EntrerNomTitre.grid(pady=(20,10),padx=100) 
-        self.NouveauNom= Entry(self.cadreNouvelleUtilisateur,bg="white", justify=CENTER,fg="grey",width=40)
+        self.NouveauNom= Entry(self.cadreNouveauProjet,bg="white", justify=CENTER,fg="grey",width=40)
         self.NouveauNom.grid(pady=(0,20))
-        self.NouveauNom.insert(0,'Nom d''utilisateur')
+        self.NouveauNom.insert(0,'Nom du Projet')
         self.NouveauNom.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
         self.NouveauNom.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
         
-        #self.labelNouveauPassword= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre mot de passe",font='arial 12',bg="#E5E7F4")
-        #self.labelNouveauPassword.grid()
-        self.NouveauPassword= Entry(self.cadreNouvelleUtilisateur,bg="white",justify=CENTER,fg="grey",width=40)       # Champ texte pour le mot de passe
-        self.NouveauPassword.insert(0,"Nouveau Mot de passe")
-        self.NouveauPassword.grid(pady=(0,20))
-        self.NouveauPassword.bind('<FocusIn>', self.clickEntryMotDePasseNewUser)
-        self.NouveauPassword.bind('<FocusOut>',self.puClickEntryMotDePasseNewUser)
-        
-        #self.labelPasswordConfirm= Label(self.cadreNouvelleUtilisateur,text="Veuillez confirmer votre mot de passe",font='arial 12',bg="#E5E7F4")
-        #self.labelPasswordConfirm.grid()
-        self.PasswordConfirm= Entry(self.cadreNouvelleUtilisateur,bg="white",justify=CENTER,fg="grey",width=40)       # Champ texte pour la confirmation du mot de passe
-        self.PasswordConfirm.insert(0,"Confirmer le mot de passe")
-        self.PasswordConfirm.grid(pady=(0,20))
-        self.PasswordConfirm.bind('<FocusIn>', self.clickEntryMotDePasseNewUserConfirm)
-        self.PasswordConfirm.bind('<FocusOut>',self.puclickEntryMotDePasseNewUserConfirm)
-        
-        self.labelIpServuer=Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer l'adresse de votre serveur",font='arial 12',bg="#E5E7F4")
-        self.ipsplash=Entry(self.cadreNouvelleUtilisateur,bg="white",width=40,justify=CENTER)
-        self.ipsplash.insert(0, self.monip)
-        
-        # ------------- DM -------------
-        compagnies = self.fetchCompagnies()
-        self.compagniesplash=ttk.Combobox(self.cadreNouvelleUtilisateur,width=40,justify=CENTER,values=compagnies)
-        self.compagniesplash.insert(0,"< Sélectionner votre entreprise >")
-        self.compagniesplash.grid()
-        # ------------------------------
-        
-        self.labelIpServuer.grid()
-        self.ipsplash.grid()
 
-        self.confirmerIB=Button(self.cadreNouvelleUtilisateur,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.inscription, width=15)
+        self.confirmerIB=Button(self.cadreNouveauProjet,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.chargerProjet, width=15)
         self.confirmerIB.grid(row= 10, column= 0,pady=(30,35), padx=(0,122))
         
-        self.annuleIB=Button(self.cadreNouvelleUtilisateur,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.retourMenuPrincipal, width=15)
+        self.annuleIB=Button(self.cadreNouveauProjet,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.chargerProjet, width=15)
         self.annuleIB.grid(row= 10,pady=(30,35) ,padx=(122,0))    
     def closeprocess(self):
         self.parent.fermerprocessus()
@@ -401,11 +356,6 @@ class Vue():
         self.boutonDonnee.grid(row=0,column=9 ,padx=(0,2))
         self.boutonTerlow.grid(row=0,column=10)
         
-
-        
-    def creerProjet(self):
-        pass   
-    
     def requeteMandat(self):
         self.ChangerCouleurBouton(self.boutonMandat)
         if(self.parent.pid):
@@ -567,9 +517,12 @@ class Vue():
             else:
                 return False
     # --------------------------------- #   
-        
+    def chargerProjet(self):
+        self.changecadre(self.cadreProjet)
     def AllerAInscription(self):
         self.changecadre(self.cadreNouvelleUtilisateur)
+    def AllerANouveauProjet(self):
+        self.changecadre(self.cadreNouveauProjet)
     def retourMenuPrincipal(self):
         self.changecadre(self.cadresplash)
     

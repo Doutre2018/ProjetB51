@@ -25,15 +25,17 @@ class Vue():
         self.hauteurEcran=self.root.winfo_screenmmheight()
         self.cadreTchatExiste=False
         #Tout ce qui a été écrit en BD
-        self.listeNomParticipant = self.modele.selectTousUtilisateursLigneChat()
-        if self.listeNomParticipant is not None:
-            for i in self.listeNomParticipant:
+        self.listeIdParticipant = self.modele.selectTousUtilisateursLigneChat()
+        if self.listeIdParticipant is not None:
+            for i in self.listeIdParticipant:
                 for n in i:
-                    self.listeNomParticipant = n
-        for i in self.modele.triNomAvecIdUtilisateur(n):
+                    self.listeIdParticipant = n
+        for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
             for n in i:
                 self.listeNomParticipant = n
-            
+        
+        print(self.listeIdParticipant)
+        print(self.listeNomParticipant)
         self.images={}
         self.cadreactif=None
         self.creercadres()

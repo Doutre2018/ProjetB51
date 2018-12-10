@@ -12,7 +12,6 @@ from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
 from gp_terlow_modele import *
-from datetime import datetime
 
 class Controleur():
     def __init__(self):
@@ -38,12 +37,11 @@ class Controleur():
                 self.adresseServeur += input("Désolé, il y a eu une erreur lors de la détection automatique de l'adresse du serveur, vous pouvez entrer le IP (ex: 10.57.47.7) manuellement: ")
                 self.adresseServeur += ":9999"
         try:
-            self.serveur = ServerProxy(self.adresseServeur)
+            self.serveur = ServerProxy(self.adresseServeur, allow_none=True)
         except Exception as erreur:
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
-        
         
     
 if __name__ == '__main__':

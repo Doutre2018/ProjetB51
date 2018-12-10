@@ -180,6 +180,13 @@ class Vue():
         listeValeurFonct[1]="'"+texteFonction+"'"
         self.modele.insertFonctionDeCarte(listeValeurFonct)
         
+        #OBJETS
+        texteObjet = self.textObjet.get(1.0, "end-1c")
+        listeValeurObj=[None]*2
+        listeValeurObj[0]="'"+idCarteAjoutee+"'"
+        listeValeurObj[1]="'"+texteObjet+"'"
+        self.modele.insertObjetDeCarte(listeValeurObj)
+        
         #COLLABO
         texteCollabo = self.textCollaboration.get(1.0, "end-1c")
         self.modele.insertCollaboDeCarte(idCarteAjoutee,texteCollabo)
@@ -222,6 +229,11 @@ class Vue():
         for i in collabos:
             for n in i:
                 collabos=n
+                
+        objets = self.modele.selectObjetsDeCarte(id)
+        for i in objets:
+            for n in i:
+                objets=n
         # ------------------------------
         
         self.carteCRC =Toplevel(self.root)
@@ -273,7 +285,7 @@ class Vue():
         # ------------- DM -------------
         self.textAttribut.insert(INSERT, attribut)
         self.textFonction.insert(INSERT, fonctions)
-        self.textObjet.insert(INSERT, attribut)
+        self.textObjet.insert(INSERT, objets)
         # ------------------------------
         
         #partie du frame pour Collaboration
@@ -289,13 +301,14 @@ class Vue():
         # ------------------------------
         
         #Bouton Ajouter
+        a = self.ListeCRC.curselection()
+        self.niaisage = self.ListeCRC.get(a)        # J'tanné
         self.boutonModifier= Button(self.frameCarteCRC, text="Modifier", command=self.modifierCarteCRC)
         self.boutonModifier.grid()
         
     # ---------------- DM ----------------
     def modifierCarteCRC(self):
-        a = self.ListeCRC.curselection()
-        classe = self.ListeCRC.get(a)
+        classe = self.niaisage
         
         listeCarte = []
         listeCarte.append(self.entryNomClasse.get())
@@ -309,6 +322,27 @@ class Vue():
                 id = str(i)
         
         self.modele.updateCRC(id, listeCarte)
+        
+        texteAtt = self.textAttribut.get("1.0", END)
+        self.modele.updateAttributsCRC(id, texteAtt)
+        
+        texteFnc = self.textFonction.get("1.0", END)
+        self.modele.updateFonctionCRC(id, texteFnc)
+        
+        texteObj = self.textObjet.get("1.0", END)
+        self.modele.updateObjetCRC(id, texteObj)
+        
+        texteCollab = self.textCollaboration.get("1.0", END)
+        self.modele.updateCollabCRC(id, texteCollab)
+        
+        self.carteCRC.destroy()
+        self.ListeCRC.delete(0, END)
+        listeCartes = []
+        listeCartes = self.modele.selectClassesCartes()
+        print("tabarnak")
+        for nom in listeCartes:
+            for i in nom:
+                self.ListeCRC.insert(0,i)
     # ------------------------------------
         
 

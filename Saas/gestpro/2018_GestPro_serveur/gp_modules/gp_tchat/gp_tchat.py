@@ -64,7 +64,7 @@ class Modele():
         self.serveur=parent.serveur
         self.usager = self.serveur.fetchNomUtilisateurCourant()
         self.compagnie = self.serveur.fetchNomCompagnie()
-        self.FilDeDiscussionCourant = None
+        self.FilDeDiscussionCourant = 0 #Tant qu'il n'y a pas de module Projet
         self.idProjetCourant = None
         self.idUsager=self.idUtilisateurCourant()
         
@@ -73,11 +73,11 @@ class Modele():
         return self.serveur.requeteSelection(commande)
     
     #Insertions
-    def insertLigneChat(self,texte,date):
-        self.serveur.requeteInsertionPerso("INSERT INTO LigneChat(date,texte,id_filDiscussion,id_utilisateur) VALUES("+date+",'"+texte+"',"+self.FilDeDiscussionCourant+","+self.idUsager+");")
+    def insertLigneChat(self,texte):
+        self.serveur.requeteInsertionPerso("INSERT INTO LigneChat(texte,id_filDiscussion,id_utilisateur) VALUES('"+str(texte)+"',"+str(self.FilDeDiscussionCourant)+","+str(self.idUsager)+");")
         
     def insertFilDiscussion(self):
-        self.serveur.requeteInsertionPerso("INSERT INTO FilDeDiscussion(id_projet) VALUES("+self.idProjetCourant+");")
+        self.serveur.requeteInsertionPerso("INSERT INTO FilDeDiscussion(id_projet) VALUES("+str(self.idProjetCourant)+");")
 
     #Select
     def selectFilDiscussion(self):

@@ -90,9 +90,9 @@ class Vue():
             for i in self.listeNomParticipant:
                 for n in i:
                     print(self.modele.triNomAvecIdUtilisateur(n))
+                    
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
-        #self.modele.insert
         self.message.delete("1.0", END)
         
     def ajoutMessageBD(self):

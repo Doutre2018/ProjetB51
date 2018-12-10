@@ -90,16 +90,17 @@ class Vue():
             for i in self.listeNomParticipant:
                 for n in i:
                     print(self.modele.triNomAvecIdUtilisateur(n))
+                    
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
-        #self.modele.insert
+        self.ajouterMessageBD()
         self.message.delete("1.0", END)
         
     def ajoutMessageBD(self):
         self.listeMessage.delete(0, END)
         for message in self.messagesDeBD:
             self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
-            
+        self.modele.insertLigneChat(self.listeMessage[1])    
 
     def fermerfenetre(self):
         print("ON FERME la fenetre")

@@ -14,18 +14,12 @@ from tkinter.colorchooser import *
 class Vue():
     def __init__(self,parent,modele,largeur=1600,hauteur=1000):
 
-        
-<<<<<<< HEAD
-        self.textSize=12
-        self.couleurCourante="black"
-=======
         #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
         listederectangle = ["rectangle",150,150,200,300,"black","black","","",Id.prochainid()]
         listedecercle = ["ovale",500,500,200,300,"black","black","","",Id.prochainid()]
         listedetexte = ["texte",500,500,0,0,"white","black","Hello","Arial 12",Id.prochainid()]
         self.textSize=12
         self.couleurCourante="#FFC14C"
->>>>>>> 057d06c10d5366a49f9dcb9b00458b2c0ddbd3b3
         self.bordureCourante="black"
 
         self.root=tix.Tk()

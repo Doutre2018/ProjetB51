@@ -177,9 +177,10 @@ class ModeleService(object):
         return self.adresseServeur
     
     #si on veut la date d'aujourd'hui, on passe une liste vide pour valeurs date. Si on veut une date précise, on passe 6 valeurs (année, mois, jour, heure, minute, seconde). 
-    def requeteInsertionDate(self, stringSelect, listeValeurs, valeursDate):
-        date = self.genererDate(valeursDate)
-        listeValeurs.append(date)
+    def requeteInsertionDate(self, stringSelect, listeValeurs, listeValeursDate):
+        for valeursDate in listeValeursDate:
+            date = self.genererDate(valeursDate)
+            listeValeurs.append(date)
         tupleData = tuple(listeValeurs)
         connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         curseur = connecteur.cursor()
@@ -379,7 +380,7 @@ class  BaseDonnees():
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text, dateCreation timestamp)") #, estimationTemps timestamp, datePrevueFin timestamp, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text, estimationTemps INTEGER,  dateCreation timestamp, datePrevueFin timestamp)") 
 
     
     def insertion(self, nomTable = "", listeValeurs=[]):

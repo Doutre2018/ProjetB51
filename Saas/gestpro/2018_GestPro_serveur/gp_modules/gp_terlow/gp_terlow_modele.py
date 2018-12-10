@@ -6,7 +6,7 @@ class Modele():
     def __init__(self, referenceControleur):
         self.referenceControleur = referenceControleur
         #self.tests()
-        self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, texte, dateCreation) VALUES (?, ?, ?, ?)", [1,1,"'test carte'"], [2018,12,25,12,30,30]) 
+        self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, texte, estimationTemps, dateCreation, datePrevueFin) VALUES (?, ?, ?, ?,?,?)", [1,1,"'test carte'", 3600], [[],[2018,12,25,12,30,30]]) 
         print(self.referenceControleur.serveur.requeteSelection("select * from Cartes_Terlow"))
         self.listeColonnes = []
         self.generationColonnes()
@@ -66,7 +66,7 @@ class Modele():
             if dataCartes:
                 print("colonne id = ", colonne.id, "dataCartes = ", dataCartes)
                 for carte in dataCartes:
-                    colonne.listeCartes.append(Carte(carte[0], carte[1], carte[2],  carte[3], carte[4] ))
+                    colonne.listeCartes.append(Carte(carte[0], carte[1], carte[2],  carte[3], carte[4], carte[5], carte[6] ))
                     print("appending")
                 
     #à tester
@@ -103,7 +103,7 @@ class Colonne():
         self.listeCartes = listeCartes
 
 class Carte():
-    def __init__(self, id, id_colonne, ordre, texte, dateCreation = None, estimationTemps = None, datePrevueFin = None):
+    def __init__(self, id, id_colonne, ordre, texte, estimationTemps = None, dateCreation = None,  datePrevueFin = None):
         self.id = id
         self.id_colonne = id_colonne
         self.ordre = ordre

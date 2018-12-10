@@ -17,7 +17,7 @@ class Controleur():
         print("IN CONTROLEUR")
         self.createurId=Id
         self.connectionServeurCourant()
-        self.modele=None
+        self.modele=Modele()
         self.vue=Vue(self)
         self.vue.root.mainloop()
 
@@ -41,7 +41,9 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
-        
+    
+    def sauvegarde(self):
+        self.modele.sauvegarde(self.listeObjetMaquette)
     
 if __name__ == '__main__':
     c=Controleur()

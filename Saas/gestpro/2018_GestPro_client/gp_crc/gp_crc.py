@@ -99,6 +99,7 @@ class Modele():
     def selectCarteResponsable(self,idCarte):
         commande = "SELECT nom_responsable FROM Cartes WHERE id="
         commande+=str(idCarte)
+
         #Retourne une liste de String des attributs d'UNE carte
         return self.serveur.requeteSelection(commande)
     
@@ -126,12 +127,12 @@ class Modele():
         
     def supprimerCollaboDeCarte(self,idCarte):
         commande="DELETE FROM CollaboCRC WHERE id_classe="
-        commande+=idCarte
+        commande+=str(idCarte)
         self.serveur.requeteInsertionPerso(commande)
         
     def supprimerFonctionDeCarte(self,idCarte):
         commande="DELETE FROM FonctionsCRC WHERE id_classe="
-        commande+=idCarte
+        commande+=str(idCarte)
         self.serveur.requeteInsertionPerso(commande)     
         
     def supprimerCarte(self,nomCarte):

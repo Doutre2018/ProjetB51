@@ -6,7 +6,7 @@ class Modele():
     def __init__(self, referenceControleur):
         self.referenceControleur = referenceControleur
         #self.tests()
-        self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, texte, dateCreation) VALUES (?, ?, ?, ?)", [1,1,"'test carte'"], "maintenant") 
+        self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, texte, dateCreation) VALUES (?, ?, ?, ?)", [1,1,"'test carte'"], [2018,12,25,12,30,30]) 
         print(self.referenceControleur.serveur.requeteSelection("select * from Cartes_Terlow"))
         self.listeColonnes = []
         self.generationColonnes()

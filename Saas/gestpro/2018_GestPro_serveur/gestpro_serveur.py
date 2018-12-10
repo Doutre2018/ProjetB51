@@ -153,9 +153,10 @@ class ModeleService(object):
         curseur.execute()
         connecteur.close()
     
-    def requeteInsertionDate(self, stringSelect, listeValeurs, typeDate):
+    #si on veut la date d'aujourd'hui, on passe une liste vide pour valeurs date. Si on veut une date précise, on passe 6 valeurs (année, mois, jour, heure, minute, seconde). 
+    def requeteInsertionDate(self, stringSelect, listeValeurs, valeursDate):
        # print(stringSelect, listeValeurs, typeDate)
-        date = self.genererDate(typeDate)
+        date = self.genererDate(valeursDate)
        # print("date dans requet=",date)
         listeValeurs.append(date)
         #print("listevaleurs avec date",listeValeurs)
@@ -168,11 +169,11 @@ class ModeleService(object):
         connecteur.close()
         return True
     
-    def genererDate(self, typeDate):
-        print("dans genererDate, parametre recu = ", typeDate)
-        dictDate = {"maintenant" : datetime.today()}
-        print("valeur dico = ", dictDate[typeDate])
-        return dictDate[typeDate]
+    def genererDate(self, valeursDate):
+        if not valeursDate:
+            return datetime.today()
+        else:
+            return datetime(valeursDate[0], valeursDate[1], valeursDate[2], valeursDate[3], valeursDate[4], valeursDate[5])
     
 class ControleurServeur(object):
     def __init__(self):
@@ -245,15 +246,10 @@ class  BaseDonnees():
         self.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
-        #self.testDate()
         self.connecteur.commit()
         self.connecteur.close()
 
-    def testDate(self):
-        self.curseur.execute("INSERT INTO test_date VALUES (?,?)", (1, datetime.today()) )
-        data = self.selection("SELECT * from test_date")
-        for element in data:
-            print(element)
+
     
     def genererListeTables(self):
         listeTables = [ 
@@ -322,7 +318,7 @@ class  BaseDonnees():
         self.alterTable(listeConst)
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text, dateCreation timestamp)") #, estimationTemps timestamp, datePrevueFin timestamp, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-        self.curseur.execute("CREATE TABLE IF NOT EXISTS test_date (num INTEGER, date TIMESTAMP)") #****
+
     
     def insertion(self, nomTable = "", listeValeurs=[]):
         stringInsert = "INSERT INTO " + nomTable + " VALUES("

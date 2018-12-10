@@ -19,8 +19,9 @@ class Vue():
         listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
         listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
         listedetexte = ["texte",500,500,0,0,"white","black","Hello","Arial 12",Id.prochainid()]
+        
         self.textSize=12
-        self.couleurCourante="red"
+        self.couleurCourante="black"
         self.bordureCourante="black"
         self.listeObjetMaquette.append(listederectangle)
         self.listeObjetMaquette.append(listedecercle)

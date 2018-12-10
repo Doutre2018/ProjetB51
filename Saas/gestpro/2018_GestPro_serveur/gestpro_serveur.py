@@ -45,7 +45,7 @@ class ModeleService(object):
                                  "casdusage":"gp_casdusage",
                                  "maquette":"gp_maquette",
                                  "crc":"gp_crc",
-                                 "budget":"gp_budget",
+                                 "marketing":"gp_marketing",
                                  "tchat":"gp_tchat",
                                  "modelisation":"gp_modelisation",
                                  "terlow":"gp_terlow",

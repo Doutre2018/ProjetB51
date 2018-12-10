@@ -109,12 +109,7 @@ class Vue():
         self.canevasMaquette.create_rectangle((10,110,self.largeur-10,self.hauteur-10),outline="black",fill="white")
         self.boutontrectangle = self.canevasMaquette.create_rectangle((200,20,260,80),outline="black", fill=self.couleurCourante,tags=(Id.prochainid(),"bouton","rectangle"))
         self.boutontovale = self.canevasMaquette.create_oval(((int(self.largeur/3))+200,20,(int(self.largeur/3))+260,80),outline="black", fill=self.couleurCourante,tags=(Id.prochainid(),"bouton","ovale"))
-<<<<<<< HEAD
-        self.boutontTexte = self.canevasMaquette.create_text(int((self.largeur/3)*2)+200,55,text="T",font="Arial 60",tags=(Id.prochainid(),"bouton","texte"))
-        
-=======
         self.boutontTexte = self.canevasMaquette.create_text(int((self.largeur/3)*2)+200,55,text="T",font="Arial 60",fill="#FFC14C",tags=(Id.prochainid(),"bouton","texte"))
->>>>>>> 057d06c10d5366a49f9dcb9b00458b2c0ddbd3b3
         self.canevasMaquette.bind("<Button>",self.creerNouvelObjet)
         self.canevasMaquette.bind("<B1-Motion>",self.bougerObjet)
         self.canevasMaquette.bind("<Button-2>",self.detruitObjet)

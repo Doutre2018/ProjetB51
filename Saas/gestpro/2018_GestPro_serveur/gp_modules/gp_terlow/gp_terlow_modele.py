@@ -5,11 +5,13 @@ from datetime import datetime
 class Modele():
     def __init__(self, referenceControleur):
         self.referenceControleur = referenceControleur
-        self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, titre, description, estimationTemps, dateCreation, datePrevueFin) VALUES (?, ?, ?, ?,?,?,?)", [1,1,"test carte", "description", 3600], [[],[2018,12,25,12,30,30]]) 
-        print(self.referenceControleur.serveur.requeteSelection("select * from Cartes_Terlow"))
+       # self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, titre, description, estimationTemps, dateCreation, datePrevueFin) VALUES (?, ?, ?, ?,?,?,?)", [1,1,"test carte", "description", 3600], [[],[2018,12,25,12,30,30]]) 
+       # print(self.referenceControleur.serveur.requeteSelection("select * from Cartes_Terlow"))
         self.listeColonnes = []
+        self.genererColonnesDemo()
         self.generationColonnes()
-        self.creationColonne("test nouvelle creation")
+        #self.creationColonne("test nouvelle creation")
+        self.genererCartesDemo()
         self.generationCartes()
         self.testPrint()
 
@@ -99,8 +101,20 @@ class Modele():
                 print("carte date création = ", carte.dateCreation)
                 print("carte durée = ", carte.estimationTemps)
                 print("carte date fin = ", carte.datePrevueFin)
-                
-
+    
+    def genererCartesDemo(self):
+        try:
+            for colonne in self.listeColonnes:
+                 self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, titre, description, estimationTemps, dateCreation, datePrevueFin) VALUES (?, ?, ?, ?,?,?, ?)", [colonne.id, 1, "carte de la colonne " + str(colonne.id), "description de la carte de la colonne "+ str(colonne.id), 120], [[],[2018,12,25,12,30,0]])
+            self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, titre, description, estimationTemps, dateCreation, datePrevueFin) VALUES (?, ?, ?, ?,?,?, ?)", [self.listeColonnes[1].id, 2, "carte de la colonne " + str(colonne.id), "description de la deuxième carte", 360], [[],[2018,1,12,9,15,0]])
+        except Exception as erreur:
+            print("exception de cartes demo:", erreur)
+    def genererColonnesDemo(self):
+        try:
+            for i in range(4):
+                self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES ("+ str(i+1)+","+"'Colonne"+str(i+1)+ "'"+")")
+        except Exception as erreur :
+            print("exception de colonnes demo:", erreur)
 class Colonne():
     def __init__(self, id, ordre, titre, listeCartes):
         self.id = id

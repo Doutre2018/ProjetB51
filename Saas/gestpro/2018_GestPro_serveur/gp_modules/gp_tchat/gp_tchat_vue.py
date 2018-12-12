@@ -98,12 +98,10 @@ class Vue():
         self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage,bg="Skyblue")
         self.boutonMessage.grid(columnspan=5,column=0,row=6,padx=70)
         
-        
-                    
+
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
         self.modele.insertLigneChat(self.message.get("1.0", END))
-        self.messagesDeBD.append([self.user, self.message.get("1.0", END)])
         self.message.delete("1.0", END)
         
     def ajoutMessageBD(self):

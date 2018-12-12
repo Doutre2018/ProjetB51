@@ -132,8 +132,8 @@ class Vue():
         self.ipsplash.insert(0, self.monip)
         
         # ---------------- DM ----------------
-        cies = self.fetchCompagnies()
-        self.ciessplash=ttk.Combobox(self.cadresplash,width=40,justify=CENTER,values=cies)
+        #cies = self.fetchCompagnies()
+        self.ciessplash=ttk.Combobox(self.cadresplash,width=40,justify=CENTER,values=None)
         self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
         self.ciessplash.grid()
         # ------------------------------------                      
@@ -187,8 +187,8 @@ class Vue():
         self.ipsplash.insert(0, self.monip)
         
         # ------------- DM -------------
-        compagnies = self.fetchCompagnies()
-        self.compagniesplash=ttk.Combobox(self.cadreNouvelleUtilisateur,width=40,justify=CENTER,values=compagnies)
+        #compagnies = self.fetchCompagnies()
+        self.compagniesplash=ttk.Combobox(self.cadreNouvelleUtilisateur,width=40,justify=CENTER,values=None)
         self.compagniesplash.insert(0,"< Sélectionner votre entreprise >")
         self.compagniesplash.grid()
         # ------------------------------

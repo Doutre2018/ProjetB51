@@ -12,9 +12,9 @@ import time
 import random
 import sqlite3
 from numpy.distutils.cpuinfo import command_by_line
-import csv
 from datetime import datetime
-import atexit
+import csv
+
 
 
 #s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -25,7 +25,7 @@ print("MON IP SERVEUR",IP)
 #s.close()
 
 #daemon = Pyro4.core.Daemon(host=monip,port=9999) 
-daemon= SimpleXMLRPCServer((IP,9999), logRequests = False)
+daemon= SimpleXMLRPCServer((IP,9999), logRequests = False, allow_none=True)
 
 
 class Client(object):
@@ -45,22 +45,26 @@ class ModeleService(object):
                                  "casdusage":"gp_casdusage",
                                  "maquette":"gp_maquette",
                                  "crc":"gp_crc",
-                                 "budget":"gp_budget",
+                                 "marketing":"gp_marketing",
                                  "tchat":"gp_tchat",
                                  "modelisation":"gp_modelisation",
                                  "terlow":"gp_terlow",
                                  "inscription":"gp_inscription"}
         self.clients={}
-        self.baseDonnees = BaseDonnees()
+        self.baseDonnees = BaseDonnees(self)
         self.adresseServeur = "http://"+str(IP) + ":" + str(9999)
         daemon.register_function(self.getAdresse)
         daemon.register_function(self.requeteInsertion)
         daemon.register_function(self.requeteSelection)
         daemon.register_function(self.requeteMiseAJour)
         daemon.register_function(self.requeteInsertionPerso)
+        daemon.register_function(self.genererDate)
+        daemon.register_function(self.requeteInsertionDate)
         daemon.register_function(self.requeteFichier)
         daemon.register_function(self.logErreur)
         daemon.register_introspection_functions()
+        #self.requeteInsertionDate("INSERT INTO test_date VALUES (?,?)",(1, ), "maintenant")
+        #print(self.requeteSelection("SELECT * FROM test_date"))
         
     def creerclient(self,nom):
         #if nom in self.clients.keys(): # on assure un nom unique
@@ -143,35 +147,60 @@ class ModeleService(object):
             
     #méthode tampon pour insert les données dans la table de la BD du serveur selon le format suivant: nomTable = "string représentant nom", liste valeurs = [10, 'texte1', 50.3]
     def requeteInsertion(self, nomTable, listeValeurs ):
-        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db')
+        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
         self.baseDonnees.insertion(nomTable, listeValeurs)
         self.baseDonnees.connecteur.close()
         return True
     
-    def requeteInsertionPerso(self,commande):
-        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db')
+    def requeteInsertionPerso(self,commande, tupleValeurs = -1):
+        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
-        self.baseDonnees.insertionPerso(commande)
+        self.baseDonnees.insertionPerso(commande, tupleValeurs)
         self.baseDonnees.connecteur.close()
         return True
     
    #méthode tampon pour mettre à jour des données d'une table. Il faut passer une string représentant l'ensemble de la requête update dans la fonction
     def requeteMiseAJour(self,stringUpdate):
-        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db')
+        self.baseDonnees.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.baseDonnees.curseur = self.baseDonnees.connecteur.cursor()
         self.baseDonnees.miseAJour(stringUpdate)
         self.baseDonnees.connecteur.close()
         return True
     
     #méthode tampon qui retourne une liste. Chaque élément de la liste correspond à une rangée du select demandé.
-    def requeteSelection(self, stringSelect):
-        listeSelect  = self.baseDonnees.selection(stringSelect)
+    def requeteSelection(self, stringSelect, valeurs = -1):
+        listeSelect  = self.baseDonnees.selection(stringSelect, valeurs)
         return listeSelect
+    
+    # --------------- DM ---------------
+    def requeteUpdate(self, stringSelect):
+        pass
+    # ----------------------------------
     
     def getAdresse(self):
         return self.adresseServeur
     
+    #si on veut la date d'aujourd'hui, on passe une liste vide pour valeurs date. Si on veut une date précise, on passe 6 valeurs (année, mois, jour, heure, minute, seconde). 
+    def requeteInsertionDate(self, stringSelect, listeValeurs, listeValeursDate):
+        for valeursDate in listeValeursDate:
+            date = self.genererDate(valeursDate)
+            listeValeurs.append(date)
+        tupleData = tuple(listeValeurs)
+        connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+        curseur = connecteur.cursor()
+        curseur.execute(stringSelect, tupleData)
+        connecteur.commit()
+        connecteur.close()
+        return True
+    
+    def genererDate(self, valeursDate):
+        if not valeursDate:
+            return datetime.today()
+        else:
+            return datetime(valeursDate[0], valeursDate[1], valeursDate[2], valeursDate[3], valeursDate[4], valeursDate[5])
+    
+
     def requeteFichier(self, cheminFichier):
         with open(cheminFichier, "rb") as handle:
             return xmlrpc.client.Binary(handle.read())
@@ -183,6 +212,7 @@ class ModeleService(object):
             writer.writerow(row)
         return True
             
+
 class ControleurServeur(object):
     def __init__(self):
         rand=random.randrange(1000)+1000
@@ -256,21 +286,21 @@ class ControleurServeur(object):
         daemon.shutdown()
 
 class  BaseDonnees():
-    def __init__(self):
+    def __init__(self, referenceServeur):
         #if os.path.exists("SAAS.db"):
             #os.remove("SAAS.db")
         #else:
             #print("Creation du fichier SAAS.db initial")
-        self.connecteur = sqlite3.connect('SAAS.db')
+        self.referenceServeur = referenceServeur
+        self.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.creerListeCompagnies()
         #self.insertion('stocks', [1])
         self.connecteur.commit()
-        self.selection("select * from stocks")
         self.connecteur.close()
 
-        
+
     
     def genererListeTables(self):
         listeTables = [ 
@@ -288,13 +318,13 @@ class  BaseDonnees():
             ['CollaboCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['textCollabo','text','']],
             ['FilDeDiscussion', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT']],
             ['TypeForme', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','']],
-            ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['hauteur','real',''], ['largeur','real',''], ['fill_couleur','real','NULL']],
+            ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['Type','text',''], ['PosX','real',''], ['PosY','real',''],['X','real',''], ['Y','real',''], ['Bordure','real','NULL'], ['Interieur','real','NULL'],['Texte','text',''],['Font','text','']],
             ['ColonnesScenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text',''], ['numero_position','INTEGER','']],
             ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['classe','text',''], ['ordre','INTEGER',''],['carte_heritage','text',''],['nom_responsable','text','']],
             ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],
             ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date','']],
             ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER','']],
-            ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
+           # ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
             #['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre', 'INTEGER', ''], ['titre','text','']],
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
@@ -302,7 +332,8 @@ class  BaseDonnees():
             ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['date', 'text', '']],
             ['MembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', ''], ['nom', 'text', '']],
             ['CartesDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', '']],
-            ['ItemDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', ''], ['type', 'text', ''], ['contrainte', 'text', '']]
+            ['ItemDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', ''], ['type', 'text', ''], ['contrainte', 'text', '']],
+            ['ObjetsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['objet','text','']]
             ]
         return listeTables
     
@@ -323,8 +354,8 @@ class  BaseDonnees():
             ['Cartes', 'id_projet','INTEGER', 'Projet', 'id'],
             ['Objet_Maquette', 'id_position','INTEGER', 'Position', 'id'],
             ['Objet_Maquette', 'id_type','INTEGER', 'TypeForme', 'id'],
-            ['Taches_Terlow', 'id_projet','INTEGER', 'Projet', 'id'],
-            ['Taches_Terlow', 'id_colonne_terlow','INTEGER', 'Colonnes_Terlow', 'id'],
+            #['Taches_Terlow', 'id_projet','INTEGER', 'Projet', 'id'],
+            #['Taches_Terlow', 'id_colonne_terlow','INTEGER', 'Colonnes_Terlow', 'id'],
             ['Objet_Texte', 'id_position','INTEGER', 'Position', 'id'],
             ['Tache_Sprint','id_sprint','INTEGER', 'Sprint', 'id'],
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
@@ -332,7 +363,8 @@ class  BaseDonnees():
             ['Scrum', 'id_projet', 'INTEGER', 'Projet', 'id'],
             ['MembreScrum', 'id_scrum', 'INTEGER', 'Scrum', 'id'],
             ['ItemDonnees', 'id_carte', 'INTEGER', 'CartesDonnees', 'id'],
-            ['CartesDonnees', 'id_projet', 'INTEGER', 'Projet', 'id']
+            ['CartesDonnees', 'id_projet', 'INTEGER', 'Projet', 'id'],
+            ['ObjetsCRC', 'id_classe','INTEGER', 'Cartes', 'id']
             ]
         return listeConst
     
@@ -363,8 +395,8 @@ class  BaseDonnees():
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-                
-    
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text, estimationTemps INTEGER,  dateCreation timestamp, datePrevueFin timestamp)") 
+
     
     def insertion(self, nomTable = "", listeValeurs=[]):
         stringInsert = "INSERT INTO " + nomTable + " VALUES("
@@ -380,12 +412,17 @@ class  BaseDonnees():
         self.curseur.execute(stringInsert)
     
     
-    def selection(self, stringSelect):
-        connecteur = sqlite3.connect('SAAS.db')
+    def selection(self, stringSelect, valeurs = -1):
+        connecteur = sqlite3.connect('SAAS.db', detect_types = sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         curseur = connecteur.cursor()
         listeData=[]
-        for rangee in curseur.execute(stringSelect):
-            listeData.append(rangee)
+        if valeurs == -1:
+            for rangee in curseur.execute(stringSelect):
+                listeData.append(rangee)
+        else:
+            for rangee in curseur.execute(stringSelect, (valeurs,) ):
+                listeData.append(rangee)
+            
         connecteur.close()
         return listeData
             
@@ -398,12 +435,20 @@ class  BaseDonnees():
             pass
             #print("contraintes existent")
     
-    def insertionPerso(self,commande):
+    def insertionPerso(self,commande, tupleOptionnel =-1):
+        if tupleOptionnel == -1:
+            self.curseur.execute(commande)
+        else:
+            self.curseur.execute(commande, tupleOptionnel)
+        self.connecteur.commit()
+    
+    # --------------- DM ---------------    
+    def miseAJour(self,commande):
         self.curseur.execute(commande)
         self.connecteur.commit()
-        
+    # ----------------------------------
+    
 if __name__ == "__main__":
     controleurServeur=ControleurServeur()
-    #atexit.register(controleurServeur.fermer)
     daemon.register_instance(controleurServeur)  
     daemon.serve_forever()

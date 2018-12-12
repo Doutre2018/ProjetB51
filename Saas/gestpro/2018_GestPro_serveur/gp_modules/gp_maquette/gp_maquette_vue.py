@@ -12,25 +12,23 @@ from tkinter.colorchooser import *
 
 
 class Vue():
-    def __init__(self,parent,largeur=1600,hauteur=1000):
-        self.listeObjetMaquette = []
-        
+    def __init__(self,parent,modele,largeur=1600,hauteur=1000):
+
         #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
-        listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
-        listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
+        listederectangle = ["rectangle",150,150,200,300,"black","black","","",Id.prochainid()]
+        listedecercle = ["ovale",500,500,200,300,"black","black","","",Id.prochainid()]
         listedetexte = ["texte",500,500,0,0,"white","black","Hello","Arial 12",Id.prochainid()]
         self.textSize=12
-        self.couleurCourante="red"
+        self.couleurCourante="#FFC14C"
         self.bordureCourante="black"
-        self.listeObjetMaquette.append(listederectangle)
-        self.listeObjetMaquette.append(listedecercle)
-        self.listeObjetMaquette.append(listedetexte)
+
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.attributes("-fullscreen", False)
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
+        self.root.config(bg="#E4E9F3")
         self.parent=parent
-        self.modele=None
+        self.modele=modele
         self.largeur=self.largeurDefault=largeur
         self.hauteur=self.hauteurDefault=hauteur
         self.largeurEcran=self.root.winfo_screenwidth()
@@ -41,8 +39,18 @@ class Vue():
         
         self.images={}
         self.cadreactif=None
+        self.listeObjetMaquette = self.modele.listeObjets
+        self.creerObjet()
+
+        #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
+        listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
+        listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
+        listedetexte = ["texte",500,500,0,0,"white","black","Hello","Arial 12",Id.prochainid()]
+        self.listeObjetMaquette.append(listederectangle)
+        self.listeObjetMaquette.append(listedecercle)
+        self.listeObjetMaquette.append(listedetexte)
         
-    
+        
         self.creermenu()
 
         self.creercadres()
@@ -85,6 +93,8 @@ class Vue():
         self.menu = Menu(self.root, tearoff=0)
         self.menu.add_command(label="Nom", command=self.salutations)
         self.menu.add_command(label="Verbe", command=self.salutations)
+        self.menu.config(bg="#E4E9F3")
+
         
         #self.frame = Frame(self.root, width=512, height=512)
         #self.frame.grid()
@@ -93,14 +103,14 @@ class Vue():
     def creercadreMaquette(self):
         #permet d'intégrer l'application dans l'application de base
         self.root.overrideredirect(True) #Enleve la bordure
-        self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
+        self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2-30)))
 
-        self.canevasMaquette=Canvas(self.root,width=self.largeur,height=self.hauteur)
-        self.canevasMaquette.create_rectangle((10,10,self.largeur-10,100),fill="green")
+        self.canevasMaquette=Canvas(self.root,width=self.largeur,height=self.hauteur-120,bg="#E4E9F3")
+        self.canevasMaquette.create_rectangle((10,10,self.largeur-10,100),fill="#234078")
         self.canevasMaquette.create_rectangle((10,110,self.largeur-10,self.hauteur-10),outline="black",fill="white")
         self.boutontrectangle = self.canevasMaquette.create_rectangle((200,20,260,80),outline="black", fill=self.couleurCourante,tags=(Id.prochainid(),"bouton","rectangle"))
         self.boutontovale = self.canevasMaquette.create_oval(((int(self.largeur/3))+200,20,(int(self.largeur/3))+260,80),outline="black", fill=self.couleurCourante,tags=(Id.prochainid(),"bouton","ovale"))
-        self.boutontTexte = self.canevasMaquette.create_text(int((self.largeur/3)*2)+200,55,text="T",font="Arial 60",tags=(Id.prochainid(),"bouton","texte"))
+        self.boutontTexte = self.canevasMaquette.create_text(int((self.largeur/3)*2)+200,55,text="T",font="Arial 60",fill="#FFC14C",tags=(Id.prochainid(),"bouton","texte"))
         self.canevasMaquette.bind("<Button>",self.creerNouvelObjet)
         self.canevasMaquette.bind("<B1-Motion>",self.bougerObjet)
         self.canevasMaquette.bind("<Button-2>",self.detruitObjet)
@@ -108,6 +118,7 @@ class Vue():
         self.canevasMaquette.bind("<Double-Button-1>",self.modifierTexte)
 
         self.creerObjet()
+        
     def creerNouvelObjet(self,evt):
         t=self.canevasMaquette.gettags(CURRENT)
         print(t)
@@ -122,11 +133,7 @@ class Vue():
                     if t[2]=="texte":
                         self.listeObjetMaquette.append(["texte",(self.largeur/2),(self.hauteur/2),0,0,self.bordureCourante,self.couleurCourante,"Nouveau Texte","Arial 12",nouvelid])
                     self.creerObjet()
-            else:
-                print("pas d'objet")
-
-        else :
-            print("no objet")
+                    
     def bougerObjet(self,evt):
         t=self.canevasMaquette.gettags(CURRENT)
         if t :
@@ -152,13 +159,6 @@ class Vue():
                             
                     self.objetSelectionnerX=evt.x
                     self.objetSelectionnerY=evt.y
-                    
-                    
-
-            else:
-                print("pas d'objet")
-        else :
-            print("no objet")
 
     def aggrandirObjet(self,evt):
         t=self.canevasMaquette.gettags(CURRENT)
@@ -201,11 +201,7 @@ class Vue():
                                 objet[2]=y0
                                 objet[3]=evt.x
                                 objet[4]=evt.y
-                        
-            else:
-                print("pas d'objet")
-        else :
-            print("no objet")
+                                
     def detruitObjet(self,evt):
         t=self.canevasMaquette.gettags(CURRENT)
         if t :
@@ -214,13 +210,7 @@ class Vue():
                         if (objet[9]==t[0]) :
                             self.listeObjetMaquette.remove(objet)
                     self.canevasMaquette.delete(t[0])
-                    
-    
-
-            else:
-                print("pas d'objet")
-        else :
-            print("no objet")
+            
     def changerTexte(self):
         self.canevasMaquette.itemconfig(self.idTexte, text=self.entreeModificationMot.get())
         for objet in self.listeObjetMaquette :
@@ -248,8 +238,9 @@ class Vue():
 
     def creerObjet(self):
 
-        self.canevasMaquette.delete("objet")
+        #self.canevasMaquette.delete("objet")
         for objet in self.listeObjetMaquette:
+            print(objet)
             if(objet[0]=="rectangle"):
                 self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[9]),"objet","rectangle"))
             if(objet[0]=="ovale"):
@@ -260,7 +251,8 @@ class Vue():
         self.couleurCourante = askcolor()[1]
         print(self.couleurCourante)
     def sauvegarde(self):
-        pass #Envoyer self.listeObjetMaquette dans BD
+        self.parent.sauvegarde(self.listeObjetMaquette)
+       
     def salutations(self):
         print("hello")
     def fermerfenetre(self):

@@ -30,7 +30,6 @@ class Vue():
         self.afficherTables()
         
         
-        
     def changemode(self,cadre):
         if self.modecourant:
             self.modecourant.pack_forget()
@@ -148,13 +147,11 @@ class Vue():
 
 
         self.nbChamps+=1
-        
     def ajouterTable(self):
         textNom = Label(self.cadremodelisation,text="Nom de la table")
         textNom.grid(column=self.nbTable*3,row=1)
         
         nomTable = Label(self.cadremodelisation,text=str(self.nomTableCreer.get()),borderwidth=2, relief="groove")
-        
         self.parent.insertCarte(self.nomTableCreer.get())
         nomTable.grid(column=self.nbTable*3+1,row=1)
         
@@ -170,12 +167,11 @@ class Vue():
         for i in range(len(self.nomsChampsCreer)) :
             nomduchamp = Label(self.cadremodelisation, width = 20, text= self.nomsChampsCreer[i].get(),borderwidth=2, relief="groove")
             nomduchamp.grid(column=(self.nbTable*3), row=i+3,padx=(20,0))
-        for i in range(len(self.typeChampsCreer)) :
             nomduchamp = Label(self.cadremodelisation, width = 20, text= self.typeChampsCreer[i].get(),borderwidth=2, relief="groove")
             nomduchamp.grid(column=(self.nbTable*3)+1, row=i+3)
-        for i in range(len(self.autreChampsCreer)) :
             nomduchamp = Label(self.cadremodelisation, width = 20, text= str(self.autreChampsCreer[i].get()),borderwidth=2, relief="groove")
             nomduchamp.grid(column=(self.nbTable*3)+2, row=i+3,padx=(0,20))
+            self.parent.insertItem(self.nomsChampsCreer[i].get(), self.typeChampsCreer[i].get(), self.autreChampsCreer[i].get(), self.nomTableCreer.get())
             j = i
         
         notable = self.nbTable
@@ -229,7 +225,7 @@ class Vue():
         boutonAjoutChamps.grid(row=self.nbChamps+3)
         boutonCreer = Button(self.modifTable, width = 15, height = 1, text = "Modifier", command  = lambda:self.ajoutmodificationTable(noTable))
         boutonCreer.grid(row=self.nbChamps+4,column=0, pady=10)
-
+        
     def ajouterChampsModifier(self):
         
         self.nomsChampsCreer.append(StringVar())

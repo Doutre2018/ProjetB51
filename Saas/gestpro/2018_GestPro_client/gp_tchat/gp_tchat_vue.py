@@ -30,10 +30,10 @@ class Vue():
             for i in self.listeIdParticipant:
                 for n in i:
                     self.listeIdParticipant = n
-        for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
-            for n in i:
-                self.listeNomParticipant = n
-        
+        if self.listeIdParticipant is not None:
+            for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
+                for n in i:
+                    self.listeNomParticipant = n
         print(self.listeIdParticipant)
         print(self.listeNomParticipant)
         self.images={}
@@ -97,14 +97,9 @@ class Vue():
         
                     
     def ajouterMessage(self):
-<<<<<<< HEAD
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
-        print(self.message.get("1.0", END))
         self.modele.insertLigneChat(self.message.get("1.0", END))
-=======
-        
         self.messagesDeBD.append([self.user, self.message.get("1.0", END)])
->>>>>>> 4c5e8cd2c3e92af5bb3fc6d03a78197e4cea24ab
         self.message.delete("1.0", END)
         
     def ajoutMessageBD(self):

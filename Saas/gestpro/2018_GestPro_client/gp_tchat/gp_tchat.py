@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 
 import os,os.path
 import sys
@@ -92,11 +92,17 @@ class Modele():
         
     def selectTousUtilisateursLigneChat(self):
         commande = "SELECT id_utilisateur FROM LigneChat;"
-        return self.serveur.requeteSelection(commande)
+        try:
+            return self.serveur.requeteSelection(commande)
+        except ValueError:
+            return None
         
     def triNomAvecIdUtilisateur(self,idUsager):
         commande = "SELECT nomUtilisateur FROM Utilisateur WHERE id="
-        return self.serveur.requeteSelection(commande+str(idUsager))
+        try:
+            return self.serveur.requeteSelection(commande+str(idUsager))
+        except ValueError:
+            return None
     
 if __name__ == '__main__':
     c=Controleur()

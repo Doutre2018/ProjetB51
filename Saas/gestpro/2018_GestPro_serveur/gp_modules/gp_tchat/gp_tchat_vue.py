@@ -30,10 +30,10 @@ class Vue():
             for i in self.listeIdParticipant:
                 for n in i:
                     self.listeIdParticipant = n
-        for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
-            for n in i:
-                self.listeNomParticipant = n
-        
+        if self.listeIdParticipant is not None:
+            for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
+                for n in i:
+                    self.listeNomParticipant = n
         print(self.listeIdParticipant)
         print(self.listeNomParticipant)
         self.images={}

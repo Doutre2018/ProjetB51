@@ -144,10 +144,23 @@ class Vue():
         self.labeltitre.grid(row=1, column=1,columnspan=5,pady=(10,10));
         self.labeldate= Label(self.FramenouveauSprint, text="Date: ",font= "arial, 12",bg="#234078", fg="white")
         self.labeldate.grid(row=2, column=1,padx=(40,0));
-        self.entryJour = Entry(self.FramenouveauSprint, width=2, relief=FLAT)
-        self.entryJour.grid(row=2, column=3);
-        self.entryMois= Entry(self.FramenouveauSprint, relief=FLAT)
-        self.entryMois.grid(row=2, column=4, padx=(0,40))
+        self.jour = Spinbox(self.FramenouveauSprint, width=2, relief=FLAT,from_=1, to=31,buttonuprelief=FLAT)
+        self.jour.grid(row=2, column=3);
+        self.comboMois= ttk.Combobox(self.FramenouveauSprint,values=[
+                                    "Janvier", 
+                                    "Février",
+                                    "Mars",
+                                    "Avril",
+                                    "Mai",
+                                    "Juin",
+                                    "Juillet",
+                                    "Aout",
+                                    "Septembre",
+                                    "Octobre",
+                                    "Novembre",
+                                    "Décembre"])
+        self.comboMois.current(0)
+        self.comboMois.grid(row=2, column=4, padx=(0,40))
         
         self.labelJour = Label(self.FramenouveauSprint, text="Jour",font= "arial, 10",bg="#234078", fg="white")
         self.labelJour.grid(row=3, column=3)
@@ -159,7 +172,7 @@ class Vue():
        
         
     def insertion(self):
-        Date= self.entryJour.get() +" "+ self.entryMois.get() 
+        Date= self.jour.get() +" "+ self.comboMois.get() 
         ligneAjout= "Sprint " + str(self.compteur) +" : "+ Date
         self.listeSprint.insert(END, ligneAjout)
         self.compteur +=1
@@ -207,10 +220,23 @@ class Vue():
             
             self.labeldate= Label(self.FrameModifierSprint, text="Date: ",font= "arial, 12",bg="#234078",fg="white")
             self.labeldate.grid(row=2, column=1,padx=(40,0));
-            self.entryJour = Entry(self.FrameModifierSprint, width=2,relief=FLAT)
-            self.entryJour.grid(row=2, column=3);
-            self.entryMois= Entry(self.FrameModifierSprint,relief=FLAT)
-            self.entryMois.grid(row=2, column=4, padx=(0,40))
+            self.jour = Spinbox(self.FrameModifierSprint, width=2, relief=FLAT,from_=1, to=31,buttonuprelief=FLAT)
+            self.jour.grid(row=2, column=3);
+            self.comboMois= ttk.Combobox(self.FrameModifierSprint,values=[
+                                        "Janvier", 
+                                        "Février",
+                                        "Mars",
+                                        "Avril",
+                                        "Mai",
+                                        "Juin",
+                                        "Juillet",
+                                        "Aout",
+                                        "Septembre",
+                                        "Octobre",
+                                        "Novembre",
+                                        "Décembre"])
+            self.comboMois.current(0)
+            self.comboMois.grid(row=2, column=4, padx=(0,40))
             
             self.labelJour = Label(self.FrameModifierSprint, text="Jour",font= "arial, 10",bg="#234078",fg="white")
             self.labelJour.grid(row=3, column=3)
@@ -227,8 +253,8 @@ class Vue():
         
     def modifInsertion(self):
        
-        Date= self.entryJour.get() +" "+ self.entryMois.get() 
-        ligneAjout= "Sprint " + str(self.compteur) +" : "+ Date
+        Date= self.jour.get() +" "+ self.comboMois.get() 
+        ligneAjout= "Sprint " + self.entryNumeroSprint.get() +" : "+ Date
         
         self.listeSprint.delete(self.SelectionSprint)
         self.listeSprint.insert(self.SelectionSprint, ligneAjout)

@@ -26,6 +26,7 @@ class Vue():
         
         self.cadreterlowExiste=False
         self.tableauDeColonne=[]
+        self.listeColonnes = self.parent.modele.listeColonnes
         self.tableauDeCarte=[]
         self.nbListe=0
         self.images={}
@@ -54,6 +55,7 @@ class Vue():
         self.creercadreterlow()
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
+        
     def afficherImage(self):
         canvasImage = Canvas(self.root,width=self.largeur,height=self.hauteur)
         image= Image.open("./terlow.png")
@@ -62,6 +64,7 @@ class Vue():
         self.img=ImageTk.PhotoImage(image)
         canvasImage.create_image(0,0,image=self.img,anchor=NW)
         canvasImage.grid()
+        
     def creercadreterlow(self):
         #permet d'intégrer l'application dans l'application de base
         self.root.overrideredirect(True) #Enleve la bordure
@@ -96,15 +99,13 @@ class Vue():
         boutonAjoutCarte.grid(row=1)
         self.nbListe+=1
 
-        
-        
     def ajouterCarte(self, noListe):
         noCarte=0
         colonne = self.tableauDeColonne[noListe]
         contenuText =StringVar()
         contenu = Entry(colonne,width=32,text=contenuText)
         self.tableauDeCarte.append([])
-        contenu.bind("<Double-Button-1>", lambda evt: self.modifierCarte(evt,noCarte,colonne,contenuText))
+        contenu.bind("<Button-1>", lambda evt: self.modifierCarte(evt,noCarte,colonne,contenuText))
         contenu.grid()
         noCarte+=1
 
@@ -123,6 +124,7 @@ class Vue():
                 temp = self.tableauDeColonne[self.nbListe]
                 self.tableauDeColonne[self.nbListe] = self.tableauDeColonne[self.nbListe+1]
                 self.tableauDeColonne[self.nbListe+1]=temp
+                
     def deplacerColonneLeft(self,evt,colonne,noliste):
         g = colonne.grid_info()
         
@@ -138,12 +140,15 @@ class Vue():
                 temp = self.tableauDeColonne[self.nbListe]
                 self.tableauDeColonne[self.nbListe] = self.tableauDeColonne[self.nbListe-1]
                 self.tableauDeColonne[self.nbListe-1]=temp
-            
+    
+     
     def changerCarte(self,noCarte,contenuText):
+        #insère les infos entrées par l'user dans la listeInfoCarte
         listeInfoCarte = []
         listeInfoCarte.append(self.entreeNomCarte.get())
         listeInfoCarte.append(self.entreeDescriptionCarte.get("1.0",END))
         listeInfoCarte.append(self.entreeeProprietaireCarte.get())
+        #prend les infos et les insère dans le tableau de cartes
         self.tableauDeCarte[noCarte]=listeInfoCarte;
         contenuText.set(listeInfoCarte[0])
         self.fenetreModificationCarte.destroy()
@@ -175,11 +180,9 @@ class Vue():
                 
         self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte",command= lambda:self.changerCarte(noCarte,contenuText))
         self.boutonModificationCarte.grid(row=7,column=1, padx=50, pady=(0,30))
-
-        
-    def salutations(self):
-        pass
+    
+   
+    
     def fermerfenetre(self):
-        print("ON FERME la fenetre")
         self.root.destroy()
     

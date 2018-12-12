@@ -167,14 +167,19 @@ class Vue():
         self.entreeDescriptionCarte = Text(self.fenetreModificationCarte)
         self.entreeDescriptionCarte.grid(row=4,column=1, padx=50, pady=(0,10))
         
+        # ------------------ DM ------------------
+        self.texteDateFin = Label(self.fenetreModificationCarte, text="Date de fin : ",)
+        self.texteDateFin.grid(row = 5, column = 1, padx = 50, pady = (0, 10))
+        # ----------------------------------------
+        
         self.texteProprietaireCarte = Label(self.fenetreModificationCarte, text="Proprietaire :",)
-        self.texteProprietaireCarte.grid(row=5,column=1, padx=50, pady=(30,10))
+        self.texteProprietaireCarte.grid(row=6,column=1, padx=50, pady=(30,10))
               
         self.entreeeProprietaireCarte = Entry(self.fenetreModificationCarte)
-        self.entreeeProprietaireCarte.grid(row=6,column=1, padx=50, pady=(0,10))
+        self.entreeeProprietaireCarte.grid(row=7,column=1, padx=50, pady=(0,10))
                 
         self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte",command= lambda:self.changerCarte(noCarte,contenuText))
-        self.boutonModificationCarte.grid(row=7,column=1, padx=50, pady=(0,30))
+        self.boutonModificationCarte.grid(row=8,column=1, padx=50, pady=(0,30))
 
         
     def salutations(self):

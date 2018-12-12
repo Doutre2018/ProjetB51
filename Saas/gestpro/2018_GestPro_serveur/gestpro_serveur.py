@@ -387,7 +387,7 @@ class  BaseDonnees():
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text, estimationTemps INTEGER,  dateCreation timestamp, datePrevueFin timestamp)") 
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text, estimationTemps INTEGER,  dateCreation timestamp, datePrevueFin timestamp)")
 
     
     def insertion(self, nomTable = "", listeValeurs=[]):

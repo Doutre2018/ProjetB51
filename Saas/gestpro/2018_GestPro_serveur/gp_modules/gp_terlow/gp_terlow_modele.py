@@ -5,13 +5,13 @@ from datetime import datetime
 class Modele():
     def __init__(self, referenceControleur):
         self.referenceControleur = referenceControleur
-        #self.tests()
         self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, texte, estimationTemps, dateCreation, datePrevueFin) VALUES (?, ?, ?, ?,?,?)", [1,1,"'test carte'", 3600], [[],[2018,12,25,12,30,30]]) 
         print(self.referenceControleur.serveur.requeteSelection("select * from Cartes_Terlow"))
         self.listeColonnes = []
         self.generationColonnes()
         self.creationColonne("test nouvelle creation")
         self.generationCartes()
+        self.tests()
         self.testPrint()
         
     def tests(self):
@@ -20,8 +20,7 @@ class Modele():
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (2, 'test2')")
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (3, 'test3')")
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (4, 'test4')")
-        #self.referenceControleur.serveur.requeteInsertionDate(["INSERT INTO Cartes_Terlow (id_colonne, ordre, texte, dateCreation) VALUES (?, ?, ?, ?)", 1,1,"'test carte'", "maintenant"]) 
-        
+        self.creationCarte(1, "'test'",60,[], [2018,12,1,14,20,20] )
         
     def creationColonne(self, titre):
         if self.listeColonnes:
@@ -33,10 +32,24 @@ class Modele():
         self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (?, ?)", tupleValeurs )
         self.generationColonnes()
     
+    def getColonne(self,id_colonne):
+        for colonne in self.listeColonnes:
+            if colonne.id == id_colonne:
+                return colonne
+        return None
     
-    def creationCarte(self):
-        pass
-    
+    def creationCarte(self,id_colonne, texte, estimationTemps, dateCreation, datePrevueFin):
+        colonne = self.getColonne(id_colonne)
+        if colonne:
+            if colonne.listeCartes:
+                ordre = colonne.listeCartes[-1].ordre +1
+            else:
+                ordre =1
+            self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, texte, estimationTemps, dateCreation, datePrevueFin) VALUES (?, ?, ?, ?,?,?)", [id_colonne, ordre, texte, estimationTemps], [dateCreation,datePrevueFin])
+            self.generationCartes() 
+        else:
+            return None
+            
     def generationColonnes(self):
         try:
             data = self.referenceControleur.serveur.requeteSelection("SELECT * FROM Colonnes_Terlow")
@@ -59,15 +72,14 @@ class Modele():
     #à tester
     def generationCartes(self):
         for colonne in self.listeColonnes:
-            #stringSelect = "SELECT * FROM Cartes_Terlow WHERE id_colonne = ?" 
-            #dataCartes = self.referenceControleur.serveur.requeteSelection(stringSelect, colonne.id )
+            colonne.listeCartes.clear()
             stringSelect = "SELECT * FROM Cartes_Terlow WHERE id_colonne = " + str(colonne.id )
             dataCartes = self.referenceControleur.serveur.requeteSelection(stringSelect )
+
             if dataCartes:
                 print("colonne id = ", colonne.id, "dataCartes = ", dataCartes)
                 for carte in dataCartes:
                     colonne.listeCartes.append(Carte(carte[0], carte[1], carte[2],  carte[3], carte[4], carte[5], carte[6] ))
-                    print("appending")
                 
     #à tester
     #méthode tente de supprimer la carte correspondante, si tout fonctionne, elle retourne true       
@@ -111,12 +123,7 @@ class Carte():
         self.dateCreation = dateCreation
         self.estimationTemps = estimationTemps
         self.datePrevueFin = datePrevueFin
-        
-    
-    #voir lien suivant pour gestion dates: https://www.pythoncentral.io/advanced-sqlite-usage-in-python/
-        
-        
-        
+            
 #section pour tests locaux
 if __name__ == "__main__":
     pass

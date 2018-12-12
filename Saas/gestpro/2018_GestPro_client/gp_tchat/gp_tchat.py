@@ -4,6 +4,7 @@ import os,os.path
 import sys
 #import Pyro4
 import socket
+import sqlite3
 from subprocess import Popen 
 import math
 #from sm_projet_modele import *
@@ -101,7 +102,8 @@ class Modele():
         commande = "SELECT nomUtilisateur FROM Utilisateur WHERE id="
         try:
             return self.serveur.requeteSelection(commande+str(idUsager))
-        except ValueError:
+        except sqlite3.Error as er:
+            print(er)
             return None
     
 if __name__ == '__main__':

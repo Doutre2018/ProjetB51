@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 
 import os,os.path
 import sys
 #import Pyro4
 import socket
+import sqlite3
 from subprocess import Popen 
 import math
 #from sm_projet_modele import *
@@ -92,11 +93,18 @@ class Modele():
         
     def selectTousUtilisateursLigneChat(self):
         commande = "SELECT id_utilisateur FROM LigneChat;"
-        return self.serveur.requeteSelection(commande)
+        try:
+            return self.serveur.requeteSelection(commande)
+        except ValueError:
+            return None
         
     def triNomAvecIdUtilisateur(self,idUsager):
         commande = "SELECT nomUtilisateur FROM Utilisateur WHERE id="
-        return self.serveur.requeteSelection(commande+str(idUsager))
+        try:
+            return self.serveur.requeteSelection(commande+str(idUsager))
+        except sqlite3.Error as er:
+            print(er)
+            return None
     
 if __name__ == '__main__':
     c=Controleur()

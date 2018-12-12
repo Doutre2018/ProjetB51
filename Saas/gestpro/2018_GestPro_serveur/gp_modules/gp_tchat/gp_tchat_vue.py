@@ -30,12 +30,10 @@ class Vue():
             for i in self.listeIdParticipant:
                 for n in i:
                     self.listeIdParticipant = n
-        for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
-            for n in i:
-                self.listeNomParticipant = n
-        
-        print(self.listeIdParticipant)
-        print(self.listeNomParticipant)
+        if self.listeIdParticipant is not None:
+            for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
+                for n in i:
+                    self.listeNomParticipant = n
         self.images={}
         self.cadreactif=None
         self.creercadres()
@@ -104,10 +102,10 @@ class Vue():
         
     def ajoutMessageBD(self):
         self.listeMessage.delete(0, END)
-        for message in self.messagesDeBD:
-            self.listeMessage.itemconfig(self.messagesDeBD.index(message), {'bg':'red'})
-
-            self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
+        if not self.messagesDeBD:
+            for message in self.messagesDeBD:
+                self.listeMessage.itemconfig(self.messagesDeBD.index(message), {'bg':'red'})
+                self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
             
 
     def fermerfenetre(self):

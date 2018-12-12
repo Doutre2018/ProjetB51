@@ -170,8 +170,11 @@ class ModeleService(object):
     
     #méthode tampon qui retourne une liste. Chaque élément de la liste correspond à une rangée du select demandé.
     def requeteSelection(self, stringSelect, valeurs = -1):
-        listeSelect  = self.baseDonnees.selection(stringSelect, valeurs)
-        return listeSelect
+        try:
+            listeSelect  = self.baseDonnees.selection(stringSelect, valeurs)
+            return listeSelect
+        except sqlite3.Error as er:
+            return er
     
     # --------------- DM ---------------
     def requeteUpdate(self, stringSelect):
@@ -304,7 +307,6 @@ class  BaseDonnees():
     
     def genererListeTables(self):
         listeTables = [ 
-            ['stocks', ['price', 'INTEGER', '']],
             ['Serveurs', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['IP','INTEGER',''], ['nom','text','UNIQUE']],
             ['Utilisateur', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomUtilisateur','text','UNIQUE'], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
             ['Projet', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','UNIQUE']],
@@ -324,8 +326,6 @@ class  BaseDonnees():
             ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],
             ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date','']],
             ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER','']],
-           # ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
-            #['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre', 'INTEGER', ''], ['titre','text','']],
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
             ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']],
@@ -350,8 +350,6 @@ class  BaseDonnees():
             ['Cartes', 'id_projet','INTEGER', 'Projet', 'id'],
             ['Objet_Maquette', 'id_position','INTEGER', 'Position', 'id'],
             ['Objet_Maquette', 'id_type','INTEGER', 'TypeForme', 'id'],
-            #['Taches_Terlow', 'id_projet','INTEGER', 'Projet', 'id'],
-            #['Taches_Terlow', 'id_colonne_terlow','INTEGER', 'Colonnes_Terlow', 'id'],
             ['Objet_Texte', 'id_position','INTEGER', 'Position', 'id'],
             ['Tache_Sprint','id_sprint','INTEGER', 'Sprint', 'id'],
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
@@ -387,7 +385,7 @@ class  BaseDonnees():
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text, estimationTemps INTEGER,  dateCreation timestamp, datePrevueFin timestamp)")
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, titre text, description text, estimationTemps INTEGER,  dateCreation timestamp, datePrevueFin timestamp)") 
 
     
     def insertion(self, nomTable = "", listeValeurs=[]):

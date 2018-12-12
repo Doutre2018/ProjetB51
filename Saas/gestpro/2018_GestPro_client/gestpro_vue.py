@@ -19,15 +19,10 @@ class Vue():
         self.modele=None
         self.nom=None
         self.fullscreen=True
-        self.largeurDefault=largeur;
-        self.hauteurDefault=hauteur;
-        if self.fullscreen :
-            self.largeur=self.root.winfo_screenwidth()
-            self.hauteur=self.root.winfo_screenheight()
-            
-        else:
-            self.largeur=self.largeurDefault
-            self.hauteur=self.hauteurDefault
+        self.largeur=self.largeurDefault=largeur;
+        self.hauteur=self.hauteurDefault=hauteur;
+        self.largeurEcran=self.root.winfo_screenwidth()
+        self.hauteurEcran=self.root.winfo_screenheight()
 
         self.root.attributes("-fullscreen", False)
         self.images={}
@@ -50,10 +45,8 @@ class Vue():
 
 
         #Bloc pour que la fenetre de connexion sois centré avec l'écran
-        largeurEcran = self.root.winfo_screenwidth()
-        hauteurEcran = self.root.winfo_screenheight()
-        x = (largeurEcran/2)-(420/2)
-        y = (hauteurEcran/2)-(500/2)
+        x = (self.largeurEcran/2)-(420/2)
+        y = (self.hauteurEcran/2)-(500/2)
         self.root.geometry("+%d+%d" % (x, y))
         
     def fullScreenMode(self): 
@@ -326,24 +319,21 @@ class Vue():
        
     def creercadrebase(self):
         self.listemodules=Listbox(bg="lightblue",borderwidth=0,relief=FLAT,width=40,height=6)
-        if(self.cadrebaseExiste):
-            self.destroyCadreBase()
-        else:
-            self.largeur=self.root.winfo_screenwidth()/7
-            self.hauteur=self.root.winfo_screenmmheight()
+        self.largeur=self.largeurEcran
+        self.hauteur=self.hauteurEcran
         
         self.cadrebase=Frame(self.root, bg= "#E4E9F3")
         
-        self.boutonMandat=Button(self.cadrebase,text="Mandat",bg="#234078",command=self.requeteMandat,height=4,width=int(self.largeur/10.2),relief=FLAT, fg="white")
-        self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#234078",command=self.requeteScrum,height=4,width=int(self.largeur/10.2),relief=FLAT, fg="white")
-        self.boutonAnalyse=Button(self.cadrebase,text="Analyse \nTextuelle",bg="#234078",command=self.requeteAnalyse,height=4,width=int(self.largeur/10.2),relief=FLAT, fg="white")
-        self.boutonCasUsage=Button(self.cadrebase,text="Cas \nd'usage",bg="#234078",command=self.requeteCasUsage,height=4,width=int(self.largeur/10.2),relief=FLAT, fg="white")
-        self.boutonMaquette=Button(self.cadrebase,text="Maquette",bg="#234078",command=self.requeteMaquette,height=4,width=int(self.largeur/10.2),relief=FLAT, fg="white")
-        self.boutonCrc=Button(self.cadrebase,text="CRC",bg="#234078",command=self.requeteCrc,height=4,width=int(self.largeur/10.2),relief=FLAT, fg="white")
-        self.boutonBudget=Button(self.cadrebase,text="Marketing",bg="#234078",command=self.requeteBudget,height=4,width=int(self.largeur/10.2),relief=FLAT, fg="white")
-        self.boutonTchat=Button(self.cadrebase,text="Tchat",bg="#234078",command=self.requeteTchat,height=4,width=int(self.largeur/10.2),relief=FLAT, fg="white")
-        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#234078",command=self.requeteModelisation,height=4,width=int(self.largeur/10.2),relief=FLAT, fg="white")
-        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#234078",command=self.requeteTerlow,height=4,width=int(self.largeur/10.2),relief=FLAT, fg="white")
+        self.boutonMandat=Button(self.cadrebase,text="Mandat",bg="#234078",command=self.requeteMandat,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#234078",command=self.requeteScrum,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonAnalyse=Button(self.cadrebase,text="Analyse \nTextuelle",bg="#234078",command=self.requeteAnalyse,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonCasUsage=Button(self.cadrebase,text="Cas \nd'usage",bg="#234078",command=self.requeteCasUsage,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonMaquette=Button(self.cadrebase,text="Maquette",bg="#234078",command=self.requeteMaquette,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonCrc=Button(self.cadrebase,text="CRC",bg="#234078",command=self.requeteCrc,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonBudget=Button(self.cadrebase,text="Marketing",bg="#234078",command=self.requeteBudget,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonTchat=Button(self.cadrebase,text="Tchat",bg="#234078",command=self.requeteTchat,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#234078",command=self.requeteModelisation,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#234078",command=self.requeteTerlow,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
 
         self.boutonMandat.grid(row=0,column=1 ,padx=(0,2))
         self.boutonScrum.grid(row=0,column=2 ,padx=(0,2))

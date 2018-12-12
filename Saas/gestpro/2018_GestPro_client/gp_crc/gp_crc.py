@@ -17,12 +17,9 @@ from xmlrpc.client import ServerProxy
 
 class Controleur():
     def __init__(self):
-        print("IN CONTROLEUR")
         cwd = os.getcwd()
         self.connectionServeurCourant()
-        print(self.serveur)
         liste = self.serveur.requeteSelection("select price from stocks")
-        print(liste)
         self.createurId=Id
         self.modele=Modele(self)
         self.vue=Vue(self)
@@ -54,9 +51,6 @@ class Modele():
         self.parent=parent
         self.serveur=parent.serveur
         self.listeCartes=self.selectClassesCartes()
-        print(self.serveur.fetchNomUtilisateurCourant())
-        print(self.serveur.fetchNomCompagnie())
-        print("JUSTE EN HAUT DE MOI")
         #self.listeIDCartes=self.selectIdCarte()
         #for i in self.listeIDCartes:
             #self.listeAttributs.append(selectAttributDeCarte(i))
@@ -133,6 +127,8 @@ class Modele():
         self.serveur.requeteInsertionPerso("INSERT INTO ObjetsCRC(id_classe,objet) VALUES(" + str(listeValeur[0]) + ","+ str(listeValeur[1]) +");")
     
     #Les UPDATE
+    def updateCarte(self,idCarte):
+        pass                                                                                                                    
     # --------------- DM ---------------
     def updateCRC(self, idCarte, listeCartes):
         commande = "UPDATE Cartes" 
@@ -156,7 +152,6 @@ class Modele():
         commande = "UPDATE CollaboCRC SET textCollabo = '" + texte + "' WHERE id_classe = " + id
         self.serveur.requeteMiseAJour(commande)
     # ----------------------------------                                                                                        
-    
     def supprimerAttributsDeCarte(self,idCarte):
         commande="DELETE FROM AttributsCRC WHERE id_classe="
         commande+=str(idCarte)
@@ -176,7 +171,6 @@ class Modele():
         commande="DELETE FROM Cartes WHERE classe='"
         commande=commande+str(nomCarte)+"';"
         self.serveur.requeteInsertionPerso(commande)
-        print("Carte supprimée")
     
 if __name__ == '__main__':
     c=Controleur()

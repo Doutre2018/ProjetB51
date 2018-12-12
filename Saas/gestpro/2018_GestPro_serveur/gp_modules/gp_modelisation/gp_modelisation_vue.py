@@ -305,5 +305,4 @@ class Vue():
         self.modifTable.destroy()
 
     def fermerfenetre(self):
-        print("ON FERME la fenetre")
         self.root.destroy()

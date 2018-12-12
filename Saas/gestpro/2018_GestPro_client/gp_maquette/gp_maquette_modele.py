@@ -11,7 +11,6 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         self.BD=parent.serveur
-        print("Bienvenue dans le modele ..")
 
 
     def sauvegarde(self,listeObjet):
@@ -24,7 +23,6 @@ class Modele():
             for idtab in self.BD.requeteSelection("SELECT id FROM Objet_Maquette") :
                 objet = []
                 id = idtab[0]
-                print(self.BD.requeteSelection("SELECT Type FROM Objet_Maquette WHERE id ='" + str(id) + "';"))
                 objet.append(str((self.BD.requeteSelection("SELECT Type FROM Objet_Maquette WHERE id ='" + str(id) + "';"))))
                 objet.append(self.BD.requeteSelection("SELECT PosX FROM Objet_Maquette WHERE id ='" + str(id) + "';"))
                 objet.append((self.BD.requeteSelection("SELECT PosY FROM Objet_Maquette WHERE id ='" + str(id) + "';")))

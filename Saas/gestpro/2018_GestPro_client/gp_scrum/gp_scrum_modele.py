@@ -16,17 +16,17 @@ class Modele():
         self.numProjet="1"
         self.scrum = []
         self.membres = []
-        self.accompli = None
-        self.aFaire = None
-        self.probleme = None
+        self.accompli
+        self.aFaire
+        self.probleme
         
         
     def insertScrum(self, date):
         self.BD.requeteInsertionPerso("INSERT INTO Scrum(id_projet, date) VALUES('" + str(self.numProjet) + "', '" + str(date) + ");")
     
     def insertMembresScrum(self):
-        pass
         #membres = self.BD.requeteSelection("SELECT nomUtilisateur FROM utilisateur WHERE id")
+        pass
    
     def selectScrum(self, date):
         pass

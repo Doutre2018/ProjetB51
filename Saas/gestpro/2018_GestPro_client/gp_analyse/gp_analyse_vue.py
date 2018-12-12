@@ -248,7 +248,7 @@ class Vue():
         hauteurEcran = self.root.winfo_screenheight()
         x = (largeurEcran/2)-(220/2)
         y = (hauteurEcran/2)-(220/2)
-        self.frameNouveauVerbeImplicite.geometry("+%d+%d" % (x, y))
+        self.frameNouveauVerbeSuplementaire.geometry("+%d+%d" % (x, y))
         
         self.frameNouveauVerbeSuplementaire.config(bg="#234078")
         self.lTitre=Label(self.frameNouveauVerbeSuplementaire, text="Nouveau Verbe supplementaire",font= "arial, 20",bg="#234078",fg="white")

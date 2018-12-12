@@ -339,7 +339,7 @@ class Vue():
         self.ListeCRC.delete(0, END)
         listeCartes = []
         listeCartes = self.modele.selectClassesCartes()
-
+        
         for nom in listeCartes:
             for i in nom:
                 self.ListeCRC.insert(0,i)

@@ -170,8 +170,11 @@ class ModeleService(object):
     
     #méthode tampon qui retourne une liste. Chaque élément de la liste correspond à une rangée du select demandé.
     def requeteSelection(self, stringSelect, valeurs = -1):
-        listeSelect  = self.baseDonnees.selection(stringSelect, valeurs)
-        return listeSelect
+        try:
+            listeSelect  = self.baseDonnees.selection(stringSelect, valeurs)
+            return listeSelect
+        except sqlite3.Error as er:
+            return er
     
     # --------------- DM ---------------
     def requeteUpdate(self, stringSelect):

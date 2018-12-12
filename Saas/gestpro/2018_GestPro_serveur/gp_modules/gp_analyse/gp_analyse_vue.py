@@ -375,55 +375,55 @@ class Vue():
     def AjouterNouveauVerbeExplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBVerbeExplicite.insert(END, self.newInsert)
-        self.parent.insertion(1,1,1,"Verbe explicite",self.newInsert)
+        self.parent.insertion(1,1,"Verbe explicite",self.newInsert)
         self.frameNouveauVerbeExplicite.destroy()
         
     def AjouterNouveauVerbeImplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBVerbeImplicite.insert(END, self.newInsert)
-        self.parent.insertion(1,1,1,"Verbe implicite",self.newInsert)
+        self.parent.insertion(1,1,"Verbe implicite",self.newInsert)
         self.frameNouveauVerbeImplicite.destroy()
        
     def AjouterNouveauVerbeSupplementaire(self):  
         self.newInsert=self.entryNew.get();
         self.lBVerbeSuplementaire.insert(END, self.newInsert)
-        self.parent.insertion(1,1,1,"Verbe supplementaire",self.newInsert)
+        self.parent.insertion(1,1,"Verbe supplementaire",self.newInsert)
         self.frameNouveauVerbeSuplementaire.destroy()
         
     def AjouterNouveauNomExplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBNomExplicite.insert(END, self.newInsert)
-        self.parent.insertion(1,1,1,"Nom explicite",self.newInsert)
+        self.parent.insertion(1,1,"Nom explicite",self.newInsert)
         self.frameNouveauNomExplicite.destroy()
         
     def AjouterNouveauNomImplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBNomImplicite.insert(END, self.newInsert)
-        self.parent.insertion(1,1,1,"Nom implicite",self.newInsert)
+        self.parent.insertion(1,1,"Nom implicite",self.newInsert)
         self.frameNouveauNomImplicite.destroy()
     
     def AjouterNouveauNomSupplementaire(self):  
         self.newInsert=self.entryNew.get();
         self.lBNomSuplementaire.insert(END, self.newInsert)
-        self.parent.insertion(1,1,1,"Nom supplementaire",self.newInsert)
+        self.parent.insertion(1,1,"Nom supplementaire",self.newInsert)
         self.frameNouveauNomSuplementaire.destroy()
         
     def AjouterNouveauAdjectifExplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBAdjectifExplicite.insert(END, self.newInsert)
-        self.parent.insertion(1,1,1,"Adjectif explicite",self.newInsert)
+        self.parent.insertion(1,1,"Adjectif explicite",self.newInsert)
         self.frameNouveauAjectifExplicite.destroy()
         
     def AjouterNouveauAdjectifImplicite(self):  
         self.newInsert=self.entryNew.get();
         self.lBAjdectifImplicite.insert(END, self.newInsert)
-        self.parent.insertion(1,1,1,"Adjectif implicite",self.newInsert)
+        self.parent.insertion(1,1,"Adjectif implicite",self.newInsert)
         self.frameNouveauAjectifImplicite.destroy()
         
     def AjouterNouveauAdjectifSupplementaire(self):  
         self.newInsert=self.entryNew.get();
         self.lBAjdectifSuplementaire.insert(END, self.newInsert)
-        self.parent.insertion(1,1,1,"Adjectif supplementaire",self.newInsert)
+        self.parent.insertion(1,1,"Adjectif supplementaire",self.newInsert)
         self.frameNouveauAjectifSupplementaire.destroy()
         
         
@@ -432,80 +432,116 @@ class Vue():
     def SupVerbeExplicite(self,evt):  
         a=()
         a=self.lBVerbeExplicite .curselection()
+        rep = self.lBVerbeExplicite.get(a)
+        nom = rep[0]
+        type = "Verbe explicite"
         
         if a==():
             pass
         else:
            self.lBVerbeExplicite.delete(a)
+           self.parent.supprimer(type, nom)
         
     def SupVerbeImplicite(self,evt): 
         a=()
         a=self.lBVerbeImplicite.curselection()
+        rep = self.lBVerbeImplicite.get(a)
+        nom = rep[0]
+        type = "Verbe implicite"
         
         if a==():
             pass
         else:
-           self.lBVerbeImplicite .delete(a) 
+           self.lBVerbeImplicite.delete(a)
+           self.parent.supprimer(type, nom) 
         
     def SupVerbeSuplementaire(self,evt):  
         a=()
         a=self.lBVerbeSuplementaire .curselection()
+        rep = self.lBVerbeSuplementaire.get(a)
+        nom = rep[0]
+        type = "Verbe supplementaire"
         
         if a==():
             pass
         else:
            self.lBVerbeSuplementaire.delete(a)
+           self.parent.supprimer(type, nom)
         
     def SupNomExplicite(self,evt):  
         a=()
         a=self.lBNomExplicite .curselection()
+        rep = self.lBNomExplicite.get(a)
+        nom = rep[0]
+        type = "Nom explicite"
         
         if a==():
             pass
         else:
-           self.lBNomExplicite.delete(a)   
+           self.lBNomExplicite.delete(a)
+           self.parent.supprimer(type, nom)   
     
     def SupNomImplicite(self,evt): 
         a=()
         a=self.lBNomImplicite .curselection()
+        rep = self.lBNomImplicite.get(a)
+        nom = rep[0]
+        type = "Nom implicite"
         
         if a==():
             pass
         else:
-           self.lBNomImplicite.delete(a)  
+           self.lBNomImplicite.delete(a)
+           self.parent.supprimer(type, nom)  
      
     def SupNomSuplementaire(self,evt):  
         a=()
         a=self.lBNomSuplementaire .curselection()
+        rep = self.lBNomSuplementaire.get(a)
+        nom = rep[0]
+        type = "Nom supplementaire"
         
         if a==():
             pass
         else:
-           self.lBNomSuplementaire.delete(a)      
+           self.lBNomSuplementaire.delete(a)
+           self.parent.supprimer(type, nom)      
    
     def SupAjectifExplicite(self,evt):  
         a=()
         a=self.lBAdjectifExplicite .curselection()
+        rep = self.lBAdjectifExplicite.get(a)
+        nom = rep[0]
+        type = "Adjectif explicite"
         
         if a==():
             pass
         else:
-           self.lBAdjectifExplicite.delete(a)  
+           self.lBAdjectifExplicite.delete(a)
+           self.parent.supprimer(type, nom)  
        
     def SupAjectifImplicite(self,evt):  
         a=()
         a=self.lBAjdectifImplicite .curselection()
+        rep = self.lBAjdectifImplicite.get(a)
+        nom = rep[0]
+        type = "Adjectif implicite"
         
         if a==():
             pass
         else:
            self.lBAjdectifImplicite.delete(a)
+           self.parent.supprimer(type, nom)
         
     def SupAjectifSupplementaire(self,evt):  
         a=()
         a=self.lBAjdectifSuplementaire .curselection()
+        rep = self.lBAjdectifSuplementaire.get(a)
+        nom = rep[0]
+        type = "Adjectif supplementaire"
         
         if a==():
             pass
         else:
-           self.lBAjdectifSuplementaire.delete(a) 
+           self.lBAjdectifSuplementaire.delete(a)
+           self.parent.supprimer(type, nom)

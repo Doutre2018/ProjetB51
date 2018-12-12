@@ -16,6 +16,7 @@ class Vue():
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
+        self.root.config(bg="#E4E9F3")
         self.parent=parent
         self.modele=None
         
@@ -60,40 +61,42 @@ class Vue():
         self.root.overrideredirect(True) #Enleve la bordure
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
-        self.cadrescrum=Frame(self.root,width=self.largeur,height=self.hauteur)
+        self.cadrescrum=Frame(self.root,width=self.largeur,height=self.hauteur,bg="#E4E9F3")
         self.cadrescrum.grid()
         
-        self.titreColonneDate = Label(self.cadrescrum,width=20,text="Date du Scrum", font= "Arial 18")
+        self.cadrescrumInfo = Frame(self.cadrescrum,bg="#E4E9F3")
+        self.cadrescrumInfo.grid()
+        self.titreColonneDate = Label(self.cadrescrumInfo,width=20,text="Date du Scrum", font= "Arial 18",bg="#E4E9F3")
         self.titreColonneDate.grid(column = 1, row=0,pady=(20,0))
-        self.listeDate = Listbox(self.cadrescrum,width=30, height = 30)
+        self.listeDate = Listbox(self.cadrescrumInfo,width=30, height = 30)
         self.listeDate.grid(column = 1, row=1, padx=40,pady=0)
-        self.boutonAjoutDate = Button(self.cadrescrum, width = 10, command=self.creationDate,text="Ajout")
+        self.boutonAjoutDate = Button(self.cadrescrumInfo, width = 10, command=self.creationDate,text="Ajout",bg="white",relief=FLAT)
         self.boutonAjoutDate.grid(column=1,row=2)
         
-        self.titreColonneEmploye = Label(self.cadrescrum,width=20,text="Employés", font= "Arial 18")
+        self.titreColonneEmploye = Label(self.cadrescrumInfo,width=20,text="Employés", font= "Arial 18",bg="#E4E9F3")
         self.titreColonneEmploye.grid(column = 2, row=0,pady=(20,0))
-        self.listeEmploye = Listbox(self.cadrescrum,width=30, height = 30)
+        self.listeEmploye = Listbox(self.cadrescrumInfo,width=30, height = 30)
         self.listeEmploye.grid(column = 2, row=1, padx=40,pady=0)
-        self.boutonAjoutEmployer = Button(self.cadrescrum, width = 10, command=self.creationEmploye,text="Ajout")
+        self.boutonAjoutEmployer = Button(self.cadrescrumInfo, width = 10, command=self.creationEmploye,text="Ajout")
         self.boutonAjoutEmployer.grid(column=2,row=2)
         
-        self.titreSectionInfo = Label(self.cadrescrum,width=20,text="Information", font= "Arial 18")
+        self.titreSectionInfo = Label(self.cadrescrum,width=20,text="Information", font= "Arial 18",bg="#E4E9F3")
         self.titreSectionInfo.grid(column = 3, row=0,pady=(20,0))
-        self.infoEmploye = Frame(self.cadrescrum,width = self.largeur/2, height =(self.hauteur/3)*2, bg = "lightgray")
+        self.infoEmploye = Frame(self.cadrescrum,width = self.largeur/2, height =(self.hauteur/3)*2,bg="#E4E9F3")
         self.infoEmploye.grid(column = 3, row = 1,padx=40,pady=0)
 
         #ce qui a été fait
-        self.titreFait= Label(self.infoEmploye,width=20,text="Ce qui a été fait : ", font= "Arial 14", bg = "lightgray")
+        self.titreFait= Label(self.infoEmploye,width=20,text="Ce qui a été fait : ", font= "Arial 14",bg="#E4E9F3")
         self.titreFait.grid(column = 0, row=1,pady=(10,0))
         self.infoFait = Text(self.infoEmploye,width = 70, height=10)
         self.infoFait.grid(column = 0, row = 2,padx=10,pady=(0,10))
         #ce qui va être fait
-        self.titreAFaire= Label(self.infoEmploye,width=20,text="A faire aujourd'hui :", font= "Arial 14", bg = "lightgray")
+        self.titreAFaire= Label(self.infoEmploye,width=20,text="A faire aujourd'hui :", font= "Arial 14",bg="#E4E9F3")
         self.titreAFaire.grid(column = 0, row=3,pady=(10,0))
         self.infoAFaire = Text(self.infoEmploye,width = 70, height=10)
         self.infoAFaire.grid(column = 0, row = 4,padx=10,pady=(0,10))
         #probleme
-        self.titreProbleme= Label(self.infoEmploye,width=20,text="Problème :", font= "Arial 14", bg = "lightgray")
+        self.titreProbleme= Label(self.infoEmploye,width=20,text="Problème :", font= "Arial 14", bg="#E4E9F3")
         self.titreProbleme.grid(column = 0, row=5,pady=(10,0))
         self.infoProbleme = Text(self.infoEmploye,width = 70, height=10)
         self.infoProbleme.grid(column = 0, row = 6,padx=10,pady=(0,10))

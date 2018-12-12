@@ -40,7 +40,6 @@ class Modele():
         
     def InsertInto(self,ligne, colonne, numProjet, type, mot):
         typeDonnee = self.BD.requeteSelection("SELECT id FROM TypeMot WHERE nom = '" + type + "';")
-        print(mot)
         for i in typeDonnee:
             for n in i:
                 typeDonnee = n
@@ -61,19 +60,9 @@ class Modele():
         self.lesAdjectifsImp = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[3] + "');")
         self.lesAdjectifsEx = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[4] + "');")
         self.lesNomsImp = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[5] + "');")
-        self.lesNomsSup = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id nom FROM TypeMot WHERE nom = '" + self.listeType[6] + "');")
+        self.lesNomsSup = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[6] + "');")
         self.lesVerbesEx = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[7] + "');")
         self.lesVerbesSup = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[8] + "');")
-        
-        print(self.lesVerbesEx);
-        print(self.lesVerbesImp);
-        print(self.lesNomsEx);
-        print(self.lesAdjectifSup);
-        print(self.lesAdjectifsImp);
-        print(self.lesAdjectifsEx);
-        print(self.lesNomsImp);
-        print(self.lesNomsSup);
-        print(self.lesVerbesSup);
         
         
         

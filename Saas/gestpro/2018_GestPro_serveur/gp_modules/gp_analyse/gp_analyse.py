@@ -13,7 +13,6 @@ from xmlrpc.client import ServerProxy
 
 class Controleur():
     def __init__(self):
-        print("IN CONTROLEUR")
         self.connectionServeurCourant()
         
         self.createurId=Id

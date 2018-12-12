@@ -10,36 +10,42 @@ from msilib.schema import Font
 
 class Vue():
     def __init__(self,parent,largeur=800,hauteur=900):
-        self.user = "Employe007"
+        self.parent=parent
+        self.modele=parent.modele
         self.messagesDeBD = []
-        self.messagesDeBD.append(["Employe001", "Bonjour a tous"])
-        self.messagesDeBD.append(["Mr Paul", "..."])
+        self.peuplerMessagesBD()
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
-        self.parent=parent
-        self.modele=parent.modele
+        self.user = self.modele.usager
         self.largeurDefault=largeur
         self.hauteurDefault=hauteur
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
         self.cadreTchatExiste=False
-        #Tout ce qui a été écrit en BD
-        self.listeIdParticipant = self.modele.selectTousUtilisateursLigneChat()
-        if self.listeIdParticipant is not None:
-            for i in self.listeIdParticipant:
-                for n in i:
-                    self.listeIdParticipant = n
-        if self.listeIdParticipant is not None:
-            for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
-                for n in i:
-                    self.listeNomParticipant = n
+         #Tout ce qui a été écrit en BD
+#         self.listeIdParticipant = self.modele.selectTousUtilisateursLigneChat()
+#         if self.listeIdParticipant:
+#             for i in self.listeIdParticipant:
+#                 for n in i:
+#                     self.listeIdParticipant = n
+#         if self.listeIdParticipant:
+#             for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
+#                 for n in i:
+#                     self.listeNomParticipant = n
         self.images={}
         self.cadreactif=None
         self.creercadres()
         
         self.changecadre(self.cadreTchat)
         
+        
+        
+    def peuplerMessagesBD(self):
+        for n in self.modele.selectIdLignesChat():
+            for i in n:
+                self.messagesDeBD.append([self.modele.selectNomUtilisateurDeLigneChat(i), self.modele.selectTexteLigneChat(i)])
+            
     def changemode(self,cadre):
         if self.modecourant:
             self.modecourant.pack_forget()
@@ -101,11 +107,13 @@ class Vue():
         self.message.delete("1.0", END)
         
     def ajoutMessageBD(self):
+        print(self.messagesDeBD)
         self.listeMessage.delete(0, END)
-        if not self.messagesDeBD:
+        if self.messagesDeBD:
             for message in self.messagesDeBD:
-                self.listeMessage.itemconfig(self.messagesDeBD.index(message), {'bg':'red'})
-                self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
+                if self.messagesDeBD.index(message):
+                    #self.listeMessage.itemconfig(self.messagesDeBD.index(message), {'bg':'red'})
+                    self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
             
 
     def fermerfenetre(self):

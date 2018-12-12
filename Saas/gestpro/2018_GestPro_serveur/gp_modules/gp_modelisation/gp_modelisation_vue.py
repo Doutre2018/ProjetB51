@@ -118,7 +118,6 @@ class Vue():
         
         upscroll.config(command=self.cadremodelisation.xview)
         horiscroll.config(command=self.cadremodelisation.yview)
-        self.cadremodelisation.config(scrollregion=(0,0,3000,3000))                     
         self.boutonAjoutTable = Button(self.cadremodelisation, text="Creer Table", width = 20, height = 3, command = self.creerTable)
         self.boutonAjoutTable.grid(row=0,column=0)
         

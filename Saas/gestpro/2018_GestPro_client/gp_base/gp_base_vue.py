@@ -30,11 +30,12 @@ class Vue():
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.parent=parent
         self.modele=None
-        self.largeurDefault=largeur/7
-        self.hauteurDefault=hauteur/4.5
-        self.largeur=self.root.winfo_screenwidth()/7
-        self.hauteur=self.root.winfo_screenmmheight()/4.5
-        self.cadrebaseExiste=False
+        
+        self.largeurDefault=largeur
+        self.hauteurDefault=hauteur
+        self.largeurEcran=self.root.winfo_screenwidth()
+        self.hauteurEcran=self.root.winfo_screenmmheight()
+        
         self.images={}
         self.cadreactif=None
         self.fullscreen=True
@@ -60,8 +61,6 @@ class Vue():
         
     def creercadres(self):
         self.creercadrebase()
-        #self.cadrejeu=Frame(self.root,bg="blue")
-        #self.modecourant=None
         
     def requetemodule(self,mod):
         rep=self.serveur.requetemodule(mod)
@@ -129,9 +128,6 @@ class Vue():
         self.menu.add_command(label="Nom", command=self.salutations)
         self.menu.add_command(label="Verbe", command=self.salutations)
         
-        #self.frame = Frame(self.root, width=512, height=512)
-        #self.frame.pack()
-        #self.frame.bind("<Button-3>", self.popup)
         self.root.config(menu=self.menubar) 
     def fullScreenMode(self): 
         if(self.fullscreen):
@@ -147,32 +143,10 @@ class Vue():
              self.hauteur=self.root.winfo_screenmmheight()/4.5
              self.root.attributes("-fullscreen", True)
              self.creercadres()
-             self.changecadre(self.cadrebase)
-    def destroyCadreBase(self):
-        self.cadrebase.destroy()
-        self.boutonAnalyse.destroy()
-        self.affichagemenu.destroy()
-        self.boutonBudget.destroy()
-        self.boutonCasUsage.destroy()
-        self.boutonCrc.destroy()
-        self.boutonDonnee.destroy()
-        self.boutonMandat.destroy()
-        self.boutonMaquette.destroy()
-        self.boutonProjet1.destroy()
-        self.boutonProjet2.destroy()                        
-        self.boutonProjet3.destroy()
-        self.boutonScrum.destroy()
-        self.boutonTchat.destroy()
-        self.boutonTerlow.destroy()                      
+             self.changecadre(self.cadrebase)            
               
     def creercadrebase(self):
-        
-        if(self.cadrebaseExiste):
-            destroyCadreBase()
-        self.cadrebase=Frame(self.root)
-        self.boutonProjet1=Button(text="Projet 1",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
-        self.boutonProjet2=Button(text="Projet 2",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
-        self.boutonProjet3=Button(text="Projet 3",bg="#00BCD9",command=None,height=int(self.hauteur/3),width=int(self.largeur/11))
+        self.cadrebase=Frame(self.root, background="#E4E9F3")
 
         self.boutonMandat=Button(text="Mandat",bg="#0B416C",command=None,height=4,width=int(self.largeur/11))
         self.boutonScrum=Button(text="Scrum",bg="#0072BB",command=None,height=4,width=int(self.largeur/11))
@@ -184,10 +158,6 @@ class Vue():
         self.boutonTchat=Button(text="Tchat",bg="#DAE121",command=None,height=4,width=int(self.largeur/11))
         self.boutonDonnee=Button(text="Modelisation \nde donnee",bg="#FAEF20",command=None,height=4,width=int(self.largeur/11))
         self.boutonTerlow=Button(text="Terlow",bg="#FFB242",command=None,height=4,width=int(self.largeur/11))
-        
-        self.boutonProjet1.grid(row=1,column=0,rowspan=5)
-        self.boutonProjet2.grid(row=6,column=0,rowspan=5)
-        self.boutonProjet3.grid(row=11,column=0,rowspan=5)
 
         self.boutonMandat.grid(row=0,column=1)
         self.boutonScrum.grid(row=0,column=2)

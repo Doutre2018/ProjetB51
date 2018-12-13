@@ -37,6 +37,10 @@ class ModeleService(object):
     def __init__(self,parent,rdseed):
         self.parent=parent
         self.rdseed=rdseed
+        self.nomProjet = "testingthing"
+        self.firstGoThru = True
+        self.noCie = 1
+        #self.modeleProject = ModeleProject(self)
         self.modulesdisponibles={"projet":"gp_projet",
                                  "sql":"gp_sql",
                                  "mandat":"gp_mandat",
@@ -60,7 +64,10 @@ class ModeleService(object):
         daemon.register_function(self.requeteInsertionPerso)
         daemon.register_function(self.requeteFichier)
         daemon.register_function(self.logErreur)
+        #daemon.register_function(self.createAProject)
         daemon.register_introspection_functions()
+        
+        self.idProject = None
         
     def creerclient(self,nom):
         #if nom in self.clients.keys(): # on assure un nom unique
@@ -182,7 +189,10 @@ class ModeleService(object):
             row =[date,  adresseIP,  message]
             writer.writerow(row)
         return True
-            
+    
+   # def createAProject(self, parent, nomProjet, noCie):
+    #    self.modeleProject.createProject(self, nomProjet, noCie)
+    
 class ControleurServeur(object):
     def __init__(self):
         rand=random.randrange(1000)+1000
@@ -388,6 +398,91 @@ class  BaseDonnees():
     def insertionPerso(self,commande):
         self.curseur.execute(commande)
         self.connecteur.commit()
+'''
+class ModeleProject():
+    
+    def __init__(self,parent):
+        self.bd = parent
+        #self.connectionServeurCourant()
+        #self.bd = ServerProxy(self.adresseServeur)
+        #self.project = Project(self, self.parent)
+        self.ProjectNameToValidate = None
+        #self.project=Project(self, self.parent)
+        
+        print("Hey ho")
+    
+            
+    def createProject(self, parent, nomProjet, noCie):
+        self.parent = parent
+        if self.parent.firstGoThru:
+            self.parent.firstGoThru
+            return 0
+         
+        # self.project = project
+        print(nomProjet)
+        self.ProjectNameToValidate = nomProjet
+        self.noCie = 1
+        self.NameFailure = False
+        #bd= self.parent.serveur
+        print(self.ProjectNameToValidate)
+        #On veut valider que pour cette compagnie ce projet a un nom unique
+        commande = """SELECT COUNT(id) from Projet JOIN Liaison_Util_Projet ON id_projet = id_Util JOIN Utilisateur ON utilisateur.id = id_util where nom LIKE ("""     #test nom de projet existant
+        commande += self.ProjectNameToValidate
+        commande += """) and """
+        commande += "utilisateur.id_compagnie = "
+        commande += self.noCie
+        commande += ");"                          #hardcoded value 1 until finalization
+        validationName = self.bd.selection(commande)
+
+        if validationName > 0:              
+            self.NameFailure = True             
+            print("mauvais nom de projet(utilise)")
+            self.controleur.failureProjectName()
+        else:
+            commande = "Insert into Projet (id, nom) values (NULL, "
+            commande += self.ProjectNameToValidate
+            commande += ");"
+            self.bd.insertionperso(commande)
+            commande_sel = "Select id from Projet "
+            commande_sel += "where Projet.nom LIKE ("
+            commande_sel += self.ProjectNameToValidate
+            commande_sel += ")"
+            self.modele.idProject = requeteSelection(self, commande_sel)
+        
+        return 1
+        
+        
+class Project():
+    def __init__(self, parent, controleur):
+        self.controleur = controleur
+        self.modele = parent
+        self.nom = None
+        self.bd = self.modele.serveur
+        ######print#####
+        testZeroProject = 0
+
+            
+    def testZero(self):
+        #print(testZeroProject)
+        commande = SELECT COUNT(id) from Projet
+        commande += self.ProjectNameToValidate
+        testZeroProject = self.bd.selection(commande)
+        if testZeroProject > 0:
+            pass
+        else:
+            #parent.nomProjetValidation = 'Default Project Name'
+            nom = 'Default Project Name'
+            self.createProject(self, nom)
+        if(self.createProject(self, nom)):
+            return True
+        else:
+            return False
+    
+'''    
+        
+        
+        
+    
         
 if __name__ == "__main__":
     controleurServeur=ControleurServeur()

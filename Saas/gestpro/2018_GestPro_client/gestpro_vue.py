@@ -47,6 +47,7 @@ class Vue():
         self.placeHolderEntryNomNouveauUtilisateur=True
         self.placeHolderEntryMotDePasseNewUser=True
         self.placeHolderEntryMotDePasseNewUserConfirm=True
+        
 
 
         #Bloc pour que la fenetre de connexion sois centré avec l'écran
@@ -139,7 +140,7 @@ class Vue():
         self.ipsplash.insert(0, self.monip)
         
         # ---------------- DM ----------------
-        cies = self.fetchCompagnies()
+        cies = {"GOTO INC"}#cies = self.fetchCompagnies()
         self.ciessplash=ttk.Combobox(self.cadresplash,width=40,justify=CENTER,values=cies)
         self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
         self.ciessplash.grid()
@@ -236,18 +237,34 @@ class Vue():
         
         #self.EntrerNomTitre= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre nom",font='arial 12',bg="#E5E7F4")
         #self.EntrerNomTitre.grid(pady=(20,10),padx=100) 
-        self.NouveauNom= Entry(self.cadreNouveauProjet,bg="white", justify=CENTER,fg="grey",width=40)
-        self.NouveauNom.grid(pady=(0,20))
-        self.NouveauNom.insert(0,'Nom du Projet')
-        self.NouveauNom.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
-        self.NouveauNom.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
+        self.NouveauNomProjet= Entry(self.cadreNouveauProjet,bg="white", justify=CENTER,fg="grey",width=40)
+        self.NouveauNomProjet.grid(pady=(0,20))
+        self.NouveauNomProjet.insert(0,'Nom du Projet')
+        self.NouveauNomProjet.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
+        self.NouveauNomProjet.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
         
-
+       
         self.confirmerIB=Button(self.cadreNouveauProjet,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.chargerProjet, width=15)
         self.confirmerIB.grid(row= 10, column= 0,pady=(30,35), padx=(0,122))
         
         self.annuleIB=Button(self.cadreNouveauProjet,text="Annuler",bg="#FFFFFF",relief=FLAT,command=self.chargerProjet, width=15)
-        self.annuleIB.grid(row= 10,pady=(30,35) ,padx=(122,0))    
+        self.annuleIB.grid(row= 10,pady=(30,35) ,padx=(122,0))  
+        
+    def failureNameProject(self):#creation douteuse
+        self.fenetreCreationProjet = Toplevel(self.root, bg="#F8C471")
+        self.fenetreCreationProjet.wm_title("NOM INVALIDE!!")
+        
+        self.texteCreationProjet = Label(self.fenetreCreationProjet, text="Désolé big, mauvais nom de projet :", bg="#F8C471")
+        self.texteCreationProjet.grid(row=1,column=1, padx=50, pady=(30,10))
+        
+        self.boutonCreationProjet = Button(self.fenetreCreationProjet, text="OK", bg="#E67E22",command=self.nouveauProjet)
+        self.boutonCreationProjet.grid(row=3,column=1, padx=50, pady=(0,30))
+        
+        
+    def creerProjet(self):
+        self.savedNameTemp = self.entreeCreationProjet.get()
+        self.parent.sendProjectName(self.savedNameTemp)
+          
     def closeprocess(self):
         self.parent.fermerprocessus()
     
@@ -518,7 +535,15 @@ class Vue():
                 return False
     # --------------------------------- #   
     def chargerProjet(self):
+        self.savedNameTemp = self.NouveauNomProjet.get()
+        print("ds charger" + self.savedNameTemp)
         self.changecadre(self.cadreProjet)
+        #print(self.parent.serveur)
+        self.parent.modProjet.createProject(self, self.savedNameTemp, 1)
+              
+              
+        
+        #self.parent.serveur.modeleProject.createProject(self, self.savedNameTemp, 1)
     def AllerAInscription(self):
         self.changecadre(self.cadreNouvelleUtilisateur)
     def AllerANouveauProjet(self):

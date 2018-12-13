@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 
 import os,os.path
 import sys
 #import Pyro4
 import socket
+import sqlite3
 from subprocess import Popen 
 import math
 #from sm_projet_modele import *
@@ -18,14 +19,14 @@ class Controleur():
         self.createurId=Id
         self.connectionServeurCourant()
         self.recevoirFichiers()
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.reloadMessageBD()
         self.vue.root.mainloop()
         
     def reloadMessageBD(self):
         self.vue.ajoutMessageBD()
-        self.vue.root.after(100,self.reloadMessageBD)
+        self.vue.root.after(500,self.reloadMessageBD)
         
     def connectionServeurCourant(self):  
         try:
@@ -62,9 +63,72 @@ class Modele():
     def __init__(self,parent):
         self.parent=parent
         self.serveur=parent.serveur
-        self.listeCartes=self.selectClassesCartes()
         self.usager = self.serveur.fetchNomUtilisateurCourant()
         self.compagnie = self.serveur.fetchNomCompagnie()
+        self.FilDeDiscussionCourant = 0 #Tant qu'il n'y a pas de module Projet
+        self.idProjetCourant = None
+        self.idUsager=self.idUtilisateurCourant()
+        for i in self.idUsager:
+            for n in i:
+                self.idUsager=n
+        
+    def idUtilisateurCourant(self):
+        commande="SELECT id FROM Utilisateur WHERE nomUtilisateur='"+self.usager+"';"
+        return self.serveur.requeteSelection(commande)
+    
+    #Insertions
+    def insertLigneChat(self,texte):
+        self.serveur.requeteInsertionPerso("INSERT INTO LigneChat(texte,id_filDiscussion,id_utilisateur) VALUES('"+texte+"',"+str(self.FilDeDiscussionCourant)+","+str(self.idUsager)+");")
+        
+    def insertFilDiscussion(self):
+        self.serveur.requeteInsertionPerso("INSERT INTO FilDeDiscussion(id_projet) VALUES("+str(self.idProjetCourant)+");")
+
+    #Select
+    def selectFilDiscussion(self):
+        pass
+    
+    def selectIdLignesChat(self):
+        commande = "SELECT id FROM LigneChat;"
+        return self.serveur.requeteSelection(commande)
+    
+    def selectToutesTextesLignesChat(self):
+        commande = "SELECT texte FROM LigneChat;"
+        self.serveur.requeteSelection(commande)
+    
+    def selectTexteLigneChat(self,id):
+        commande = "SELECT texte FROM LigneChat WHERE id="
+        for i in self.serveur.requeteSelection(commande+str(id)):
+            for n in i:
+                rep = n
+        return rep
+    
+    def selectNomUtilisateurDeLigneChat(self,id):
+        for i in self.triNomAvecIdUtilisateur(self.selectUtilisateurDeLigneChat(id)):
+            for n in i:
+                nom = n
+        return nom
+    
+    def selectUtilisateurDeLigneChat(self,id):
+        commande = "SELECT id_utilisateur FROM LigneChat WHERE id="
+        return self.serveur.requeteSelection(commande+str(id))
+        
+    def selectTousUtilisateursLigneChat(self):
+        commande = "SELECT id_utilisateur FROM LigneChat;"
+        try:
+            return self.serveur.requeteSelection(commande)
+        except ValueError:
+            return None
+        
+    def triNomAvecIdUtilisateur(self,idUsager):
+        commande = "SELECT nomUtilisateur FROM Utilisateur WHERE id="
+        try:
+            for i in idUsager:
+                for n in i:
+                    idUsager=n
+            return self.serveur.requeteSelection(commande+str(idUsager))
+        except sqlite3.Error as er:
+            print(er)
+            return None
     
 if __name__ == '__main__':
     c=Controleur()

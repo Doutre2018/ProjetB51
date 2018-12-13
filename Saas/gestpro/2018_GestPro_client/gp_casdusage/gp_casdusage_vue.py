@@ -67,11 +67,15 @@ class Vue():
         self.titreCas.grid(row=0,column=1,padx=20)
         
         self.listeCas = Listbox(self.cadreUsage, width=int(self.largeur/20),height=int((self.hauteur/130)*5))
-        self.listeCas.grid(row=1,column=1,pady=20,padx=20)
+        self.listeCas.grid(row=1,column=1,padx=20)
         self.listeCas.bind("<Button-1>", self.afficherScenarii)
         
         self.boutonAjouterCas = Button(self.cadreUsage,text="Ajouter un Cas",bg="lightblue",command=self.ajouterCas)
-        self.boutonAjouterCas.grid(row=2,column=1,pady=20,padx=20)
+        self.boutonAjouterCas.grid(row=2,column=1,padx=20)
+        
+        # --------Bouton POur JF
+        self.boutonSupprimerCas = Button(self.cadreUsage,text="Supprimer un Cas",bg="lightblue",command=self.ajouterCas)
+        self.boutonSupprimerCas.grid(row=3,column=1,padx=20)
         
         #Scenarii
         self.cadreScenarii=Frame(self.cadreUsage,bg=self.defaultcolor,height=int((self.root.winfo_screenheight()/6)*5),width=int((self.root.winfo_screenwidth()/6)*5))
@@ -100,7 +104,10 @@ class Vue():
         self.cadreScenarii.grid(row=1,column=2)
         
         self.boutonAjouterScenarii = Button(self.cadreScenarii,text="Ajouter un Scenarii",bg="lightblue",command=self.ajouterScenarii)
-        self.boutonAjouterScenarii.grid(row=3,column=1,columnspan=2,pady=20,padx=20)
+        self.boutonAjouterScenarii.grid(row=3,column=1,columnspan=2,padx=20)
+        #-----------BOUTON POUR JF!
+        self.boutonSupprimerScenarii = Button(self.cadreScenarii,text="Supprimer un Scenarii",bg="lightblue",command=self.ajouterScenarii)
+        self.boutonSupprimerScenarii.grid(row=4,column=1,columnspan=2,padx=20)
         
         for item in self.casdusage:
             self.listeCas.insert(END, item)

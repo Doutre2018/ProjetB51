@@ -28,7 +28,8 @@ class Vue():
         self.creercadres()
         self.changecadre(self.cadremodelisation)
         self.afficherTables()
-
+        
+        
     def changemode(self,cadre):
         if self.modecourant:
             self.modecourant.pack_forget()
@@ -50,7 +51,7 @@ class Vue():
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
     
-            
+    
     def afficherTables(self):
         cartes = self.parent.modele.cartes
         for i in cartes:
@@ -101,23 +102,16 @@ class Vue():
                 j = i
              
             notable = self.nbTable
-            boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,textNom,nomsChampsCreer,typeChampsCreer,typeChampsCreer))
+            boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,nom,nomsChampsCreer,typeChampsCreer,typeChampsCreer))
             boutonModifier.grid(column=(self.nbTable*3),row=j+4)
-            self.nbTable+=1    
+            self.nbTable+=1       
+        
               
     def creercadremodelisation(self):
-        upscroll = Scrollbar(self.root, orient=VERTICAL)
-        upscroll.grid(row=0, column=1, sticky=N+S)
-        horiscroll = Scrollbar(self.root, orient=HORIZONTAL)
-        horiscroll.grid(row=1, column=0, sticky=E+W)
-
-        self.cadremodelisation=Canvas(self.root,yscrollcommand=upscroll.set, xscrollcommand=horiscroll.set)
+        self.cadremodelisation=Frame(self.root)
         self.root.overrideredirect(True) #Enleve la bordure
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
         
-        
-        upscroll.config(command=self.cadremodelisation.xview)
-        horiscroll.config(command=self.cadremodelisation.yview)
         self.boutonAjoutTable = Button(self.cadremodelisation, text="Creer Table", width = 20, height = 3, command = self.creerTable)
         self.boutonAjoutTable.grid(row=0,column=0)
         
@@ -138,7 +132,7 @@ class Vue():
         textType.grid(row=1,column=2)
         textAutre = Label(self.creationTable,text="Autre",width=15)
         textAutre.grid(row=1,column=3)
-            
+
 
         self.nomsChampsCreer=[]
         self.typeChampsCreer=[]
@@ -151,26 +145,25 @@ class Vue():
     def ajouterChampsNouveau(self):
         
         self.nomsChampsCreer.append(StringVar())
-        nomChamp =Entry(self.creationTable, width = 20,textvariable = self.nomsChampsCreer[self.nbChamps] )
+        nomChamp =Entry(self.creationTable, width = 20,textvariable = self.nomsChampsCreer[self.nbChamps].get() )
         nomChamp.grid(row=self.nbChamps+2,column=1)
         
         self.typeChampsCreer.append(StringVar())
-        typeChamp=Entry(self.creationTable, width = 20,textvariable = self.typeChampsCreer[self.nbChamps])
+        typeChamp=Entry(self.creationTable, width = 20,textvariable = self.typeChampsCreer[self.nbChamps].get())
         typeChamp.grid(row=self.nbChamps+2,column=2)
         
         self.autreChampsCreer.append(StringVar())
-        autreChampEntry=Entry(self.creationTable, width = 20,textvariable = self.autreChampsCreer[self.nbChamps])
+        autreChampEntry=Entry(self.creationTable, width = 20,textvariable = self.autreChampsCreer[self.nbChamps].get())
         autreChampEntry.grid(row=self.nbChamps+2,column=3)
 
 
         self.nbChamps+=1
-    def ajouterTable(self):        
+    def ajouterTable(self):
         textNom = Label(self.cadremodelisation,text="Nom de la table")
         textNom.grid(column=self.nbTable*3,row=1)
         
         nomTable = Label(self.cadremodelisation,text=str(self.nomTableCreer.get()),borderwidth=2, relief="groove")
         self.parent.insertCarte(self.nomTableCreer.get())
-
         nomTable.grid(column=self.nbTable*3+1,row=1)
         
         
@@ -189,9 +182,8 @@ class Vue():
             nomduchamp.grid(column=(self.nbTable*3)+1, row=i+3)
             nomduchamp = Label(self.cadremodelisation, width = 20, text= str(self.autreChampsCreer[i].get()),borderwidth=2, relief="groove")
             nomduchamp.grid(column=(self.nbTable*3)+2, row=i+3,padx=(0,20))
-            j = i
             self.parent.insertItem(self.nomsChampsCreer[i].get(), self.typeChampsCreer[i].get(), self.autreChampsCreer[i].get(), self.nomTableCreer.get())
-
+            j = i
         
         notable = self.nbTable
         nomschamps=self.nomsChampsCreer
@@ -205,17 +197,18 @@ class Vue():
     def modifierTable(self,boutonModifier,noTable,nom,nomsChamps,typesChamps,autresChamps):
         boutonModifier.grid_forget()
         self.nbChamps = len(nomsChamps)
-        self.nomsChampsCreer=nomsChamps
-        self.typeChampsCreer=typesChamps
-        self.autreChampsCreer=autresChamps
-        
         self.modifTable =Toplevel(self.cadremodelisation)
         
+        self.nomsChampsc = nomsChamps
+        self.typesChampsc = typesChamps
+        self.autresChampsc = autresChamps
         textNom = Label(self.modifTable,text="Nom de la table")
         textNom.grid(row=0,column=1)
-        self.nomTableCreer = Entry(self.modifTable)
-        self.nomTableCreer.grid(row=0,column=2)
-        self.nomTableCreer.insert(0,nom.cget("text"))
+        nomtable=StringVar()
+        nomTableCreer = Entry(self.modifTable,text=nomtable)
+        nomTableCreer.grid(row=0,column=2)
+        nomtable.set(nom.get())
+        
         textNom = Label(self.modifTable,text="Nom du Champ",width=15)
         textNom.grid(row=1,column=1)
         textType = Label(self.modifTable,text="Type du Champ",width=15)
@@ -223,41 +216,44 @@ class Vue():
         textAutre = Label(self.modifTable,text="Autre",width=15)
         textAutre.grid(row=1,column=3)
         
-        for i in range(len(self.nomsChampsCreer)) :
-            nomduchamp = Entry(self.modifTable, width = 20, text= self.nomsChampsCreer[i].get(),borderwidth=2, relief="groove")
+        for i in range(self.nbChamps) :
+
+            nomduchamp = Entry(self.modifTable, width = 20, text= self.nomsChampsc[i],borderwidth=2, relief="groove")
             nomduchamp.grid(column=1, row=i+2,padx=(20,0))
-            nomduchamp.insert(0,str(nomsChamps[i].get()))
+            self.nomsChampsc[i].set(self.nomsChampsc[i].get())
 
-            typeduchamp = Entry(self.modifTable, width = 20, text= self.typeChampsCreer[i].get(),borderwidth=2, relief="groove")
-            typeduchamp.grid(column=2, row=i+2)
-            typeduchamp.insert(0,str(typesChamps[i].get()))
-
-            autre = Entry(self.modifTable, width = 20, text= str(self.autreChampsCreer[i].get()),borderwidth=2, relief="groove")
-            autre.grid(column=3, row=i+2,padx=(0,20))
-            autre.insert(0,str(autresChamps[i].get()))
             
-            boutonEnlever = Button(self.modifTable,width =1, text = 'X', command = lambda:self.enleverChampsModifier(i, nomduchamp,typeduchamp,autre,boutonEnlever))
+            typeduchamp = Entry(self.modifTable, width = 20, text= self.typesChampsc[i],borderwidth=2, relief="groove")
+            typeduchamp.grid(column=2, row=i+2)
+            self.typesChampsc[i].set(self.typesChampsc[i].get())
+
+            autreduchamp = Entry(self.modifTable, width = 20, text= self.autresChampsc[i] ,borderwidth=2, relief="groove")
+            autreduchamp.grid(column=3, row=i+2,padx=(0,20))
+            self.autresChampsc[i].set(self.autresChampsc[i].get())
+            
+            boutonEnlever = Button(self.modifTable,width =1, text = 'X', command = lambda:self.enleverChampsModifier(i, nomduchamp,typeduchamp,autre,boutonEnlever,nomTableCreer))
             boutonEnlever.grid(column=4,row=i+2)
             j = i
             
         boutonAjoutChamps = Button(self.modifTable, width = 15, height = 1, text= "Ajouter Champs", command = self.ajouterChampsModifier)
         boutonAjoutChamps.grid(row=self.nbChamps+3)
-        boutonCreer = Button(self.modifTable, width = 15, height = 1, text = "Modifier", command  = lambda:self.ajoutmodificationTable(noTable))
+        boutonCreer = Button(self.modifTable, width = 15, height = 1, text = "Modifier", command  = lambda:self.ajoutmodificationTable(noTable,nomtable,nomsChamps,typesChamps,autresChamps))
         boutonCreer.grid(row=self.nbChamps+4,column=0, pady=10)
+        
     def ajouterChampsModifier(self):
         
-        self.nomsChampsCreer.append(StringVar())
-        nomChamp =Entry(self.modifTable, width = 20,textvariable = self.nomsChampsCreer[self.nbChamps] )
+        self.nomsChampsc.append(StringVar())
+        nomChamp =Entry(self.modifTable, width = 20,textvariable = self.nomsChampsc[self.nbChamps].get() )
         nomChamp.grid(row=self.nbChamps+2,column=1)
         
-        self.typeChampsCreer.append(StringVar())
-        typeChamp=Entry(self.modifTable, width = 20,textvariable = self.typeChampsCreer[self.nbChamps])
+        self.typesChampsc.append(StringVar())
+
+        typeChamp=Entry(self.modifTable, width = 20,textvariable = self.typesChampsc[self.nbChamps].get())
         typeChamp.grid(row=self.nbChamps+2,column=2)
         
-        self.autreChampsCreer.append(StringVar())
-        autreChampEntry=Entry(self.modifTable, width = 20,textvariable = self.autreChampsCreer[self.nbChamps])
+        self.autresChampsc.append(StringVar())
+        autreChampEntry=Entry(self.modifTable, width = 20,textvariable = self.autresChampsc[self.nbChamps].get())
         autreChampEntry.grid(row=self.nbChamps+2,column=3)
-
         self.nbChamps+=1
     def enleverChampsModifier(self,position,champ1,champ2,champ3,bouton):
         
@@ -274,11 +270,11 @@ class Vue():
         self.typeChampsCreer.pop(position)
         self.autreChampsCreer.pop(position)
         
-    def ajoutmodificationTable(self, noTable):
+    def ajoutmodificationTable(self, noTable,nomtable,nomsChamps,typesChamps,autresChamps):
         textNom = Label(self.cadremodelisation,text="Nom de la table")
         textNom.grid(column=noTable*3,row=1)
         
-        nomTable = Label(self.cadremodelisation,text=str(self.nomTableCreer.get()),borderwidth=2, relief="groove")
+        nomTable = Label(self.cadremodelisation,text=nomtable.get(),borderwidth=2, relief="groove")
         nomTable.grid(column=noTable*3+1,row=1)
         
         
@@ -290,22 +286,24 @@ class Vue():
         textAutre.grid(row=2,column=(noTable*3)+2)
         j = 0
         
-        for i in range(len(self.nomsChampsCreer)) :
-            nomduchamp = Label(self.cadremodelisation, width = 20, text= self.nomsChampsCreer[i].get(),borderwidth=2, relief="groove")
+        for i in range(len(nomsChamps)) :
+            nomduchamp = Label(self.cadremodelisation, width = 20, text= nomsChamps[i].get(),borderwidth=2, relief="groove")
             nomduchamp.grid(column=(noTable*3), row=i+3,padx=(20,0))
-
-            typeduchamp = Label(self.cadremodelisation, width = 20, text= self.typeChampsCreer[i].get(),borderwidth=2, relief="groove")
+            nomsChamps[i].set(nomsChamps[i].get())
+            typeduchamp = Label(self.cadremodelisation, width = 20, text= typesChamps[i].get(),borderwidth=2, relief="groove")
             typeduchamp.grid(column=(noTable*3)+1, row=i+3)
+            typesChamps[i].set(typesChamps[i].get())
 
-            autrechamp = Label(self.cadremodelisation, width = 20, text= str(self.autreChampsCreer[i].get()),borderwidth=2, relief="groove")
+            autrechamp = Label(self.cadremodelisation, width = 20, text= autresChamps[i].get(),borderwidth=2, relief="groove")
             autrechamp.grid(column=(noTable*3)+2, row=i+3,padx=(0,20))
+            autresChamps[i].set(autresChamps[i].get())
+
             j = i
         
-        boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:modifierTable(boutonModifier,noTable,self.nomTableCreer.get(),self.nomsChampsCreer,self.typeChampsCreer,self.autreChampsCreer))
+        boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,noTable,nomtable,nomsChamps,typesChamps,autresChamps))
         boutonModifier.grid(column=(noTable*3),row=j+4)
-        self.creationTable.destroy()
+        self.modifTable.destroy()
 
     def fermerfenetre(self):
         print("ON FERME la fenetre")
         self.root.destroy()
-    

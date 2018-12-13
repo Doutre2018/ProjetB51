@@ -13,11 +13,9 @@ from xmlrpc.client import ServerProxy
 
 class Controleur():
     def __init__(self):
-        print("IN CONTROLEUR")
         self.connectionServeurCourant()
         
         self.createurId=Id
-        print(self.serveur)
         self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
@@ -42,11 +40,14 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
-    def insertion(self,ligne,colonne,nomProjet, type, mot):
-        self.modele.InsertInto(ligne,colonne,nomProjet, type, mot)
+    def insertion(self,ligne,nomProjet, type, mot):
+        self.modele.InsertInto(ligne,nomProjet, type, mot)
     
     def afficher(self):
         self.modele.selectAffichage(self)
+        
+    def supprimer(self, type, nom):
+        self.modele.deleteItem(type, nom)
 
 
 if __name__ == '__main__':

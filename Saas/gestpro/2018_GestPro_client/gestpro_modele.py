@@ -78,7 +78,7 @@ class ModeleProject():
             #print("Project Id is : " + self.parent.idProject)
             print("TEEEEEEEEST")
             print("nom cie ds create " + str(self.nomCie))
-            commande = "SELECT id FROM compagnie WHERE nom LIKE ('"
+            commande = "SELECT id FROM compagnie WHERE nomCompagnie LIKE ('"
             commande += self.nomCie
             commande += "');"
 
@@ -89,7 +89,7 @@ class ModeleProject():
             commande += self.ProjectNameToValidate
             commande += "') and "
             commande += "utilisateur.id_compagnie = '"
-            commande += self.cieID
+            commande += str(self.cieID)
             commande += "';"
             print(commande)
 
@@ -136,34 +136,56 @@ class ModeleProject():
         print(nomCie)
         self.nomCie = nomCie
 
-        commande = "SELECT id FROM compagnie WHERE nom LIKE ('"
+        commande = "SELECT id FROM compagnie WHERE nomCompagnie LIKE ('"
         commande += self.nomCie
         commande += "');"
         ListTake = []
         self.IDCie = self.parent.parent.serveur.requeteSelection(commande)
+        print("no Cie ")
         print(self.IDCie)
+        noCIE = self.IDCie[0][0]
+        print("number cie =" + str(noCIE))
 
     #print(self.cieID +" id and projecctname   " + self.projectName)
-        commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON id_projet = id_Util JOIN Utilisateur ON utilisateur.id = id_util JOIN Compagnie ON utilisateur.id_compagnie = Compagnie.id WHERE Projet.nom LIKE ('"  # test nom de projet existant
+        commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON projet.id = id_projet JOIN Utilisateur ON utilisateur.id = id_util WHERE Projet.nom LIKE ('"  # test nom de projet existant
         commande += self.projectName
         commande += "') and "
-        commande += "Compagnie.nom = "
-        commande += self.nomCie
-        commande += ");"
-
+        commande += "utilisateur.id_compagnie = "
+        commande += str(noCIE)
+        commande += ";"
+        print(commande)
         List = []
+        test = "SELECT id_compagnie FROM utilisateur WHERE nomUtilisateur = 'jopet';"
+
+        test2 = "SELECT nom FROM projet WHERE id = 12"
+        Listetest = []
+        Listetest = self.parent.parent.serveur.requeteSelection(test2)
+        print(Listetest[0][0])
+
+        List=self.parent.parent.serveur.requeteSelection(test)
+        print(List[0][0])
+        print("up is cie id in user")
+
+        test4 = "SELECT nom FROM Projet where "
+        test4 += self.projectName
+        test4 += " = nom;"
 
         try:
-            print(self.parent.parent.serveur.requeteSelection(commande))
-            List = self.parent.parent.serveur.requeteSelection(commande)
-            print(List)
-            if len(List):
+            List = []
+            print("1")
+            List = self.parent.parent.serveur.requeteSelection(test4)
+            print("2")
+            idPro = List[0][0]
+            print("3")
+            print(str(idPro) + "id Projet")
+            if idPro > 0:
                 ValidationProject = True
             else:
                 ValidationProject = False
 
         except Exception as exc:
             List = -1
+            print("oups")
             ValidationProject = False
 
         if ValidationProject:

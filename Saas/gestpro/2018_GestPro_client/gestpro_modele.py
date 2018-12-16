@@ -17,6 +17,7 @@ class ModeleProject():
         self.parent = parent
         self.bd = self.parent.serveur
         self.idProject = None
+        self.IDCie = []
         # self.connectionServeurCourant()
         # self.bd = ServerProxy(self.adresseServeur)
         # self.project = Project(self, self.parent)
@@ -24,6 +25,8 @@ class ModeleProject():
         # self.project=Project(self, self.parent)
         print("Hey ho")
         self.firstGo = True;
+        self.projectName =None
+        self.cieID = None
 
     def createProject(self, parent, nomProjet, nomCie):
         self.parent = parent
@@ -73,36 +76,42 @@ class ModeleProject():
 
             #self.parent.idProject = int(ListReceiver[0])
             #print("Project Id is : " + self.parent.idProject)
+            print("TEEEEEEEEST")
+            print("nom cie ds create " + str(self.nomCie))
+            commande = "SELECT id FROM compagnie WHERE nom LIKE ('"
+            commande += self.nomCie
+            commande += "');"
+
+            self.cieID = self.parent.parent.serveur.requeteSelection(commande)
+
 
             commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON id_projet = id_Util JOIN Utilisateur ON utilisateur.id = id_util WHERE Projet.nom LIKE ('"  # test nom de projet existant
             commande += self.ProjectNameToValidate
             commande += "') and "
             commande += "utilisateur.id_compagnie = '"
-            commande += str(self.nomCie)
+            commande += self.cieID
             commande += "';"
             print(commande)
-            try:
-                ListReceiver = []
 
-                try:
-                    ListReceiver[0] = self.parent.parent.serveur.requeteSelection(commande)
-                    ValidationName = False
-                except:
-                    ListReceiver[0] = -1
-                    ValidationName = True
-                print(ListReceiver[0])
+            ListReceiver = []
+            validationName = True
+
+            try:
+                ListReceiver = self.parent.parent.serveur.requeteSelection(commande)
+                print(ListReceiver)
+                validationName = False
+            except Exception as exc:
+                ListReceiver = -1
                 validationName = True
 
-
-            except:
-                validationName = False
-
+                print(ListReceiver)
+                #validationName = True
 
             print(validationName)
             #number = validationName[0][0]
 
 
-            if not validationName:
+            if validationName:
                 self.NameFailure = True
                 print("mauvais nom de projet(utilise)")
                 #self.controleur.failureProjectName()
@@ -122,24 +131,43 @@ class ModeleProject():
             print(self.parent.idProject)
             return 1
 
-    def accessProject(self, parent, projectName, cieID):
-        commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON id_projet = id_Util JOIN Utilisateur ON utilisateur.id = id_util WHERE Projet.nom LIKE ('"  # test nom de projet existant
-        commande += self.ProjectName
+    def accessProject(self, parent, projectName, nomCie):
+        self.projectName = projectName
+        print(nomCie)
+        self.nomCie = nomCie
+
+        commande = "SELECT id FROM compagnie WHERE nom LIKE ('"
+        commande += self.nomCie
+        commande += "');"
+        ListTake = []
+        self.IDCie = self.parent.parent.serveur.requeteSelection(commande)
+        print(self.IDCie)
+
+    #print(self.cieID +" id and projecctname   " + self.projectName)
+        commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON id_projet = id_Util JOIN Utilisateur ON utilisateur.id = id_util JOIN Compagnie ON utilisateur.id_compagnie = Compagnie.id WHERE Projet.nom LIKE ('"  # test nom de projet existant
+        commande += self.projectName
         commande += "') and "
-        commande += "utilisateur.id_compagnie = '"
-        commande += str(self.cieID)
-        commande += "';"
+        commande += "Compagnie.nom = "
+        commande += self.nomCie
+        commande += ");"
 
         List = []
+
         try:
-            List[0] = self.parent.parent.serveur.requeteSelection(commande)
-            ValidationProject = True
-        except:
-            List[0] = -1
+            print(self.parent.parent.serveur.requeteSelection(commande))
+            List = self.parent.parent.serveur.requeteSelection(commande)
+            print(List)
+            if len(List):
+                ValidationProject = True
+            else:
+                ValidationProject = False
+
+        except Exception as exc:
+            List = -1
             ValidationProject = False
 
         if ValidationProject:
-            return 0
-        else:
             return 1
+        else:
+            return 0
 

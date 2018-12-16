@@ -517,11 +517,14 @@ class Vue():
                 return False
     # --------------------------------- #   
     def chargerProjet(self):
-
+        self.cieName = self.ciessplash.get()
         self.savedNameTemp = self.NouveauNomProjet.get()
         print("ds charger" + self.savedNameTemp, self.cieName)
         self.changecadre(self.cadreProjet)
-        self.parent.modProjet.createProject(self, self.savedNameTemp, self.cieName)
+        if self.parent.modProjet.createProject(self, self.savedNameTemp, self.cieName):
+            pass
+        else:
+            print("Erreur de creation de nom de projet (nom déjà utilisé")
     def AllerAInscription(self):
         self.changecadre(self.cadreNouvelleUtilisateur)
     def AllerANouveauProjet(self):

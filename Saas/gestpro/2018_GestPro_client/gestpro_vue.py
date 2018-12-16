@@ -43,6 +43,8 @@ class Vue():
         self.placeHolderEntryNomNouveauUtilisateur=True
         self.placeHolderEntryMotDePasseNewUser=True
         self.placeHolderEntryMotDePasseNewUserConfirm=True
+        self.cieName = None
+
 
 
         #Bloc pour que la fenetre de connexion sois centré avec l'écran
@@ -230,11 +232,11 @@ class Vue():
         
         #self.EntrerNomTitre= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre nom",font='arial 12',bg="#E5E7F4")
         #self.EntrerNomTitre.grid(pady=(20,10),padx=100) 
-        self.NouveauNom= Entry(self.cadreNouveauProjet,bg="white", justify=CENTER,fg="grey",width=40)
-        self.NouveauNom.grid(pady=(0,20))
-        self.NouveauNom.insert(0,'Nom du Projet')
-        self.NouveauNom.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
-        self.NouveauNom.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
+        self.NouveauNomProjet= Entry(self.cadreNouveauProjet,bg="white", justify=CENTER,fg="grey",width=40)
+        self.NouveauNomProjet.grid(pady=(0,20))
+        self.NouveauNomProjet.insert(0,'Nom du Projet')
+        self.NouveauNomProjet.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
+        self.NouveauNomProjet.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
         
 
         self.confirmerIB=Button(self.cadreNouveauProjet,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.chargerProjet, width=15)
@@ -427,6 +429,7 @@ class Vue():
         motPasse = self.NouveauPassword.get()       # Mot de passe de l'utilisateur à inscrire
         mpConfirm = self.PasswordConfirm.get()      # 2e mot de passe; pour confirmation
         compagnie = self.compagniesplash.get()      # Nom de la compagnie lié à l'utilisateur
+        self.cieName = self.compagniesplash.get()   #prise en memoire pour usage ds creation de projet
         ipserveur = self.ipsplash.get()             # Addresse ip de l'utilisateur
         
         if motPasse=="Nouveau Mot de passe":
@@ -472,22 +475,27 @@ class Vue():
         motPasse = self.entrymotPassesplash.get()
         compagnie = self.ciessplash.get()
         ipserveur = self.ipsplash.get()
-        
+        nameProjet = self.nomProjet.get()
+
+
         if self.nomConforme(nom):
             if self.motPasseConforme(motPasse):
                 if compagnie != "< Sélectionner votre entreprise >":
-                    rep = self.parent.connexion(nom, motPasse, compagnie, ipserveur)
-                    self.labelProbleme.config(fg="red",font='arial 9')
-                    print(rep)
-                    
+                    if self.parent.modProjet.accessProject(self, nameProjet, compagnie):
+                        rep = self.parent.connexion(nom, motPasse, compagnie, ipserveur)
+                        self.labelProbleme.config(fg="red",font='arial 9')
+                        print(rep)
+                    else:
+                        print("Nom de projet inexistant")
                 else:
                     print("Choisir une compagnie s.v.p.")
             else:
                 print("Mot de passe non conforme")
         else:
             print("Nom d'utilisateur non conforme")
-    
-       
+
+
+
     def nomConforme(self, nom):             # Vérifie que le nom d'utilisateur est conforme (regex)
         if len(nom) > 12:                   # Si le nom a plus de 12 caractères
             return False
@@ -509,7 +517,11 @@ class Vue():
                 return False
     # --------------------------------- #   
     def chargerProjet(self):
+
+        self.savedNameTemp = self.NouveauNomProjet.get()
+        print("ds charger" + self.savedNameTemp, self.cieName)
         self.changecadre(self.cadreProjet)
+        self.parent.modProjet.createProject(self, self.savedNameTemp, self.cieName)
     def AllerAInscription(self):
         self.changecadre(self.cadreNouvelleUtilisateur)
     def AllerANouveauProjet(self):

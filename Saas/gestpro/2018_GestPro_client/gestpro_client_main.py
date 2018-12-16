@@ -21,6 +21,7 @@ class Controleur():
         self.pid=None
         self.monip=self.trouverIP()
         self.nodeport="9999"
+        self.modProjet = ModeleProject(self)
         self.vue=Vue(self,self.monip)
         self.vue.root.mainloop()
         

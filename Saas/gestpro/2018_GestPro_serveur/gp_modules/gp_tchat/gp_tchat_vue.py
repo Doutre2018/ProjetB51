@@ -7,6 +7,7 @@ import os,os.path
 import math
 from helper import Helper as hlp
 from msilib.schema import Font
+import random 
 
 class Vue():
     def __init__(self,parent,largeur=800,hauteur=900):
@@ -108,16 +109,21 @@ class Vue():
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
         self.modele.insertLigneChat(self.message.get("1.0", END))
         self.message.delete("1.0", END)
-        
+    def random_color(self):
+        return random.randint(0,0x1000000)
+
     def ajoutMessageBD(self):
         self.listeMessage.delete(0, END)
         if self.messagesDeBD:
             for message in self.messagesDeBD:
+                if message[0] not in self.color:
+                    color = '{:06x}'.format(self.random_color())
+                    while (color in self.color.values()):
+                        color = '{:06x}'.format(self.random_color())
+                    self.color[message[0]] = '#'+ color
                 if self.messagesDeBD.index(message):
-                    if (message[0]):
-                        self.listeMessage.itemconfig(self.messagesDeBD.index(message), {'bg':'red'})
-                        self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
-        
+                    self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
+                    self.listeMessage.itemconfig(END, {'fg':self.color.get(message[0])})
 
     def fermerfenetre(self):
         print("ON FERME la fenetre")

@@ -7,6 +7,7 @@ import os,os.path
 import math
 from helper import Helper as hlp
 from msilib.schema import Font
+import random 
 
 class Vue():
     def __init__(self,parent,largeur=800,hauteur=900):
@@ -24,6 +25,7 @@ class Vue():
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
         self.cadreTchatExiste=False
+        self.color = {"user":"color"};
          #Tout ce qui a été écrit en BD
 #         self.listeIdParticipant = self.modele.selectTousUtilisateursLigneChat()
 #         if self.listeIdParticipant:
@@ -39,7 +41,6 @@ class Vue():
         self.creercadres()
         
         self.changecadre(self.cadreTchat)
-        
         
         
     def peuplerMessagesBD(self):
@@ -65,6 +66,7 @@ class Vue():
         
     def creercadres(self):
         self.creercadreTchat()
+
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
     def afficherImage(self):
@@ -79,10 +81,18 @@ class Vue():
         canvasImage1 = Canvas(self.cadreTchat,width=120,height=100)
         canvasImage1.create_image(0,0,image=self.img,anchor=NW)
         canvasImage1.grid(row=0,column=0)
+<<<<<<< HEAD
         #canvasImage2 = Canvas(self.cadreTchat,width=120,height=100)
         #canvasImage2.create_image(0,0,image=self.img2,anchor=NW)
         #canvasImage2.grid(row=0,column=4)
             
+=======
+        canvasImage2 = Canvas(self.cadreTchat,width=120,height=100)
+        canvasImage2.create_image(0,0,image=self.img,anchor=NW)
+        canvasImage2.grid(row=0,column=4)
+        #self.parent.reloadMessageBD();
+    
+>>>>>>> 6cc9f90dad66d27299f25358a72a1425be86a157
         
               
     def creercadreTchat(self):
@@ -99,27 +109,38 @@ class Vue():
         self.listeMessage.grid(columnspan=5,column=0,row=4,padx=70,pady=(0,20))
         self.message = Text(self.cadreTchat, width=80,height=3)
         self.message.grid(columnspan=5,column=0,row=5,padx=70,pady=10)
+<<<<<<< HEAD
         self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage,bg="#234078")
         self.boutonMessage.grid(columnspan=5,column=0,row=6,padx=70)
         
 
+=======
+        self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage,bg="white",fg="#234078")
+        self.boutonMessage.grid(columnspan=5,column=0,row=6,padx=70)
+        
+
+                    
+>>>>>>> 6cc9f90dad66d27299f25358a72a1425be86a157
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
         self.modele.insertLigneChat(self.message.get("1.0", END))
-<<<<<<< HEAD
-        self.messagesDeBD.append([self.user, self.message.get("1.0", END)])
-=======
->>>>>>> ecb373ea65a770e60aa9a9550f4bf918c45fcdc0
         self.message.delete("1.0", END)
-        
+    def random_color(self):
+        return random.randint(0,0x1000000)
+
     def ajoutMessageBD(self):
         self.listeMessage.delete(0, END)
         if self.messagesDeBD:
             for message in self.messagesDeBD:
+                if message[0] not in self.color:
+                    color = '{:06x}'.format(self.random_color())
+                    while (color in self.color.values()):
+                        color = '{:06x}'.format(self.random_color())
+                    self.color[message[0]] = '#'+ color
                 if self.messagesDeBD.index(message):
-                    #self.listeMessage.itemconfig(self.messagesDeBD.index(message), {'bg':'red'})
                     self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
-            
+                    self.listeMessage.itemconfig(END, {'fg':self.color.get(message[0])})
+
 
     def fermerfenetre(self):
         print("ON FERME la fenetre")

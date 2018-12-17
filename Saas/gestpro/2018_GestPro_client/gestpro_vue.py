@@ -36,7 +36,7 @@ class Vue():
         self.changecadre(self.cadresplash)
         
         self.listBoutonActif=[]
-        self.listBoutonNonActif=[self.boutonMandat,self.boutonScrum,self.boutonAnalyse,self.boutonCasUsage,self.boutonMaquette,self.boutonCrc, self.boutonBudget,self.boutonTchat,self.boutonDonnee, self.boutonTerlow]
+        self.listBoutonNonActif=[self.boutonMandat,self.boutonScrum,self.boutonAnalyse,self.boutonCasUsage,self.boutonMaquette,self.boutonCrc, self.boutonTchat,self.boutonDonnee, self.boutonTerlow]
 
         self.placeHolderEntryNom=True
         self.placeHolderEntryMotDePasse=True
@@ -327,16 +327,16 @@ class Vue():
         
         self.cadrebase=Frame(self.root, bg= "#E4E9F3")
         
-        self.boutonMandat=Button(self.cadrebase,text="Mandat",bg="#234078",command=self.requeteMandat,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#234078",command=self.requeteScrum,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonAnalyse=Button(self.cadrebase,text="Analyse \nTextuelle",bg="#234078",command=self.requeteAnalyse,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonCasUsage=Button(self.cadrebase,text="Cas \nd'usage",bg="#234078",command=self.requeteCasUsage,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonMaquette=Button(self.cadrebase,text="Maquette",bg="#234078",command=self.requeteMaquette,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonCrc=Button(self.cadrebase,text="CRC",bg="#234078",command=self.requeteCrc,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonBudget=Button(self.cadrebase,text="Marketing",bg="#234078",command=self.requeteBudget,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonTchat=Button(self.cadrebase,text="Tchat",bg="#234078",command=self.requeteTchat,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#234078",command=self.requeteModelisation,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#234078",command=self.requeteTerlow,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonMandat=Button(self.cadrebase,text="Mandat",bg="#234078",command=self.requeteMandat,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#234078",command=self.requeteScrum,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonAnalyse=Button(self.cadrebase,text="Analyse \nTextuelle",bg="#234078",command=self.requeteAnalyse,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonCasUsage=Button(self.cadrebase,text="Cas \nd'usage",bg="#234078",command=self.requeteCasUsage,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonMaquette=Button(self.cadrebase,text="Maquette",bg="#234078",command=self.requeteMaquette,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonCrc=Button(self.cadrebase,text="CRC",bg="#234078",command=self.requeteCrc,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        #self.boutonBudget=Button(self.cadrebase,text="Marketing",bg="#234078",command=self.requeteBudget,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonTchat=Button(self.cadrebase,text="Tchat",bg="#234078",command=self.requeteTchat,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#234078",command=self.requeteModelisation,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#234078",command=self.requeteTerlow,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
 
         self.boutonMandat.grid(row=0,column=1 ,padx=(0,2))
         self.boutonScrum.grid(row=0,column=2 ,padx=(0,2))
@@ -344,7 +344,7 @@ class Vue():
         self.boutonCasUsage.grid(row=0,column=4 ,padx=(0,2))
         self.boutonMaquette.grid(row=0,column=5 ,padx=(0,2))
         self.boutonCrc.grid(row=0,column=6 ,padx=(0,2))
-        self.boutonBudget.grid(row=0,column=7 ,padx=(0,2))
+       # self.boutonBudget.grid(row=0,column=7 ,padx=(0,2))
         self.boutonTchat.grid(row=0,column=8 ,padx=(0,2))
         self.boutonDonnee.grid(row=0,column=9 ,padx=(0,2))
         self.boutonTerlow.grid(row=0,column=10)

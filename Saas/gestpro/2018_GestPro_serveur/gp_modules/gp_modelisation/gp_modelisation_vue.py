@@ -137,18 +137,18 @@ class Vue():
 #         canvas=Canvas(frame,bg='#FFFFFF',width=self.largeurDefault,height=self.largeurDefault,scrollregion=(0,0,500,800))
 #         
         # Create a frame for the canvas with non-zero row&column weights
-        self.cadreprincipal = Frame(self.root,width=self.largeurDefault,height=self.hauteurDefault)
+        self.cadreprincipal = Frame(self.root,width=self.largeurDefault,height=self.hauteurDefault, bg="#E4E9F3")
         self.cadreprincipal.grid(row=0, column=0, pady=(5, 0), sticky='we')
         # Set grid_propagate to False to allow 5-by-5 buttons resizing later
         self.cadreprincipal.grid_propagate(False)
         
         # Add a canvas in that frame
         self.canvasmodelisation = Canvas(self.cadreprincipal, bg="#E4E9F3")
-        self.canvasmodelisation.grid(row=0, column=0, sticky="news")
+        self.canvasmodelisation.grid(row=1, column=0, sticky="news")
 
         #Link a scrollbar to the canvas
         vsb = Scrollbar(self.cadreprincipal, orient="horizontal", command=self.canvasmodelisation.xview)
-        vsb.grid(row=1, column=0, sticky='we')
+        vsb.grid(row=0, column=0, sticky='we')
         self.canvasmodelisation.configure(xscrollcommand=vsb.set)
         
         # Create a frame to contain the buttons

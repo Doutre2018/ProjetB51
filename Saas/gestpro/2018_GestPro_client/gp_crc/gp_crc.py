@@ -17,11 +17,13 @@ from xmlrpc.client import ServerProxy
 
 class Controleur():
     def __init__(self):
-        print("IN CONTROLEUR")
         cwd = os.getcwd()
+<<<<<<< HEAD
         self.serveur = ServerProxy(sys.argv[4], allow_none=True)
+=======
+        self.connectionServeurCourant()
+>>>>>>> ecb373ea65a770e60aa9a9550f4bf918c45fcdc0
         liste = self.serveur.requeteSelection("select price from stocks")
-        print(liste)
         self.createurId=Id
         self.modele=Modele(self)
         self.vue=Vue(self)
@@ -32,9 +34,6 @@ class Modele():
         self.parent=parent
         self.serveur=parent.serveur
         self.listeCartes=self.selectClassesCartes()
-        print(self.serveur.fetchNomUtilisateurCourant())
-        print(self.serveur.fetchNomCompagnie())
-        print("JUSTE EN HAUT DE MOI")
         #self.listeIDCartes=self.selectIdCarte()
         #for i in self.listeIDCartes:
             #self.listeAttributs.append(selectAttributDeCarte(i))
@@ -155,7 +154,6 @@ class Modele():
         commande="DELETE FROM Cartes WHERE classe='"
         commande=commande+str(nomCarte)+"';"
         self.serveur.requeteInsertionPerso(commande)
-        print("Carte supprimée")
     
 if __name__ == '__main__':
     c=Controleur()

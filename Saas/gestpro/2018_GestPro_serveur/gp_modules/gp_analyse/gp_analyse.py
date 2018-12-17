@@ -13,20 +13,24 @@ from xmlrpc.client import ServerProxy
 
 class Controleur():
     def __init__(self):
+
         print("IN CONTROLEUR")
         self.serveur = ServerProxy(sys.argv[4], allow_none=True)
-        
         self.createurId=Id
-        print(self.serveur)
         self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
-    def insertion(self,ligne,colonne,nomProjet, type, mot):
-        self.modele.InsertInto(ligne,colonne,nomProjet, type, mot)
+
+    def insertion(self,ligne,nomProjet, type, mot):
+        self.modele.InsertInto(ligne,nomProjet, type, mot)
+
     
     def afficher(self):
         self.modele.selectAffichage(self)
+        
+    def supprimer(self, type, nom):
+        self.modele.deleteItem(type, nom)
 
 
 if __name__ == '__main__':

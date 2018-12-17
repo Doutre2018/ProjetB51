@@ -11,7 +11,6 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         self.BD=parent.serveur
-        print("Bienvenue dans le modele ..")
 
 
     def sauvegarde(self,listeObjet):
@@ -24,22 +23,27 @@ class Modele():
             for idtab in self.BD.requeteSelection("SELECT id FROM Objet_Maquette") :
                 objet = []
                 id = idtab[0]
-                print(self.BD.requeteSelection("SELECT Type FROM Objet_Maquette WHERE id ='" + str(id) + "';"))
                 objet.append(str((self.BD.requeteSelection("SELECT Type FROM Objet_Maquette WHERE id ='" + str(id) + "';"))))
                 objet.append(self.BD.requeteSelection("SELECT PosX FROM Objet_Maquette WHERE id ='" + str(id) + "';"))
                 objet.append((self.BD.requeteSelection("SELECT PosY FROM Objet_Maquette WHERE id ='" + str(id) + "';")))
                 objet.append((self.BD.requeteSelection("SELECT X FROM Objet_Maquette WHERE id ='" + str(id) + "';")))
                 objet.append((self.BD.requeteSelection("SELECT Y FROM Objet_Maquette WHERE id ='" + str(id) + "';")))
-                objet.append(str((self.BD.requeteSelection("SELECT Bordure FROM Objet_Maquette WHERE id ='" + str(id) + "';"))))
-                objet.append(str((self.BD.requeteSelection("SELECT Interieur FROM Objet_Maquette WHERE id ='" + str(id) + "';"))))
-                objet.append(str((self.BD.requeteSelection("SELECT Texte FROM Objet_Maquette WHERE id ='" + str(id) + "';"))))
-                objet.append(str((self.BD.requeteSelection("SELECT Font FROM Objet_Maquette WHERE id ='" + str(id) + "';"))))
-                objet.append("objet")
-                objet.append(id)
-                
-                for i in range(1,len(objet)):
+                objet.append((self.BD.requeteSelection("SELECT Bordure FROM Objet_Maquette WHERE id ='" + str(id) + "';")))
+                objet.append((self.BD.requeteSelection("SELECT Interieur FROM Objet_Maquette WHERE id ='" + str(id) + "';")))
+                objet.append((self.BD.requeteSelection("SELECT Texte FROM Objet_Maquette WHERE id ='" + str(id) + "';")))
+                objet.append((self.BD.requeteSelection("SELECT Font FROM Objet_Maquette WHERE id ='" + str(id) + "';")))
+
+                print(objet)
+                for i in range(0,len(objet)):
                     value = objet[i]
                     objet[i]=value[0]
-                    
+                for i in range(0,len(objet)):
+                    value = objet[i]
+                    objet[i]=value[0]
+                
+            
+                objet.append(id)    
+                print(objet)
+                print()
                 self.listeObjets.append(objet)   
                 

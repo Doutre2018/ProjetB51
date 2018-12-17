@@ -12,7 +12,6 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         self.BD=parent.serveur
-        print("Bienvenue dans le modele ..")
         self.listeType = ["Nom explicite",
                           "Verbe implicite",
                           "Adjectif supplementaire",
@@ -39,13 +38,12 @@ class Modele():
 
     
         
-    def InsertInto(self,ligne, colonne, numProjet, type, mot):
+    def InsertInto(self,ligne, numProjet, type, mot):
         typeDonnee = self.BD.requeteSelection("SELECT id FROM TypeMot WHERE nom = '" + type + "';")
-        print(mot)
         for i in typeDonnee:
             for n in i:
                 typeDonnee = n
-        self.BD.requeteInsertionPerso("INSERT INTO AnalyseTextuelle(ligne, colonne, id_projet, id_type, mot) VALUES( '" + str(ligne) + "', '" + str(colonne) + "', '" + str(self.numProjet) + "', '" + str(typeDonnee) + "', '" + str(mot) + "');")
+        self.BD.requeteInsertionPerso("INSERT INTO AnalyseTextuelle(ligne, id_projet, id_type, mot) VALUES( '" + str(ligne) + "', '" + str(self.numProjet) + "', '" + str(typeDonnee) + "', '" + str(mot) + "');")
         self.selectAffichage()
         
         
@@ -62,9 +60,13 @@ class Modele():
         self.lesAdjectifsImp = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[3] + "');")
         self.lesAdjectifsEx = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[4] + "');")
         self.lesNomsImp = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[5] + "');")
-        self.lesNomsSup = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id nom FROM TypeMot WHERE nom = '" + self.listeType[6] + "');")
+        self.lesNomsSup = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[6] + "');")
         self.lesVerbesEx = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[7] + "');")
         self.lesVerbesSup = self.BD.requeteSelection("SELECT mot FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + self.listeType[8] + "');")
+    
+    def deleteItem(self, type, nom):
+        self.BD.requeteInsertionPerso("DELETE FROM AnalyseTextuelle WHERE id_type = (SELECT id FROM TypeMot WHERE nom = '" + type + "') AND mot = '" + nom + "';")
+        
         
         
         

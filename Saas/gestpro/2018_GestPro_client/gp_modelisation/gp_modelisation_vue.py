@@ -52,6 +52,7 @@ class Vue():
     
             
     def afficherTables(self):
+        print("J'affiche mes tables de la BD")
         cartes = self.parent.modele.cartes
         for i in cartes:
             textNom = Label(self.cadremodelisation,text="Nom de la table")
@@ -59,8 +60,10 @@ class Vue():
             
             for k in i:
                 i = k
+            print("mon i " + str(i))
             nom = StringVar()
-            nomTable = Label(self.cadremodelisation,text=nom,borderwidth=2, relief="groove")
+            nom.set(str(i))
+            nomTable = Label(self.cadremodelisation,text=nom.get(),borderwidth=2, relief="groove")
             nomTable.grid(column=self.nbTable*3+1,row=1)
             nom.set(str(i))
              
@@ -71,7 +74,7 @@ class Vue():
             textAutre = Label(self.cadremodelisation,text="Autre",width=15)
             textAutre.grid(row=2,column=(self.nbTable*3)+2)
             j = 0
-             
+            
             self.parent.selectItemNom(i)
             self.parent.selectItemType(i)
             self.parent.selectItemContrainte(i)
@@ -79,10 +82,17 @@ class Vue():
             nomsChampsCreer=[]
             typeChampsCreer=[]
             autreChampsCreer=[]
-        
+            
             nomsChamps = self.parent.modele.noms
             typesChamps = self.parent.modele.types
             autreschamps = self.parent.modele.conts
+            
+            for i in nomsChamps:
+                nomsChamps = i
+            for i in typesChamps:
+                typesChamps = i
+            for i in autreschamps:
+                autreschamps = i
             
             for i in range(len(nomsChamps)) :
                 nomsChampsCreer.append(StringVar())
@@ -164,7 +174,8 @@ class Vue():
 
 
         self.nbChamps+=1
-    def ajouterTable(self):        
+    def ajouterTable(self):    
+        self.nomChampsCreer=None;    
         textNom = Label(self.cadremodelisation,text="Nom de la table")
         textNom.grid(column=self.nbTable*3,row=1)
         
@@ -193,10 +204,10 @@ class Vue():
             self.parent.insertItem(self.nomsChampsCreer[i].get(), self.typeChampsCreer[i].get(), self.autreChampsCreer[i].get(), self.nomTableCreer.get())
 
         
-        notable = self.nbTable
-        nomschamps=self.nomsChampsCreer
-        typeschamps=self.typeChampsCreer
-        autreschamps=self.autreChampsCreer
+#         notable = self.nbTable
+#         nomschamps=self.nomsChampsCreer
+#         typeschamps=self.typeChampsCreer
+#         autreschamps=self.autreChampsCreer
         boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,nomTable,nomschamps,typeschamps,autreschamps))
         boutonModifier.grid(column=(self.nbTable*3),row=j+4)
         self.nbTable+=1

@@ -52,7 +52,6 @@ class Vue():
     
             
     def afficherTables(self):
-        print("J'affiche mes tables de la BD")
         cartes = self.parent.modele.cartes
         for i in cartes:
             textNom = Label(self.cadremodelisation,text="Nom de la table")
@@ -60,7 +59,6 @@ class Vue():
             
             for k in i:
                 i = k
-            print("mon i " + str(i))
             nom = StringVar()
             nom.set(str(i))
             nomTable = Label(self.cadremodelisation,text=nom.get(),borderwidth=2, relief="groove")

@@ -16,38 +16,12 @@ from xmlrpc.client import ServerProxy
 class Controleur():
     def __init__(self):
         self.createurId=Id
-<<<<<<< HEAD
         self.serveur = ServerProxy(sys.argv[4], allow_none=True)
-        self.modele=None
-        self.vue=Vue(self)
-        self.vue.root.mainloop()
-   
-=======
-        self.connectionServeurCourant()
         self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
 
-    def connectionServeurCourant(self):  
-        try:
-            with open("adresseServeurCourant.txt", "r") as fichier:
-                self.adresseServeur = fichier.read()       
-        except Exception as erreur:
-            print(erreur)
-            try:
-                with open("../../../2018_Gestpro_client/adresseServeurCourant.txt", "r") as fichier:
-                    self.adresseServeur = fichier.read()  
-            except Exception as erreur:
-                print(erreur)
-                self.adresseServeur = "http://"
-                self.adresseServeur += input("Désolé, il y a eu une erreur lors de la détection automatique de l'adresse du serveur, vous pouvez entrer le IP (ex: 10.57.47.7) manuellement: ")
-                self.adresseServeur += ":9999"
-        try:
-            self.serveur = ServerProxy(self.adresseServeur)
-        except Exception as erreur:
-            print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
-            print(erreur)
-            sys.exit(0)
+
             
     def insertCarte(self, nomCarte):
         self.modele.insertIntoCarte(nomCarte)
@@ -69,7 +43,7 @@ class Controleur():
     def selectItemContrainte(self, nomCarte):
         self.modele.selectAffichageItemCon(nomCarte);
         
->>>>>>> ecb373ea65a770e60aa9a9550f4bf918c45fcdc0
+
     
 if __name__ == '__main__':
     c=Controleur()

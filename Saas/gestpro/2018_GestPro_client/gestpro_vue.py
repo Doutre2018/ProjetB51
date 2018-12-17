@@ -521,7 +521,7 @@ class Vue():
         self.savedNameTemp = self.NouveauNomProjet.get()
         print("ds charger" + self.savedNameTemp, self.cieName)
         self.changecadre(self.cadreProjet)
-        if self.parent.modProjet.createProject(self, self.savedNameTemp, self.cieName):
+        if self.parent.modProjet.createProject(self, self.savedNameTemp, self.nomsplash.get(), self.cieName):
             pass
         else:
             print("Erreur de creation de nom de projet (nom déjà utilisé")

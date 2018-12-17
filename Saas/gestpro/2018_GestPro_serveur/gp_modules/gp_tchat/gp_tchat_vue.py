@@ -24,6 +24,7 @@ class Vue():
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
         self.cadreTchatExiste=False
+        self.color = {"user":"color"};
          #Tout ce qui a été écrit en BD
 #         self.listeIdParticipant = self.modele.selectTousUtilisateursLigneChat()
 #         if self.listeIdParticipant:
@@ -34,13 +35,11 @@ class Vue():
 #             for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
 #                 for n in i:
 #                     self.listeNomParticipant = n
-        self.parent.reloadMessageBD();
         self.images={}
         self.cadreactif=None
         self.creercadres()
         
         self.changecadre(self.cadreTchat)
-        
         
         
     def peuplerMessagesBD(self):
@@ -66,6 +65,7 @@ class Vue():
         
     def creercadres(self):
         self.creercadreTchat()
+
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
     def afficherImage(self):
@@ -74,17 +74,18 @@ class Vue():
         image= image.resize((120, 100), Image.ANTIALIAS)
         self.img=ImageTk.PhotoImage(image)
 
-        image2= Image.open("./chat2.jpg")
-        image2= image2.resize((120, 100), Image.ANTIALIAS)
-        self.img2=ImageTk.PhotoImage(image2)
+        #image2= Image.open("./chat2.jpg")
+        #image2= image2.resize((120, 100), Image.ANTIALIAS)
+        #self.img2=ImageTk.PhotoImage(image2)
         
         canvasImage1 = Canvas(self.cadreTchat,width=120,height=100)
         canvasImage1.create_image(0,0,image=self.img,anchor=NW)
         canvasImage1.grid(row=0,column=0)
         canvasImage2 = Canvas(self.cadreTchat,width=120,height=100)
-        canvasImage2.create_image(0,0,image=self.img2,anchor=NW)
+        canvasImage2.create_image(0,0,image=self.img,anchor=NW)
         canvasImage2.grid(row=0,column=4)
-            
+        #self.parent.reloadMessageBD();
+    
         
               
     def creercadreTchat(self):
@@ -101,10 +102,10 @@ class Vue():
         self.listeMessage.grid(columnspan=5,column=0,row=4,padx=70,pady=(0,20))
         self.message = Text(self.cadreTchat, width=80,height=3)
         self.message.grid(columnspan=5,column=0,row=5,padx=70,pady=10)
-        self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage,bg="#234078")
+        self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage,bg="white",fg="#234078")
         self.boutonMessage.grid(columnspan=5,column=0,row=6,padx=70)
         
-        
+
                     
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
@@ -116,9 +117,10 @@ class Vue():
         if self.messagesDeBD:
             for message in self.messagesDeBD:
                 if self.messagesDeBD.index(message):
-                    #self.listeMessage.itemconfig(self.messagesDeBD.index(message), {'bg':'red'})
+                    if (message[0] in )
+                    self.listeMessage.itemconfig(self.messagesDeBD.index(message), {'bg':'red'})
                     self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
-            
+        
 
     def fermerfenetre(self):
         print("ON FERME la fenetre")

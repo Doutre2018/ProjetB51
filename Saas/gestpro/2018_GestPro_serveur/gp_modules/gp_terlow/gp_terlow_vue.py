@@ -81,7 +81,7 @@ class Vue():
         
 
     def ajouterListe(self):
-        self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="#b5eeff",bd=4,highlightcolor="#234078",highlightthickness=1))
+        self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="#d5e0e3",bd=4,highlightcolor="#234078",highlightthickness=1))
         liste = self.tableauDeColonne[self.nbListe]
 
         liste.bind('<Button-3>', lambda evt: self.deplacerColonneRight(evt, liste,self.nbListe))

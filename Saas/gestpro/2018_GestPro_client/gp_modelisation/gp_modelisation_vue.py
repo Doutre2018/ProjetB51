@@ -55,22 +55,22 @@ class Vue():
     def afficherTables(self):
         cartes = self.parent.modele.cartes
         for i in cartes:
-            textNom = Label(self.cadremodelisation,text="Nom de la table")
+            textNom = Label(self.cadremodelisation,text="Nom de la table",bg="#E4E9F3")
             textNom.grid(column=self.nbTable*3,row=1)
             
             for k in i:
                 i = k
             nom = StringVar()
             nom.set(str(i))
-            nomTable = Label(self.cadremodelisation,text=nom.get(),borderwidth=2, relief="groove")
+            nomTable = Label(self.cadremodelisation,text=nom.get(),borderwidth=2, relief="groove",bg="#E4E9F3")
             nomTable.grid(column=self.nbTable*3+1,row=1)
             nom.set(str(i))
              
-            textNom = Label(self.cadremodelisation,text="Nom du Champ",width=15)
+            textNom = Label(self.cadremodelisation,text="Nom du Champ",width=15,bg="#E4E9F3")
             textNom.grid(row=2,column=(self.nbTable*3))
-            textType = Label(self.cadremodelisation,text="Type du Champ",width=15)
+            textType = Label(self.cadremodelisation,text="Type du Champ",width=15,bg="#E4E9F3")
             textType.grid(row=2,column=(self.nbTable*3)+1)
-            textAutre = Label(self.cadremodelisation,text="Autre",width=15)
+            textAutre = Label(self.cadremodelisation,text="Autre",width=15,bg="#E4E9F3")
             textAutre.grid(row=2,column=(self.nbTable*3)+2)
             j = 0
             
@@ -101,41 +101,20 @@ class Vue():
                 typeChampsCreer[i].set(typesChamps[i])
                 autreChampsCreer[i].set(autreschamps[i])
             for i in range(len(nomsChamps)) :
-                nomduchamp = Label(self.cadremodelisation, width = 20, text= nomsChampsCreer[i].get(),borderwidth=2, relief="groove")
+                nomduchamp = Label(self.cadremodelisation, width = 20, text= nomsChampsCreer[i].get(),borderwidth=2, relief="groove",bg="#E4E9F3")
                 nomduchamp.grid(column=(self.nbTable*3), row=i+3,padx=(20,0))
-                nomduchamp = Label(self.cadremodelisation, width = 20, text= typeChampsCreer[i].get(),borderwidth=2, relief="groove")
+                nomduchamp = Label(self.cadremodelisation, width = 20, text= typeChampsCreer[i].get(),borderwidth=2, relief="groove",bg="#E4E9F3")
                 nomduchamp.grid(column=(self.nbTable*3)+1, row=i+3)
-                nomduchamp = Label(self.cadremodelisation, width = 20, text= autreChampsCreer[i].get(),borderwidth=2, relief="groove")
+                nomduchamp = Label(self.cadremodelisation, width = 20, text= autreChampsCreer[i].get(),borderwidth=2, relief="groove",bg="#E4E9F3")
                 nomduchamp.grid(column=(self.nbTable*3)+2, row=i+3,padx=(0,20))
                 j = i
              
             notable = self.nbTable
-            boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,textNom,nomsChampsCreer,typeChampsCreer,typeChampsCreer))
+            boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,textNom,nomsChampsCreer,typeChampsCreer,typeChampsCreer),bg="white")
             boutonModifier.grid(column=(self.nbTable*3),row=j+4)
             self.nbTable+=1    
               
     def creercadremodelisation(self):
-#         upscroll = Scrollbar(self.root, orient=VERTICAL)
-#         upscroll.grid(row=0, column=1, sticky=N+S)
-#         horiscroll = Scrollbar(self.root, orient=HORIZONTAL)
-#         horiscroll.grid(row=1, column=0, sticky=E+W)
-# 
-#         self.cadremodelisation=Canvas(self.root,yscrollcommand=upscroll.set, xscrollcommand=horiscroll.set,scrollregion=(0,0,2000,2000),bg="#E4E9F3")
-#         self.root.overrideredirect(True) #Enleve la bordure
-#         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
-#         
-#         upscroll.config(command=self.cadremodelisation.yview)
-#         horiscroll.config(command=self.cadremodelisation.xview)
-
-#        # self.cadremodelisation.configure(scrollregion = self.cadremodelisation.bbox("all"))
-# 
-#         self.cadremodelisationExiste=True
-#     
-#     
-#         self.cadremodelisation=Frame(self.root,width=self.largeurDefault,height=self.hauteurDefault)
-#         frame.grid(row=0,column=0)
-#         canvas=Canvas(frame,bg='#FFFFFF',width=self.largeurDefault,height=self.largeurDefault,scrollregion=(0,0,500,800))
-#         
         # Create a frame for the canvas with non-zero row&column weights
         self.cadreprincipal = Frame(self.root,width=self.largeurDefault,height=self.hauteurDefault, bg="#E4E9F3")
         self.cadreprincipal.grid(row=0, column=0, pady=(5, 0), sticky='we')
@@ -158,7 +137,7 @@ class Vue():
         
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
         
-        self.boutonAjoutTable = Button(self.cadremodelisation, text="Creer Table", width = 20, height = 3, command = self.creerTable)
+        self.boutonAjoutTable = Button(self.cadremodelisation, text="Creer Table", width = 20, height = 3, command = self.creerTable,bg="white")
         self.boutonAjoutTable.grid(row=0,column=0)
         # Set the canvas scrolling region
         #self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
@@ -166,18 +145,18 @@ class Vue():
 
     def creerTable(self):
         self.nbChamps = 0
-        self.creationTable =Toplevel(self.cadremodelisation)
-        textNom = Label(self.creationTable,text="Nom de la table")
+        self.creationTable =Toplevel(self.cadremodelisation,bg="#E4E9F3")
+        textNom = Label(self.creationTable,text="Nom de la table",bg="#E4E9F3")
         textNom.grid(row=0,column=1)
         #self.nomTableCreer.append(StringVar())
 
         self.nomTableCreer = Entry(self.creationTable)
         self.nomTableCreer.grid(row=0,column=2)
-        textNom = Label(self.creationTable,text="Nom du Champ",width=15)
+        textNom = Label(self.creationTable,text="Nom du Champ",width=15,bg="#E4E9F3")
         textNom.grid(row=1,column=1)
-        textType = Label(self.creationTable,text="Type du Champ",width=15)
+        textType = Label(self.creationTable,text="Type du Champ",width=15,bg="#E4E9F3")
         textType.grid(row=1,column=2)
-        textAutre = Label(self.creationTable,text="Autre",width=15)
+        textAutre = Label(self.creationTable,text="Autre",width=15,bg="#E4E9F3")
         textAutre.grid(row=1,column=3)
             
 
@@ -185,9 +164,9 @@ class Vue():
         self.typeChampsCreer=[]
         self.autreChampsCreer=[]
         
-        boutonAjoutChamps = Button(self.creationTable, width = 15, height = 1, text= "Ajouter Champs", command = self.ajouterChampsNouveau)
+        boutonAjoutChamps = Button(self.creationTable, width = 15, height = 1, text= "Ajouter Champs", command = self.ajouterChampsNouveau,bg="white")
         boutonAjoutChamps.grid(row=self.nbChamps+3)
-        boutonCreer = Button(self.creationTable, width = 15, height = 1, text = "Ajouter", command  = self.ajouterTable)
+        boutonCreer = Button(self.creationTable, width = 15, height = 1, text = "Ajouter", command  = self.ajouterTable,bg="white")
         boutonCreer.grid(row=self.nbChamps+4,column=0, pady=10)
     def ajouterChampsNouveau(self):
         
@@ -239,7 +218,7 @@ class Vue():
 #         nomschamps=self.nomsChampsCreer
 #         typeschamps=self.typeChampsCreer
 #         autreschamps=self.autreChampsCreer
-        boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,nomTable,nomschamps,typeschamps,autreschamps))
+        boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,nomTable,nomschamps,typeschamps,autreschamps),bg="white")
         boutonModifier.grid(column=(self.nbTable*3),row=j+4)
         self.nbTable+=1
         self.creationTable.destroy()
@@ -317,18 +296,18 @@ class Vue():
         self.autreChampsCreer.pop(position)
         
     def ajoutmodificationTable(self, noTable):
-        textNom = Label(self.cadremodelisation,text="Nom de la table")
+        textNom = Label(self.cadremodelisation,text="Nom de la table",bg="#E4E9F3")
         textNom.grid(column=noTable*3,row=1)
         
         nomTable = Label(self.cadremodelisation,text=str(self.nomTableCreer.get()),borderwidth=2, relief="groove")
         nomTable.grid(column=noTable*3+1,row=1)
         
         
-        textNom = Label(self.cadremodelisation,text="Nom du Champ",width=15)
+        textNom = Label(self.cadremodelisation,text="Nom du Champ",width=15,bg="#E4E9F3")
         textNom.grid(row=2,column=(noTable*3))
-        textType = Label(self.cadremodelisation,text="Type du Champ",width=15)
+        textType = Label(self.cadremodelisation,text="Type du Champ",width=15,bg="#E4E9F3")
         textType.grid(row=2,column=(noTable*3)+1)
-        textAutre = Label(self.cadremodelisation,text="Autre",width=15)
+        textAutre = Label(self.cadremodelisation,text="Autre",width=15,bg="#E4E9F3")
         textAutre.grid(row=2,column=(noTable*3)+2)
         j = 0
         

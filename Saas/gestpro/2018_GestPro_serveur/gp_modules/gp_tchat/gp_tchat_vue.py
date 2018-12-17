@@ -17,6 +17,7 @@ class Vue():
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
+        self.root.config(bg="#E4E9F3")
         self.user = self.modele.usager
         self.largeurDefault=largeur
         self.hauteurDefault=hauteur
@@ -33,6 +34,7 @@ class Vue():
 #             for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
 #                 for n in i:
 #                     self.listeNomParticipant = n
+        self.parent.reloadMessageBD();
         self.images={}
         self.cadreactif=None
         self.creercadres()
@@ -72,30 +74,34 @@ class Vue():
         image= image.resize((120, 100), Image.ANTIALIAS)
         self.img=ImageTk.PhotoImage(image)
 
+        image2= Image.open("./chat2.jpg")
+        image2= image2.resize((120, 100), Image.ANTIALIAS)
+        self.img2=ImageTk.PhotoImage(image2)
+        
         canvasImage1 = Canvas(self.cadreTchat,width=120,height=100)
         canvasImage1.create_image(0,0,image=self.img,anchor=NW)
         canvasImage1.grid(row=0,column=0)
         canvasImage2 = Canvas(self.cadreTchat,width=120,height=100)
-        canvasImage2.create_image(0,0,image=self.img,anchor=NW)
+        canvasImage2.create_image(0,0,image=self.img2,anchor=NW)
         canvasImage2.grid(row=0,column=4)
             
         
               
     def creercadreTchat(self):
-        self.cadreTchat=Frame(self.root,bg="lightblue")
+        self.cadreTchat=Frame(self.root, bg="#E4E9F3")
         self.root.overrideredirect(True) #Enleve la bordure
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
-        self.titre = Label(self.cadreTchat, text="LE TCHAT", font="Arial 32",bg="lightblue")
+        self.titre = Label(self.cadreTchat, text="LE CHAT", font="Arial 32", bg="#E4E9F3")
         self.titre.grid(columnspan=5,row=0,column=0)
         self.afficherImage()
         
-        self.titreMessages = Label(self.cadreTchat,width=80,text="Messages :",bg="lightblue")
+        self.titreMessages = Label(self.cadreTchat,width=80,text="Messages :", bg="#E4E9F3")
         self.titreMessages.grid(columnspan=5,column=0,row=3,pady=(10,0))
         self.listeMessage = Listbox(self.cadreTchat,width=80,height=40)
         self.listeMessage.grid(columnspan=5,column=0,row=4,padx=70,pady=(0,20))
         self.message = Text(self.cadreTchat, width=80,height=3)
         self.message.grid(columnspan=5,column=0,row=5,padx=70,pady=10)
-        self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage,bg="Skyblue")
+        self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage,bg="#234078")
         self.boutonMessage.grid(columnspan=5,column=0,row=6,padx=70)
         
         

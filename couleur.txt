@@ -1,0 +1,3 @@
+Bleu Pale Fond: "#E4E9F3"
+Bleu Foncé Menu: "#234078"
+Jaune: #FFC14C"

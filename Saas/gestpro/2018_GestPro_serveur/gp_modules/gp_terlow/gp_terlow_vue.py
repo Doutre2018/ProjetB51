@@ -69,10 +69,11 @@ class Vue():
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
         
         #Enlever pour voir vrai logiciel
-        self.afficherImage()
+        #self.afficherImage()
         
-        self.cadreterlow=Frame(self.root,width=self.largeur,height=self.hauteur)
+        self.cadreterlow=Frame(self.root,width=self.largeur,height=self.hauteur, bg="#E4E9F3")
         self.cadreterlow.grid()
+        
         
         self.boutonAjoutListe = Button(self.cadreterlow, text="Ajouter Colonne",command=self.ajouterListe)
         self.boutonAjoutListe.grid()
@@ -80,7 +81,7 @@ class Vue():
         
 
     def ajouterListe(self):
-        self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="white",bd=4,highlightcolor="red",highlightthickness=1))
+        self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="#66d6f6",bd=4,highlightcolor="#234078",highlightthickness=1))
         liste = self.tableauDeColonne[self.nbListe]
 
         liste.bind('<Button-3>', lambda evt: self.deplacerColonneRight(evt, liste,self.nbListe))

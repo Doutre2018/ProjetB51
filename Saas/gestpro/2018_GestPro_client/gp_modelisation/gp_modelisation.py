@@ -16,6 +16,13 @@ from xmlrpc.client import ServerProxy
 class Controleur():
     def __init__(self):
         self.createurId=Id
+<<<<<<< HEAD
+        self.serveur = ServerProxy(sys.argv[4], allow_none=True)
+        self.modele=None
+        self.vue=Vue(self)
+        self.vue.root.mainloop()
+   
+=======
         self.connectionServeurCourant()
         self.modele=Modele(self)
         self.vue=Vue(self)
@@ -62,6 +69,7 @@ class Controleur():
     def selectItemContrainte(self, nomCarte):
         self.modele.selectAffichageItemCon(nomCarte);
         
+>>>>>>> ecb373ea65a770e60aa9a9550f4bf918c45fcdc0
     
 if __name__ == '__main__':
     c=Controleur()

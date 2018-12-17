@@ -13,13 +13,22 @@ from xmlrpc.client import ServerProxy
 
 class Controleur():
     def __init__(self):
+<<<<<<< HEAD
+        print("IN CONTROLEUR")
+        self.serveur = ServerProxy(sys.argv[4], allow_none=True)
+=======
         self.connectionServeurCourant()
+>>>>>>> ecb373ea65a770e60aa9a9550f4bf918c45fcdc0
         
         self.createurId=Id
         self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
+<<<<<<< HEAD
+    def insertion(self,ligne,colonne,nomProjet, type, mot):
+        self.modele.InsertInto(ligne,colonne,nomProjet, type, mot)
+=======
     def connectionServeurCourant(self):
         try:
             with open("adresseServeurCourant.txt", "r") as fichier:
@@ -42,6 +51,7 @@ class Controleur():
             sys.exit(0)
     def insertion(self,ligne,nomProjet, type, mot):
         self.modele.InsertInto(ligne,nomProjet, type, mot)
+>>>>>>> ecb373ea65a770e60aa9a9550f4bf918c45fcdc0
     
     def afficher(self):
         self.modele.selectAffichage(self)

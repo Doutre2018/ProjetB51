@@ -299,7 +299,6 @@ class  BaseDonnees():
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.creerListeCompagnies()
-        #self.insertion('stocks', [1])
         self.connecteur.commit()
         self.connecteur.close()
 

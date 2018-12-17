@@ -17,11 +17,13 @@ class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.createurId=Id
-        self.connectionServeurCourant()
+        self.serveur = ServerProxy(sys.argv[4], allow_none=True)
+        #self.connectionServeurCourant()
         self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
-
+        
+""" vieille patch, enlever si tout va bien
     def connectionServeurCourant(self):  
         try:
             with open("adresseServeurCourant.txt", "r") as fichier:
@@ -42,7 +44,7 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
-        
+"""        
     
 if __name__ == '__main__':
     c=Controleur()

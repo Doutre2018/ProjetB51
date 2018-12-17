@@ -32,7 +32,6 @@ class Controleur():
         s.close() # ferme le socket
         return monip
 
-    
     # ----------------DM------------------------ #
     def fetchCompagnies(self, ipserveur):
         if ipserveur:

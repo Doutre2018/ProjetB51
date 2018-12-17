@@ -34,7 +34,6 @@ class Vue():
 #             for i in self.modele.triNomAvecIdUtilisateur(self.listeIdParticipant):
 #                 for n in i:
 #                     self.listeNomParticipant = n
-        self.parent.reloadMessageBD();
         self.images={}
         self.cadreactif=None
         self.creercadres()
@@ -69,21 +68,20 @@ class Vue():
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
     def afficherImage(self):
-        
         image= Image.open("./chat.jpg")
         image= image.resize((120, 100), Image.ANTIALIAS)
         self.img=ImageTk.PhotoImage(image)
 
-        image2= Image.open("./chat2.jpg")
-        image2= image2.resize((120, 100), Image.ANTIALIAS)
-        self.img2=ImageTk.PhotoImage(image2)
+        #image2= Image.open("./chat2.jpg")
+        #image2= image2.resize((120, 100), Image.ANTIALIAS)
+        #self.img2=ImageTk.PhotoImage(image2)
         
         canvasImage1 = Canvas(self.cadreTchat,width=120,height=100)
         canvasImage1.create_image(0,0,image=self.img,anchor=NW)
         canvasImage1.grid(row=0,column=0)
-        canvasImage2 = Canvas(self.cadreTchat,width=120,height=100)
-        canvasImage2.create_image(0,0,image=self.img2,anchor=NW)
-        canvasImage2.grid(row=0,column=4)
+        #canvasImage2 = Canvas(self.cadreTchat,width=120,height=100)
+        #canvasImage2.create_image(0,0,image=self.img2,anchor=NW)
+        #canvasImage2.grid(row=0,column=4)
             
         
               

@@ -132,11 +132,7 @@ class Vue():
         self.ipsplash=Entry(self.cadresplash,bg="white",justify=CENTER,)
         self.ipsplash.insert(0, self.monip)
         
-        # ---------------- DM ----------------
-        cies = self.fetchCompagnies()
-        self.ciessplash=ttk.Combobox(self.cadresplash,width=40,justify=CENTER,values=cies)
-        self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
-        self.ciessplash.grid()
+
         # ------------------------------------                      
         
         self.labelIp.grid()
@@ -213,6 +209,12 @@ class Vue():
         self.nomProjet.insert(0,'Nom du Projet')
         self.nomProjet.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
         self.nomProjet.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
+        
+        # ---------------- DM ----------------
+        cies = self.fetchCompagnies()
+        self.ciessplash=ttk.Combobox(self.cadreProjet,width=40,justify=CENTER,values=cies)
+        self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
+        self.ciessplash.grid()
 
         self.confirmerIB=Button(self.cadreProjet,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.connexion, width=15)
         self.confirmerIB.grid(row= 10, column= 0,pady=(30,35), padx=(0,122))

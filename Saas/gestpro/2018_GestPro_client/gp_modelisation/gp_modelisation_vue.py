@@ -141,7 +141,7 @@ class Vue():
         self.boutonAjoutTable.grid(row=0,column=0)
         # Set the canvas scrolling region
         #self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
-        self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
+        self.canvasmodelisation.config(scrollregion=(0,0,2000,500))
 
     def creerTable(self):
         self.nbChamps = 0
@@ -166,8 +166,10 @@ class Vue():
         
         boutonAjoutChamps = Button(self.creationTable, width = 15, height = 1, text= "Ajouter Champs", command = self.ajouterChampsNouveau,bg="white")
         boutonAjoutChamps.grid(row=self.nbChamps+3)
+        
         boutonCreer = Button(self.creationTable, width = 15, height = 1, text = "Ajouter", command  = self.ajouterTable,bg="white")
         boutonCreer.grid(row=self.nbChamps+4,column=0, pady=10)
+        
     def ajouterChampsNouveau(self):
         
         self.nomsChampsCreer.append(StringVar())

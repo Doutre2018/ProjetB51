@@ -16,9 +16,9 @@ class Modele():
         self.numProjet="1"
         self.scrum = []
         self.membres = []
-        self.accompli
-        self.aFaire
-        self.probleme
+        #self.accompli
+        #self.aFaire
+        #self.probleme
         
         
     def insertScrum(self, date):

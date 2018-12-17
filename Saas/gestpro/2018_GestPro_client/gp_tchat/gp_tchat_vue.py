@@ -81,18 +81,11 @@ class Vue():
         canvasImage1 = Canvas(self.cadreTchat,width=120,height=100)
         canvasImage1.create_image(0,0,image=self.img,anchor=NW)
         canvasImage1.grid(row=0,column=0)
-<<<<<<< HEAD
         #canvasImage2 = Canvas(self.cadreTchat,width=120,height=100)
         #canvasImage2.create_image(0,0,image=self.img2,anchor=NW)
         #canvasImage2.grid(row=0,column=4)
-            
-=======
-        canvasImage2 = Canvas(self.cadreTchat,width=120,height=100)
-        canvasImage2.create_image(0,0,image=self.img,anchor=NW)
-        canvasImage2.grid(row=0,column=4)
         #self.parent.reloadMessageBD();
     
->>>>>>> 6cc9f90dad66d27299f25358a72a1425be86a157
         
               
     def creercadreTchat(self):
@@ -109,18 +102,9 @@ class Vue():
         self.listeMessage.grid(columnspan=5,column=0,row=4,padx=70,pady=(0,20))
         self.message = Text(self.cadreTchat, width=80,height=3)
         self.message.grid(columnspan=5,column=0,row=5,padx=70,pady=10)
-<<<<<<< HEAD
-        self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage,bg="#234078")
-        self.boutonMessage.grid(columnspan=5,column=0,row=6,padx=70)
-        
-
-=======
         self.boutonMessage = Button(self.cadreTchat, text="Envoyer", width = 15,command=self.ajouterMessage,bg="white",fg="#234078")
         self.boutonMessage.grid(columnspan=5,column=0,row=6,padx=70)
         
-
-                    
->>>>>>> 6cc9f90dad66d27299f25358a72a1425be86a157
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
         self.modele.insertLigneChat(self.message.get("1.0", END))
@@ -141,7 +125,6 @@ class Vue():
                 if self.messagesDeBD.index(message):
                     self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
                     self.listeMessage.itemconfig(END, {'fg':self.color.get(message[0])})
-
 
     def fermerfenetre(self):
         print("ON FERME la fenetre")

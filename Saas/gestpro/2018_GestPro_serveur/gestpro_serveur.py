@@ -302,8 +302,6 @@ class  BaseDonnees():
         self.connecteur.commit()
         self.connecteur.close()
 
-
-    
     def genererListeTables(self):
         listeTables = [ 
             ['stocks', ['price', 'INTEGER', '']],

@@ -96,8 +96,6 @@ class Vue():
         self.creercadresplash()
         self.connexionProjet()
         self.nouveauProjet()
-        self.creeNouvelleUtilisateur()
-
         self.creercadrebase()
         #self.creercadrecentral()
                 
@@ -131,14 +129,13 @@ class Vue():
         self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez l'adresse ip de votre serveur",font='arial 12',)
         self.ipsplash=Entry(self.cadresplash,bg="white",justify=CENTER,)
         self.ipsplash.insert(0, self.monip)
-        
         # ---------------- DM ----------------
         #cies = self.fetchCompagnies()
         self.ciessplash=ttk.Combobox(self.cadresplash,width=40,justify=CENTER,values=None)
         self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
         self.ciessplash.grid()
+
         # ------------------------------------                      
-        
         self.labelIp.grid()
         self.ipsplash.grid()
         
@@ -189,7 +186,7 @@ class Vue():
         
         # ------------- DM -------------
         #compagnies = self.fetchCompagnies()
-        self.compagniesplash=ttk.Combobox(self.cadreNouvelleUtilisateur,width=40,justify=CENTER,values=None)
+        self.compagniesplash=ttk.Combobox(self.cadreNouvelleUtilisateur,width=40,justify=CENTER,values="")
         self.compagniesplash.insert(0,"< Sélectionner votre entreprise >")
         self.compagniesplash.grid()
         # ------------------------------
@@ -215,10 +212,10 @@ class Vue():
         self.nomProjet.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
         
         # ---------------- DM ----------------
-        cies = self.fetchCompagnies()
-        self.ciessplash=ttk.Combobox(self.cadreProjet,width=40,justify=CENTER,values=cies)
-        self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
-        self.ciessplash.grid()
+        #cies = self.fetchCompagnies()
+        #self.ciessplash=ttk.Combobox(self.cadreProjet,width=40,justify=CENTER,values=cies)
+        #self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
+        #self.ciessplash.grid()
 
         self.confirmerIB=Button(self.cadreProjet,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.connexion, width=15)
         self.confirmerIB.grid(row= 10, column= 0,pady=(30,35), padx=(0,122))
@@ -542,6 +539,7 @@ class Vue():
         
         
     def AllerAInscription(self):
+        self.creeNouvelleUtilisateur()
         self.changecadre(self.cadreNouvelleUtilisateur)
     def AllerANouveauProjet(self):
         self.changecadre(self.cadreNouveauProjet)

@@ -50,6 +50,7 @@ class Controleur():
     def connexion(self, nom, motPasse, compagnie, ipserveur):
         if ipserveur and nom:
             self.monnom=nom
+            self.monip=ipserveur
             ad = "http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
             rep = self.serveur.connexion(nom, motPasse, compagnie)
@@ -100,7 +101,7 @@ class Controleur():
                     fiche.close()
             chaineappli="."+lieuApp+lieuApp+".py"
 
-            #self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport],shell=0) 
+            #self.pid = Popen([sys.executable, cha ineappli,self.monnom,self.monip,self.nodeport],shell=0) 
             self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport,self.IPServeur],shell=0) 
         else:
             print("RIEN")

@@ -67,17 +67,8 @@ class Vue():
         self.creercadreMaquette()            
     def creermenu(self):
         
-        self.menubar = Menu(self.root)
+        self.menubar = Menu(self.root,bg="#E4E9F3")
         self.menubar.add_command(label="Sauvegarder", command=self.sauvegarde)
-
-        self.editmenu = Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Undo", command=self.salutations)
-        self.editmenu.add_command(label="Redo", command=self.salutations)
-        self.editmenu.add_separator()
-        self.editmenu.add_command(label="Copier", command=self.salutations)
-        self.editmenu.add_command(label="Couper", command=self.salutations)
-        self.editmenu.add_command(label="Coller", command=self.salutations)
-        self.menubar.add_cascade(label="Edition", menu=self.editmenu)
         self.menubar.add_command(label="Choisir Couleur", command=self.getColor)
 
         

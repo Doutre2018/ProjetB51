@@ -18,11 +18,7 @@ from xmlrpc.client import ServerProxy
 class Controleur():
     def __init__(self):
         cwd = os.getcwd()
-<<<<<<< HEAD
         self.serveur = ServerProxy(sys.argv[4], allow_none=True)
-=======
-        self.connectionServeurCourant()
->>>>>>> ecb373ea65a770e60aa9a9550f4bf918c45fcdc0
         liste = self.serveur.requeteSelection("select price from stocks")
         self.createurId=Id
         self.modele=Modele(self)

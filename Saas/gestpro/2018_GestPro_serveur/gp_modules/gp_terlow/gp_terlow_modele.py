@@ -109,6 +109,7 @@ class Modele():
             self.referenceControleur.serveur.requeteInsertionDate("INSERT INTO Cartes_Terlow (id_colonne, ordre, titre, description, estimationTemps, dateCreation, datePrevueFin) VALUES (?, ?, ?, ?,?,?, ?)", [self.listeColonnes[1].id, 2, "carte de la colonne " + str(colonne.id), "description de la deuxième carte", 360], [[],[2018,1,12,9,15,0]])
         except Exception as erreur:
             print("exception de cartes demo:", erreur)
+            
     def genererColonnesDemo(self):
         try:
             for i in range(4):

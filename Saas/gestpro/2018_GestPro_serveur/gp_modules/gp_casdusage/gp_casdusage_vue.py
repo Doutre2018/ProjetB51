@@ -15,6 +15,7 @@ class Vue():
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.attributes("-fullscreen", False)
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
+        self.root.config(bg="#E4E9F3")
         self.parent=parent
         self.modele=None
         self.defaultcolor =self.root["bg"];
@@ -70,11 +71,11 @@ class Vue():
         self.listeCas.grid(row=1,column=1,padx=20)
         self.listeCas.bind("<Button-1>", self.afficherScenarii)
         
-        self.boutonAjouterCas = Button(self.cadreUsage,text="Ajouter un Cas",bg="lightblue",command=self.ajouterCas)
+        self.boutonAjouterCas = Button(self.cadreUsage,text="Ajouter un Cas",bg="white",command=self.ajouterCas)
         self.boutonAjouterCas.grid(row=2,column=1,padx=20)
         
         # --------Bouton POur JF
-        self.boutonSupprimerCas = Button(self.cadreUsage,text="Supprimer un Cas",bg="lightblue",command=self.ajouterCas)
+        self.boutonSupprimerCas = Button(self.cadreUsage,text="Supprimer un Cas",bg="white",command=self.ajouterCas)
         self.boutonSupprimerCas.grid(row=3,column=1,padx=20)
         
         #Scenarii
@@ -103,10 +104,10 @@ class Vue():
         
         self.cadreScenarii.grid(row=1,column=2)
         
-        self.boutonAjouterScenarii = Button(self.cadreScenarii,text="Ajouter un Scenarii",bg="lightblue",command=self.ajouterScenarii)
+        self.boutonAjouterScenarii = Button(self.cadreScenarii,text="Ajouter un Scenarii",bg="white",command=self.ajouterScenarii)
         self.boutonAjouterScenarii.grid(row=3,column=1,columnspan=2,padx=20)
         #-----------BOUTON POUR JF!
-        self.boutonSupprimerScenarii = Button(self.cadreScenarii,text="Supprimer un Scenarii",bg="lightblue",command=self.ajouterScenarii)
+        self.boutonSupprimerScenarii = Button(self.cadreScenarii,text="Supprimer un Scenarii",bg="white",command=self.ajouterScenarii)
         self.boutonSupprimerScenarii.grid(row=4,column=1,columnspan=2,padx=20)
         
         for item in self.casdusage:

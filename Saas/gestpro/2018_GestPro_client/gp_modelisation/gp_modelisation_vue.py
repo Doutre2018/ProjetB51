@@ -14,6 +14,7 @@ class Vue():
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
+        self.root.config(bg="#E4E9F3")
         self.parent=parent
         self.modele=None
         self.largeurDefault=largeur
@@ -26,7 +27,7 @@ class Vue():
         self.images={}
         self.cadreactif=None
         self.creercadres()
-        self.changecadre(self.cadremodelisation)
+        self.changecadre(self.cadreprincipal)
         self.afficherTables()
 
     def changemode(self,cadre):
@@ -114,23 +115,54 @@ class Vue():
             self.nbTable+=1    
               
     def creercadremodelisation(self):
-        upscroll = Scrollbar(self.root, orient=VERTICAL)
-        upscroll.grid(row=0, column=1, sticky=N+S)
-        horiscroll = Scrollbar(self.root, orient=HORIZONTAL)
-        horiscroll.grid(row=1, column=0, sticky=E+W)
+#         upscroll = Scrollbar(self.root, orient=VERTICAL)
+#         upscroll.grid(row=0, column=1, sticky=N+S)
+#         horiscroll = Scrollbar(self.root, orient=HORIZONTAL)
+#         horiscroll.grid(row=1, column=0, sticky=E+W)
+# 
+#         self.cadremodelisation=Canvas(self.root,yscrollcommand=upscroll.set, xscrollcommand=horiscroll.set,scrollregion=(0,0,2000,2000),bg="#E4E9F3")
+#         self.root.overrideredirect(True) #Enleve la bordure
+#         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
+#         
+#         upscroll.config(command=self.cadremodelisation.yview)
+#         horiscroll.config(command=self.cadremodelisation.xview)
 
-        self.cadremodelisation=Canvas(self.root,yscrollcommand=upscroll.set, xscrollcommand=horiscroll.set)
+#        # self.cadremodelisation.configure(scrollregion = self.cadremodelisation.bbox("all"))
+# 
+#         self.cadremodelisationExiste=True
+#     
+#     
+#         self.cadremodelisation=Frame(self.root,width=self.largeurDefault,height=self.hauteurDefault)
+#         frame.grid(row=0,column=0)
+#         canvas=Canvas(frame,bg='#FFFFFF',width=self.largeurDefault,height=self.largeurDefault,scrollregion=(0,0,500,800))
+#         
+        # Create a frame for the canvas with non-zero row&column weights
+        self.cadreprincipal = Frame(self.root,width=self.largeurDefault,height=self.hauteurDefault)
+        self.cadreprincipal.grid(row=2, column=0, pady=(5, 0), sticky='nw')
+        self.cadreprincipal.grid_rowconfigure(0, weight=1)
+        self.cadreprincipal.grid_columnconfigure(0, weight=1)
+        # Set grid_propagate to False to allow 5-by-5 buttons resizing later
+        self.cadreprincipal.grid_propagate(False)
+        
+        # Add a canvas in that frame
+        self.canvasmodelisation = Canvas(self.cadreprincipal, bg="#E4E9F3")
+        self.canvasmodelisation.grid(row=0, column=0, sticky="news")
+
+        #Link a scrollbar to the canvas
+        vsb = Scrollbar(self.cadreprincipal, orient="horizontal", command=self.canvasmodelisation.xview)
+        vsb.grid(row=1, column=0, sticky='we')
+        self.canvasmodelisation.configure(xscrollcommand=vsb.set)
+        
+        # Create a frame to contain the buttons
+        self.cadremodelisation=Canvas(self.canvasmodelisation,bg="#E4E9F3")
         self.root.overrideredirect(True) #Enleve la bordure
+        
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
         
-        
-        upscroll.config(command=self.cadremodelisation.xview)
-        horiscroll.config(command=self.cadremodelisation.yview)
         self.boutonAjoutTable = Button(self.cadremodelisation, text="Creer Table", width = 20, height = 3, command = self.creerTable)
         self.boutonAjoutTable.grid(row=0,column=0)
-        
-        self.cadremodelisationExiste=True
-    
+        # Set the canvas scrolling region
+        self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
     def creerTable(self):
         self.nbChamps = 0
         self.creationTable =Toplevel(self.cadremodelisation)

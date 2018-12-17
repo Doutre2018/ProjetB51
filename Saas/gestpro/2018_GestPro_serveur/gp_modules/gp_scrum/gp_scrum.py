@@ -22,6 +22,9 @@ class Controleur():
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
+    def insertNewScrum(self, dateScrum):
+        self.modele.insertScrum(dateScrum)
+        
     
 if __name__ == '__main__':
     c=Controleur()

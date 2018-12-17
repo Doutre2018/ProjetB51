@@ -16,7 +16,10 @@ from xmlrpc.client import ServerProxy
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
-        self.connectionServeurCourant()
+<<<<<<< HEAD
+=======
+        #self.connectionServeurCourant()
+>>>>>>> 5ca2e1500dba67f6a9f2a656ce4f497582daccb9
         self.createurId=Id
         self.serveur = ServerProxy(sys.argv[4], allow_none=True)
         self.modele=Modele(self)

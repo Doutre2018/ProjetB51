@@ -166,7 +166,8 @@ class Vue():
         self.boutonCreerDate = Button(self.fenetreCreationDate, width = 10, command=self.ajouterDate,text="Ajout", bg="white", relief=FLAT)
         self.boutonCreerDate.grid(row=3,column=0,pady=20,columnspan=3)
     def ajouterDate(self):
-        self.listeDate.insert(END,self.nomDate.get())
+        date=self.jour.get()+" "+self.comboMois.get()
+        self.listeDate.insert(END,date)
         self.fenetreCreationDate.destroy()
     def salutations(self):
         pass

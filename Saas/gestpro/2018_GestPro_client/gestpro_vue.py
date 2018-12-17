@@ -515,7 +515,32 @@ class Vue():
                 return False
     # --------------------------------- #   
     def chargerProjet(self):
-        self.changecadre(self.cadreProjet)
+        
+        #C'est ici qu'il faut vérifé
+        
+        nom = self.nomsplash.get()
+        motPasse = self.entrymotPassesplash.get()
+        compagnie = self.ciessplash.get()
+        ipserveur = self.ipsplash.get()
+        
+        if self.nomConforme(nom):
+            if self.motPasseConforme(motPasse):
+                self.changecadre(self.cadreProjet)
+            else:
+                print("Mot de passe non conforme")
+        else:
+            print("Nom d'utilisateur non conforme")
+            
+#        if nomestConforme:
+#             if MotdepasseConforme:
+#                 self.changecadre(self.cadreProjet) #Si tout ca alors il  va aller dans la prochaine étape qui est de faire afficher la connexion projet
+#             else:
+#                 pass
+#                 
+#         else:
+#             pass
+        
+        
     def AllerAInscription(self):
         self.changecadre(self.cadreNouvelleUtilisateur)
     def AllerANouveauProjet(self):

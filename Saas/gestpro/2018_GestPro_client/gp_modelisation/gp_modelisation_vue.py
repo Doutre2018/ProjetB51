@@ -306,6 +306,4 @@ class Vue():
         self.creationTable.destroy()
 
     def fermerfenetre(self):
-        print("ON FERME la fenetre")
         self.root.destroy()
-    

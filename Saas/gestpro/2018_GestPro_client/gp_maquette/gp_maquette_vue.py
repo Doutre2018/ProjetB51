@@ -112,7 +112,6 @@ class Vue():
         
     def creerNouvelObjet(self,evt):
         t=self.canevasMaquette.gettags(CURRENT)
-        print(t)
         if t :
             if t[0] != "current" and t[1] == "bouton":
                     nouvelid = Id.prochainid()
@@ -167,7 +166,6 @@ class Vue():
                         for iFont in font:
                             if(i>=6):
                                 size += iFont
-                                print(size)
                             i+=1
                             
                         self.textSize= int(size)
@@ -236,7 +234,6 @@ class Vue():
     def creerObjet(self):
         self.canevasMaquette.delete("objet")
         for objet in self.listeObjetMaquette:
-            print(objet)
             if(objet[0]=="rectangle"):
                 self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[9]),"objet","rectangle"))
             if(objet[0]=="ovale"):
@@ -245,13 +242,12 @@ class Vue():
                 self.canevasMaquette.create_text(objet[1],objet[2],text=objet[7],fill=objet[6],tags=((objet[9]),"objet","texte"),font=(objet[8]))
     def getColor(self):
         self.couleurCourante = askcolor()[1]
-        print(self.couleurCourante)
     def sauvegarde(self):
         self.parent.sauvegarde(self.listeObjetMaquette)
        
     def salutations(self):
         print("hello")
+        
     def fermerfenetre(self):
-        print("ON FERME la fenetre")
         self.root.destroy()
     

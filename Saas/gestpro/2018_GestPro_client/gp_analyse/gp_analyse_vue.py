@@ -201,7 +201,6 @@ class Vue():
         self.cadrecrcExiste=True
 
     def fermerfenetre(self):
-        print("ON FERME la fenetre")
         self.root.destroy()
       
     def NouveauVerbeExplicite(self,evt):  

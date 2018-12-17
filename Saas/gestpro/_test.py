@@ -23,4 +23,4 @@ for line in data:
         print("pareil")
         break
     else:
-        print("différent")
+        print("diffÃ©rent")

@@ -16,6 +16,7 @@ class Vue():
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
+        self.root.config(bg="#E4E9F3")
         self.parent=parent
         self.modele=None
         
@@ -70,16 +71,17 @@ class Vue():
         #Enlever pour voir vrai logiciel
         #self.afficherImage()
         
-        self.cadreterlow=Frame(self.root,width=self.largeur,height=self.hauteur)
+        self.cadreterlow=Frame(self.root,width=self.largeur,height=self.hauteur, bg="#E4E9F3")
         self.cadreterlow.grid()
         
-        self.boutonAjoutListe = Button(self.cadreterlow, text="Ajouter Colonne",command=self.ajouterListe)
+        
+        self.boutonAjoutListe = Button(self.cadreterlow, bg="white", fg ="#234078", text="Ajouter Colonne",command=self.ajouterListe)
         self.boutonAjoutListe.grid()
         self.cadreterlowExiste=True
         
 
     def ajouterListe(self):
-        self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="white",bd=4,highlightcolor="red",highlightthickness=1))
+        self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="#d5e0e3",bd=4,highlightcolor="#234078",highlightthickness=1))
         liste = self.tableauDeColonne[self.nbListe]
 
         liste.bind('<Button-3>', lambda evt: self.deplacerColonneRight(evt, liste,self.nbListe))
@@ -88,7 +90,7 @@ class Vue():
         titre = Entry(liste, width=32)
         titre.insert(END, "Titre")
         noListe=self.nbListe
-        boutonAjoutCarte = Button(liste, text="Ajouter Carte",command= lambda: self.ajouterCarte(noListe))
+        boutonAjoutCarte = Button(liste, text="Ajouter Carte", bg="white", fg ="#234078",command= lambda: self.ajouterCarte(noListe))
         
         liste.grid(column=self.nbListe,row=1,padx=10)
         titre.grid(row=0)
@@ -152,28 +154,28 @@ class Vue():
     def modifierCarte(self,evt,noCarte,colonne,contenuText):
         self.tableauDeCarte.append([])
 
-        self.fenetreModificationCarte = Toplevel(self.root )
+        self.fenetreModificationCarte = Toplevel(self.root, bg ="#234078")
         self.fenetreModificationCarte.wm_title("Modification de Carte")
             
-        self.texteNomCarte = Label(self.fenetreModificationCarte, text="Nom de la carte :",)
+        self.texteNomCarte = Label(self.fenetreModificationCarte, text="Nom de la carte :", bg ="#234078",fg="white")
         self.texteNomCarte.grid(row=1,column=1, padx=50, pady=(30,10))
               
         self.entreeNomCarte = Entry(self.fenetreModificationCarte)
         self.entreeNomCarte.grid(row=2,column=1, padx=50, pady=(0,10))
         
-        self.texteDescriptionCarte = Label(self.fenetreModificationCarte, text="Description :",)
+        self.texteDescriptionCarte = Label(self.fenetreModificationCarte, text="Description :", bg ="#234078",fg="white")
         self.texteDescriptionCarte.grid(row=3,column=1, padx=50, pady=(30,10))
               
         self.entreeDescriptionCarte = Text(self.fenetreModificationCarte)
         self.entreeDescriptionCarte.grid(row=4,column=1, padx=50, pady=(0,10))
         
-        self.texteProprietaireCarte = Label(self.fenetreModificationCarte, text="Proprietaire :",)
+        self.texteProprietaireCarte = Label(self.fenetreModificationCarte, text="Proprietaire :", bg ="#234078",fg="white")
         self.texteProprietaireCarte.grid(row=5,column=1, padx=50, pady=(30,10))
               
         self.entreeeProprietaireCarte = Entry(self.fenetreModificationCarte)
         self.entreeeProprietaireCarte.grid(row=6,column=1, padx=50, pady=(0,10))
                 
-        self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte",command= lambda:self.changerCarte(noCarte,contenuText))
+        self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte", bg="white", fg ="#234078",command= lambda:self.changerCarte(noCarte,contenuText))
         self.boutonModificationCarte.grid(row=7,column=1, padx=50, pady=(0,30))
 
         

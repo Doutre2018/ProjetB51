@@ -12,7 +12,6 @@ from gestpro_vue import *
 from helper import Helper as hlp
 from IdMaker import Id
 
-
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
@@ -20,24 +19,24 @@ class Controleur():
         self.modele=None
         self.serveur=None
         self.pid=None
-        self.monip=self.trouverIP()
+        self.monip= socket.gethostbyname(socket.getfqdn())
         self.nodeport="9999"
         self.vue=Vue(self,self.monip)
         self.vue.root.mainloop()
         
-    def trouverIP(self): # fonction pour trouver le IP en 'pignant' gmail
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # on cree un socket
-        s.connect(("gmail.com",80))    # on envoie le ping
-        monip=s.getsockname()[0] # on analyse la reponse qui contient l'IP en position 0 
-        s.close() # ferme le socket
-        return monip
-
+   # def trouverIP(self): # fonction pour trouver le IP en 'pignant' gmail
+        #s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # on cree un socket
+       # s.connect(("gmail.com",80))    # on envoie le ping
+       # monip=s.getsockname()[0] # on analyse la reponse qui contient l'IP en position 0 
+       # s.close() # ferme le socket
+       # return monip
     
     # ----------------DM------------------------ #
     def fetchCompagnies(self, ipserveur):
         if ipserveur:
             ad = "http://"+ipserveur+":"+self.nodeport
             self.serveur=ServerProxy(ad)
+            self.IPServeur = ad
             return self.serveur.fetchCompagnies()
         
     def inscription(self, nom, motPasse, compagnie, ipserveur):
@@ -100,7 +99,8 @@ class Controleur():
                     fiche.close()
             chaineappli="."+lieuApp+lieuApp+".py"
 
-            self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport],shell=0) 
+            #self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport],shell=0) 
+            self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport,self.IPServeur],shell=0) 
         else:
             print("RIEN")
             
@@ -112,8 +112,7 @@ class Controleur():
         if rep[1][0][0]=="connecte":
             #print("REP",rep)
             self.modele=Modele(self,rep[1][0][1],rep[1][0][2]) # on cree le modele
-            self.vue.afficherinitpartie(self.modele)
-            
+            self.vue.afficherinitpartie(self.modele)     
             
     def fermeserveur(self):
         if self.serveur:

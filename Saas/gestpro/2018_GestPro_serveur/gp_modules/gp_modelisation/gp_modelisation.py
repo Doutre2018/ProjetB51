@@ -8,16 +8,16 @@ from subprocess import Popen
 import math
 #from sm_projet_modele import *
 from gp_modelisation_vue import *
+from gp_modelisation_model import *
 from helper import Helper as hlp
 from IdMaker import Id
 from xmlrpc.client import ServerProxy
 
 class Controleur():
     def __init__(self):
-        print("IN CONTROLEUR")
         self.createurId=Id
         self.connectionServeurCourant()
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
 
@@ -41,6 +41,24 @@ class Controleur():
             print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
             print(erreur)
             sys.exit(0)
+            
+    def insertCarte(self, nomCarte):
+        self.modele.insertIntoCarte(nomCarte)
+        
+    def insertItem(self, nom, type, contrainte, nomCarte):
+        self.modele.insertIntoItem(nom, type, contrainte, nomCarte)
+    
+    def selectCartes(self):
+        self.modele.selectAffichageCartes()
+        
+    def selectItemNom(self, nomCarte):
+        self.modele.selectAffichageItemNom(nomCarte);
+        
+    def selectItemType(self, nomCarte):
+        self.modele.selectAffichageItemType(nomCarte);
+        
+    def selectItemContrainte(self, nomCarte):
+        self.modele.selectAffichageItemCon(nomCarte);
         
     
 if __name__ == '__main__':

@@ -332,7 +332,11 @@ class  BaseDonnees():
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
             ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']],
-            ['ObjetsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['objet','text','']],
+            ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['date', 'text', '']],
+            ['MembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', ''], ['nom', 'text', '']],
+            ['CartesDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', '']],
+            ['ItemDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', ''], ['type', 'text', ''], ['contrainte', 'text', '']],
+            ['ObjetsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['objet','text','']]
             ]
         return listeTables
     
@@ -359,7 +363,11 @@ class  BaseDonnees():
             ['Tache_Sprint','id_sprint','INTEGER', 'Sprint', 'id'],
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
             ['Utilisateur', 'id_compagnie', 'INTEGER',  'Compagnie', 'id'],
-            ['ObjetsCRC', 'id_classe','INTEGER', 'Cartes', 'id'],
+            ['Scrum', 'id_projet', 'INTEGER', 'Projet', 'id'],
+            ['MembreScrum', 'id_scrum', 'INTEGER', 'Scrum', 'id'],
+            ['ItemDonnees', 'id_carte', 'INTEGER', 'CartesDonnees', 'id'],
+            ['CartesDonnees', 'id_projet', 'INTEGER', 'Projet', 'id'],
+            ['ObjetsCRC', 'id_classe','INTEGER', 'Cartes', 'id']
             ]
         return listeConst
     

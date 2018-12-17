@@ -90,16 +90,16 @@ class ModeleProject():
 
             self.cieID = self.parent.parent.serveur.requeteSelection(commande)
             for i in self.cieID:
-                    for n in i:
-                        self.cieID = n
+                for n in i:
+                    self.cieID = n
 
-            commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON id_projet = id_Util JOIN Utilisateur ON utilisateur.id = id_util WHERE Projet.nom LIKE ('"  # test nom de projet existant
+            commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON Projet.id = Liaison_Util_Projet.id_projet JOIN Utilisateur ON utilisateur.id = Liaison_Util_Projet.id_util WHERE Projet.nom LIKE ('"  # test nom de projet existant
             commande += self.ProjectNameToValidate
             commande += "') and "
             commande += "utilisateur.id_compagnie = '"
             commande += str(self.cieID)
             commande += "';"
-            print(commande)
+            print("commmande select validation nom dans table projet" + commande)
 
             ListReceiver = []
             validationName = True
@@ -109,12 +109,12 @@ class ModeleProject():
                 for i in ListReceiver:
                     for n in i:
                         ListReceiver = n
-                print("List receiver" + ListReceiver)
+                print("List receiver" + str(ListReceiver))
                 validationName = False
             except Exception as exc:
                 ListReceiver = -1
                 validationName = True
-                print(ListReceiver)
+                print("liste receiver = " + str(ListReceiver))
                 #validationName = True
 
             print(validationName)
@@ -125,7 +125,8 @@ class ModeleProject():
                 self.NameFailure = True
                 print("mauvais nom de projet(utilise)")
                 #self.controleur.failureProjectName()
-            else:                                                                           #genere les instertion projet et table de liaison projet et utilisateur
+            else:   
+                                                                                     #genere les instertion projet et table de liaison projet et utilisateur
                 commande = "Insert into Projet (id, nom) values (NULL, '"
                 commande += self.ProjectNameToValidate
                 commande += "');"
@@ -166,7 +167,7 @@ class ModeleProject():
             
                 print(commande_plus)
                 self.parent.parent.serveur.requeteInsertionPerso(commande_plus)
-            
+                return 1
             
                 
                 
@@ -197,14 +198,16 @@ class ModeleProject():
             for n in i:
                 noCIE = n
         print("number cie =" + str(noCIE))
-
+        
+        
+        #SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON Projet.id = Liaison_Util_Projet.id_projet JOIN Utilisateur ON utilisateur.id = Liaison_Util_Projet.id_util WHERE Projet.nom LIKE ('alicia') and utilisateur.id_compagnie = '4';
     #print(self.cieID +" id and projecctname   " + self.projectName)
-        commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON projet.id = id_projet JOIN Utilisateur ON utilisateur.id = id_util WHERE LIKE('"
+        commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON projet.id = Liaison_Util_Projet.id_projet JOIN Utilisateur ON utilisateur.id = Liaison_Util_Projet.id_util WHERE projet.nom LIKE('"
         commande += self.projectName
-        commande+= "', projet.nom) = 1 and "
+        commande+= "')  and "
         commande += "utilisateur.id_compagnie = "
         commande += str(noCIE)
-        commande += ");"
+        commande += ";"
         print(commande)
         
         '''
@@ -231,12 +234,12 @@ class ModeleProject():
             print("1")
             List = self.parent.parent.serveur.requeteSelection(commande)
             for i in List:
-                    for n in i:
-                        List = n
+                for n in i:
+                    List = n
             print("2")
             idPro = List
             print("3")
-            print(str(idPro) + "id Projet")
+            print(str(idPro) + " id Projet")
             if idPro > 0:
                 ValidationProject = True
             else:

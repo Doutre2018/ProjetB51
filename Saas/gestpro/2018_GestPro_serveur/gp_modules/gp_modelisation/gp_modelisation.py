@@ -15,7 +15,6 @@ from xmlrpc.client import ServerProxy
 
 class Controleur():
     def __init__(self):
-        print("IN CONTROLEUR")
         self.createurId=Id
         self.connectionServeurCourant()
         self.modele=Modele(self)
@@ -56,8 +55,6 @@ class Controleur():
         self.modele.selectAffichageItemNom(nomCarte);
         
     def selectItemType(self, nomCarte):
-        print(nomCarte)
-        print("mon nom de carte ci haut !!!!!!!!!!")
         self.modele.selectAffichageItemType(nomCarte);
         
     def selectItemContrainte(self, nomCarte):

@@ -40,15 +40,6 @@ class Vue():
         self.images={}
         self.cadreactif=None
         self.listeObjetMaquette = self.modele.listeObjets
-        self.creerObjet()
-
-        #Donnes : Type, PosX,PosY,X,Y,Bordure,Interieur,texte de string, Font, Id
-        listederectangle = ["rectangle",150,150,200,300,"black","red","","",Id.prochainid()]
-        listedecercle = ["ovale",500,500,200,300,"black","red","","",Id.prochainid()]
-        listedetexte = ["texte",500,500,0,0,"white","black","Hello","Arial 12",Id.prochainid()]
-        self.listeObjetMaquette.append(listederectangle)
-        self.listeObjetMaquette.append(listedecercle)
-        self.listeObjetMaquette.append(listedetexte)
         
         
         self.creermenu()
@@ -137,6 +128,8 @@ class Vue():
         t=self.canevasMaquette.gettags(CURRENT)
         if t :
             if  t[0] != "current" and t[1] == "objet" :
+                    print(t[0] +" " + t[1] + " " + t[2] )
+
                     self.objetSelectionner=t[0]
 
                     if t[2]=="texte":
@@ -164,6 +157,8 @@ class Vue():
         
         if t :
             if  t[0] != "current" and t[1] == "objet" :
+                    print(t[0] +" " + t[1] + " " + t[2] )
+
                     if t[2] == "texte" :
                         size=""
                         font = self.canevasMaquette.itemcget(t[0],'font')
@@ -204,6 +199,8 @@ class Vue():
         t=self.canevasMaquette.gettags(CURRENT)
         if t :
             if  t[0] != "current" and t[1] == "objet" :
+                    print(t[0] +" " + t[1] + " " + t[2] )
+
                     for objet in self.listeObjetMaquette :
                         if (objet[9]==t[0]) :
                             self.listeObjetMaquette.remove(objet)
@@ -235,8 +232,7 @@ class Vue():
                 self.boutonModificationMot.grid(row=3,column=1, padx=50, pady=(0,30))
 
     def creerObjet(self):
-
-        #self.canevasMaquette.delete("objet")
+        self.canevasMaquette.delete("objet")
         for objet in self.listeObjetMaquette:
             if(objet[0]=="rectangle"):
                 self.canevasMaquette.create_rectangle((objet[1],objet[2],objet[3],objet[4]),outline=objet[5],fill=objet[6],tags=((objet[9]),"objet","rectangle"))

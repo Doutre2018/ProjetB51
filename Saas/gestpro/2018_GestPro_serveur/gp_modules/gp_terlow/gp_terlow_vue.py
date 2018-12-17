@@ -16,6 +16,7 @@ class Vue():
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
+        self.root.config(bg="#E4E9F3")
         self.parent=parent
         self.modele=None
         
@@ -68,7 +69,7 @@ class Vue():
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
         
         #Enlever pour voir vrai logiciel
-        #self.afficherImage()
+        self.afficherImage()
         
         self.cadreterlow=Frame(self.root,width=self.largeur,height=self.hauteur)
         self.cadreterlow.grid()

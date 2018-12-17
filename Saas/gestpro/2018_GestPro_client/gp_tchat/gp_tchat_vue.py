@@ -7,7 +7,7 @@ import os,os.path
 import math
 from helper import Helper as hlp
 from msilib.schema import Font
-import random
+import random 
 
 class Vue():
     def __init__(self,parent,largeur=800,hauteur=900):
@@ -111,12 +111,7 @@ class Vue():
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
         self.modele.insertLigneChat(self.message.get("1.0", END))
-<<<<<<< HEAD
-        self.messagesDeBD.append([self.user, self.message.get("1.0", END)])
-=======
->>>>>>> ecb373ea65a770e60aa9a9550f4bf918c45fcdc0
         self.message.delete("1.0", END)
-        self.ajoutMessageBD()
     def random_color(self):
         return random.randint(0,0x1000000)
 
@@ -124,14 +119,15 @@ class Vue():
         self.listeMessage.delete(0, END)
         if self.messagesDeBD:
             for message in self.messagesDeBD:
-                if self.messagesDeBD.index(message):
-                    if message[0] not in self.color:
+                if message[0] not in self.color:
+                    color = '{:06x}'.format(self.random_color())
+                    while (color in self.color.values()):
                         color = '{:06x}'.format(self.random_color())
-                        self.color[message[0]] = '#'+ color
-                    else :
-                        self.listeMessage.itemconfig(self.messagesDeBD.index(message), {'bg':self.color.get(message[0])})
-                        self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
-        
+                    self.color[message[0]] = '#'+ color
+                if self.messagesDeBD.index(message):
+                    self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
+                    self.listeMessage.itemconfig(END, {'fg':self.color.get(message[0])})
+
 
     def fermerfenetre(self):
         print("ON FERME la fenetre")

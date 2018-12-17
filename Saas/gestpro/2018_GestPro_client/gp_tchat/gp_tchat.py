@@ -21,6 +21,7 @@ class Controleur():
         self.recevoirFichiers()
         self.modele=Modele(self)
         self.vue=Vue(self)
+        self.reloadMessageBD()
         self.vue.root.mainloop()
         
     def reloadMessageBD(self):

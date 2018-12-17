@@ -96,8 +96,6 @@ class Vue():
         self.creercadresplash()
         self.connexionProjet()
         self.nouveauProjet()
-        self.creeNouvelleUtilisateur()
-
         self.creercadrebase()
         #self.creercadrecentral()
                 
@@ -131,7 +129,6 @@ class Vue():
         self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez l'adresse ip de votre serveur",font='arial 12',)
         self.ipsplash=Entry(self.cadresplash,bg="white",justify=CENTER,)
         self.ipsplash.insert(0, self.monip)
-        
 
         # ------------------------------------                      
         
@@ -184,8 +181,8 @@ class Vue():
         self.ipsplash.insert(0, self.monip)
         
         # ------------- DM -------------
-        compagnies = self.fetchCompagnies()
-        self.compagniesplash=ttk.Combobox(self.cadreNouvelleUtilisateur,width=40,justify=CENTER,values=compagnies)
+        #compagnies = self.fetchCompagnies()
+        self.compagniesplash=ttk.Combobox(self.cadreNouvelleUtilisateur,width=40,justify=CENTER,values="")
         self.compagniesplash.insert(0,"< Sélectionner votre entreprise >")
         self.compagniesplash.grid()
         # ------------------------------
@@ -211,10 +208,10 @@ class Vue():
         self.nomProjet.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
         
         # ---------------- DM ----------------
-        cies = self.fetchCompagnies()
-        self.ciessplash=ttk.Combobox(self.cadreProjet,width=40,justify=CENTER,values=cies)
-        self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
-        self.ciessplash.grid()
+        #cies = self.fetchCompagnies()
+        #self.ciessplash=ttk.Combobox(self.cadreProjet,width=40,justify=CENTER,values=cies)
+        #self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
+        #self.ciessplash.grid()
 
         self.confirmerIB=Button(self.cadreProjet,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.connexion, width=15)
         self.confirmerIB.grid(row= 10, column= 0,pady=(30,35), padx=(0,122))
@@ -511,8 +508,34 @@ class Vue():
                 return False
     # --------------------------------- #   
     def chargerProjet(self):
-        self.changecadre(self.cadreProjet)
+        
+        #C'est ici qu'il faut vérifé
+        
+        nom = self.nomsplash.get()
+        motPasse = self.entrymotPassesplash.get()
+        compagnie = self.ciessplash.get()
+        ipserveur = self.ipsplash.get()
+        
+        if self.nomConforme(nom):
+            if self.motPasseConforme(motPasse):
+                self.changecadre(self.cadreProjet)
+            else:
+                print("Mot de passe non conforme")
+        else:
+            print("Nom d'utilisateur non conforme")
+            
+#        if nomestConforme:
+#             if MotdepasseConforme:
+#                 self.changecadre(self.cadreProjet) #Si tout ca alors il  va aller dans la prochaine étape qui est de faire afficher la connexion projet
+#             else:
+#                 pass
+#                 
+#         else:
+#             pass
+        
+        
     def AllerAInscription(self):
+        self.creeNouvelleUtilisateur()
         self.changecadre(self.cadreNouvelleUtilisateur)
     def AllerANouveauProjet(self):
         self.changecadre(self.cadreNouveauProjet)

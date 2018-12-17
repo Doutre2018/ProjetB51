@@ -332,7 +332,8 @@ class  BaseDonnees():
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
             ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']],
             ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['date', 'text', '']],
-            ['MembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', ''], ['nom', 'text', '']],
+            ['MembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', '']],
+            ['DonneesMembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', '']],
             ['CartesDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', '']],
             ['ItemDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', ''], ['type', 'text', ''], ['contrainte', 'text', '']],
             ['ObjetsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['objet','text','']]
@@ -366,7 +367,8 @@ class  BaseDonnees():
             ['MembreScrum', 'id_scrum', 'INTEGER', 'Scrum', 'id'],
             ['ItemDonnees', 'id_carte', 'INTEGER', 'CartesDonnees', 'id'],
             ['CartesDonnees', 'id_projet', 'INTEGER', 'Projet', 'id'],
-            ['ObjetsCRC', 'id_classe','INTEGER', 'Cartes', 'id']
+            ['ObjetsCRC', 'id_classe','INTEGER', 'Cartes', 'id'],
+            ['DonneesMembreScrum', 'id_membre', 'INTEGER', 'Scrum', 'id']
             ]
         return listeConst
     

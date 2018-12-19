@@ -126,7 +126,7 @@ class Vue():
                     self.color[message[0]] = '#'+ color
                 #print(self.color.get(message[0]))
                 if self.messagesDeBD.index(message):
-                    self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
+                    self.listeMessage.insert(END, self.parent.monNom + " : \n" + '\t' + message[1])
                     self.listeMessage.itemconfig(END, {'fg':self.color.get(message[0])})
 
 

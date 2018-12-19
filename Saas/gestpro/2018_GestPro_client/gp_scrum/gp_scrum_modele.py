@@ -24,8 +24,8 @@ class Modele():
     def insertScrum(self, dateScrum):
         self.BD.requeteInsertionDate("INSERT INTO Scrum(id_projet, date) VALUES(?,?)", [str(self.numProjet)], [dateScrum])
     
-    def insertMembresScrum(self):
-        #membres = self.BD.requeteSelection("SELECT nomUtilisateur FROM utilisateur WHERE id")
+    def insertMembresScrum(self, nom, scrumActif):
+        #self.BD.requeteSelection("INSERT INTO MembreScrum(nom, id_scrum)  FROM utilisateur WHERE id")
         pass
    
     def selectScrum(self, date):

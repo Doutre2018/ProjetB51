@@ -16,12 +16,14 @@ from xmlrpc.client import ServerProxy
 class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
-        #self.connectionServeurCourant()
         self.createurId=Id
         self.serveur = ServerProxy(sys.argv[4], allow_none=True)
         self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
+        
+    def insertNewScrum(self, dateScrum):
+        self.modele.insertScrum(dateScrum)
         
     
 if __name__ == '__main__':

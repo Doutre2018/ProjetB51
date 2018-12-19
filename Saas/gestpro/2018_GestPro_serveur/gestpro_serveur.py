@@ -20,7 +20,7 @@ import csv
 #s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 #s.connect(("gmail.com",80))
 #monip=s.getsockname()[0]
-IP = "192.168.0.100" #socket.gethostbyname(socket.getfqdn())
+IP = socket.gethostbyname(socket.getfqdn())
 print("MON IP SERVEUR",IP)
 #s.close()
 

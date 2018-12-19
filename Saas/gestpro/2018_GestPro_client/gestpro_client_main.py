@@ -64,6 +64,8 @@ class Controleur():
                 with open("adresseServeurCourant.txt",'w') as fichierServeur:
                     fichierServeur.write(self.serveur.getAdresse())
                 r = nom + " connecté!"
+                
+                
                 return r
     # ------------------------------------------ #
     

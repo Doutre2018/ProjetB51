@@ -26,6 +26,7 @@ class Vue():
         self.hauteurEcran=self.root.winfo_screenheight()
         self.savedNameTemp = None
         self.cieName =None
+        self.NouveauNom = None
 
         self.root.attributes("-fullscreen", False)
         self.images={}
@@ -494,11 +495,18 @@ class Vue():
         motPasse = self.entrymotPassesplash.get()
         compagnie = self.entryCompagniesplash.get()
         ipserveur = self.ipsplash.get()
+        nameProjet = self.nomProjet.get()
+        print("nom projet " + str(nameProjet))
         
         if self.nomConforme(nom):
             if self.motPasseConforme(motPasse):
                 if compagnie != "< Sélectionner votre entreprise >":
                     rep = self.parent.connexion(nom, motPasse, compagnie, ipserveur)
+                    if self.parent.modProjet.accessProject(self, nameProjet, compagnie):
+                        pass
+                    else:
+                        print("projet inexistant")
+                    
                     self.labelProbleme.config(fg="red",font='arial 9')
                     print(rep)
                     
@@ -550,7 +558,7 @@ class Vue():
         
         if self.nomConforme(nom):
             if self.motPasseConforme(motPasse):
-                if self.parent.modProjet.createProject(self, self.savedNameTemp, self.nomsplash.get(), self.cieName):
+                if self.parent.modProjet.accessProject(self, self.savedNameTemp, compagnie):
                     self.changecadre(self.cadreProjet)
                 else:
                     print("Erreur de creation de nom de projet (nom déjà utilisé")

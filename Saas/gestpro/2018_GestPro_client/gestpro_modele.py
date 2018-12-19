@@ -41,57 +41,21 @@ class ModeleProject():
             self.ProjectNameToValidate = nomProjet
             self.NameFailure = False
 
-            '''
-            print("Nom cie" + str(self.nomCie))
-            commande_cie = "SELECT id FROM Compagnie WHERE nom LIKE ('"
-            commande_cie = str(self.nomCie)
-            commande_cie = "');"
-            ListReceiver = []
-            try:
-                ListReceiver[0] = self.parent.parent.serveur.requeteSelection(commande_cie)
-            except:
-                ListReceiver[0] = -1
-
-            self.noCie =int(ListReceiver[0])
-            print("No cie" + self.noCie + self)
-
-
-
-            # bd= self.parent.serveur
-            # print(self.ProjectNameToValidate)
-            # On veut valider que pour cette compagnie ce projet a un nom unique
-            commande_sel = "SELECT id FROM Projet "
-            commande_sel += "WHERE Projet.nom LIKE ('"
-            commande_sel += str(self.ProjectNameToValidate)
-            commande_sel += "');"
-            ListReceiver = []
-
-            try:
-                ListReceiver[0] = self.parent.parent.serveur.requeteSelection(commande_sel)
-            except:
-                ListReceiver[0] = -1
-
-            '''
+           
 
             commande_sel = "SELECT id FROM Projet "
             commande_sel += "WHERE Projet.nom LIKE ('"
             commande_sel += str(self.ProjectNameToValidate)
             commande_sel += "');"
-            self.parent.idProject = self.parent.parent.serveur.requeteSelection(commande_sel)
+            try:
+                self.parent.idProject = self.parent.parent.serveur.requeteSelection(commande_sel)
+            except:
+                pass
 
 
-
-
-            #self.parent.idProject = self.parent.parent.serveur.requeteSelection(commande_sel)
-
-
-            # self.parent.idProject = int(ListReceiver[0])
-            # print("Project Id is : " + self.parent.idProject)
-            # print("TEEEEEEEEST")
-            # print("nom cie ds create " + str(self.nomCie))
-            commande = "SELECT id FROM compagnie WHERE nomCompagnie LIKE ('"
+            commande = "SELECT id FROM compagnie WHERE nomCompagnie LIKE = "
             commande += self.nomCie
-            commande += "');"
+            commande += ";"
 
             self.cieID = self.parent.parent.serveur.requeteSelection(commande)
             for i in self.cieID:
@@ -104,7 +68,7 @@ class ModeleProject():
             commande += "utilisateur.id_compagnie = '"
             commande += str(self.cieID)
             commande += "';"
-            print("commmande select validation nom dans table projet" + commande)
+            #print("commmande select validation nom dans table projet" + commande)
 
             ListReceiver = []
             validationName = True
@@ -144,8 +108,12 @@ class ModeleProject():
 
                 print("commande user id")
                 print(commandeUserID)
-
-                ID_utilisateur = self.parent.parent.serveur.requeteSelection(commandeUserID)
+                
+                try:
+                    ID_utilisateur = self.parent.parent.serveur.requeteSelection(commandeUserID)
+                except:
+                    pass
+                
                 for i in ID_utilisateur:
                     for n in i:
                         ID_utilisateur = n
@@ -154,8 +122,11 @@ class ModeleProject():
                 commandeIDprojet += " LIKE ('"
                 commandeIDprojet += str(nomProjet)
                 commandeIDprojet += "');"
-
-                ID_projet = self.parent.parent.serveur.requeteSelection(commandeIDprojet)
+                try:
+                    ID_projet = self.parent.parent.serveur.requeteSelection(commandeIDprojet)
+                except:
+                    pass
+                
                 for i in ID_projet:
                     for n in i:
                         ID_projet = n
@@ -170,58 +141,61 @@ class ModeleProject():
                 commande_plus += ", 'programmeur');"
 
                 print(commande_plus)
-                self.parent.parent.serveur.requeteInsertionPerso(commande_plus)
+                try:
+                    self.parent.parent.serveur.requeteInsertionPerso(commande_plus)
+                except:
+                    pass
+                
                 return 1
 
-            '''
-            commande_sel = "SELECT id FROM Projet "
-            commande_sel += "WHERE Projet.nom LIKE ('"
-            commande_sel += str(self.ProjectNameToValidate)
-            commande_sel += "');"
-            self.parent.idProject = self.parent.parent.serveur.requeteSelection(commande_sel)
-
-            print("finish")
-            print(self.parent.idProject)
-            return 1
-            '''
+            
 
     def accessProject(self, parent, projectName, nomCie):
         self.projectName = projectName
         print(nomCie)
         self.nomCie = nomCie
-
-        commande = "SELECT id FROM compagnie WHERE nomCompagnie LIKE ('"
-        commande += self.nomCie
-        commande += "');"
-        ListTake = []
-        self.IDCie = self.parent.parent.serveur.requeteSelection(commande)
-        print("no Cie ")
+        print("parameters :", projectName + "  " + nomCie)
+        commande = "SELECT id FROM compagnie WHERE nomCompagnie = "
+        commande += str(self.nomCie)
+        commande += ";"
+        #print(commande)
+        #print("no Cie ")
+        #print(self.parent.parent)
+       
+        try: 
+            self.IDCie = self.parent.parent.serveur.requeteSelection(commande)
+        except:
+            pass
+            
         print(self.IDCie)
         for i in self.IDCie:
             for n in i:
                 noCIE = n
-        print("number cie =" + str(noCIE))
+        
 
         # SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON Projet.id = Liaison_Util_Projet.id_projet JOIN Utilisateur ON utilisateur.id = Liaison_Util_Projet.id_util WHERE Projet.nom LIKE ('alicia') and utilisateur.id_compagnie = '4';
-        # print(self.cieID +" id and projecctname   " + self.projectName)
+        #print(self.cieID +" id and projecctname   " + self.projectName)
         commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON projet.id = Liaison_Util_Projet.id_projet JOIN Utilisateur ON utilisateur.id = Liaison_Util_Projet.id_util WHERE projet.nom LIKE('"
         commande += self.projectName
         commande += "')  and "
         commande += "utilisateur.id_compagnie = "
         commande += str(noCIE)
         commande += ";"
-        print(commande)
+        
 
         try:
             List = []
-            print("1")
-            List = self.parent.parent.serveur.requeteSelection(commande)
+            
+            try:
+                List = self.parent.parent.serveur.requeteSelection(commande)
+            except:
+                pass
             for i in List:
                 for n in i:
                     List = n
-            print("2")
+            
             idPro = List
-            print("3")
+            
             print(str(idPro) + " id Projet")
             if idPro > 0:
                 ValidationProject = True

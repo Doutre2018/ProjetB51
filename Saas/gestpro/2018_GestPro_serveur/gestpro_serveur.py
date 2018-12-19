@@ -307,7 +307,6 @@ class  BaseDonnees():
     
     def genererListeTables(self):
         listeTables = [ 
-            ['stocks', ['price', 'INTEGER', '']],
             ['Serveurs', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['IP','INTEGER',''], ['nom','text','UNIQUE']],
             ['Utilisateur', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomUtilisateur','text','UNIQUE'],['id_compagnie','INTEGER',''], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
             ['Projet', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','UNIQUE']],
@@ -361,8 +360,6 @@ class  BaseDonnees():
             ['Cartes', 'id_projet','INTEGER', 'Projet', 'id'],
             ['Objet_Maquette', 'id_position','INTEGER', 'Position', 'id'],
             ['Objet_Maquette', 'id_type','INTEGER', 'TypeForme', 'id'],
-            #['Taches_Terlow', 'id_projet','INTEGER', 'Projet', 'id'],
-            #['Taches_Terlow', 'id_colonne_terlow','INTEGER', 'Colonnes_Terlow', 'id'],
             ['Objet_Texte', 'id_position','INTEGER', 'Position', 'id'],
             ['Tache_Sprint','id_sprint','INTEGER', 'Sprint', 'id'],
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
@@ -418,7 +415,7 @@ class  BaseDonnees():
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text, estimationTemps INTEGER,  dateCreation timestamp, datePrevueFin timestamp)") 
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, titre text, description text, estimationTemps INTEGER,  dateCreation timestamp, datePrevueFin timestamp)") 
 
     
     def insertion(self, nomTable = "", listeValeurs=[]):

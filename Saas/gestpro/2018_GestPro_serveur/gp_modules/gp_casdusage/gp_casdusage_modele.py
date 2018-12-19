@@ -26,19 +26,33 @@ class Modele():
         self.BD.requeteInsertionPerso("INSERT INTO CasUsage(id_projet, ligne,texte) VALUES('" + str(self.numProjet) + "','" + str(ligne) + "','" + str(texte) + "');")
     
     def insertScenarii(self, ligne, usager, machine ):
-        idCas = self.BD.requeteSelection("SELECT id FROM CasUsage WHERE ligne = '" + str(ligne) + "';")
+        idCas = self.BD.requeteSelection("SELECT id FROM CasUsage WHERE texte = '" + str(ligne[0]) + "';")
+        idCas = idCas[0]
+        idCas = idCas[0]
+        
         self.BD.requeteInsertionPerso("INSERT INTO Scenarii(id_projet, id_casUsage,ligne,id_colonne) VALUES('" + str(self.numProjet) + "','" + str(idCas) + "','" + str(usager) + "','" + str(1) + "');")
         self.BD.requeteInsertionPerso("INSERT INTO Scenarii(id_projet, id_casUsage,ligne,id_colonne) VALUES('" + str(self.numProjet) + "','" + str(idCas) + "','" + str(machine) + "','" + str(2) + "');")
    
     def selectScenarii(self, ligne):
-        print(ligne)
+        idCas = self.BD.requeteSelection("SELECT id FROM CasUsage WHERE texte = '" + str(ligne[0]) + "';")
+        #idUsager = self.BD.requeteSelection("SELECT id FROM ColonnesScenarri WHERE id = '" + str(1) + "';")
+        #idMachine = self.BD.requeteSelection("SELECT id FROM ColonnesScenarri WHERE id = '" + str(2) + "';")
+        idCas = idCas[0]
+        idCas = idCas[0]
 
-        idCas = self.BD.requeteSelection("SELECT id FROM CasUsage WHERE ligne = '" + str(ligne) + "';")
-        idUsager = self.BD.requeteSelection("SELECT id FROM ColonnesScenarri WHERE id = '" + str(1) + "';")
-        idMachine = self.BD.requeteSelection("SELECT id FROM ColonnesScenarri WHERE id = '" + str(2) + "';")
+        idUsager=1
+        idMachine=2
+        print("SELECT ligne FROM Scenarii WHERE id_projet = '" + str(self.numProjet) + "' AND id_colonne = '" + str(idUsager) + "' ;")
+        print("SELECT ligne FROM Scenarii WHERE id_projet = '" + str(self.numProjet) + "' AND id_colonne = '" + str(idMachine) + "' ;")
+        self.casUsagers = self.BD.requeteSelection("SELECT ligne FROM Scenarii WHERE id_projet = '" + str(self.numProjet) + "' AND id_casUsage = '" + str(idCas)+ "' AND id_colonne = '" + str(idUsager) + "' ;")
+        self.casMachines = self.BD.requeteSelection("SELECT ligne FROM Scenarii WHERE id_projet = '" + str(self.numProjet) + "' AND id_casUsage = '" + str(idCas)+ "' AND id_colonne = '" + str(idMachine) + "' ;")
+        print(idCas)
+        print(idUsager)
+        print(idMachine)
 
-        self.casUsagers = self.BD.requeteSelection("SELECT ligne FROM CasUsage WHERE id_projet = '" + str(self.numProjet) + "' AND id_colonne = '" + str(idUsager) + "' ;")
-        self.casMachines = self.BD.requeteSelection("SELECT ligne FROM CasUsage WHERE id_projet = '" + str(self.numProjet) + "' AND id_colonne = '" + str(idMachine) + "' ;")
+        print(self.casUsagers)
+        print(self.casMachines)
+        print()
 
     def selectCas(self):
         self.Cas = self.BD.requeteSelection("SELECT texte FROM CasUsage WHERE id_projet = '" + str(self.numProjet) + "';")

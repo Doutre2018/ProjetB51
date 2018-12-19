@@ -24,11 +24,11 @@ class Vue():
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
         self.cadreExiste=False
-
-        self.usager= ["Lorem", "", "", "Ipsum Lorem"]
-        self.casdusage= ["Lorem", "Ipsum", "Lorem Ipsum", "Ipsum Lorem"]
-        self.machine= ["", "Ipsum", "Lorem Ipsum", ""]
-
+        
+        self.usager = []
+        self.machine = []
+        self.casdusage = []
+        
         self.images={}
         self.cadreactif=None
         self.fullscreen=True
@@ -116,7 +116,6 @@ class Vue():
         
     def afficherScenarii(self, evt):
         self.parent.modele.selectScenarii(self.listeCas.get(ACTIVE))
-        print(self.listeCas.get(ACTIVE))
         self.usager = self.parent.modele.casUsagers
         self.machine = self.parent.modele.casMachines
         self.listeScenariiUsager.delete(0, 'end')
@@ -172,13 +171,15 @@ class Vue():
         self.boutonCreationScenarii.grid(row=3,column=1, padx=50, pady=(0,30),columnspan=2)
     def creerCas(self):
         self.parent.modele.insertCas(self.listeCas.size(),self.entreeCreationCas.get())
+
         self.casdusage.append(self.entreeCreationCas.get())
         self.listeCas.insert(END, self.entreeCreationCas.get())
         self.fenetreCreationCas.destroy()
     def creerScenarii(self):
         self.parent.modele.insertScenarii(self.listeCas.get(ACTIVE),self.entreeCreationUtilisateur.get(),self.entreeCreationUtilisateur.get())
-        self.usager.append(self.entreeCreationUtilisateur.get())
-        self.machine.append(self.entreeCreationMachine.get())
+        self.listeScenariiMachine.insert(END,self.entreeCreationMachine.get())
+        self.listeScenariiUsager.insert(END,self.entreeCreationUtilisateur.get())
+
         self.fenetreCreationScenarii.destroy()
 
     def fermerfenetre(self):

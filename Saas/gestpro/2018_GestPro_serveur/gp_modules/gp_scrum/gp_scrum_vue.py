@@ -124,8 +124,14 @@ class Vue():
         self.boutonCreerEmploye = Button(self.fenetreCreationEmploye, width = 10, command=self.ajouterEmploye,text="Ajout", bg="white", relief=FLAT)
         self.boutonCreerEmploye.grid(column=0,row=3,padx=20,pady=20)
     def ajouterEmploye(self):
-        self.listeEmploye.insert(END,self.nomEmploye.get())
-        self.fenetreCreationEmploye.destroy()
+        a=()
+        a=self.listeDate.curselection()
+        if a == ():
+            self.fenetreCreationEmploye.destroy()
+        else:
+            self.listeEmploye.insert(END,self.nomEmploye.get())
+            self.parent.insertNewMembre(self.nomEmploye.get(),a)
+            self.fenetreCreationEmploye.destroy()
     def creationDate(self):
         self.fenetreCreationDate = Toplevel(self.cadrescrum, bg="#234078"  )
         self.fenetreCreationDate.wm_title("Ajouter une nouvelle Date")
@@ -193,6 +199,7 @@ class Vue():
         a=self.listeEmploye.curselection()
         
         nomEmp=self.listeEmploye.get(a)
+        #Afficher mes info données de base données
         self.infoFait.insert(END,"\n"+nomEmp+":")
         self.infoAFaire.insert(END,"\n"+nomEmp+":")
         self.infoProbleme.insert(END,"\n"+nomEmp+":")

@@ -16,31 +16,39 @@ class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.createurId=Id
-        self.connectionServeurCourant()
-        self.modele=None
+        self.serveur = ServerProxy(sys.argv[4], allow_none=True)
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
-    def connectionServeurCourant(self):  
-        try:
-            with open("adresseServeurCourant.txt", "r") as fichier:
-                self.adresseServeur = fichier.read()       
-        except Exception as erreur:
-            print(erreur)
-            try:
-                with open("../../../2018_Gestpro_client/adresseServeurCourant.txt", "r") as fichier:
-                    self.adresseServeur = fichier.read()  
-            except Exception as erreur:
-                print(erreur)
-                self.adresseServeur = "http://"
-                self.adresseServeur += input("Désolé, il y a eu une erreur lors de la détection automatique de l'adresse du serveur, vous pouvez entrer le IP (ex: 10.57.47.7) manuellement: ")
-                self.adresseServeur += ":9999"
-        try:
-            self.serveur = ServerProxy(self.adresseServeur)
-        except Exception as erreur:
-            print("Désolé, il y a eu un problème avec la connection au serveur, fermeture du module.")
-            print(erreur)
-            sys.exit(0)
+class Modele():
+    def __init__(self,parent):
+        self.parent=parent
+        self.serveur=parent.serveur
+        
+    def selectSprint(self):
+        commande = "SELECT nom FROM Sprint"
+        return self.serveur.requeteSelection(commande)
     
+    def selectIdSprint(self,nom):
+        commande = "SELECT id FROM Sprint WHERE nom='"
+        commande+=str(nom)+"'"
+        return self.serveur.requeteSelection(commande)
+    
+    def selectNomMembreSprint(self,idSprint):
+        commande = "SELECT nomMembre FROM MembreSprint WHERE id_sprint="
+        commande+=str(idSprint)
+        return self.serveur.requeteSelection(commande)
+    
+    def insertSprint(self,nom):
+        return self.serveur.requeteInsertionPerso("INSERT INTO Sprint(nom) VALUES('" + str(nom) + "');")
+    
+    def insertMembreSprint(self,membre,idSprint):
+        return self.serveur.requeteInsertionPerso("INSERT INTO MembreSprint(nomMembre,id_sprint) VALUES('" + str(membre) + "',"+str(idSprint)+");")
+    
+    def deleteSprint(self,idSprint):
+        commande="DELETE FROM Sprint WHERE id="
+        commande+=str(idSprint)
+        self.serveur.requeteInsertionPerso(commande)
 if __name__ == '__main__':
     c=Controleur()

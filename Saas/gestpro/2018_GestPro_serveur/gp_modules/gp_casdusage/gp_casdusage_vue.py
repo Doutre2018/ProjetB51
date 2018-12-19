@@ -15,6 +15,7 @@ class Vue():
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.attributes("-fullscreen", False)
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
+        self.root.config(bg="#E4E9F3")
         self.parent=parent
         self.modele=None
         self.defaultcolor =self.root["bg"];
@@ -23,11 +24,11 @@ class Vue():
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
         self.cadreExiste=False
-
-        self.usager= ["Lorem", "", "", "Ipsum Lorem"]
-        self.casdusage= ["Lorem", "Ipsum", "Lorem Ipsum", "Ipsum Lorem"]
-        self.machine= ["", "Ipsum", "Lorem Ipsum", ""]
-
+        
+        self.usager = []
+        self.machine = []
+        self.casdusage = []
+        
         self.images={}
         self.cadreactif=None
         self.fullscreen=True
@@ -59,60 +60,64 @@ class Vue():
         self.root.overrideredirect(True)
 
         #Cas d'usage
-        self.cadreUsage=Frame(self.root,bg=self.defaultcolor,height=int((self.root.winfo_screenheight()/6)*5),width=int((self.root.winfo_screenwidth()/6)*5))
+        self.cadreUsage=Frame(self.root,bg="#E4E9F3",height=int((self.root.winfo_screenheight()/6)*5),width=int((self.root.winfo_screenwidth()/6)*5))
+        self.cadreUsage.grid(row=0,column=0,)
         
-        self.titreCas = Text(self.cadreUsage,height=1,width=15,font="-size 24",bg=self.defaultcolor)
-        self.titreCas.insert(END, "Cas d'usage")
-        self.titreCas.config(state=DISABLED)
-        self.titreCas.grid(row=0,column=1,padx=20)
+        self.labelCas=Label(self.cadreUsage, text="Cas d'usage", bg="#E4E9F3", font= "arial, 24")
+        self.labelCas.grid(row=0,column=0,pady=(20,10),columnspan=2)
+
         
-        self.listeCas = Listbox(self.cadreUsage, width=int(self.largeur/20),height=int((self.hauteur/130)*5))
-        self.listeCas.grid(row=1,column=1,pady=20,padx=20)
-        self.listeCas.bind("<Button-1>", self.afficherScenarii)
+        self.listeCas = Listbox(self.cadreUsage, width=50,height=int((self.hauteur/130)*5))
+        self.listeCas.grid(row=1,column=0,padx=20,columnspan=2)
+        self.listeCas.bind('<<ListboxSelect>>', self.afficherScenarii)
+        self.boutonAjouterCas = Button(self.cadreUsage,text="Ajouter",bg="white",command=self.ajouterCas,relief=FLAT,width=10)
+        self.boutonAjouterCas.grid(row=2,column=0,pady=(10,0),padx=(75,0))
         
-        self.boutonAjouterCas = Button(self.cadreUsage,text="Ajouter un Cas",bg="lightblue",command=self.ajouterCas)
-        self.boutonAjouterCas.grid(row=2,column=1,pady=20,padx=20)
+        # --------Bouton POur JF
+        self.boutonSupprimerCas = Button(self.cadreUsage,text="Supprimer",bg="white",command=self.ajouterCas,relief=FLAT,width=10)
+        self.boutonSupprimerCas.grid(row=2,column=1,pady=(10,0),padx=(0,75))
         
         #Scenarii
-        self.cadreScenarii=Frame(self.cadreUsage,bg=self.defaultcolor,height=int((self.root.winfo_screenheight()/6)*5),width=int((self.root.winfo_screenwidth()/6)*5))
+        self.cadreScenarii=Frame(self.root,bg="#E4E9F3",height=int((self.root.winfo_screenheight()/6)*5),width=int((self.root.winfo_screenwidth()/6)*5))
+        self.cadreScenarii.grid(row=0,column=2)
         
-        self.titreScenarii = Text(self.cadreScenarii,height=1,width=15,font="-size 24",bg=self.defaultcolor)
-        self.titreScenarii.insert(END, "Scenarii d'Utilisation")
-        self.titreScenarii.config(state=DISABLED)
-        self.titreScenarii.grid(row=0,column=1,padx=20,pady=20,columnspan=2)
+        self.titreScenarii= Label(self.cadreScenarii , text="Scenarii d'Utilisation",font="-size 24",bg="#E4E9F3")
+        self.titreScenarii.grid(row=0,column=1,columnspan=2,pady=(20,10))
         
-        self.titreScenariiUsager = Text(self.cadreScenarii,height=1,width=15,font="-size 24",bg=self.defaultcolor)
-        self.titreScenariiUsager.insert(END, "Usager")
-        self.titreScenariiUsager.config(state=DISABLED)
-        self.titreScenariiUsager.grid(row=1,column=1,padx=20,pady=20)
-        
-        self.titreScenariiMachine = Text(self.cadreScenarii,height=1,width=15,font="-size 24",bg=self.defaultcolor)
-        self.titreScenariiMachine.insert(END, "Machine")
-        self.titreScenariiMachine.config(state=DISABLED)
-        self.titreScenariiMachine.grid(row=1,column=2,padx=20,pady=20)
+        self.labelUsager = Label(self.cadreScenarii , text="Usager",font="-size 20",bg="#E4E9F3")
+        self.labelUsager.grid(row=1,column=1)
+
+        self.labelMachine = Label(self.cadreScenarii , text="Machine",font="-size 20",bg="#E4E9F3")  
+        self.labelMachine.grid(row=1,column=2)      
         
         self.listeScenariiUsager = Listbox(self.cadreScenarii, width=int(self.largeur/20),height=int((self.hauteur/150)*5))
-        self.listeScenariiUsager.grid(row=2,column=1,pady=20,padx=20)
+        self.listeScenariiUsager.grid(row=2,column=1)
         
         self.listeScenariiMachine = Listbox(self.cadreScenarii, width=int(self.largeur/20),height=int((self.hauteur/150)*5))
-        self.listeScenariiMachine.grid(row=2,column=2,pady=20,padx=20)
+        self.listeScenariiMachine.grid(row=2,column=2)
+                
+        self.boutonAjouterScenarii = Button(self.cadreScenarii,text="Ajouter",bg="white",command=self.ajouterScenarii,relief=FLAT,width=10)
+        self.boutonAjouterScenarii.grid(row=3,column=1,columnspan=2, padx=(0,100))
+        #-----------BOUTON POUR JF!
+        self.boutonSupprimerScenarii = Button(self.cadreScenarii,text="Supprimer",bg="white",command=self.ajouterScenarii,relief=FLAT,width=10)
+        self.boutonSupprimerScenarii.grid(row=3,column=1,columnspan=2, padx=(100,0))
         
-        self.cadreScenarii.grid(row=1,column=2)
-        
-        self.boutonAjouterScenarii = Button(self.cadreScenarii,text="Ajouter un Scenarii",bg="lightblue",command=self.ajouterScenarii)
-        self.boutonAjouterScenarii.grid(row=3,column=1,columnspan=2,pady=20,padx=20)
-        
+        self.parent.modele.selectCas()
+        self.casdusage = self.parent.modele.Cas
         for item in self.casdusage:
             self.listeCas.insert(END, item)
             
-
-
+        self.listeCas.select_set(0)
 
         
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
         self.cadreExiste=True
-    def afficherScenarii(self,evt):
+        
+    def afficherScenarii(self, evt):
+        self.parent.modele.selectScenarii(self.listeCas.get(ACTIVE))
+        self.usager = self.parent.modele.casUsagers
+        self.machine = self.parent.modele.casMachines
         self.listeScenariiUsager.delete(0, 'end')
         for item in self.usager:
             self.listeScenariiUsager.insert(END, item)
@@ -121,43 +126,60 @@ class Vue():
         for item in self.machine:
             self.listeScenariiMachine.insert(END, item)
     def ajouterCas(self):
-        self.fenetreCreationCas = Toplevel(self.root, bg="#F8C471"  )
+        self.fenetreCreationCas = Toplevel(self.root, bg="#234078"  )
         self.fenetreCreationCas.wm_title("Creer un Cas d'utilisation")
         
-        self.texteCreationCas = Label(self.fenetreCreationCas, text="Nouveau cas :", bg="#F8C471")
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(220/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.fenetreCreationCas.geometry("+%d+%d" % (x, y))
+        
+        self.texteCreationCas = Label(self.fenetreCreationCas, text="Nouveau cas :", bg="#234078",fg="white")
         self.texteCreationCas.grid(row=1,column=1, padx=50, pady=(30,10))
         
         self.entreeCreationCas = Entry(self.fenetreCreationCas)
         self.entreeCreationCas.grid(row=2,column=1, padx=50, pady=(0,10))
         
-        self.boutonCreationCas = Button(self.fenetreCreationCas, text="Creer Cas", bg="#E67E22",command=self.creerCas)
+        self.boutonCreationCas = Button(self.fenetreCreationCas, text="Creer Cas", command=self.creerCas, relief=FLAT, bg="white")
         self.boutonCreationCas.grid(row=3,column=1, padx=50, pady=(0,30))
+        
 
     def ajouterScenarii(self):
-        self.fenetreCreationScenarii = Toplevel(self.root, bg="#F8C471"  )
+        self.fenetreCreationScenarii = Toplevel(self.root, bg="#234078"  )
         self.fenetreCreationScenarii.wm_title("Creer un Scenarii")
         
-        self.texteCreationUtilisateur = Label(self.fenetreCreationScenarii, text="Utilisateur :", bg="#F8C471")
+        largeurEcran = self.root.winfo_screenwidth()
+        hauteurEcran = self.root.winfo_screenheight()
+        x = (largeurEcran/2)-(500/2)
+        y = (hauteurEcran/2)-(220/2)
+        self.fenetreCreationScenarii.geometry("+%d+%d" % (x, y))
+        
+        self.texteCreationUtilisateur = Label(self.fenetreCreationScenarii, text="Utilisateur :", bg="#234078",fg="white")
         self.texteCreationUtilisateur.grid(row=1,column=1, padx=50, pady=(30,10))
         
         self.entreeCreationUtilisateur = Entry(self.fenetreCreationScenarii)
         self.entreeCreationUtilisateur.grid(row=2,column=1, padx=50, pady=(0,10))
         
-        self.texteCreationMachine = Label(self.fenetreCreationScenarii, text="Machine :", bg="#F8C471")
+        self.texteCreationMachine = Label(self.fenetreCreationScenarii, text="Machine :", bg="#234078",fg="white")
         self.texteCreationMachine.grid(row=1,column=2, padx=50, pady=(30,10))
         
         self.entreeCreationMachine = Entry(self.fenetreCreationScenarii)
         self.entreeCreationMachine.grid(row=2,column=2, padx=50, pady=(0,10))
         
-        self.boutonCreationScenarii = Button(self.fenetreCreationScenarii, text="Creer ligne de Scenarii", bg="#E67E22",command=self.creerScenarii)
+        self.boutonCreationScenarii = Button(self.fenetreCreationScenarii, text="Creer ligne de Scenarii",command=self.creerScenarii, relief=FLAT, bg="white")
         self.boutonCreationScenarii.grid(row=3,column=1, padx=50, pady=(0,30),columnspan=2)
     def creerCas(self):
+        self.parent.modele.insertCas(self.listeCas.size(),self.entreeCreationCas.get())
+
         self.casdusage.append(self.entreeCreationCas.get())
         self.listeCas.insert(END, self.entreeCreationCas.get())
         self.fenetreCreationCas.destroy()
     def creerScenarii(self):
-        self.usager.append(self.entreeCreationUtilisateur.get())
-        self.machine.append(self.entreeCreationMachine.get())
+        self.parent.modele.insertScenarii(self.listeCas.get(ACTIVE),self.entreeCreationUtilisateur.get(),self.entreeCreationUtilisateur.get())
+        self.listeScenariiMachine.insert(END,self.entreeCreationMachine.get())
+        self.listeScenariiUsager.insert(END,self.entreeCreationUtilisateur.get())
+
         self.fenetreCreationScenarii.destroy()
 
     def fermerfenetre(self):

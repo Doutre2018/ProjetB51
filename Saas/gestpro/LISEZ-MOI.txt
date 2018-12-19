@@ -46,6 +46,12 @@ gestpro_client_main.py dans le répertoire "2018_GestPro_client".
 		-Choisissez la compagnie dont vous êtes le représentant.
 - Pour vous connecter:
 		-Entrez le nom d'utilisateur, votre mdp, votre compagnie ainsi que l'adresse IP du serveur.
+		
+- Utilisateur Pour Enseignant
+		-Il existe deja un utilisateur pour les test d'un enseignant
+			Nom: jmd
+			Mot de Passe: AAAaaa111
+			Compagnie: GOTO.INC
 
 DANS LE GESTIONNAIRE:
 	POUR QUITTER LE PLEIN ÉCRAN: ACCÉDER AU MENU EN HAUT, OPTION «AFFICHAGE», «FULL SCREEN»
@@ -60,35 +66,41 @@ CHOISSISEZ UN MODULE:
 -Analyse textuelle:
 	Pour ajouter des mots/verbes/adjectifs, cliquez sur les petits "+" et ajoutez le contenu dans
 	la nouvelle fenêtre.
-	Il y a persistance des données, mais pas du tout au point
+	Pour supp des mots/verbes/adjectifs, cliquez sur les petits "-" 
+	Est avec la BD
 -Cas d'usage:
 	Cliquez sur les cas à gauche pour faire afficher leur contenu dans les catégories à droite.
-	Cliquez sur les boutouns en dessous pour ajouter du contenu.
+	Cliquez sur les boutons en dessous pour ajouter du contenu.
 	Il n'y a pas de persistance de données.
 - La Maquette :
 	Pour ajouter des formes/textes, cliquez sur les objets dans le menu.
 	Pour changer la couleur d'un objet, ouvrez le menu défilant en haut pour faire apparaitre la palette de couleur
 	Pour ajouter du texte, cliquez sur le grand "T"; le nouveau texte apparaitra au milieu du canvas. 
 		Ce texte est éditable en double cliquant dessus. Entrez le nouveau texte dans la nouvelle fenêtre.
-	Il n'y a pas de persistance de données.
+	Pour changer la grosseur des formes deja sur la surface de dessin clic droit et drag vers la grandeur voulue.
+	Pour Déplacer la forme sur la surface de dessin clic gauche et drag vers la possition voulue
+	Pour supprimer la forme de la surface de dessin mettre le curseur sur la forme et clic sur la roulette
+	La maquette enregiste sur la BD ,par contre il n'est plus possible de bouger les formes deja en place ,mais 
+	on peut en rajouter
 - CRC
 	Le module s'ouvre avec le nom des cartes CRC
 	En cliquant sur une carte, ça ouvre une fenêtre dans laquelle on peut entrer les informations pertinentes.
 	On peut ajouter des cartes, ajouter du contenu.
 	On peut supprimer des cartes (ce qui les supprime en BD aussi)
-	On ne peut PAS modifier le contenu des cartes existantes (prochaine implantation)
-	Il y a persistance des données (mais pas propre au "projet")
--Budget
-	Pas implanté
+	On peut modifier le contenu des cartes existantes
+	
+
 -Tchat
-	Interface est terminée, mais il n'y a pas de persistance de données et l'utilisateur n'est pas lié au module.
-	Il n'y a pas de persistance de données.
+	Le chat est fonctionnelle par contre il n'y a pas de "refresh" automatique. Pour voir les modifications il faut
+	sortir du module et revenir.
+	Le tchat marche sur différent Ordinateur a la fois
+	Le tchat est sur la BD
 -Modélisation de données
 	Pour ajouter une nouvelle classe, cliquer sur «Créer table»
 	Dans la nouvelle fenêtre, entrez le nouveau nom de la table.
 	Cliquez sur «Ajouter champs» pour ajouter un nouveau type de champ (données)
 	Pour ajouter cette table au projet, cliquez sur «Ajouter».
-	Il n'y a pas de persistance de données.
+	Est sur la BD
 -Terlow
 	On peut ajouter des colonnes, dans lesquelles on ajoute des classes.
 	Il n'y a pas de persistance de données

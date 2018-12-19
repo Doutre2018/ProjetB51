@@ -7,6 +7,7 @@ import os,os.path
 import math
 from helper import Helper as hlp
 import signal
+import subprocess
 
 class Vue():
     def __init__(self,parent,monip,largeur=800,hauteur=600):
@@ -14,6 +15,7 @@ class Vue():
         self.root=tix.Tk()
         self.root.title(os.path.basename(sys.argv[0]))
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
+        self.root.config(bg="#E4E9F3")
         self.monip=monip
         self.parent=parent
         self.modele=None
@@ -35,13 +37,14 @@ class Vue():
         self.changecadre(self.cadresplash)
         
         self.listBoutonActif=[]
-        self.listBoutonNonActif=[self.boutonMandat,self.boutonScrum,self.boutonAnalyse,self.boutonCasUsage,self.boutonMaquette,self.boutonCrc, self.boutonBudget,self.boutonTchat,self.boutonDonnee, self.boutonTerlow]
+        self.listBoutonNonActif=[self.boutonMandat,self.boutonScrum,self.boutonAnalyse,self.boutonCasUsage,self.boutonMaquette,self.boutonCrc, self.boutonTchat,self.boutonDonnee, self.boutonTerlow]
 
         self.placeHolderEntryNom=True
         self.placeHolderEntryMotDePasse=True
         self.placeHolderEntryNomNouveauUtilisateur=True
         self.placeHolderEntryMotDePasseNewUser=True
         self.placeHolderEntryMotDePasseNewUserConfirm=True
+        self.placeHolderEntryCompagny=True
 
 
         #Bloc pour que la fenetre de connexion sois centré avec l'écran
@@ -95,8 +98,6 @@ class Vue():
         self.creercadresplash()
         self.connexionProjet()
         self.nouveauProjet()
-        self.creeNouvelleUtilisateur()
-
         self.creercadrebase()
         #self.creercadrecentral()
                 
@@ -124,18 +125,24 @@ class Vue():
         self.entrymotPassesplash.bind('<FocusIn>', self.clickEntryMotDePasse)
         self.entrymotPassesplash.bind('<FocusOut>',self.puclickEntryMotDePasse)
         
+        self.labelCompagnieplash=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez votre nom de compagnie",font='arial 12')
+        self.labelCompagnieplash.grid()
+        self.comboCompagnieSplash= ttk.Combobox(self.cadresplash,justify=CENTER,values=[
+                                    "Unity", 
+                                    "Ubisoft",
+                                    "GOTO.INC",
+                                    "Google",])
+        self.comboCompagnieSplash.current(0)
+        self.comboCompagnieSplash.grid(pady=(10,10),padx=100)
+    
+        
         self.labelProbleme=Label(self.cadresplash ,bg="#E5E7F4",fg="#E5E7F4", text="Nom d'utilisateur ou mot de passe erroné",font='arial 1')
         self.labelProbleme.grid()
         
         self.labelIp=Label(self.cadresplash, bg="#E5E7F4" , text="Entrez l'adresse ip de votre serveur",font='arial 12',)
         self.ipsplash=Entry(self.cadresplash,bg="white",justify=CENTER,)
         self.ipsplash.insert(0, self.monip)
-        
-        # ---------------- DM ----------------
-        cies = self.fetchCompagnies()
-        self.ciessplash=ttk.Combobox(self.cadresplash,width=40,justify=CENTER,values=cies)
-        self.ciessplash.insert(0,"< Sélectionner votre entreprise >")
-        self.ciessplash.grid()
+
         # ------------------------------------                      
         
         self.labelIp.grid()
@@ -187,10 +194,15 @@ class Vue():
         self.ipsplash.insert(0, self.monip)
         
         # ------------- DM -------------
-        compagnies = self.fetchCompagnies()
-        self.compagniesplash=ttk.Combobox(self.cadreNouvelleUtilisateur,width=40,justify=CENTER,values=compagnies)
-        self.compagniesplash.insert(0,"< Sélectionner votre entreprise >")
-        self.compagniesplash.grid()
+        self.labelCompagnieplash=Label(self.cadreNouvelleUtilisateur, bg="#E5E7F4" , text="Entrez votre nom de compagnie",font='arial 12')
+        self.labelCompagnieplash.grid()
+        self.comboCompagnieNew= ttk.Combobox(self.cadreNouvelleUtilisateur,justify=CENTER,values=[
+                                    "Unity", 
+                                    "Ubisoft",
+                                    "GOTO.INC",
+                                    "Google",])
+        self.comboCompagnieNew.current(0)
+        self.comboCompagnieNew.grid(pady=(10,10),padx=100)
         # ------------------------------
         
         self.labelIpServuer.grid()
@@ -212,7 +224,7 @@ class Vue():
         self.nomProjet.insert(0,'Nom du Projet')
         self.nomProjet.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
         self.nomProjet.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
-
+        
         self.confirmerIB=Button(self.cadreProjet,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.connexion, width=15)
         self.confirmerIB.grid(row= 10, column= 0,pady=(30,35), padx=(0,122))
         
@@ -265,39 +277,28 @@ class Vue():
 
         self.filemenu = Menu(self.menubar, tearoff=0)
         
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Nouveau Projet", command=self.nouveauProjet)
-        self.filemenu.add_command(label="Enregistrer", command=self.salutations)
-        self.menubar.add_cascade(label="Fichier", menu=self.filemenu)
-        
-        self.editmenu = Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Undo", command=self.salutations)
-        self.editmenu.add_command(label="Redo", command=self.salutations)
-        self.editmenu.add_separator()
-        self.editmenu.add_command(label="Copier", command=self.salutations)
-        self.editmenu.add_command(label="Couper", command=self.salutations)
-        self.editmenu.add_command(label="Coller", command=self.salutations)
-        self.menubar.add_cascade(label="Edition", menu=self.editmenu)
         
         self.aidemenu = Menu(self.menubar, tearoff=0)
-        self.aidemenu.add_command(label="Read-Me 1", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 2", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 3", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 4", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 5", command=self.salutations)
+        self.aidemenu.add_command(label="Lisez-moi", command=self.ouvrirReadme)
         self.menubar.add_cascade(label="Aide", menu=self.aidemenu)
-        
-        self.affichagemenu = Menu(self.menubar, tearoff=0)
-        self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode)
-        self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
         
         self.menubar.add_command(label="Fermer", command=self.fermerfenetre)
         self.menu = Menu(self.root, tearoff=0)
-        self.menu.add_command(label="Nom", command=self.salutations)
-        self.menu.add_command(label="Verbe", command=self.salutations)
         
         self.root.config(menu=self.menubar) 
-
+    
+    def ouvrirReadme(self):
+        pathReadMe = os.getcwd() + "\Lisez_moi_GestPro.txt"
+        print(pathReadMe)
+        try:
+            subprocess.Popen(["notepad",pathReadMe])
+        except Exception as erreur:
+            try:
+                self.parent.serveur.logErreur(socket.gethostbyname(socket.getfqdn()), erreur)
+            except:
+                pass
+    
+    
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -324,16 +325,16 @@ class Vue():
         
         self.cadrebase=Frame(self.root, bg= "#E4E9F3")
         
-        self.boutonMandat=Button(self.cadrebase,text="Mandat",bg="#234078",command=self.requeteMandat,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#234078",command=self.requeteScrum,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonAnalyse=Button(self.cadrebase,text="Analyse \nTextuelle",bg="#234078",command=self.requeteAnalyse,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonCasUsage=Button(self.cadrebase,text="Cas \nd'usage",bg="#234078",command=self.requeteCasUsage,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonMaquette=Button(self.cadrebase,text="Maquette",bg="#234078",command=self.requeteMaquette,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonCrc=Button(self.cadrebase,text="CRC",bg="#234078",command=self.requeteCrc,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonBudget=Button(self.cadrebase,text="Marketing",bg="#234078",command=self.requeteBudget,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonTchat=Button(self.cadrebase,text="Tchat",bg="#234078",command=self.requeteTchat,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#234078",command=self.requeteModelisation,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
-        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#234078",command=self.requeteTerlow,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonMandat=Button(self.cadrebase,text="Gestion",bg="#234078",command=self.requeteMandat,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#234078",command=self.requeteScrum,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonAnalyse=Button(self.cadrebase,text="Analyse \nTextuelle",bg="#234078",command=self.requeteAnalyse,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonCasUsage=Button(self.cadrebase,text="Cas \nd'usage",bg="#234078",command=self.requeteCasUsage,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonMaquette=Button(self.cadrebase,text="Maquette",bg="#234078",command=self.requeteMaquette,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonCrc=Button(self.cadrebase,text="CRC",bg="#234078",command=self.requeteCrc,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        #self.boutonBudget=Button(self.cadrebase,text="Marketing",bg="#234078",command=self.requeteBudget,height=4,width=int(self.largeur/72),relief=FLAT, fg="white")
+        self.boutonTchat=Button(self.cadrebase,text="Tchat",bg="#234078",command=self.requeteTchat,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonDonnee=Button(self.cadrebase,text="Modelisation \nde donnee",bg="#234078",command=self.requeteModelisation,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonTerlow=Button(self.cadrebase,text="Terlow",bg="#234078",command=self.requeteTerlow,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
 
         self.boutonMandat.grid(row=0,column=1 ,padx=(0,2))
         self.boutonScrum.grid(row=0,column=2 ,padx=(0,2))
@@ -341,7 +342,7 @@ class Vue():
         self.boutonCasUsage.grid(row=0,column=4 ,padx=(0,2))
         self.boutonMaquette.grid(row=0,column=5 ,padx=(0,2))
         self.boutonCrc.grid(row=0,column=6 ,padx=(0,2))
-        self.boutonBudget.grid(row=0,column=7 ,padx=(0,2))
+       # self.boutonBudget.grid(row=0,column=7 ,padx=(0,2))
         self.boutonTchat.grid(row=0,column=8 ,padx=(0,2))
         self.boutonDonnee.grid(row=0,column=9 ,padx=(0,2))
         self.boutonTerlow.grid(row=0,column=10)
@@ -425,24 +426,31 @@ class Vue():
         nom = self.NouveauNom.get()                 # Nom d'utilisateur à inscrire
         motPasse = self.NouveauPassword.get()       # Mot de passe de l'utilisateur à inscrire
         mpConfirm = self.PasswordConfirm.get()      # 2e mot de passe; pour confirmation
-        compagnie = self.compagniesplash.get()      # Nom de la compagnie lié à l'utilisateur
+        compagnie = self.comboCompagnieNew.get()      # Nom de la compagnie lié à l'utilisateur
         ipserveur = self.ipsplash.get()             # Addresse ip de l'utilisateur
         
         if motPasse=="Nouveau Mot de passe":
             motPasse=""
         if mpConfirm=="Confirmer le mot de passe":
             mpConfirm=""
+        if compagnie == "Nom de compagnie":
+            compagnie=""
         
         if self.nomConforme(nom):                   # Vérifie que le nom d'utilisateur désiré est conforme
             if self.motPasseConforme(motPasse):     # Vérifie que le mot de passe de l'utilisateur est conforme
                 if motPasse == mpConfirm:           # Confirme le mot de passe désiré
-                    if compagnie != "< Sélectionner votre entreprise >":
+                    if compagnie != "" :
                         rep = self.parent.inscription(nom, motPasse, compagnie, ipserveur)
                         print(rep)
                         self.retourMenuPrincipal()
                         
                     else:
-                        print("Choisir une compagnie s.v.p.")
+                        self.entryCompagniesplash.delete(0, "end")
+                        self.entryCompagniesplash.config(fg="red")
+                        self.entryCompagniesplash.insert(0,"Le nom n'est pas comforme")
+                        self.placeHolderEntryNomNouveauUtilisateur=True
+                        self.confirmerIB.focus()
+                        print("Nom d'utilisateur non conforme")
                     
                 else:
                     self.PasswordConfirm.delete(0, "end")
@@ -468,13 +476,16 @@ class Vue():
             
     def connexion(self):
         nom = self.nomsplash.get()
+        self.parent.monnom=nom
         motPasse = self.entrymotPassesplash.get()
-        compagnie = self.ciessplash.get()
+        compagnie = self.comboCompagnieSplash.get()
         ipserveur = self.ipsplash.get()
-        
+        print(ipserveur + "Vue")
         if self.nomConforme(nom):
             if self.motPasseConforme(motPasse):
                 if compagnie != "< Sélectionner votre entreprise >":
+                    print(ipserveur + "Vue2")
+
                     rep = self.parent.connexion(nom, motPasse, compagnie, ipserveur)
                     self.labelProbleme.config(fg="red",font='arial 9')
                     print(rep)
@@ -508,8 +519,34 @@ class Vue():
                 return False
     # --------------------------------- #   
     def chargerProjet(self):
-        self.changecadre(self.cadreProjet)
+        
+        #C'est ici qu'il faut vérifé
+        
+        nom = self.nomsplash.get()
+        motPasse = self.entrymotPassesplash.get()
+        compagnie = self.comboCompagnieSplash.get()
+        ipserveur = self.ipsplash.get()
+        
+        if self.nomConforme(nom):
+            if self.motPasseConforme(motPasse):
+                self.changecadre(self.cadreProjet)
+            else:
+                print("Mot de passe non conforme")
+        else:
+            print("Nom d'utilisateur non conforme")
+            
+#        if nomestConforme:
+#             if MotdepasseConforme:
+#                 self.changecadre(self.cadreProjet) #Si tout ca alors il  va aller dans la prochaine étape qui est de faire afficher la connexion projet
+#             else:
+#                 pass
+#                 
+#         else:
+#             pass
+        
+        
     def AllerAInscription(self):
+        self.creeNouvelleUtilisateur()
         self.changecadre(self.cadreNouvelleUtilisateur)
     def AllerANouveauProjet(self):
         self.changecadre(self.cadreNouveauProjet)
@@ -591,6 +628,8 @@ class Vue():
             self.PasswordConfirm.insert(0, "Confirmer le mot de passe")
             self.PasswordConfirm.config(fg = "grey",show="")
             self.placeHolderEntryMotDePasseNewUserConfirm=True
+            
+
     
 if __name__ == '__main__':
     m=Vue(0,"127.0.0.1")

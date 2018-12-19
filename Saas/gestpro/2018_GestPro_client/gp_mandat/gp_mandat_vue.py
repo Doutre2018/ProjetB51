@@ -30,7 +30,7 @@ class Vue():
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.root.config(bg="#E4E9F3")
         self.parent=parent
-        self.modele=None
+        self.modele=parent.modele
         
         self.largeur=self.largeurDefault=largeur
         self.hauteur=self.hauteurDefault=hauteur
@@ -92,13 +92,17 @@ class Vue():
         self.labelSprint.grid(row=2)
         self.listeSprint = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/91))
         self.listeSprint.grid(row=3,column=0,rowspan=3,columnspan=3)
+        self.listeSprint.bind('<<ListboxSelect>>',self.afficherMembresSprint)
         self.boutonAjouterSprint = Button(self.root, text="Ajouter", command=self.ajoutSprint,width=10, relief=FLAT, bg="white")
         self.boutonAjouterSprint.grid(row=11,column=0, pady=10,columnspan=3, padx=(0,200))
         self.boutonSuppSprint = Button(self.root, text="Supprimer",command=self.delete,width=10, relief=FLAT, bg="white")
         self.boutonSuppSprint.grid(row=11,column=0,columnspan=3)
         self.boutonModifierSprint = Button(self.root, text="Modifier", command=self.modifier,width=10, relief=FLAT, bg="white")
         self.boutonModifierSprint.grid(row=11,column=0, pady=10,columnspan=3,padx=(200,0))
-         
+        
+        for i in self.modele.selectSprint():
+            for n in i:
+                self.listeSprint.insert(0,n)
 
         self.textMembre= Label(self.root,font="-size 14",text="Membre",bg="#E4E9F3",width=10)
         self.textMembre.grid(row=15,column=0,columnspan=3, padx=(0,240), pady=(20,0))
@@ -111,7 +115,6 @@ class Vue():
         self.listeMembre.grid(row=17,column=0,rowspan=4,columnspan=3,padx=(0,250)) 
         self.listeOccupation = Listbox(self.root,width=20, font="-size 16",height=int(self.hauteur/70))
         self.listeOccupation.grid(row=17,column=0,rowspan=4,columnspan=3,padx=(250,0))
-         
  
         self.boutonAjouterMembre = Button(self.root, text="Ajouter", command=self.AjouterMembre,width=10, relief=FLAT, bg="white")
         self.boutonAjouterMembre.grid(row=22,column=0, pady=10,columnspan=3, padx=(0,200))
@@ -144,10 +147,23 @@ class Vue():
         self.labeltitre.grid(row=1, column=1,columnspan=5,pady=(10,10));
         self.labeldate= Label(self.FramenouveauSprint, text="Date: ",font= "arial, 12",bg="#234078", fg="white")
         self.labeldate.grid(row=2, column=1,padx=(40,0));
-        self.entryJour = Entry(self.FramenouveauSprint, width=2, relief=FLAT)
-        self.entryJour.grid(row=2, column=3);
-        self.entryMois= Entry(self.FramenouveauSprint, relief=FLAT)
-        self.entryMois.grid(row=2, column=4, padx=(0,40))
+        self.jour = Spinbox(self.FramenouveauSprint, width=2, relief=FLAT,from_=1, to=31,buttonuprelief=FLAT)
+        self.jour.grid(row=2, column=3);
+        self.comboMois= ttk.Combobox(self.FramenouveauSprint,values=[
+                                    "Janvier", 
+                                    "Février",
+                                    "Mars",
+                                    "Avril",
+                                    "Mai",
+                                    "Juin",
+                                    "Juillet",
+                                    "Aout",
+                                    "Septembre",
+                                    "Octobre",
+                                    "Novembre",
+                                    "Décembre"])
+        self.comboMois.current(0)
+        self.comboMois.grid(row=2, column=4, padx=(0,40))
         
         self.labelJour = Label(self.FramenouveauSprint, text="Jour",font= "arial, 10",bg="#234078", fg="white")
         self.labelJour.grid(row=3, column=3)
@@ -159,21 +175,43 @@ class Vue():
        
         
     def insertion(self):
-        Date= self.entryJour.get() +" "+ self.entryMois.get() 
+        Date= self.jour.get() +" "+ self.comboMois.get() 
         ligneAjout= "Sprint " + str(self.compteur) +" : "+ Date
         self.listeSprint.insert(END, ligneAjout)
         self.compteur +=1
         
+        #Insert en BD
+        self.modele.insertSprint(Date)
         self.nouveauSprint.destroy()
+    
+    def afficherMembresSprint(self,evt):
+        self.listeMembre.delete(0,'end')
+        w= evt.widget
+        a=w.curselection()
+        nom = self.listeSprint.get(a)
+        for i in self.modele.selectIdSprint(nom):
+                for n in i:
+                    rep = n
+        self.modele.selectNomMembreSprint(rep)
+        compteur =0
+        for i in self.modele.selectNomMembreSprint(rep):
+            for n in i:
+                self.listeMembre.insert(compteur,n)
+                compteur+=1
         
     def delete(self):
         a=()
         a=self.listeSprint.curselection()
-        
+        self.listeMembre.delete(0,'end')
         if a==():
             pass
         else:
-            self.listeSprint.delete(a)   
+            nom = self.listeSprint.get(a)
+            self.listeSprint.delete(a)
+            for i in self.modele.selectIdSprint(nom):
+                for n in i:
+                    rep = n
+            self.modele.deleteSprint(n)   
         
         #Supprime la rangée de la BD
         #self.modele.supprimerCarte(nomClasse)
@@ -207,10 +245,23 @@ class Vue():
             
             self.labeldate= Label(self.FrameModifierSprint, text="Date: ",font= "arial, 12",bg="#234078",fg="white")
             self.labeldate.grid(row=2, column=1,padx=(40,0));
-            self.entryJour = Entry(self.FrameModifierSprint, width=2,relief=FLAT)
-            self.entryJour.grid(row=2, column=3);
-            self.entryMois= Entry(self.FrameModifierSprint,relief=FLAT)
-            self.entryMois.grid(row=2, column=4, padx=(0,40))
+            self.jour = Spinbox(self.FrameModifierSprint, width=2, relief=FLAT,from_=1, to=31,buttonuprelief=FLAT)
+            self.jour.grid(row=2, column=3);
+            self.comboMois= ttk.Combobox(self.FrameModifierSprint,values=[
+                                        "Janvier", 
+                                        "Février",
+                                        "Mars",
+                                        "Avril",
+                                        "Mai",
+                                        "Juin",
+                                        "Juillet",
+                                        "Aout",
+                                        "Septembre",
+                                        "Octobre",
+                                        "Novembre",
+                                        "Décembre"])
+            self.comboMois.current(0)
+            self.comboMois.grid(row=2, column=4, padx=(0,40))
             
             self.labelJour = Label(self.FrameModifierSprint, text="Jour",font= "arial, 10",bg="#234078",fg="white")
             self.labelJour.grid(row=3, column=3)
@@ -226,9 +277,8 @@ class Vue():
         
         
     def modifInsertion(self):
-       
-        Date= self.entryJour.get() +" "+ self.entryMois.get() 
-        ligneAjout= "Sprint " + str(self.compteur) +" : "+ Date
+        Date= self.jour.get() +" "+ self.comboMois.get() 
+        ligneAjout= "Sprint " + self.entryNumeroSprint.get() +" : "+ Date
         
         self.listeSprint.delete(self.SelectionSprint)
         self.listeSprint.insert(self.SelectionSprint, ligneAjout)
@@ -275,7 +325,16 @@ class Vue():
     def InsertionMembre(self):
         self.listeMembre.insert(END, self.entryNom.get())
         self.listeOccupation.insert(END,self.comboModule.get())
+        #a=()
+        #a=self.listeSprint.curselection()
+        nom = self.listeSprint.get(0)
+        for i in self.modele.selectIdSprint(nom):
+                for n in i:
+                    rep = n
+        self.modele.insertMembreSprint(self.entryNom.get(),rep)
         self.nouveauMembre.destroy()
+         
+        
     def SuppMembre(self):
         a=()
         a=self.listeMembre.curselection()
@@ -330,7 +389,7 @@ class Vue():
                                     "Maquette",
                                     "Crc",
                                     "Budget",
-                                    "Modélisation de Donné",
+                                    "Modélisation de Donnée",
                                     "Libre"] , justify=CENTER)
             self.comboModule.current(6)
             self.comboModule.grid(row=2, column=1,padx=(0,75),pady=10)
@@ -344,10 +403,6 @@ class Vue():
             else:
                 self.entryNom.insert(self.selctionMembre, self.listeMembre.get(self.selctionMembre))
            
-                  
-
-        
-      
     
     def InsertionModifMembre(self):
         

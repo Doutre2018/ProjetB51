@@ -73,8 +73,6 @@ class Vue():
 
         
         self.menu = Menu(self.root, tearoff=0)
-        self.menu.add_command(label="Nom", command=self.salutations)
-        self.menu.add_command(label="Verbe", command=self.salutations)
         self.menu.config(bg="#E4E9F3")
 
         
@@ -119,26 +117,24 @@ class Vue():
         t=self.canevasMaquette.gettags(CURRENT)
         if t :
             if  t[0] != "current" and t[1] == "objet" :
-                    print(t[0] +" " + t[1] + " " + t[2] )
+                print(t[0] + t[1] + t[2])
+                self.objetSelectionner=t[0]
 
-                    self.objetSelectionner=t[0]
-
-                    if t[2]=="texte":
-                        self.canevasMaquette.coords(t[0],evt.x, evt.y)
-                        diffx = 0
-                        diffy = 0
-                    else:
-                        x0, y0, x1, y1 = self.canevasMaquette.coords(t[0])
-                        diffx = x1-x0
-                        diffy = y1-y0
-
-                        self.canevasMaquette.coords(t[0],evt.x-(diffx/2), evt.y-(diffy/2),evt.x+(diffx/2),evt.y+(diffy/2))
-                    for objet in self.listeObjetMaquette :
-                        if (objet[9]==t[0]) :
-                            objet[1]=evt.x-(diffx/2)
-                            objet[2]=evt.y-(diffy/2)
-                            objet[3]=evt.x+(diffx/2)
-                            objet[4]=evt.y+(diffy/2)
+                if t[2]=="texte":
+                    self.canevasMaquette.coords(t[0],evt.x, evt.y)
+                    diffx = 0
+                    diffy = 0
+                else:
+                    x0, y0, x1, y1 = self.canevasMaquette.coords(t[0])
+                    diffx = x1-x0
+                    diffy = y1-y0
+                    self.canevasMaquette.coords(t[0],evt.x-(diffx/2), evt.y-(diffy/2),evt.x+(diffx/2),evt.y+(diffy/2))
+                for objet in self.listeObjetMaquette :
+                    if (objet[9]==t[0]) :
+                        objet[1]=evt.x-(diffx/2)
+                        objet[2]=evt.y-(diffy/2)
+                        objet[3]=evt.x+(diffx/2)
+                        objet[4]=evt.y+(diffy/2)
                             
                     self.objetSelectionnerX=evt.x
                     self.objetSelectionnerY=evt.y
@@ -148,8 +144,6 @@ class Vue():
         
         if t :
             if  t[0] != "current" and t[1] == "objet" :
-                    print(t[0] +" " + t[1] + " " + t[2] )
-
                     if t[2] == "texte" :
                         size=""
                         font = self.canevasMaquette.itemcget(t[0],'font')
@@ -190,7 +184,6 @@ class Vue():
         t=self.canevasMaquette.gettags(CURRENT)
         if t :
             if  t[0] != "current" and t[1] == "objet" :
-                    print(t[0] +" " + t[1] + " " + t[2] )
 
                     for objet in self.listeObjetMaquette :
                         if (objet[9]==t[0]) :
@@ -223,6 +216,7 @@ class Vue():
                 self.boutonModificationMot.grid(row=3,column=1, padx=50, pady=(0,30))
 
     def creerObjet(self):
+        
         self.canevasMaquette.delete("objet")
         for objet in self.listeObjetMaquette:
             if(objet[0]=="rectangle"):
@@ -236,9 +230,6 @@ class Vue():
     def sauvegarde(self):
         self.parent.sauvegarde(self.listeObjetMaquette)
        
-    def salutations(self):
-        print("hello")
-        
     def fermerfenetre(self):
         self.root.destroy()
     

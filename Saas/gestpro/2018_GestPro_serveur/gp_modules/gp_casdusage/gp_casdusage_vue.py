@@ -24,11 +24,11 @@ class Vue():
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenmmheight()
         self.cadreExiste=False
-
-        self.usager= ["Lorem", "", "", "Ipsum Lorem"]
-        self.casdusage= ["Lorem", "Ipsum", "Lorem Ipsum", "Ipsum Lorem"]
-        self.machine= ["", "Ipsum", "Lorem Ipsum", ""]
-
+        
+        self.usager = []
+        self.machine = []
+        self.casdusage = []
+        
         self.images={}
         self.cadreactif=None
         self.fullscreen=True
@@ -69,8 +69,7 @@ class Vue():
         
         self.listeCas = Listbox(self.cadreUsage, width=50,height=int((self.hauteur/130)*5))
         self.listeCas.grid(row=1,column=0,padx=20,columnspan=2)
-        self.listeCas.bind("<Button-1>", self.afficherScenarii)
-        
+        self.listeCas.bind('<<ListboxSelect>>', self.afficherScenarii)
         self.boutonAjouterCas = Button(self.cadreUsage,text="Ajouter",bg="white",command=self.ajouterCas,relief=FLAT,width=10)
         self.boutonAjouterCas.grid(row=2,column=0,pady=(10,0),padx=(75,0))
         
@@ -103,17 +102,22 @@ class Vue():
         self.boutonSupprimerScenarii = Button(self.cadreScenarii,text="Supprimer",bg="white",command=self.ajouterScenarii,relief=FLAT,width=10)
         self.boutonSupprimerScenarii.grid(row=3,column=1,columnspan=2, padx=(100,0))
         
+        self.parent.modele.selectCas()
+        self.casdusage = self.parent.modele.Cas
         for item in self.casdusage:
             self.listeCas.insert(END, item)
             
-
-
+        self.listeCas.select_set(0)
 
         
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
         self.cadreExiste=True
-    def afficherScenarii(self,evt):
+        
+    def afficherScenarii(self, evt):
+        self.parent.modele.selectScenarii(self.listeCas.get(ACTIVE))
+        self.usager = self.parent.modele.casUsagers
+        self.machine = self.parent.modele.casMachines
         self.listeScenariiUsager.delete(0, 'end')
         for item in self.usager:
             self.listeScenariiUsager.insert(END, item)
@@ -166,12 +170,16 @@ class Vue():
         self.boutonCreationScenarii = Button(self.fenetreCreationScenarii, text="Creer ligne de Scenarii",command=self.creerScenarii, relief=FLAT, bg="white")
         self.boutonCreationScenarii.grid(row=3,column=1, padx=50, pady=(0,30),columnspan=2)
     def creerCas(self):
+        self.parent.modele.insertCas(self.listeCas.size(),self.entreeCreationCas.get())
+
         self.casdusage.append(self.entreeCreationCas.get())
         self.listeCas.insert(END, self.entreeCreationCas.get())
         self.fenetreCreationCas.destroy()
     def creerScenarii(self):
-        self.usager.append(self.entreeCreationUtilisateur.get())
-        self.machine.append(self.entreeCreationMachine.get())
+        self.parent.modele.insertScenarii(self.listeCas.get(ACTIVE),self.entreeCreationUtilisateur.get(),self.entreeCreationUtilisateur.get())
+        self.listeScenariiMachine.insert(END,self.entreeCreationMachine.get())
+        self.listeScenariiUsager.insert(END,self.entreeCreationUtilisateur.get())
+
         self.fenetreCreationScenarii.destroy()
 
     def fermerfenetre(self):

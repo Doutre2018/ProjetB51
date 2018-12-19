@@ -295,10 +295,11 @@ class  BaseDonnees():
         #else:
             #print("Creation du fichier SAAS.db initial")
         self.referenceServeur = referenceServeur
-        self.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+        self.connecteur = sqlite3.connect('SAASSY.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.creerListeCompagnies()
+        self.creerListeColonnesScenarii()
         self.connecteur.commit()
         self.connecteur.close()
 
@@ -308,21 +309,21 @@ class  BaseDonnees():
         listeTables = [ 
             ['stocks', ['price', 'INTEGER', '']],
             ['Serveurs', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['IP','INTEGER',''], ['nom','text','UNIQUE']],
-            ['Utilisateur', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomUtilisateur','text','UNIQUE'], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
+            ['Utilisateur', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomUtilisateur','text','UNIQUE'],['id_compagnie','INTEGER',''], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
             ['Projet', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','UNIQUE']],
             ['Liaison_Util_Projet', ['role','text','']],
             ['AnalyseTextuelle', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ligne','INTEGER',''],['colonne','INTEGER',''],['mot','text','']],
             ['TypeMot', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','']],
-            ['LigneChat', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['date','date',''],['texte','text','']],
-            ['CasUsage', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['ligne','text',''],['texte','text','']],
-            ['Scenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['ligne','text','']],
+            ['LigneChat', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['id_filDiscussion','INTEGER',''], ['id_utilisateur','INTEGER',''],['date','date',''],['texte','text','']],
+            ['CasUsage', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''],['ligne','INTEGER',''],['texte','text','']],
+            ['Scenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''],['id_casUsage','INTEGER',''],['ligne','text',''],['id_colonne','INTEGER','']],
             ['FonctionsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['fonction','text','']],
             ['CollaboCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['textCollabo','text','']],
             ['FilDeDiscussion', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT']],
             ['TypeForme', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','']],
             ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['Type','text',''], ['PosX','real',''], ['PosY','real',''],['X','real',''], ['Y','real',''], ['Bordure','real','NULL'], ['Interieur','real','NULL'],['Texte','text',''],['Font','text','']],
             ['ColonnesScenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text',''], ['numero_position','INTEGER','']],
-            ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['classe','text',''], ['ordre','INTEGER',''],['carte_heritage','text',''],['nom_responsable','text','']],
+            ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''], ['classe','text',''], ['ordre','INTEGER',''],['carte_heritage','text',''],['nom_responsable','text','']],
             ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],
             ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date',''],['nom','text','']],
             ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER',''],['id_membre','INTEGER','']],
@@ -334,7 +335,7 @@ class  BaseDonnees():
             ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['date', 'text', '']],
             ['MembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', '']],
             ['DonneesMembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', '']],
-            ['CartesDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', '']],
+            ['CartesDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''], ['nom', 'text', '']],
             ['ItemDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', ''], ['type', 'text', ''], ['contrainte', 'text', '']],
             ['ObjetsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['objet','text','']],
             ['MembreSprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['id_sprint','INTEGER',''],['nomMembre','text','']]
@@ -387,6 +388,21 @@ class  BaseDonnees():
         else:
             for cie in compagnies:
                 commande = "INSERT INTO Compagnie(nomCompagnie) VALUES ('" + cie + "')"
+                self.insertionPerso(commande)
+    # --------------------------------------
+    
+        # ----------------- DM -----------------
+    def creerListeColonnesScenarii(self):
+        Colonnes = ["Usager", "Machine"]
+        commande = "SELECT * FROM ColonnesScenarii"
+        l = self.selection(commande)
+        
+        if (l):
+            pass
+                
+        else:
+            for col in Colonnes:
+                commande = "INSERT INTO ColonnesScenarii(nom) VALUES ('" + col + "')"
                 self.insertionPerso(commande)
     # --------------------------------------
         

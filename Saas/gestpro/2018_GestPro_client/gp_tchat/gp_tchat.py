@@ -18,11 +18,11 @@ class Controleur():
     def __init__(self):
         print("IN CONTROLEUR")
         self.monNom = sys.argv[1]
-        print(self.monNom)
+        #print(self.monNom)
         self.createurId=Id
         self.serveur = ServerProxy(sys.argv[4], allow_none=True)
         self.recevoirFichiers()
-        self.modele=Modele(self)
+        self.modele=Modele(self, self.monNom)
         self.vue=Vue(self)
         self.reloadMessageBD()
         self.vue.root.mainloop()
@@ -45,10 +45,11 @@ class Controleur():
                     pass
                 
 class Modele():
-    def __init__(self,parent):
+    def __init__(self,parent, usager):
         self.parent=parent
         self.serveur=parent.serveur
-        self.usager = self.serveur.fetchNomUtilisateurCourant()
+        #self.usager = self.serveur.fetchNomUtilisateurCourant() #//modif simon 10:59
+        self.usager = usager
         self.compagnie = self.serveur.fetchNomCompagnie()
         self.FilDeDiscussionCourant = 0 #Tant qu'il n'y a pas de module Projet
         self.idProjetCourant = None

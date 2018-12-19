@@ -75,15 +75,15 @@ class Vue():
         image= image.resize((120, 100), Image.ANTIALIAS)
         self.img=ImageTk.PhotoImage(image)
 
-        #image2= Image.open("./chat2.jpg")
-        #image2= image2.resize((120, 100), Image.ANTIALIAS)
-        #self.img2=ImageTk.PhotoImage(image2)
+        image2= Image.open("./chat2.jpg")
+        image2= image2.resize((120, 100), Image.ANTIALIAS)
+        self.img2=ImageTk.PhotoImage(image2)
         
         canvasImage1 = Canvas(self.cadreTchat,width=120,height=100)
         canvasImage1.create_image(0,0,image=self.img,anchor=NW)
         canvasImage1.grid(row=0,column=0)
         canvasImage2 = Canvas(self.cadreTchat,width=120,height=100)
-        canvasImage2.create_image(0,0,image=self.img,anchor=NW)
+        canvasImage2.create_image(0,0,image=self.img2,anchor=NW)
         canvasImage2.grid(row=0,column=4)
         #self.parent.reloadMessageBD();
     
@@ -112,6 +112,7 @@ class Vue():
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
         self.modele.insertLigneChat(self.message.get("1.0", END))
         self.message.delete("1.0", END)
+        
     def random_color(self):
         return random.randint(0,0x1000000)
 
@@ -126,7 +127,8 @@ class Vue():
                     self.color[message[0]] = '#'+ color
                 #print(self.color.get(message[0]))
                 if self.messagesDeBD.index(message):
-                    self.listeMessage.insert(END, self.parent.monNom + " : \n" + '\t' + message[1])
+                    #self.listeMessage.insert(END, self.parent.monNom + " : \n" + '\t' + message[1])
+                    self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
                     self.listeMessage.itemconfig(END, {'fg':self.color.get(message[0])})
 
 

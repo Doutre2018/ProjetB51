@@ -49,7 +49,7 @@ gestpro_client_main.py dans le répertoire "2018_GestPro_client".
 		
 - Utilisateur Pour Enseignant
 		-Il existe deja un utilisateur pour les test d'un enseignant
-			Nom: Prof
+			Nom: jmd
 			Mot de Passe: AAAaaa111
 			Compagnie: GOTO.INC
 

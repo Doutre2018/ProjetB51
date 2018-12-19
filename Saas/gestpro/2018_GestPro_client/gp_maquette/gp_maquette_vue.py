@@ -128,7 +128,6 @@ class Vue():
                     x0, y0, x1, y1 = self.canevasMaquette.coords(t[0])
                     diffx = x1-x0
                     diffy = y1-y0
-
                     self.canevasMaquette.coords(t[0],evt.x-(diffx/2), evt.y-(diffy/2),evt.x+(diffx/2),evt.y+(diffy/2))
                 for objet in self.listeObjetMaquette :
                     if (objet[9]==t[0]) :
@@ -172,7 +171,6 @@ class Vue():
                         self.previousX=evt.x
 
                     else:
-                        print(self.canevasMaquette.coords(t[0]))
                         x0, y0, x1, y1 = self.canevasMaquette.coords(t[0])
                         self.canevasMaquette.coords(t[0], x0,y0,evt.x,evt.y)
                         for objet in self.listeObjetMaquette :
@@ -218,6 +216,7 @@ class Vue():
                 self.boutonModificationMot.grid(row=3,column=1, padx=50, pady=(0,30))
 
     def creerObjet(self):
+        
         self.canevasMaquette.delete("objet")
         for objet in self.listeObjetMaquette:
             if(objet[0]=="rectangle"):

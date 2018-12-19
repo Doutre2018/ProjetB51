@@ -20,7 +20,7 @@ class Modele():
         self.aFaire = None
         self.probleme = None
         self.scrums = []
-        self.lesMembres = []
+        self.membreScrum = []
         self.dateScrums = []
         self.selectScrums(self.numProjet)
         
@@ -41,17 +41,19 @@ class Modele():
         self.BD.requeteInsertionPerso("INSERT INTO DonneesMembreScrum(accompli, aFaire, probleme, id_membre) VALUES('" + str(accompli) + "', '" + str(aFaire) + "', '" + str(probleme) + "', '" + str(idMembre) + "');")
     
     def selectMembres(self, nom):
+        for i in nom:
+            nom = i
         idMembre = self.BD.requeteSelection("SELECT id FROM MembreScrum WHERE nom = '" + str(nom) + "';")
-        self.accompli = self.BD.requeteSelection("SELECT accompli FROM DonneesMembreScrum WHERE id_membre = '" + str(idMembre) + "');")
-        self.aFaire = self.BD.requeteSelection("SELECT aFaire FROM DonneesMembreScrum WHERE id_membre = '" + str(idMembre) + "');")
-        self.probleme = self.BD.requeteSelection("SELECT probleme FROM DonneesMembreScrum WHERE id_membre = '" + str(idMembre) + "');")
+        for i in idMembre:
+            for k in i:
+                idMembre = k
+        self.accompli = self.BD.requeteSelection("SELECT accompli FROM DonneesMembreScrum WHERE id_membre = '" + str(idMembre) + "';")
+        self.aFaire = self.BD.requeteSelection("SELECT aFaire FROM DonneesMembreScrum WHERE id_membre = '" + str(idMembre) + "';")
+        self.probleme = self.BD.requeteSelection("SELECT probleme FROM DonneesMembreScrum WHERE id_membre = '" + str(idMembre) + "';")
         
     def selectScrums(self, numProjet):
-        self.scrums = self.BD.requeteSelection("SELECT id FROM Scrum WHERE id_projet = '" + str(numProjet) + "';")
         self.dateScrums = self.BD.requeteSelection("SELECT date FROM Scrum WHERE id_projet = '" + str(numProjet) + "';")
-        print(self.scrums)
-        #for i in scrums:
-        #    self.lesMembres.append(self.BD.requeteSelection("SELECT nom FROM MembreScrum WHERE id_scrum = '" + str(numScrum) + "';"))
-        #self.lesMembres = self.BD.requeteSelection("SELECT nom FROM MembreScrum WHERE id_scrum = '" + str(numScrum) + "';")
         
+    def selectMembre(self, idScrum):
+        self.membreScrum = self.BD.requeteSelection("SELECT nom FROM MembreScrum WHERE id_scrum = '" + str(idScrum) + "';")
         

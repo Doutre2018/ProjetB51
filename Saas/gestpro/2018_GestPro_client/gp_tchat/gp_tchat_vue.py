@@ -44,6 +44,8 @@ class Vue():
         
         
     def peuplerMessagesBD(self):
+        self.messagesDeBD.clear()
+
         for n in self.modele.selectIdLignesChat():
             for i in n:
                 self.messagesDeBD.append([self.modele.selectNomUtilisateurDeLigneChat(i), self.modele.selectTexteLigneChat(i)])
@@ -110,14 +112,14 @@ class Vue():
                     
     def ajouterMessage(self):
         self.messagesDeBD.append([self.modele.usager, self.message.get("1.0", END)])
-        self.modele.insertLigneChat(self.message.get("1.0", END))
+        self.modele.insertLigneChat(self.message.get("1.0",END))
         self.message.delete("1.0", END)
-        
     def random_color(self):
         return random.randint(0,0x1000000)
 
     def ajoutMessageBD(self):
-        self.listeMessage.delete(0, END)
+        self.listeMessage.delete(0,'end')
+        self.peuplerMessagesBD()
         if self.messagesDeBD:
             for message in self.messagesDeBD:
                 if message[0] not in self.color:

@@ -56,6 +56,7 @@ class Vue():
         self.creercadrescrum()
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
+        
               
     def creercadrescrum(self):
         #permet d'intégrer l'application dans l'application de base
@@ -193,9 +194,14 @@ class Vue():
     def UpdateChampTexte(self,evt):
         print("")
         #Coder ici je pense pour updater les champ de texte (Information) 
-        self.infoFait.delete(1.0,END)
-        self.infoAFaire.delete(1.0,END)
-        self.infoProbleme.delete(1.0,END)
+        self.listeEmploye.delete(0,END)
+        idScrum = self.listeDate.curselection()
+        for i in idScrum:
+            idScrum = i
+        self.parent.afficherMembres(idScrum)
+        membres = self.parent.modele.membreScrum
+        for i in membres:
+            self.listeEmploye.insert(END, i)
                        
                     
                     
@@ -208,12 +214,35 @@ class Vue():
     def AjoutNomDansText(self,evt):
         a=()
         a=self.listeEmploye.curselection()
-        
         nomEmp=self.listeEmploye.get(a)
+        self.parent.selectDataMembre(nomEmp)
+        
+        self.infoFait.delete(1.0,END)
+        self.infoAFaire.delete(1.0,END)
+        self.infoProbleme.delete(1.0,END)
+        
+        acc = None
+        todo = None
+        error = None
+        
+        print(self.parent.modele.accompli)
+        
+        for i in self.parent.modele.accompli:
+            for k in i:
+                acc = k
+        for i in self.parent.modele.aFaire:
+            for k in i:
+                todo = k
+        for i in self.parent.modele.probleme:
+            for k in i:
+                error = k
+                
+        print(acc)
+        
         #Afficher mes info données de base données
-        self.infoFait.insert(END,"\n"+nomEmp+":")
-        self.infoAFaire.insert(END,"\n"+nomEmp+":")
-        self.infoProbleme.insert(END,"\n"+nomEmp+":")
+        self.infoFait.insert(END, acc)
+        self.infoAFaire.insert(END, todo)
+        self.infoProbleme.insert(END, error)
         
         #Dans cette fonction on prend le nom cliquer dans la liste des employer et on rajoute un nom dans les champ de texte de information
     def EngeristerInfo(self):

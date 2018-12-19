@@ -524,7 +524,7 @@ class Vue():
         if self.parent.modProjet.createProject(self, self.savedNameTemp, self.nomsplash.get(), self.cieName):
             pass
         else:
-            print("Erreur de creation de nom de projet (nom déjà utilisé")
+            print("Erreur de creation de nom de projet (nom déjà utilisé)")
     def AllerAInscription(self):
         self.changecadre(self.cadreNouvelleUtilisateur)
     def AllerANouveauProjet(self):

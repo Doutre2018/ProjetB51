@@ -24,7 +24,8 @@ class ModeleProject():
         self.ProjectNameToValidate = None
         # self.project=Project(self, self.parent)
         print("Hey ho")
-        self.firstGo = True;
+        self.firstGo = True
+        self.firstGoAccess = True
         self.projectName =None
         self.cieID = None
 
@@ -198,10 +199,10 @@ class ModeleProject():
             for n in i:
                 noCIE = n
         print("number cie =" + str(noCIE))
-        
-        
+
+
         #SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON Projet.id = Liaison_Util_Projet.id_projet JOIN Utilisateur ON utilisateur.id = Liaison_Util_Projet.id_util WHERE Projet.nom LIKE ('alicia') and utilisateur.id_compagnie = '4';
-    #print(self.cieID +" id and projecctname   " + self.projectName)
+        #print(self.cieID +" id and projecctname   " + self.projectName)
         commande = "SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON projet.id = Liaison_Util_Projet.id_projet JOIN Utilisateur ON utilisateur.id = Liaison_Util_Projet.id_util WHERE projet.nom LIKE('"
         commande += self.projectName
         commande+= "')  and "
@@ -209,26 +210,8 @@ class ModeleProject():
         commande += str(noCIE)
         commande += ";"
         print(commande)
-        
-        '''
-        List = []
-        test = "SELECT id_compagnie FROM utilisateur WHERE nomUtilisateur = 'jopet';"
 
-        test2 = "SELECT nom FROM projet WHERE id = 12"
-        Listetest = []
-        Listetest = self.parent.parent.serveur.requeteSelection(test2)
-        
 
-        List=self.parent.parent.serveur.requeteSelection(test)
-        print(List[0][0])
-        print("up is cie id in user")
-
-        test4 = "SELECT nom FROM Projet where "
-        test4 += self.projectName
-        test4 += " = nom;"
-        '''
-        
-        
         try:
             List = []
             print("1")

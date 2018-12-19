@@ -110,16 +110,16 @@ class Vue():
             
         self.listeCas.select_set(0)
 
-
         
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
 
         self.cadreExiste=True
+        
     def afficherScenarii(self,evt):
         self.parent.modele.selectScenarii(self.listeCas.get(ACTIVE))
         self.usager = self.parent.modele.casUsagers
         self.machine = self.parent.modele.casMachines
-
+        print("hello")
         self.listeScenariiUsager.delete(0, 'end')
         for item in self.usager:
             self.listeScenariiUsager.insert(END, item)

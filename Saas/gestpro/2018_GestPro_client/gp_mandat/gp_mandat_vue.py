@@ -92,6 +92,7 @@ class Vue():
         self.labelSprint.grid(row=2)
         self.listeSprint = Listbox(self.root,width=30, font="-size 16",height=int(self.hauteur/91))
         self.listeSprint.grid(row=3,column=0,rowspan=3,columnspan=3)
+        self.listeSprint.bind('<<ListboxSelect>>',self.afficherMembresSprint)
         self.boutonAjouterSprint = Button(self.root, text="Ajouter", command=self.ajoutSprint,width=10, relief=FLAT, bg="white")
         self.boutonAjouterSprint.grid(row=11,column=0, pady=10,columnspan=3, padx=(0,200))
         self.boutonSuppSprint = Button(self.root, text="Supprimer",command=self.delete,width=10, relief=FLAT, bg="white")
@@ -114,7 +115,6 @@ class Vue():
         self.listeMembre.grid(row=17,column=0,rowspan=4,columnspan=3,padx=(0,250)) 
         self.listeOccupation = Listbox(self.root,width=20, font="-size 16",height=int(self.hauteur/70))
         self.listeOccupation.grid(row=17,column=0,rowspan=4,columnspan=3,padx=(250,0))
-         
  
         self.boutonAjouterMembre = Button(self.root, text="Ajouter", command=self.AjouterMembre,width=10, relief=FLAT, bg="white")
         self.boutonAjouterMembre.grid(row=22,column=0, pady=10,columnspan=3, padx=(0,200))
@@ -183,6 +183,20 @@ class Vue():
         #Insert en BD
         self.modele.insertSprint(Date)
         self.nouveauSprint.destroy()
+    
+    def afficherMembresSprint(self,evt):
+        w= evt.widget
+        a=w.curselection()
+        nom = self.listeSprint.get(a)
+        for i in self.modele.selectIdSprint(nom):
+                for n in i:
+                    rep = n
+        self.modele.selectNomMembreSprint(rep)
+        compteur =0
+        for i in self.modele.selectNomMembreSprint(rep):
+            for n in i:
+                self.listeMembre.insert(compteur,n)
+                compteur+=1
         
     def delete(self):
         a=()
@@ -311,7 +325,16 @@ class Vue():
     def InsertionMembre(self):
         self.listeMembre.insert(END, self.entryNom.get())
         self.listeOccupation.insert(END,self.comboModule.get())
+        #a=()
+        #a=self.listeSprint.curselection()
+        nom = self.listeSprint.get(0)
+        for i in self.modele.selectIdSprint(nom):
+                for n in i:
+                    rep = n
+        self.modele.insertMembreSprint(self.entryNom.get(),rep)
         self.nouveauMembre.destroy()
+         
+        
     def SuppMembre(self):
         a=()
         a=self.listeMembre.curselection()
@@ -366,7 +389,7 @@ class Vue():
                                     "Maquette",
                                     "Crc",
                                     "Budget",
-                                    "Modélisation de Donné",
+                                    "Modélisation de Donnée",
                                     "Libre"] , justify=CENTER)
             self.comboModule.current(6)
             self.comboModule.grid(row=2, column=1,padx=(0,75),pady=10)
@@ -380,10 +403,6 @@ class Vue():
             else:
                 self.entryNom.insert(self.selctionMembre, self.listeMembre.get(self.selctionMembre))
            
-                  
-
-        
-      
     
     def InsertionModifMembre(self):
         

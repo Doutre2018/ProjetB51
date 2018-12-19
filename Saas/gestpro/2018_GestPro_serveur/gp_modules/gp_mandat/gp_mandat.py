@@ -35,6 +35,11 @@ class Modele():
         commande+=str(nom)+"'"
         return self.serveur.requeteSelection(commande)
     
+    def selectNomMembreSprint(self,idSprint):
+        commande = "SELECT nomMembre FROM MembreSprint WHERE id_sprint="
+        commande+=str(idSprint)
+        return self.serveur.requeteSelection(commande)
+    
     def insertSprint(self,nom):
         return self.serveur.requeteInsertionPerso("INSERT INTO Sprint(nom) VALUES('" + str(nom) + "');")
     
@@ -42,7 +47,6 @@ class Modele():
         return self.serveur.requeteInsertionPerso("INSERT INTO MembreSprint(nomMembre,id_sprint) VALUES('" + str(membre) + "',"+str(idSprint)+");")
     
     def deleteSprint(self,idSprint):
-        print(idSprint)
         commande="DELETE FROM Sprint WHERE id="
         commande+=str(idSprint)
         self.serveur.requeteInsertionPerso(commande)

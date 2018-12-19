@@ -81,6 +81,12 @@ class Vue():
         self.boutonAjoutListe.grid()
         self.cadreterlowExiste=True
         
+        commande = "SELECT * FROM Colonnes_Terlow"
+        sql = self.parent.serveur.requeteSelection(commande)
+        
+        for n in sql:
+            self.nbListe += 1
+        
         if self.parent.modele.listeColonnes:
             self.fetchTerlow()
         
@@ -92,44 +98,58 @@ class Vue():
         liste.bind('<Button-3>', lambda evt: self.deplacerColonneRight(evt, liste,self.nbListe))
         liste.bind('<Button-2>', lambda evt: self.deplacerColonneLeft(evt, liste,self.nbListe))
 
-        titre = Entry(liste, width=32)
-        titre.insert(END, "Titre")
+        entreeTitre = Entry(liste, width=32)
+        entreeTitre.insert(END, "Titre")
         noListe=self.nbListe
-        boutonAjoutCarte = Button(liste, text="Ajouter Carte",command= lambda: self.ajouterCarte(noListe))
+        boutonAjoutCarte = Button(liste, text="Ajouter Carte",command= lambda ordre = noListe: self.ajouterCarte(ordre))
         
         liste.grid(column=self.nbListe,row=1,padx=10)
-        titre.grid(row=0)
+        entreeTitre.grid(row=0)
 
         boutonAjoutCarte.grid(row=1)
+        
+        ordre = str(noListe)
+        titre = entreeTitre.get()
+        param = (ordre, titre,)
+        self.parent.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (?, ?)", param )
         self.nbListe+=1
 
     def ajouterCarte(self, noListe):
         noCarte=0
+        noColonne = 0
+        index = 0
         colonne = self.tableauDeColonne[noListe]
+        
+        for n in self.tableauDeColonne:
+            if colonne == n:
+                noColonne = index
+                
+            index += 1
+        
         contenuText =StringVar()
         contenu = Entry(colonne,width=32,text=contenuText)
         self.tableauDeCarte.append([])
-        contenu.bind("<Button-1>", lambda evt: self.modifierCarte(evt,noCarte,colonne,contenuText))
+        contenu.bind("<Button-1>", lambda evt: self.modifierCarte(evt,noCarte,noColonne,contenuText))
         contenu.grid()
         noCarte+=1
         
     # ------------------ DM ------------------
     def fetchTerlow(self):
+        noListe = 0
+        
         for n, colonne in enumerate(self.parent.modele.listeColonnes):
             self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="white",bd=4,highlightcolor="red",highlightthickness=1))
-            liste = self.tableauDeColonne[self.nbListe]
+            liste = self.tableauDeColonne[noListe]
             
             titre = Entry(liste, width=32)
             titre.insert(END, colonne.titre)
-            noListe=self.nbListe
-            boutonAjoutCarte = Button(liste, text="Ajouter Carte",command= lambda: self.ajouterCarte(noListe))
+            boutonAjoutCarte = Button(liste, text="Ajouter Carte",command= lambda ordre = noListe: self.ajouterCarte(ordre))
         
-            liste.grid(column=self.nbListe,row=1,padx=10)
+            liste.grid(column=noListe,row=1,padx=10)
             titre.grid(row=0)
 
             boutonAjoutCarte.grid(row=1)
             
-            self.nbListe+=1
             
             if colonne.listeCartes:
                 for n in colonne.listeCartes:
@@ -139,10 +159,13 @@ class Vue():
                     contenu = Entry(col,width=32,text=contenuText)
                     contenu.insert(0, n.titre)
                     self.tableauDeCarte.append([])
-                    contenu.bind("<Button-1>", lambda evt: self.modifierCarte(evt,noCarte,colonne,contenuText))
+                    contenu.bind("<Button-1>", lambda evt, noColonne = noListe: self.modifierCarte(evt,noCarte,noColonne,contenuText))
                     contenu.grid()
                     noCarte+=1
         
+            noListe += 1
+
+        self.nbListe = noListe
     # ----------------------------------------
 
     def deplacerColonneRight(self,evt,colonne,noliste):
@@ -178,20 +201,41 @@ class Vue():
                 self.tableauDeColonne[self.nbListe-1]=temp
     
      
-    def changerCarte(self,noCarte,contenuText):
+    def changerCarte(self, noColonne, noCarte, contenuText):
+        nom = self.entreeNomCarte.get()
+        description = self.entreeDescriptionCarte.get("1.0",END)
+        #heureEst = (int(self.entreeHeuresEstimees.get()) * 60) + int(self.entreeMinutesEstimees)
+        
         #insère les infos entrées par l'user dans la listeInfoCarte
         listeInfoCarte = []
-        listeInfoCarte.append(self.entreeNomCarte.get())
-        listeInfoCarte.append(self.entreeDescriptionCarte.get("1.0",END))
-        listeInfoCarte.append(self.entreeeProprietaireCarte.get())
+        listeInfoCarte.append(nom)
+        listeInfoCarte.append(description)
+        #listeInfoCarte.append(self.entreeAnneeFin.get())
+        #listeInfoCarte.append(self.entreeMoisFin.get())
+        #listeInfoCarte.append(self.entreeJoursFin.get())
+        #listeInfoCarte.append(self.entreeHeureFin.get())
+        #listeInfoCarte.append(self.entreeMinuteFin.get())
+        #listeInfoCarte.append(heureEst)
+        #listeInfoCarte.append(self.entreeeProprietaireCarte.get())
+        
+        commande = "UPDATE Cartes_Terlow" 
+        commande += " SET titre = '" + str(nom) + "', description = '" + str(description) + "'"
+        commande += " WHERE id_colonne = " + str(noColonne + 1) + " AND ordre = " + str(noCarte)
+        self.parent.serveur.requeteMiseAJour(commande)
+
         #prend les infos et les insère dans le tableau de cartes
         self.tableauDeCarte[noCarte]=listeInfoCarte;
         contenuText.set(listeInfoCarte[0])
         self.fenetreModificationCarte.destroy()
+        
+        print("Fonctionalité encore en développement")
+        #self.cadreterlow.destroy()
+        #self.tableauDeCarte = []
+        #self.tableauDeColonne = []
+        #self.creercadreterlow()
 
-
-    def modifierCarte(self,evt,noCarte,colonne,contenuText):
-        commande = "SELECT * FROM Cartes_Terlow WHERE id_colonne = " + str(colonne.id) + " AND ordre = " + str(noCarte)
+    def modifierCarte(self,evt,noCarte,noColonne,contenuText):
+        commande = "SELECT * FROM Cartes_Terlow WHERE id_colonne = " + str(noColonne + 1)
         carte = self.parent.serveur.requeteSelection(commande)
         for n in carte:
             carte = n
@@ -230,34 +274,27 @@ class Vue():
             annees.append(i)
             
         self.entreeAnneeFin = ttk.Combobox(self.frameDateFin, width = 6, justify = CENTER, values = annees)
-        self.entreeAnneeFin.insert(0, "AAAA")
         
         mois = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         self.entreeMoisFin = ttk.Combobox(self.frameDateFin, width = 4, justify = CENTER, values = mois)
-        self.entreeMoisFin.insert(0, "MM")
         
         jours = []
         for i in range(1, 32):
             jours.append(i)
             
         self.entreeJoursFin = ttk.Combobox(self.frameDateFin, width = 4, justify = CENTER, values = jours)
-        self.entreeJoursFin.insert(0, "JJ")
         
         self.entreeHeureFin = Entry(self.frameDateFin, width = 6, justify = CENTER)
-        self.entreeHeureFin.insert(0, "HH")
         
         self.entreeMinuteFin = Entry(self.frameDateFin, width = 6, justify = CENTER)
-        self.entreeMinuteFin.insert(0, "Min")
         
         # Section pour entrer le temps de travail estimé
         self.texteTempsEstime = Label(self.frameTempsEstime, text = "Temps estimé :")
         self.texteTempsEstime.grid(row = 1, column = 1, padx = 5, pady = (0, 10))
         
         self.entreeHeuresEstimees = Entry(self.frameTempsEstime, width = 4, justify = CENTER)
-        self.entreeHeuresEstimees.insert(0, "HH")
         
         self.entreeMinutesEstimees = Entry(self.frameTempsEstime, width = 4, justify = CENTER)
-        self.entreeMinutesEstimees.insert(0, "Min")
         # ----------------------------------------
         
         self.texteProprietaireCarte = Label(self.fenetreModificationCarte, text="Proprietaire :",)
@@ -275,8 +312,18 @@ class Vue():
             self.entreeHeureFin.insert(0, 23)
             self.entreeMinuteFin.insert(0, 59)
             self.entreeHeuresEstimees.insert(0, 48)
-            self.entreeMinutesEstimees.insert(0, 1)        
+            self.entreeMinutesEstimees.insert(0, 1)
+        
+        else:                
+            self.entreeAnneeFin.insert(0, "AAAA")
+            self.entreeMoisFin.insert(0, "MM")
+            self.entreeJoursFin.insert(0, "JJ")
+            self.entreeHeureFin.insert(0, "HH")
+            self.entreeMinuteFin.insert(0, "Min")
+            self.entreeHeuresEstimees.insert(0, "HH")
+            self.entreeMinutesEstimees.insert(0, "Min")
             
+        # Grids
         self.entreeNomCarte.grid(row=2,column=1, padx=50, pady=(0,10))
         self.entreeDescriptionCarte.grid(row=4,column=1, padx=50, pady=(0,10))        
         self.entreeAnneeFin.grid(row = 1, column = 2, padx = 5, pady = (0, 10))
@@ -287,7 +334,7 @@ class Vue():
         self.entreeHeuresEstimees.grid(row = 1, column = 2, padx = 5, pady = (0, 10))
         self.entreeMinutesEstimees.grid(row = 1, column = 3, padx = 5, pady = (0, 10))
         
-        self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte", command= lambda:self.changerCarte(noCarte,contenuText))
+        self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte", command= lambda:self.changerCarte(noColonne, noCarte,contenuText))
         self.boutonModificationCarte.grid(row=8,column=1, padx=50, pady=(0,30))
         
     def fermerfenetre(self):

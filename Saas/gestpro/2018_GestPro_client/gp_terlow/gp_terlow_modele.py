@@ -113,7 +113,7 @@ class Modele():
     def genererColonnesDemo(self):
         try:
             for i in range(4):
-                self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES ("+ str(i+1)+","+"'Colonne"+str(i+1)+ "'"+")")
+                self.referenceControleur.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES ("+ str(i)+","+"'Colonne"+str(i)+ "'"+")")
         except Exception as erreur :
             print("exception de colonnes demo:", erreur)
 class Colonne():

@@ -105,6 +105,10 @@ class Vue():
         self.titreProbleme.grid(column = 0, row=5,pady=(10,0))
         self.infoProbleme = Text(self.infoEmploye,width = 70, height=10)
         self.infoProbleme.grid(column = 0, row = 6,padx=10,pady=(0,10))
+        
+        #Bouton Enregister 
+        self.boutonSave = Button(self.infoEmploye,width=20, text="Enregister",command= self.EngeristerInfo,relief=FLAT, bg="white")
+        self.boutonSave.grid()
     
     def creationEmploye(self):
         self.fenetreCreationEmploye = Toplevel(self.cadrescrum, bg="#234078"  )
@@ -206,4 +210,7 @@ class Vue():
         self.infoProbleme.insert(END,"\n"+nomEmp+":")
         
         #Dans cette fonction on prend le nom cliquer dans la liste des employer et on rajoute un nom dans les champ de texte de information
+    def EngeristerInfo(self):
+        #Juste pour toi Marylene!
+        pass
     

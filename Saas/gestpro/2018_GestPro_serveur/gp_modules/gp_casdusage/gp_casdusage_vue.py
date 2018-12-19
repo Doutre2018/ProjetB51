@@ -103,10 +103,12 @@ class Vue():
         self.boutonSupprimerScenarii = Button(self.cadreScenarii,text="Supprimer",bg="white",command=self.ajouterScenarii,relief=FLAT,width=10)
         self.boutonSupprimerScenarii.grid(row=3,column=1,columnspan=2, padx=(100,0))
         
+        self.parent.modele.selectCas()
+        self.casdusage = self.parent.modele.Cas
         for item in self.casdusage:
             self.listeCas.insert(END, item)
             
-
+        self.listeCas.select_set(0)
 
 
         
@@ -114,6 +116,10 @@ class Vue():
 
         self.cadreExiste=True
     def afficherScenarii(self,evt):
+        self.parent.modele.selectScenarii(self.listeCas.get(ACTIVE))
+        self.usager = self.parent.modele.casUsagers
+        self.machine = self.parent.modele.casMachines
+
         self.listeScenariiUsager.delete(0, 'end')
         for item in self.usager:
             self.listeScenariiUsager.insert(END, item)
@@ -166,10 +172,12 @@ class Vue():
         self.boutonCreationScenarii = Button(self.fenetreCreationScenarii, text="Creer ligne de Scenarii",command=self.creerScenarii, relief=FLAT, bg="white")
         self.boutonCreationScenarii.grid(row=3,column=1, padx=50, pady=(0,30),columnspan=2)
     def creerCas(self):
+        self.parent.modele.insertCas(self.listeCas.size(),self.entreeCreationCas.get())
         self.casdusage.append(self.entreeCreationCas.get())
         self.listeCas.insert(END, self.entreeCreationCas.get())
         self.fenetreCreationCas.destroy()
     def creerScenarii(self):
+        self.parent.modele.insertScenarii(self.listeCas.get(ACTIVE),self.entreeCreationUtilisateur.get(),self.entreeCreationUtilisateur.get())
         self.usager.append(self.entreeCreationUtilisateur.get())
         self.machine.append(self.entreeCreationMachine.get())
         self.fenetreCreationScenarii.destroy()

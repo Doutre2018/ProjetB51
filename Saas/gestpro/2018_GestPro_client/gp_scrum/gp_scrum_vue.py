@@ -180,7 +180,7 @@ class Vue():
     def UpdateChampTexte(self,evt):
         print("")
         #Coder ici je pense pour updater les champ de texte (Information) 
-        self.infoFait.delete(end)
+        self.infoFait.delete(1.0,END)
         #self.infoAFaire
         #self.infoProbleme
         

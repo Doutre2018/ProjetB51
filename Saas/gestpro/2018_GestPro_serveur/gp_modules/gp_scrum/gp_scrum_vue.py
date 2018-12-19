@@ -180,9 +180,13 @@ class Vue():
     def UpdateChampTexte(self,evt):
         print("")
         #Coder ici je pense pour updater les champ de texte (Information) 
-        self.infoFait.delete(end)
-        #self.infoAFaire
-        #self.infoProbleme
+        self.infoFait.delete(1.0,END)
+        self.infoAFaire.delete(1.0,END)
+        self.infoProbleme.delete(1.0,END)
+        #self.listeDate -> c la liste de date!
+        #a=()
+        #a=self.listeDate.curselection() 
+        # -> devrait retourner l'index je crois
         
     def AjoutNomDansText(self,evt):
         a=()

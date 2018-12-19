@@ -115,14 +115,9 @@ class Vue():
         
     # ------------------ DM ------------------
     def fetchTerlow(self):
-        index = 0
-        
         for n, colonne in enumerate(self.parent.modele.listeColonnes):
             self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="white",bd=4,highlightcolor="red",highlightthickness=1))
             liste = self.tableauDeColonne[self.nbListe]
-
-            liste.bind('<Button-3>', lambda evt: self.deplacerColonneRight(evt, liste,self.nbListe))
-            liste.bind('<Button-2>', lambda evt: self.deplacerColonneLeft(evt, liste,self.nbListe))
             
             titre = Entry(liste, width=32)
             titre.insert(END, colonne.titre)
@@ -135,22 +130,19 @@ class Vue():
             boutonAjoutCarte.grid(row=1)
             
             self.nbListe+=1
-            #l = ["Un", "Deux", "Trois"]
             
             if colonne.listeCartes:
                 for n in colonne.listeCartes:
                     noCarte=0
                     col = self.tableauDeColonne[noListe]
-                    contenuText =StringVar()
+                    contenuText = StringVar()
                     contenu = Entry(col,width=32,text=contenuText)
                     contenu.insert(0, n.titre)
                     self.tableauDeCarte.append([])
-                    contenu.bind("<Button-1>", lambda evt: self.modifierCarte(evt,noCarte,col,contenuText))
+                    contenu.bind("<Button-1>", lambda evt: self.modifierCarte(evt,noCarte,colonne,contenuText))
                     contenu.grid()
                     noCarte+=1
-                    print("Cartes!")
         
-        print("boo")
     # ----------------------------------------
 
     def deplacerColonneRight(self,evt,colonne,noliste):
@@ -199,6 +191,12 @@ class Vue():
 
 
     def modifierCarte(self,evt,noCarte,colonne,contenuText):
+        commande = "SELECT * FROM Cartes_Terlow WHERE id_colonne = " + str(colonne.id) + " AND ordre = " + str(noCarte)
+        carte = self.parent.serveur.requeteSelection(commande)
+        for n in carte:
+            carte = n
+        print(carte)
+        
         self.tableauDeCarte.append([])
 
         self.fenetreModificationCarte = Toplevel(self.root )
@@ -208,14 +206,11 @@ class Vue():
         self.texteNomCarte.grid(row=1,column=1, padx=50, pady=(30,10))
               
         self.entreeNomCarte = Entry(self.fenetreModificationCarte)
-        self.entreeNomCarte.grid(row=2,column=1, padx=50, pady=(0,10))
         
         self.texteDescriptionCarte = Label(self.fenetreModificationCarte, text="Description :",)
         self.texteDescriptionCarte.grid(row=3,column=1, padx=50, pady=(30,10))
               
         self.entreeDescriptionCarte = Text(self.fenetreModificationCarte)
-        self.entreeDescriptionCarte.grid(row=4,column=1, padx=50, pady=(0,10))
-        
         # ------------------ DM ------------------
         self.frameFinEstimation = Frame(self.fenetreModificationCarte, width = self.fenetreModificationCarte.winfo_width(), height = 10, relief = FLAT)
         self.frameFinEstimation.grid(row = 5, column = 1, padx = 50, pady = (0, 10))
@@ -236,12 +231,10 @@ class Vue():
             
         self.entreeAnneeFin = ttk.Combobox(self.frameDateFin, width = 6, justify = CENTER, values = annees)
         self.entreeAnneeFin.insert(0, "AAAA")
-        self.entreeAnneeFin.grid(row = 1, column = 2, padx = 5, pady = (0, 10))
         
         mois = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         self.entreeMoisFin = ttk.Combobox(self.frameDateFin, width = 4, justify = CENTER, values = mois)
         self.entreeMoisFin.insert(0, "MM")
-        self.entreeMoisFin.grid(row = 1, column = 3, padx = 5, pady = (0, 10))
         
         jours = []
         for i in range(1, 32):
@@ -249,15 +242,12 @@ class Vue():
             
         self.entreeJoursFin = ttk.Combobox(self.frameDateFin, width = 4, justify = CENTER, values = jours)
         self.entreeJoursFin.insert(0, "JJ")
-        self.entreeJoursFin.grid(row = 1, column = 4, padx = 5, pady = (0, 10))
         
         self.entreeHeureFin = Entry(self.frameDateFin, width = 6, justify = CENTER)
         self.entreeHeureFin.insert(0, "HH")
-        self.entreeHeureFin.grid(row = 1, column = 5, padx = 7, pady = (0, 10))
         
         self.entreeMinuteFin = Entry(self.frameDateFin, width = 6, justify = CENTER)
         self.entreeMinuteFin.insert(0, "Min")
-        self.entreeMinuteFin.grid(row = 1, column = 6, padx = 5, pady = (0, 10))
         
         # Section pour entrer le temps de travail estimé
         self.texteTempsEstime = Label(self.frameTempsEstime, text = "Temps estimé :")
@@ -265,11 +255,9 @@ class Vue():
         
         self.entreeHeuresEstimees = Entry(self.frameTempsEstime, width = 4, justify = CENTER)
         self.entreeHeuresEstimees.insert(0, "HH")
-        self.entreeHeuresEstimees.grid(row = 1, column = 2, padx = 5, pady = (0, 10))
         
         self.entreeMinutesEstimees = Entry(self.frameTempsEstime, width = 4, justify = CENTER)
         self.entreeMinutesEstimees.insert(0, "Min")
-        self.entreeMinutesEstimees.grid(row = 1, column = 3, padx = 5, pady = (0, 10))
         # ----------------------------------------
         
         self.texteProprietaireCarte = Label(self.fenetreModificationCarte, text="Proprietaire :",)
@@ -277,7 +265,28 @@ class Vue():
               
         self.entreeeProprietaireCarte = Entry(self.fenetreModificationCarte)
         self.entreeeProprietaireCarte.grid(row=7,column=1, padx=50, pady=(0,10))
-                
+        
+        if carte:
+            self.entreeNomCarte.insert(0, carte[3])
+            self.entreeDescriptionCarte.insert(INSERT, carte[4])
+            self.entreeAnneeFin.insert(0, 2018)
+            self.entreeMoisFin.insert(0, 12)
+            self.entreeJoursFin.insert(0, 21)
+            self.entreeHeureFin.insert(0, 23)
+            self.entreeMinuteFin.insert(0, 59)
+            self.entreeHeuresEstimees.insert(0, 48)
+            self.entreeMinutesEstimees.insert(0, 1)        
+            
+        self.entreeNomCarte.grid(row=2,column=1, padx=50, pady=(0,10))
+        self.entreeDescriptionCarte.grid(row=4,column=1, padx=50, pady=(0,10))        
+        self.entreeAnneeFin.grid(row = 1, column = 2, padx = 5, pady = (0, 10))
+        self.entreeMoisFin.grid(row = 1, column = 3, padx = 5, pady = (0, 10))
+        self.entreeJoursFin.grid(row = 1, column = 4, padx = 5, pady = (0, 10))
+        self.entreeHeureFin.grid(row = 1, column = 5, padx = 7, pady = (0, 10))
+        self.entreeMinuteFin.grid(row = 1, column = 6, padx = 5, pady = (0, 10))
+        self.entreeHeuresEstimees.grid(row = 1, column = 2, padx = 5, pady = (0, 10))
+        self.entreeMinutesEstimees.grid(row = 1, column = 3, padx = 5, pady = (0, 10))
+        
         self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte", command= lambda:self.changerCarte(noCarte,contenuText))
         self.boutonModificationCarte.grid(row=8,column=1, padx=50, pady=(0,30))
         

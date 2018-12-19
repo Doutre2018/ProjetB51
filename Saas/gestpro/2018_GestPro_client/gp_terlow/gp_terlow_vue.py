@@ -9,6 +9,7 @@ from helper import Helper as hlp
 from msilib.schema import Font
 from IdMaker import Id
 from tkinter.tix import COLUMN
+from tkinter.ttk import Combobox
 
 class Vue():
     def __init__(self,parent,largeur=1200,hauteur=800):
@@ -26,6 +27,7 @@ class Vue():
         
         self.cadreterlowExiste=False
         self.tableauDeColonne=[]
+        self.listeColonnes = self.parent.modele.listeColonnes
         self.tableauDeCarte=[]
         self.nbListe=0
         self.images={}
@@ -54,6 +56,7 @@ class Vue():
         self.creercadreterlow()
         #self.cadrejeu=Frame(self.root,bg="blue")
         #self.modecourant=None
+        
     def afficherImage(self):
         canvasImage = Canvas(self.root,width=self.largeur,height=self.hauteur)
         image= Image.open("./terlow.png")
@@ -62,6 +65,7 @@ class Vue():
         self.img=ImageTk.PhotoImage(image)
         canvasImage.create_image(0,0,image=self.img,anchor=NW)
         canvasImage.grid()
+
     def creercadreterlow(self):
         #permet d'intégrer l'application dans l'application de base
         self.root.overrideredirect(True) #Enleve la bordure
@@ -76,6 +80,9 @@ class Vue():
         self.boutonAjoutListe = Button(self.cadreterlow, text="Ajouter Colonne",command=self.ajouterListe)
         self.boutonAjoutListe.grid()
         self.cadreterlowExiste=True
+        
+        if self.parent.modele.listeColonnes:
+            self.fetchTerlow()
         
 
     def ajouterListe(self):
@@ -96,17 +103,47 @@ class Vue():
         boutonAjoutCarte.grid(row=1)
         self.nbListe+=1
 
-        
-        
     def ajouterCarte(self, noListe):
         noCarte=0
         colonne = self.tableauDeColonne[noListe]
         contenuText =StringVar()
         contenu = Entry(colonne,width=32,text=contenuText)
         self.tableauDeCarte.append([])
-        contenu.bind("<Double-Button-1>", lambda evt: self.modifierCarte(evt,noCarte,colonne,contenuText))
+        contenu.bind("<Button-1>", lambda evt: self.modifierCarte(evt,noCarte,colonne,contenuText))
         contenu.grid()
         noCarte+=1
+        
+    # ------------------ DM ------------------
+    def fetchTerlow(self):
+        for n, colonne in enumerate(self.parent.modele.listeColonnes):
+            self.tableauDeColonne.append(Frame(self.cadreterlow,width=100,height=600,bg="white",bd=4,highlightcolor="red",highlightthickness=1))
+            liste = self.tableauDeColonne[self.nbListe]
+            
+            titre = Entry(liste, width=32)
+            titre.insert(END, colonne.titre)
+            noListe=self.nbListe
+            boutonAjoutCarte = Button(liste, text="Ajouter Carte",command= lambda: self.ajouterCarte(noListe))
+        
+            liste.grid(column=self.nbListe,row=1,padx=10)
+            titre.grid(row=0)
+
+            boutonAjoutCarte.grid(row=1)
+            
+            self.nbListe+=1
+            
+            if colonne.listeCartes:
+                for n in colonne.listeCartes:
+                    noCarte=0
+                    col = self.tableauDeColonne[noListe]
+                    contenuText = StringVar()
+                    contenu = Entry(col,width=32,text=contenuText)
+                    contenu.insert(0, n.titre)
+                    self.tableauDeCarte.append([])
+                    contenu.bind("<Button-1>", lambda evt: self.modifierCarte(evt,noCarte,colonne,contenuText))
+                    contenu.grid()
+                    noCarte+=1
+        
+    # ----------------------------------------
 
     def deplacerColonneRight(self,evt,colonne,noliste):
         g = colonne.grid_info()
@@ -123,6 +160,7 @@ class Vue():
                 temp = self.tableauDeColonne[self.nbListe]
                 self.tableauDeColonne[self.nbListe] = self.tableauDeColonne[self.nbListe+1]
                 self.tableauDeColonne[self.nbListe+1]=temp
+                
     def deplacerColonneLeft(self,evt,colonne,noliste):
         g = colonne.grid_info()
         
@@ -138,18 +176,27 @@ class Vue():
                 temp = self.tableauDeColonne[self.nbListe]
                 self.tableauDeColonne[self.nbListe] = self.tableauDeColonne[self.nbListe-1]
                 self.tableauDeColonne[self.nbListe-1]=temp
-            
+    
+     
     def changerCarte(self,noCarte,contenuText):
+        #insère les infos entrées par l'user dans la listeInfoCarte
         listeInfoCarte = []
         listeInfoCarte.append(self.entreeNomCarte.get())
         listeInfoCarte.append(self.entreeDescriptionCarte.get("1.0",END))
         listeInfoCarte.append(self.entreeeProprietaireCarte.get())
+        #prend les infos et les insère dans le tableau de cartes
         self.tableauDeCarte[noCarte]=listeInfoCarte;
         contenuText.set(listeInfoCarte[0])
         self.fenetreModificationCarte.destroy()
 
 
     def modifierCarte(self,evt,noCarte,colonne,contenuText):
+        commande = "SELECT * FROM Cartes_Terlow WHERE id_colonne = " + str(colonne.id) + " AND ordre = " + str(noCarte)
+        carte = self.parent.serveur.requeteSelection(commande)
+        for n in carte:
+            carte = n
+        print(carte)
+        
         self.tableauDeCarte.append([])
 
         self.fenetreModificationCarte = Toplevel(self.root )
@@ -159,17 +206,58 @@ class Vue():
         self.texteNomCarte.grid(row=1,column=1, padx=50, pady=(30,10))
               
         self.entreeNomCarte = Entry(self.fenetreModificationCarte)
-        self.entreeNomCarte.grid(row=2,column=1, padx=50, pady=(0,10))
         
         self.texteDescriptionCarte = Label(self.fenetreModificationCarte, text="Description :",)
         self.texteDescriptionCarte.grid(row=3,column=1, padx=50, pady=(30,10))
               
         self.entreeDescriptionCarte = Text(self.fenetreModificationCarte)
-        self.entreeDescriptionCarte.grid(row=4,column=1, padx=50, pady=(0,10))
-        
         # ------------------ DM ------------------
-        self.texteDateFin = Label(self.fenetreModificationCarte, text="Date de fin : ",)
-        self.texteDateFin.grid(row = 5, column = 1, padx = 50, pady = (0, 10))
+        self.frameFinEstimation = Frame(self.fenetreModificationCarte, width = self.fenetreModificationCarte.winfo_width(), height = 10, relief = FLAT)
+        self.frameFinEstimation.grid(row = 5, column = 1, padx = 50, pady = (0, 10))
+        
+        self.frameDateFin = Frame(self.frameFinEstimation, width = self.frameFinEstimation.winfo_width() / 2, height = 10, relief = FLAT)
+        self.frameDateFin.grid(row = 1, column = 1, padx = 50, pady = (0, 10))
+        
+        self.frameTempsEstime = Frame(self.frameFinEstimation, width = self.frameFinEstimation.winfo_width() / 2, height = 10, relief = FLAT)
+        self.frameTempsEstime.grid(row = 1, column = 2, padx = 50, pady = (0, 10))
+        
+        # Section pour entrer la date de fin
+        self.texteDateFin = Label(self.frameDateFin, text="Date de fin :",)
+        self.texteDateFin.grid(row = 1, column = 1, padx = 5, pady = (0, 10))
+        
+        annees = []
+        for i in range(2018, 2025):
+            annees.append(i)
+            
+        self.entreeAnneeFin = ttk.Combobox(self.frameDateFin, width = 6, justify = CENTER, values = annees)
+        self.entreeAnneeFin.insert(0, "AAAA")
+        
+        mois = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        self.entreeMoisFin = ttk.Combobox(self.frameDateFin, width = 4, justify = CENTER, values = mois)
+        self.entreeMoisFin.insert(0, "MM")
+        
+        jours = []
+        for i in range(1, 32):
+            jours.append(i)
+            
+        self.entreeJoursFin = ttk.Combobox(self.frameDateFin, width = 4, justify = CENTER, values = jours)
+        self.entreeJoursFin.insert(0, "JJ")
+        
+        self.entreeHeureFin = Entry(self.frameDateFin, width = 6, justify = CENTER)
+        self.entreeHeureFin.insert(0, "HH")
+        
+        self.entreeMinuteFin = Entry(self.frameDateFin, width = 6, justify = CENTER)
+        self.entreeMinuteFin.insert(0, "Min")
+        
+        # Section pour entrer le temps de travail estimé
+        self.texteTempsEstime = Label(self.frameTempsEstime, text = "Temps estimé :")
+        self.texteTempsEstime.grid(row = 1, column = 1, padx = 5, pady = (0, 10))
+        
+        self.entreeHeuresEstimees = Entry(self.frameTempsEstime, width = 4, justify = CENTER)
+        self.entreeHeuresEstimees.insert(0, "HH")
+        
+        self.entreeMinutesEstimees = Entry(self.frameTempsEstime, width = 4, justify = CENTER)
+        self.entreeMinutesEstimees.insert(0, "Min")
         # ----------------------------------------
         
         self.texteProprietaireCarte = Label(self.fenetreModificationCarte, text="Proprietaire :",)
@@ -177,14 +265,31 @@ class Vue():
               
         self.entreeeProprietaireCarte = Entry(self.fenetreModificationCarte)
         self.entreeeProprietaireCarte.grid(row=7,column=1, padx=50, pady=(0,10))
-                
-        self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte",command= lambda:self.changerCarte(noCarte,contenuText))
-        self.boutonModificationCarte.grid(row=8,column=1, padx=50, pady=(0,30))
-
         
-    def salutations(self):
-        pass
+        if carte:
+            self.entreeNomCarte.insert(0, carte[3])
+            self.entreeDescriptionCarte.insert(INSERT, carte[4])
+            self.entreeAnneeFin.insert(0, 2018)
+            self.entreeMoisFin.insert(0, 12)
+            self.entreeJoursFin.insert(0, 21)
+            self.entreeHeureFin.insert(0, 23)
+            self.entreeMinuteFin.insert(0, 59)
+            self.entreeHeuresEstimees.insert(0, 48)
+            self.entreeMinutesEstimees.insert(0, 1)        
+            
+        self.entreeNomCarte.grid(row=2,column=1, padx=50, pady=(0,10))
+        self.entreeDescriptionCarte.grid(row=4,column=1, padx=50, pady=(0,10))        
+        self.entreeAnneeFin.grid(row = 1, column = 2, padx = 5, pady = (0, 10))
+        self.entreeMoisFin.grid(row = 1, column = 3, padx = 5, pady = (0, 10))
+        self.entreeJoursFin.grid(row = 1, column = 4, padx = 5, pady = (0, 10))
+        self.entreeHeureFin.grid(row = 1, column = 5, padx = 7, pady = (0, 10))
+        self.entreeMinuteFin.grid(row = 1, column = 6, padx = 5, pady = (0, 10))
+        self.entreeHeuresEstimees.grid(row = 1, column = 2, padx = 5, pady = (0, 10))
+        self.entreeMinutesEstimees.grid(row = 1, column = 3, padx = 5, pady = (0, 10))
+        
+        self.boutonModificationCarte = Button(self.fenetreModificationCarte, text="Modifier Carte", command= lambda:self.changerCarte(noCarte,contenuText))
+        self.boutonModificationCarte.grid(row=8,column=1, padx=50, pady=(0,30))
+        
     def fermerfenetre(self):
-        print("ON FERME la fenetre")
         self.root.destroy()
     

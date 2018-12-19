@@ -620,7 +620,7 @@ class Vue():
     def clickEntryMotDePasseNewUserConfirm(self,evt):
         if self.placeHolderEntryMotDePasseNewUserConfirm:
             self.PasswordConfirm.delete(0, "end")
-            self.PasswordConfirm.config(fg="black")
+            self.PasswordConfirm.config(fg="black",show="*")
             self.placeHolderEntryMotDePasseNewUserConfirm=False    
             
     def puclickEntryMotDePasseNewUserConfirm(self,evt):
@@ -629,17 +629,7 @@ class Vue():
             self.PasswordConfirm.config(fg = "grey",show="")
             self.placeHolderEntryMotDePasseNewUserConfirm=True
             
-    def clickEntryCompagnie(self,evt):
-        if self.placeHolderEntryCompagny:
-            self.entryCompagniesplash.delete(0, "end")
-            self.entryCompagniesplash.config(fg="black")
-            self.placeHolderEntryCompagny=False    
-            
-    def puClickEntryCompagnie(self,evt):
-        if  self.entryCompagniesplash.get() == '':
-            self.entryCompagniesplash.insert(0, "Nom de compagnie")
-            self.entryCompagniesplash.config(fg = "grey")
-            self.placeHolderEntryCompagny=True
+
     
 if __name__ == '__main__':
     m=Vue(0,"127.0.0.1")

@@ -299,6 +299,7 @@ class  BaseDonnees():
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.creerListeCompagnies()
+        self.creerListeColonnesScenarii()
         self.connecteur.commit()
         self.connecteur.close()
 
@@ -387,6 +388,21 @@ class  BaseDonnees():
         else:
             for cie in compagnies:
                 commande = "INSERT INTO Compagnie(nomCompagnie) VALUES ('" + cie + "')"
+                self.insertionPerso(commande)
+    # --------------------------------------
+    
+        # ----------------- DM -----------------
+    def creerListeColonnesScenarii(self):
+        Colonnes = ["Usager", "Machine"]
+        commande = "SELECT * FROM ColonnesScenarii"
+        l = self.selection(commande)
+        
+        if (l):
+            pass
+                
+        else:
+            for col in Colonnes:
+                commande = "INSERT INTO ColonnesScenarii(nom) VALUES ('" + col + "')"
                 self.insertionPerso(commande)
     # --------------------------------------
         

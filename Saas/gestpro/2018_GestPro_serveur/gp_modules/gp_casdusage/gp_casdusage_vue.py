@@ -69,8 +69,7 @@ class Vue():
         
         self.listeCas = Listbox(self.cadreUsage, width=50,height=int((self.hauteur/130)*5))
         self.listeCas.grid(row=1,column=0,padx=20,columnspan=2)
-        self.listeCas.bind("<Button-1>", self.afficherScenarii)
-        
+        self.listeCas.bind('<<ListboxSelect>>', self.afficherScenarii)
         self.boutonAjouterCas = Button(self.cadreUsage,text="Ajouter",bg="white",command=self.ajouterCas,relief=FLAT,width=10)
         self.boutonAjouterCas.grid(row=2,column=0,pady=(10,0),padx=(75,0))
         
@@ -115,11 +114,11 @@ class Vue():
 
         self.cadreExiste=True
         
-    def afficherScenarii(self,evt):
+    def afficherScenarii(self, evt):
         self.parent.modele.selectScenarii(self.listeCas.get(ACTIVE))
+        print(self.listeCas.get(ACTIVE))
         self.usager = self.parent.modele.casUsagers
         self.machine = self.parent.modele.casMachines
-        print("hello")
         self.listeScenariiUsager.delete(0, 'end')
         for item in self.usager:
             self.listeScenariiUsager.insert(END, item)

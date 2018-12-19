@@ -31,6 +31,8 @@ class Modele():
         self.BD.requeteInsertionPerso("INSERT INTO Scenarii(id_projet, id_casUsage,ligne,id_colonne) VALUES('" + str(self.numProjet) + "','" + str(idCas) + "','" + str(machine) + "','" + str(2) + "');")
    
     def selectScenarii(self, ligne):
+        print(ligne)
+
         idCas = self.BD.requeteSelection("SELECT id FROM CasUsage WHERE ligne = '" + str(ligne) + "';")
         idUsager = self.BD.requeteSelection("SELECT id FROM ColonnesScenarri WHERE id = '" + str(1) + "';")
         idMachine = self.BD.requeteSelection("SELECT id FROM ColonnesScenarri WHERE id = '" + str(2) + "';")

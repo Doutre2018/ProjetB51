@@ -328,7 +328,7 @@ class Vue():
         
         self.cadrebase=Frame(self.root, bg= "#E4E9F3")
         
-        self.boutonMandat=Button(self.cadrebase,text="Mandat",bg="#234078",command=self.requeteMandat,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
+        self.boutonMandat=Button(self.cadrebase,text="Gestion",bg="#234078",command=self.requeteMandat,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
         self.boutonScrum=Button(self.cadrebase,text="Scrum",bg="#234078",command=self.requeteScrum,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
         self.boutonAnalyse=Button(self.cadrebase,text="Analyse \nTextuelle",bg="#234078",command=self.requeteAnalyse,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")
         self.boutonCasUsage=Button(self.cadrebase,text="Cas \nd'usage",bg="#234078",command=self.requeteCasUsage,height=4,width=int(self.largeur/65),relief=FLAT, fg="white")

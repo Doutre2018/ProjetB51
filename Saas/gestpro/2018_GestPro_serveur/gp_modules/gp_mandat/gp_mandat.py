@@ -30,5 +30,10 @@ class Modele():
         commande = "SELECT nom FROM Sprint"
         return self.serveur.requeteSelection(commande)
     
+    def insertSprint(self,nom):
+        return self.serveur.requeteInsertionPerso("INSERT INTO Sprint(nom) VALUES('" + str(nom) + "');")
+    
+    def insertMembreSprint(self,membre,idSprint):
+        return self.serveur.requeteInsertionPerso("INSERT INTO MembreSprint(nomMembre,id_sprint) VALUES('" + str(membre) + "',"+str(idSprint)+");")
 if __name__ == '__main__':
     c=Controleur()

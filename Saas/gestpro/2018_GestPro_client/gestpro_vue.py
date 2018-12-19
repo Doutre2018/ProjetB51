@@ -24,6 +24,8 @@ class Vue():
         self.hauteur=self.hauteurDefault=hauteur;
         self.largeurEcran=self.root.winfo_screenwidth()
         self.hauteurEcran=self.root.winfo_screenheight()
+        self.savedNameTemp = None
+        self.cieName =None
 
         self.root.attributes("-fullscreen", False)
         self.images={}
@@ -243,11 +245,11 @@ class Vue():
         
         #self.EntrerNomTitre= Label(self.cadreNouvelleUtilisateur,text="Veuillez entrer votre nom",font='arial 12',bg="#E5E7F4")
         #self.EntrerNomTitre.grid(pady=(20,10),padx=100) 
-        self.NouveauNom= Entry(self.cadreNouveauProjet,bg="white", justify=CENTER,fg="grey",width=40)
-        self.NouveauNom.grid(pady=(0,20))
-        self.NouveauNom.insert(0,'Nom du Projet')
-        self.NouveauNom.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
-        self.NouveauNom.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
+        self.NouveauNomProjet= Entry(self.cadreNouveauProjet,bg="white", justify=CENTER,fg="grey",width=40)
+        self.NouveauNomProjet.grid(pady=(0,20))
+        self.NouveauNomProjet.insert(0,'Nom du Projet')
+        self.NouveauNomProjet.bind('<FocusIn>', self.clickEntryNomNouveauUtilisateur)
+        self.NouveauNomProjet.bind('<FocusOut>',self.puClickEntryNomNouveauUtilisateur)
         
 
         self.confirmerIB=Button(self.cadreNouveauProjet,text="Confirmer",bg="#FFFFFF",relief=FLAT,command=self.chargerProjet, width=15)
@@ -529,7 +531,16 @@ class Vue():
                 return False
     # --------------------------------- #   
     def chargerProjet(self):
-        
+
+        self.cieName = self.entryCompagniesplash.get()
+        self.savedNameTemp = self.NouveauNomProjet.get()
+        print("ds charger" + self.savedNameTemp, self.cieName)
+        self.changecadre(self.cadreProjet)
+        if self.parent.modProjet.createProject(self, self.savedNameTemp, self.nomsplash.get(), self.cieName):
+            pass
+        else:
+            print("Erreur de creation de nom de projet (nom déjà utilisé")
+
         #C'est ici qu'il faut vérifé
         
         nom = self.nomsplash.get()
@@ -539,7 +550,10 @@ class Vue():
         
         if self.nomConforme(nom):
             if self.motPasseConforme(motPasse):
-                self.changecadre(self.cadreProjet)
+                if self.parent.modProjet.createProject(self, self.savedNameTemp, self.nomsplash.get(), self.cieName):
+                    self.changecadre(self.cadreProjet)
+                else:
+                    print("Erreur de creation de nom de projet (nom déjà utilisé")
             else:
                 print("Mot de passe non conforme")
         else:

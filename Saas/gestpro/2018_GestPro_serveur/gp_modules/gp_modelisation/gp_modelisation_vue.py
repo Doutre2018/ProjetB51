@@ -116,7 +116,7 @@ class Vue():
               
     def creercadremodelisation(self):
         # Create a frame for the canvas with non-zero row&column weights
-        self.cadreprincipal = Frame(self.root,width=self.largeurDefault,height=self.hauteurDefault, bg="#E4E9F3")
+        self.cadreprincipal = Frame(self.root,width=self.largeurDefault/5,height=self.hauteurDefault/5, bg="#E4E9F3")
         self.cadreprincipal.grid(row=0, column=0, pady=(5, 0), sticky='we')
         # Set grid_propagate to False to allow 5-by-5 buttons resizing later
         self.cadreprincipal.grid_propagate(False)

@@ -492,10 +492,12 @@ class Vue():
         motPasse = self.entrymotPassesplash.get()
         compagnie = self.entryCompagniesplash.get()
         ipserveur = self.ipsplash.get()
-        
+        print(ipserveur + "Vue")
         if self.nomConforme(nom):
             if self.motPasseConforme(motPasse):
                 if compagnie != "< Sélectionner votre entreprise >":
+                    print(ipserveur + "Vue2")
+
                     rep = self.parent.connexion(nom, motPasse, compagnie, ipserveur)
                     self.labelProbleme.config(fg="red",font='arial 9')
                     print(rep)

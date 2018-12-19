@@ -31,6 +31,9 @@ class Controleur():
     def insertDataMembre(self, accompli, aFaire, probleme, nom):
         self.modele.insertDonneesMembre(accompli, aFaire, probleme, nom)
         
+    def selectDataMembre(self, nom):
+        self.modele.selectMembres(nom)
+        
     
 if __name__ == '__main__':
     c=Controleur()

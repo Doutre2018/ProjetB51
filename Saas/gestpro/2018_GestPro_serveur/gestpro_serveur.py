@@ -1,3 +1,26 @@
+Skip to content
+ 
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ @jbourgeois0307
+Sign out
+ The password you provided is weak and can be easily guessed. To increase your security, please change your password as soon as possible.
+
+Read our documentation on safer password practices.
+
+2
+0 2 Doutre2018/ProjetB51
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Insights
+ProjetB51/Saas/gestpro/2018_GestPro_serveur/gestpro_serveur.py
+166cc86  an hour ago
+ Massicotte Danick merge avec master
+@Doutre2018 @DanickMassicotte @SimonVoyer @maryleneb @jbourgeois0307
+      
+475 lines (397 sloc)  22.4 KB
 # -*- encoding: utf-8 -*-
 
 from xmlrpc.server import SimpleXMLRPCServer
@@ -323,7 +346,7 @@ class  BaseDonnees():
             ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['Type','text',''], ['PosX','real',''], ['PosY','real',''],['X','real',''], ['Y','real',''], ['Bordure','real','NULL'], ['Interieur','real','NULL'],['Texte','text',''],['Font','text','']],
             ['ColonnesScenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text',''], ['numero_position','INTEGER','']],
             ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''], ['classe','text',''], ['ordre','INTEGER',''],['carte_heritage','text',''],['nom_responsable','text','']],
-            ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text',''],['id_classe','INTEGER','']],
+            ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],
             ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date',''],['nom','text','']],
             ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER',''],['id_membre','INTEGER','']],
            # ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
@@ -331,10 +354,10 @@ class  BaseDonnees():
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
             ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']],
-            ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''], ['date', 'text', '']],
+            ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['date', 'text', '']],
             ['MembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', '']],
             ['DonneesMembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', '']],
-            ['CartesDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''],['id_carte','INTEGER',''],  ['nom', 'text', '']],
+            ['CartesDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''], ['nom', 'text', '']],
             ['ItemDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', ''], ['type', 'text', ''], ['contrainte', 'text', '']],
             ['ObjetsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['objet','text','']],
             ['MembreSprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['id_sprint','INTEGER',''],['nomMembre','text','']]
@@ -472,3 +495,16 @@ if __name__ == "__main__":
     controleurServeur=ControleurServeur()
     daemon.register_instance(controleurServeur)  
     daemon.serve_forever()
+© 2018 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Press h to open a hovercard with more details.

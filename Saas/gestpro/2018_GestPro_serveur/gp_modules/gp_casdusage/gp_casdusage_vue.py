@@ -69,13 +69,14 @@ class Vue():
         
         self.listeCas = Listbox(self.cadreUsage, width=50,height=int((self.hauteur/130)*5))
         self.listeCas.grid(row=1,column=0,padx=20,columnspan=2)
+        self.listeCas.bind('<Button-1>', self.afficherScenarii)
         self.listeCas.bind('<<ListboxSelect>>', self.afficherScenarii)
         self.boutonAjouterCas = Button(self.cadreUsage,text="Ajouter",bg="white",command=self.ajouterCas,relief=FLAT,width=10)
         self.boutonAjouterCas.grid(row=2,column=0,pady=(10,0),padx=(75,0))
         
         # --------Bouton POur JF
-        self.boutonSupprimerCas = Button(self.cadreUsage,text="Supprimer",bg="white",command=self.ajouterCas,relief=FLAT,width=10)
-        self.boutonSupprimerCas.grid(row=2,column=1,pady=(10,0),padx=(0,75))
+        #self.boutonSupprimerCas = Button(self.cadreUsage,text="Supprimer",bg="white",command=self.ajouterCas,relief=FLAT,width=10)
+        #self.boutonSupprimerCas.grid(row=2,column=1,pady=(10,0),padx=(0,75))
         
         #Scenarii
         self.cadreScenarii=Frame(self.root,bg="#E4E9F3",height=int((self.root.winfo_screenheight()/6)*5),width=int((self.root.winfo_screenwidth()/6)*5))

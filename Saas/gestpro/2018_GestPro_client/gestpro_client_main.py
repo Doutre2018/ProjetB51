@@ -106,7 +106,7 @@ class Controleur():
             #self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport],shell=0) 
             self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport,self.IPServeur],shell=0) 
         else:
-            print("RIEN")
+            pass
             
     def fermerprocessus(self):
         if self.pid is not None:

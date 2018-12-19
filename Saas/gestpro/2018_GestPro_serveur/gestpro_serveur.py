@@ -208,10 +208,10 @@ class ModeleService(object):
         with open(cheminFichier, "rb") as handle:
             return xmlrpc.client.Binary(handle.read())
 
-    def logErreur(self, adresseIP, message):
+    def logErreur(self,date, adresseIP, message):
         with open("log.csv", 'a+', newline = '') as handler:
             writer = csv.writer(handler, delimiter = ';') 
-            row =[datetime.now(),  adresseIP,  message]
+            row =[date,  adresseIP,  message]
             writer.writerow(row)
         return True
             

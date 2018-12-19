@@ -38,7 +38,11 @@ class Controleur():
             self.serveur=ServerProxy(ad)
             self.IPServeur = ad
             return self.serveur.fetchCompagnies()
-        
+    
+    def fetchmonNom(self):
+        #Getter du nom de la personne connectée au client
+        return self.monnom
+    
     def inscription(self, nom, motPasse, compagnie, ipserveur):
         if ipserveur and nom:
             ad = "http://"+ipserveur+":"+self.nodeport
@@ -106,7 +110,7 @@ class Controleur():
             #self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport],shell=0) 
             self.pid = Popen([sys.executable, chaineappli,self.monnom,self.monip,self.nodeport,self.IPServeur],shell=0) 
         else:
-            print("RIEN")
+            pass
             
     def fermerprocessus(self):
         if self.pid is not None:

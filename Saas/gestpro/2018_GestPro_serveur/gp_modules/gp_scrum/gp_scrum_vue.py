@@ -166,7 +166,7 @@ class Vue():
         self.boutonCreerDate = Button(self.fenetreCreationDate, width = 10, command=self.ajouterDate,text="Ajout", bg="white", relief=FLAT)
         self.boutonCreerDate.grid(row=3,column=0,pady=20,columnspan=3)
     def ajouterDate(self):
-        date = [0, (int)self.comboMois.get(), (int)self.jour.get(), 0, 0, 0]
+        date = [2019, self.comboMois.current()+1, int(self.jour.get()), 0, 0, 0]
         self.parent.insertNewScrum(date)
         date=self.jour.get()+" "+self.comboMois.get()
         self.listeDate.insert(END,date)
@@ -180,9 +180,13 @@ class Vue():
     def UpdateChampTexte(self,evt):
         print("")
         #Coder ici je pense pour updater les champ de texte (Information) 
-        #self.infoFait
-        #self.infoAFaire
-        #self.infoProbleme
+        self.infoFait.delete(1.0,END)
+        self.infoAFaire.delete(1.0,END)
+        self.infoProbleme.delete(1.0,END)
+        #self.listeDate -> c la liste de date!
+        #a=()
+        #a=self.listeDate.curselection() 
+        # -> devrait retourner l'index je crois
         
     def AjoutNomDansText(self,evt):
         a=()

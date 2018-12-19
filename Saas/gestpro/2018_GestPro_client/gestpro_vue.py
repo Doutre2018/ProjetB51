@@ -7,6 +7,7 @@ import os,os.path
 import math
 from helper import Helper as hlp
 import signal
+import subprocess
 
 class Vue():
     def __init__(self,parent,monip,largeur=800,hauteur=600):
@@ -294,7 +295,7 @@ class Vue():
         self.menubar.add_cascade(label="Edition", menu=self.editmenu)
         
         self.aidemenu = Menu(self.menubar, tearoff=0)
-        self.aidemenu.add_command(label="Read-Me 1", command=self.salutations)
+        self.aidemenu.add_command(label="Read-Me 1", command=self.ouvrirReadme)
         self.aidemenu.add_command(label="Read-Me 2", command=self.salutations)
         self.aidemenu.add_command(label="Read-Me 3", command=self.salutations)
         self.aidemenu.add_command(label="Read-Me 4", command=self.salutations)
@@ -311,7 +312,19 @@ class Vue():
         self.menu.add_command(label="Verbe", command=self.salutations)
         
         self.root.config(menu=self.menubar) 
-
+    
+    def ouvrirReadme(self):
+        pathReadMe = os.getcwd() + "\Lisez_moi_GestPro.txt"
+        print(pathReadMe)
+        try:
+            subprocess.Popen(["notepad",pathReadMe])
+        except Exception as erreur:
+            try:
+                self.parent.serveur.logErreur(socket.gethostbyname(socket.getfqdn()), erreur)
+            except:
+                pass
+    
+    
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -489,6 +502,7 @@ class Vue():
             
     def connexion(self):
         nom = self.nomsplash.get()
+        self.parent.monnom=nom
         motPasse = self.entrymotPassesplash.get()
         compagnie = self.entryCompagniesplash.get()
         ipserveur = self.ipsplash.get()

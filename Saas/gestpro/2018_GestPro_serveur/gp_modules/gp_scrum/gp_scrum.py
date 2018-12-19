@@ -34,9 +34,8 @@ class Controleur():
     def selectDataMembre(self, nom):
         self.modele.selectMembres(nom)
     
-    def afficherScrums(self, numProjet):
-        #self.modele.selectScr
-        pass
+    def afficherMembres(self, idscrum):
+        self.modele.selectMembre(idscrum)
         
     
 if __name__ == '__main__':

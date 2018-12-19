@@ -38,7 +38,11 @@ class Controleur():
             self.serveur=ServerProxy(ad)
             self.IPServeur = ad
             return self.serveur.fetchCompagnies()
-        
+    
+    def fetchmonNom(self):
+        #Getter du nom de la personne connectée au client
+        return self.monnom
+    
     def inscription(self, nom, motPasse, compagnie, ipserveur):
         if ipserveur and nom:
             ad = "http://"+ipserveur+":"+self.nodeport

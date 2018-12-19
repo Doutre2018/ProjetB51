@@ -489,6 +489,7 @@ class Vue():
             
     def connexion(self):
         nom = self.nomsplash.get()
+        self.parent.monnom=nom
         motPasse = self.entrymotPassesplash.get()
         compagnie = self.entryCompagniesplash.get()
         ipserveur = self.ipsplash.get()

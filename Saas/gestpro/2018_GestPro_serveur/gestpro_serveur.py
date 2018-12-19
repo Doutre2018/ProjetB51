@@ -295,7 +295,7 @@ class  BaseDonnees():
         #else:
             #print("Creation du fichier SAAS.db initial")
         self.referenceServeur = referenceServeur
-        self.connecteur = sqlite3.connect('SAASSY.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+        self.connecteur = sqlite3.connect('SAAS.db', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
         self.curseur = self.connecteur.cursor()
         self.creerTables(self.genererListeTables(),self.genererListeConst())
         self.creerListeCompagnies()

@@ -128,7 +128,7 @@ class Vue():
         self.cadreprincipal.grid_propagate(False)
         
         # Add a canvas in that frame
-        self.canvasmodelisation = Canvas(self.cadreprincipal, bg="yellow")
+        self.canvasmodelisation = Canvas(self.cadreprincipal, bg="#E4E9F3")
         self.canvasmodelisation.grid(row=0, column=0, sticky="news")
         
         # Link a scrollbar to the canvas

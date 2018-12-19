@@ -7,6 +7,7 @@ import random
 
 import math
 from helper import Helper as hlp
+from numpy.linalg.linalg import _isEmpty2d
 
 
 
@@ -51,7 +52,8 @@ class ModeleProject():
                 self.parent.idProject = self.parent.parent.serveur.requeteSelection(commande_sel)
             except:
                 pass
-
+            
+            
 
             commande = "SELECT id FROM compagnie WHERE nomCompagnie LIKE = "
             commande += self.nomCie
@@ -72,7 +74,7 @@ class ModeleProject():
 
             ListReceiver = []
             validationName = True
-
+            print(len(ListReceiver))
             try:
                 ListReceiver = self.parent.parent.serveur.requeteSelection(commande)
                 for i in ListReceiver:
@@ -154,11 +156,12 @@ class ModeleProject():
         self.projectName = projectName
         print(nomCie)
         self.nomCie = nomCie
-        print("parameters :", projectName + "  " + nomCie)
-        commande = "SELECT id FROM compagnie WHERE nomCompagnie = "
+        noCie = []
+        #print("parameters :", projectName + "  " + nomCie)
+        commande = "SELECT id FROM compagnie WHERE nomCompagnie LIKE ('"
         commande += str(self.nomCie)
-        commande += ";"
-        #print(commande)
+        commande += "');"
+        print(commande)
         #print("no Cie ")
         #print(self.parent.parent)
        
@@ -167,11 +170,12 @@ class ModeleProject():
         except:
             pass
             
-        print(self.IDCie)
+        #print("self id cie" + self.IDCie)
         for i in self.IDCie:
             for n in i:
                 noCIE = n
-        
+        if len(noCie)==0:
+            print("empty")
 
         # SELECT Projet.id FROM Projet JOIN Liaison_Util_Projet ON Projet.id = Liaison_Util_Projet.id_projet JOIN Utilisateur ON utilisateur.id = Liaison_Util_Projet.id_util WHERE Projet.nom LIKE ('alicia') and utilisateur.id_compagnie = '4';
         #print(self.cieID +" id and projecctname   " + self.projectName)
@@ -194,10 +198,11 @@ class ModeleProject():
                 for n in i:
                     List = n
             
+            
             idPro = List
             
             print(str(idPro) + " id Projet")
-            if idPro > 0:
+            if idPro == {}:
                 ValidationProject = True
             else:
                 ValidationProject = False
@@ -206,4 +211,13 @@ class ModeleProject():
             List = -1
             print("oups")
             ValidationProject = False
+        
+        ValidationProject = 1
+        print(ValidationProject)
+        if ValidationProject:
+            print("1")
+            return 1
+        else:
+            print("0")
+            return 0
 

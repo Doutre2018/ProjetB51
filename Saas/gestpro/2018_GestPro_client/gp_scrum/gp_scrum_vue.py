@@ -176,7 +176,6 @@ class Vue():
         self.boutonCreerDate = Button(self.fenetreCreationDate, width = 10, command=self.ajouterDate,text="Ajout", bg="white", relief=FLAT)
         self.boutonCreerDate.grid(row=3,column=0,pady=20,columnspan=3)
     def ajouterDate(self):
-        date = [0, (int)self.comboMois.get(), (int)self.jour.get(), 0, 0, 0]
         date = [2019, self.comboMois.current()+1, int(self.jour.get()), 0, 0, 0]
         self.parent.insertNewScrum(date)
         date=self.jour.get()+" "+self.comboMois.get()

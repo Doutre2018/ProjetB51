@@ -500,6 +500,7 @@ class Vue():
 
                     rep = self.parent.connexion(nom, motPasse, compagnie, ipserveur)
                     if self.parent.modProjet.accessProject(self, nameProjet, compagnie):
+                        print("ici")
                         pass
                     else:
                         print("projet inexistant")

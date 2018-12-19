@@ -73,7 +73,7 @@ class Vue():
         self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
         
         #Enlever pour voir vrai logiciel
-        #self.afficherImage()
+        self.afficherImage()
         
         self.cadreterlow=Frame(self.root,width=self.largeur,height=self.hauteur, bg="#E4E9F3")
         self.cadreterlow.grid()

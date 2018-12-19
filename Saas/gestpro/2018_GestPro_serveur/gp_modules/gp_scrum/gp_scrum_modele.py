@@ -24,12 +24,18 @@ class Modele():
     def insertScrum(self, dateScrum):
         self.BD.requeteInsertionDate("INSERT INTO Scrum(id_projet, date) VALUES(?,?)", [str(self.numProjet)], [dateScrum])
     
-    def insertMembresScrum(self):
-        #membres = self.BD.requeteSelection("SELECT nomUtilisateur FROM utilisateur WHERE id")
-        pass
+    def insertMembreScrum(self, nom, scrumActif):
+        for i in scrumActif:
+            scrumActif = i
+        self.BD.requeteInsertionPerso("INSERT INTO MembreScrum(nom, id_scrum) VALUES('" + str(nom) + "', '" + str(scrumActif+1) + "');")
    
-    def selectScrum(self, date):
-        pass
+    def insertDonneesMembre(self, accompli, aFaire, probleme, nom):
+        print(accompli)
+        print(aFaire)
+        print(probleme)
+        print(nom)
+        idMembre = requeteSelection("SELECT id FROM MembreScrum WHERE nom = '" + str(nom) + "';")
+        self.BD.requeteInsertionPerso("INSERT INTO DonneesMembreScrum(accompli, aFaire, probleme, id_membre) VALUES('" + str(accompli) + "', '" + str(aFaire) + "', '" + str(probleme) + "', '" + str(idMembre) + "');")
     
     def selectMembres(self, nom):
         self.accompli = self.BD.requeteSelection("SELECT accompli FROM MembreScrum WHERE nom = '" + str(nom) + "');")

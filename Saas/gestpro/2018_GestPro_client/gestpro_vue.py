@@ -7,6 +7,7 @@ import os,os.path
 import math
 from helper import Helper as hlp
 import signal
+import subprocess
 
 class Vue():
     def __init__(self,parent,monip,largeur=800,hauteur=600):
@@ -282,39 +283,28 @@ class Vue():
 
         self.filemenu = Menu(self.menubar, tearoff=0)
         
-        self.filemenu = Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Nouveau Projet", command=self.nouveauProjet)
-        self.filemenu.add_command(label="Enregistrer", command=self.salutations)
-        self.menubar.add_cascade(label="Fichier", menu=self.filemenu)
-        
-        self.editmenu = Menu(self.menubar, tearoff=0)
-        self.editmenu.add_command(label="Undo", command=self.salutations)
-        self.editmenu.add_command(label="Redo", command=self.salutations)
-        self.editmenu.add_separator()
-        self.editmenu.add_command(label="Copier", command=self.salutations)
-        self.editmenu.add_command(label="Couper", command=self.salutations)
-        self.editmenu.add_command(label="Coller", command=self.salutations)
-        self.menubar.add_cascade(label="Edition", menu=self.editmenu)
         
         self.aidemenu = Menu(self.menubar, tearoff=0)
-        self.aidemenu.add_command(label="Read-Me 1", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 2", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 3", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 4", command=self.salutations)
-        self.aidemenu.add_command(label="Read-Me 5", command=self.salutations)
+        self.aidemenu.add_command(label="Lisez-moi", command=self.ouvrirReadme)
         self.menubar.add_cascade(label="Aide", menu=self.aidemenu)
-        
-        self.affichagemenu = Menu(self.menubar, tearoff=0)
-        self.affichagemenu.add_command(label="FullScreen", command=self.fullScreenMode)
-        self.menubar.add_cascade(label="Affichage", menu=self.affichagemenu)
         
         self.menubar.add_command(label="Fermer", command=self.fermerfenetre)
         self.menu = Menu(self.root, tearoff=0)
-        self.menu.add_command(label="Nom", command=self.salutations)
-        self.menu.add_command(label="Verbe", command=self.salutations)
         
         self.root.config(menu=self.menubar) 
-
+    
+    def ouvrirReadme(self):
+        pathReadMe = os.getcwd() + "\Lisez_moi_GestPro.txt"
+        print(pathReadMe)
+        try:
+            subprocess.Popen(["notepad",pathReadMe])
+        except Exception as erreur:
+            try:
+                self.parent.serveur.logErreur(socket.gethostbyname(socket.getfqdn()), erreur)
+            except:
+                pass
+    
+    
     def fullScreenMode(self): 
         if(self.fullscreen):
             self.fullscreen=False
@@ -492,15 +482,22 @@ class Vue():
             
     def connexion(self):
         nom = self.nomsplash.get()
+        self.parent.monnom=nom
         motPasse = self.entrymotPassesplash.get()
         compagnie = self.entryCompagniesplash.get()
         ipserveur = self.ipsplash.get()
+
         nameProjet = self.nomProjet.get()
         print("nom projet " + str(nameProjet))
         
+
+        print(ipserveur + "Vue")
+
         if self.nomConforme(nom):
             if self.motPasseConforme(motPasse):
                 if compagnie != "< Sélectionner votre entreprise >":
+                    print(ipserveur + "Vue2")
+
                     rep = self.parent.connexion(nom, motPasse, compagnie, ipserveur)
                     if self.parent.modProjet.accessProject(self, nameProjet, compagnie):
                         pass

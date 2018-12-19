@@ -124,8 +124,14 @@ class Vue():
         self.boutonCreerEmploye = Button(self.fenetreCreationEmploye, width = 10, command=self.ajouterEmploye,text="Ajout", bg="white", relief=FLAT)
         self.boutonCreerEmploye.grid(column=0,row=3,padx=20,pady=20)
     def ajouterEmploye(self):
-        self.listeEmploye.insert(END,self.nomEmploye.get())
-        self.fenetreCreationEmploye.destroy()
+        a=()
+        a=self.listeDate.curselection()
+        if a == ():
+            self.fenetreCreationEmploye.destroy()
+        else:
+            self.listeEmploye.insert(END,self.nomEmploye.get())
+            self.parent.insertNewMembre(self.nomEmploye.get(),a)
+            self.fenetreCreationEmploye.destroy()
     def creationDate(self):
         self.fenetreCreationDate = Toplevel(self.cadrescrum, bg="#234078"  )
         self.fenetreCreationDate.wm_title("Ajouter une nouvelle Date")
@@ -166,7 +172,7 @@ class Vue():
         self.boutonCreerDate = Button(self.fenetreCreationDate, width = 10, command=self.ajouterDate,text="Ajout", bg="white", relief=FLAT)
         self.boutonCreerDate.grid(row=3,column=0,pady=20,columnspan=3)
     def ajouterDate(self):
-        date = [0, (int)self.comboMois.get(), (int)self.jour.get(), 0, 0, 0]
+        date = [2019, self.comboMois.current()+1, int(self.jour.get()), 0, 0, 0]
         self.parent.insertNewScrum(date)
         date=self.jour.get()+" "+self.comboMois.get()
         self.listeDate.insert(END,date)
@@ -180,15 +186,20 @@ class Vue():
     def UpdateChampTexte(self,evt):
         print("")
         #Coder ici je pense pour updater les champ de texte (Information) 
-        #self.infoFait
-        #self.infoAFaire
-        #self.infoProbleme
+        self.infoFait.delete(1.0,END)
+        self.infoAFaire.delete(1.0,END)
+        self.infoProbleme.delete(1.0,END)
+        #self.listeDate -> c la liste de date!
+        #a=()
+        #a=self.listeDate.curselection() 
+        # -> devrait retourner l'index je crois
         
     def AjoutNomDansText(self,evt):
         a=()
         a=self.listeEmploye.curselection()
         
         nomEmp=self.listeEmploye.get(a)
+        #Afficher mes info données de base données
         self.infoFait.insert(END,"\n"+nomEmp+":")
         self.infoAFaire.insert(END,"\n"+nomEmp+":")
         self.infoProbleme.insert(END,"\n"+nomEmp+":")

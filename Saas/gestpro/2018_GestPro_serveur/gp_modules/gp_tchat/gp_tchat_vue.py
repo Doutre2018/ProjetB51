@@ -75,15 +75,15 @@ class Vue():
         image= image.resize((120, 100), Image.ANTIALIAS)
         self.img=ImageTk.PhotoImage(image)
 
-        #image2= Image.open("./chat2.jpg")
-        #image2= image2.resize((120, 100), Image.ANTIALIAS)
-        #self.img2=ImageTk.PhotoImage(image2)
+        image2= Image.open("./chat2.jpg")
+        image2= image2.resize((120, 100), Image.ANTIALIAS)
+        self.img2=ImageTk.PhotoImage(image2)
         
         canvasImage1 = Canvas(self.cadreTchat,width=120,height=100)
         canvasImage1.create_image(0,0,image=self.img,anchor=NW)
         canvasImage1.grid(row=0,column=0)
         canvasImage2 = Canvas(self.cadreTchat,width=120,height=100)
-        canvasImage2.create_image(0,0,image=self.img,anchor=NW)
+        canvasImage2.create_image(0,0,image=self.img2,anchor=NW)
         canvasImage2.grid(row=0,column=4)
         #self.parent.reloadMessageBD();
     
@@ -124,13 +124,13 @@ class Vue():
                     while (color in self.color.values()):
                         color = '{:06x}'.format(self.random_color())
                     self.color[message[0]] = '#'+ color
-                print(self.color.get(message[0]))
+                #print(self.color.get(message[0]))
                 if self.messagesDeBD.index(message):
-                    self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
+                    self.listeMessage.insert(END, self.parent.monNom + " : \n" + '\t' + message[1])
                     self.listeMessage.itemconfig(END, {'fg':self.color.get(message[0])})
 
 
     def fermerfenetre(self):
-        print("ON FERME la fenetre")
+        #print("ON FERME la fenetre")
         self.root.destroy()
     

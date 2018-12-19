@@ -29,6 +29,7 @@ class Vue():
         self.creercadres()
         self.changecadre(self.cadreprincipal)
         self.afficherTables()
+        self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
 
     def changemode(self,cadre):
         if self.modecourant:
@@ -48,8 +49,6 @@ class Vue():
         
     def creercadres(self):
         self.creercadremodelisation()
-        #self.cadrejeu=Frame(self.root,bg="blue")
-        #self.modecourant=None
     
             
     def afficherTables(self):
@@ -112,36 +111,45 @@ class Vue():
             notable = self.nbTable
             boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,textNom,nomsChampsCreer,typeChampsCreer,typeChampsCreer),bg="white")
             boutonModifier.grid(column=(self.nbTable*3),row=j+4)
-            self.nbTable+=1    
+            self.nbTable+=1
+        self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
+
               
     def creercadremodelisation(self):
+        self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
+        self.root.overrideredirect(True) #Enleve la bordure
+
         # Create a frame for the canvas with non-zero row&column weights
-        self.cadreprincipal = Frame(self.root,width=self.largeurDefault,height=self.hauteurDefault, bg="#E4E9F3")
-        self.cadreprincipal.grid(row=0, column=0, pady=(5, 0), sticky='we')
+        self.cadreprincipal = Frame(self.root)
+        self.cadreprincipal.grid(row=2, column=0, pady=(5, 0), sticky='we')
+        self.cadreprincipal.grid_rowconfigure(0, weight=1)
+        self.cadreprincipal.grid_columnconfigure(0, weight=1)
         # Set grid_propagate to False to allow 5-by-5 buttons resizing later
         self.cadreprincipal.grid_propagate(False)
         
         # Add a canvas in that frame
         self.canvasmodelisation = Canvas(self.cadreprincipal, bg="#E4E9F3")
-        self.canvasmodelisation.grid(row=1, column=0, sticky="news")
-
-        #Link a scrollbar to the canvas
+        self.canvasmodelisation.grid(row=0, column=0, sticky="news")
+        
+        # Link a scrollbar to the canvas
         vsb = Scrollbar(self.cadreprincipal, orient="horizontal", command=self.canvasmodelisation.xview)
-        vsb.grid(row=0, column=0, sticky='we')
+        vsb.grid(row=1, column=0, sticky='we')
         self.canvasmodelisation.configure(xscrollcommand=vsb.set)
         
         # Create a frame to contain the buttons
-        self.cadremodelisation=Canvas(self.canvasmodelisation,bg="#E4E9F3")
-        self.cadremodelisation.grid()
-        self.root.overrideredirect(True) #Enleve la bordure
-        
-        self.root.geometry('%dx%d+%d+%d' % (self.largeurDefault, self.hauteurDefault, (self.largeurEcran/2)-(self.largeurDefault/2),(self.hauteurEcran/2)))
+        self.cadremodelisation = Frame(self.canvasmodelisation,bg="#E4E9F3")
+        self.canvasmodelisation.create_window((0, 0), window=self.cadremodelisation, anchor='nw')
         
         self.boutonAjoutTable = Button(self.cadremodelisation, text="Creer Table", width = 20, height = 3, command = self.creerTable,bg="white")
         self.boutonAjoutTable.grid(row=0,column=0)
-        # Set the canvas scrolling region
-        #self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
-        self.canvasmodelisation.config(scrollregion=(0,0,2000,500))
+        
+        # Update buttons frames idle tasks to let tkinter calculate buttons sizes
+        self.cadremodelisation.update_idletasks()
+        
+        self.cadreprincipal.config(width= self.largeurDefault,
+                    height=self.hauteurDefault)
+        # Set the self.canvasmodelisation scrolling region
+        self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
 
     def creerTable(self):
         self.nbChamps = 0
@@ -169,7 +177,8 @@ class Vue():
         
         boutonCreer = Button(self.creationTable, width = 15, height = 1, text = "Ajouter", command  = self.ajouterTable,bg="white")
         boutonCreer.grid(row=self.nbChamps+4,column=0, pady=10)
-        
+        self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
+
     def ajouterChampsNouveau(self):
         
         self.nomsChampsCreer.append(StringVar())
@@ -186,6 +195,7 @@ class Vue():
 
 
         self.nbChamps+=1
+    
     def ajouterTable(self):    
         self.nomChampsCreer=None;    
         textNom = Label(self.cadremodelisation,text="Nom de la table")
@@ -215,15 +225,12 @@ class Vue():
             j = i
             self.parent.insertItem(self.nomsChampsCreer[i].get(), self.typeChampsCreer[i].get(), self.autreChampsCreer[i].get(), self.nomTableCreer.get())
 
-        
-#         notable = self.nbTable
-#         nomschamps=self.nomsChampsCreer
-#         typeschamps=self.typeChampsCreer
-#         autreschamps=self.autreChampsCreer
         boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:self.modifierTable(boutonModifier,notable,nomTable,nomschamps,typeschamps,autreschamps),bg="white")
         boutonModifier.grid(column=(self.nbTable*3),row=j+4)
         self.nbTable+=1
         self.creationTable.destroy()
+        
+        self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
 
     def modifierTable(self,boutonModifier,noTable,nom,nomsChamps,typesChamps,autresChamps):
         boutonModifier.grid_forget()
@@ -327,6 +334,7 @@ class Vue():
         boutonModifier = Button(self.cadremodelisation, text="modifier", width = 15, command = lambda:modifierTable(boutonModifier,noTable,self.nomTableCreer.get(),self.nomsChampsCreer,self.typeChampsCreer,self.autreChampsCreer))
         boutonModifier.grid(column=(noTable*3),row=j+4)
         self.creationTable.destroy()
-
+        
+        self.canvasmodelisation.config(scrollregion=self.canvasmodelisation.bbox("all"))
     def fermerfenetre(self):
         self.root.destroy()

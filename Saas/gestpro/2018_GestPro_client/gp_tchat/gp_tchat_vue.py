@@ -124,13 +124,13 @@ class Vue():
                     while (color in self.color.values()):
                         color = '{:06x}'.format(self.random_color())
                     self.color[message[0]] = '#'+ color
-                print(self.color.get(message[0]))
+                #print(self.color.get(message[0]))
                 if self.messagesDeBD.index(message):
-                    self.listeMessage.insert(END, message[0] + " : \n" + '\t' + message[1])
+                    self.listeMessage.insert(END, self.parent.monNom + " : \n" + '\t' + message[1])
                     self.listeMessage.itemconfig(END, {'fg':self.color.get(message[0])})
 
 
     def fermerfenetre(self):
-        print("ON FERME la fenetre")
+        #print("ON FERME la fenetre")
         self.root.destroy()
     

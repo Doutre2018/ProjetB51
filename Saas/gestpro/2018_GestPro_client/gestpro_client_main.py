@@ -17,7 +17,7 @@ class Controleur():
         print("IN CONTROLEUR")
         self.createurId=Id
         self.modele=None
-        self.serveur=None
+        self.serveur=None 
         self.pid=None
         self.monip= socket.gethostbyname(socket.getfqdn())
         self.nodeport="9999"

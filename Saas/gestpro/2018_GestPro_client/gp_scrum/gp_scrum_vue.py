@@ -34,6 +34,7 @@ class Vue():
         self.fullscreen=True
         self.creercadres()
         self.changecadre(self.cadrescrum)
+        self.dateScrum = []
         
     def changemode(self,cadre):
         if self.modecourant:
@@ -109,6 +110,8 @@ class Vue():
         #Bouton Enregister 
         self.boutonSave = Button(self.infoEmploye,width=20, text="Enregister",command= self.EngeristerInfo,relief=FLAT, bg="white")
         self.boutonSave.grid()
+        
+        self.ajouterDateDeBaseDonnee()
     
     def creationEmploye(self):
         self.fenetreCreationEmploye = Toplevel(self.cadrescrum, bg="#234078"  )
@@ -193,6 +196,10 @@ class Vue():
         self.infoFait.delete(1.0,END)
         self.infoAFaire.delete(1.0,END)
         self.infoProbleme.delete(1.0,END)
+                       
+                    
+                    
+        #print(self.dateScrum[0])
         #self.listeDate -> c la liste de date!
         #a=()
         #a=self.listeDate.curselection() 
@@ -211,5 +218,56 @@ class Vue():
         #Dans cette fonction on prend le nom cliquer dans la liste des employer et on rajoute un nom dans les champ de texte de information
     def EngeristerInfo(self):
         #Juste pour toi Marylene!
-        pass
+        #YOU DA BEST IN DA BUSINESS:)
+        #accompli, a faire, probleme, nom
+        a=()
+        a=self.listeEmploye.curselection()
+        nomEmp=self.listeEmploye.get(a)
+        self.parent.insertDataMembre(self.infoFait.get(1.0, END), self.infoAFaire.get(1.0, END), self.infoProbleme.get(1.0, END), nomEmp)
     
+    
+    def ajouterDateDeBaseDonnee(self):
+        scrum = self.parent.modele.dateScrums
+        compteur =0
+        for i in scrum:
+            for k in i:
+                self.dateMois="" 
+                self.dateJour=""
+                for letter in k:
+                    if 4 < compteur <=6:
+                        self.dateMois+=str(letter)
+                        
+                    if 7< compteur <=9:
+                        self.dateJour+=str(letter)
+                    compteur = compteur + 1    
+                compteur=0
+                self.ScrumMois=""
+        
+                if self.dateMois =="01":   
+                    self.ScrumMois="Janvier"
+                if self.dateMois =="02":   
+                    self.ScrumMois="Février"
+                if self.dateMois =="03":   
+                    self.ScrumMois="Mars"
+                if self.dateMois =="04":   
+                    self.ScrumMois="Avril"
+                if self.dateMois =="05":   
+                    self.ScrumMois="Mai"
+                if self.dateMois =="06":   
+                    self.ScrumMois="Juin"
+                if self.dateMois =="07":   
+                    self.ScrumMois="Juillet"
+                if self.dateMois =="08":   
+                    self.ScrumMois="Aout"
+                if self.dateMois =="09":   
+                    self.ScrumMois="Septembre"
+                if self.dateMois =="10":   
+                    self.ScrumMois="Octobre"
+                if self.dateMois =="11":   
+                    self.ScrumMois="Novembre"
+                if self.dateMois =="12":   
+                    self.ScrumMois="Décembre"
+                
+                date=self.dateJour+" "+self.ScrumMois
+                self.listeDate.insert(END,date)
+

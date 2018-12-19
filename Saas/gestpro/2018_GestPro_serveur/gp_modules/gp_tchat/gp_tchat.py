@@ -33,13 +33,16 @@ class Controleur():
         
     def recevoirFichiers(self):
         # pour utiliser, entrez le nom des fichiers que vous voulez dans la liste chemins (1 à n chemins) 
-        listeChemins = ["chat.jpg"]
+        listeChemins = ["chat.jpg", "chat2.jpg"]
         for chemin in listeChemins:
             try:
                 with open(chemin, "wb") as handle:
                     handle.write(self.serveur.requeteFichier(chemin).data)
             except Exception as erreur: 
-                print("Problème lors du téléchargement du fichier", chemin, '\n', erreur)
+                try:
+                    self.serveur.logErreur(socket.gethostbyname(socket.getfqdn()), erreur)
+                except:
+                    pass
                 
 class Modele():
     def __init__(self,parent):
@@ -100,8 +103,11 @@ class Modele():
         commande = "SELECT id_utilisateur FROM LigneChat;"
         try:
             return self.serveur.requeteSelection(commande)
-        except ValueError:
-            return None
+        except Exception as erreur:
+            try:
+                self.serveur.logErreur(socket.gethostbyname(socket.getfqdn()), erreur)
+            except:
+                pass
         
     def triNomAvecIdUtilisateur(self,idUsager):
         commande = "SELECT nomUtilisateur FROM Utilisateur WHERE id="
@@ -110,9 +116,13 @@ class Modele():
                 for n in i:
                     idUsager=n
             return self.serveur.requeteSelection(commande+str(idUsager))
-        except sqlite3.Error as er:
-            print(er)
-            return None
+        except sqlite3.Error as erreur:
+                try:
+                    self.serveur.logErreur(socket.gethostbyname(socket.getfqdn()), erreur)
+                    return None
+                except:
+                    return None
+            
     
 if __name__ == '__main__':
     c=Controleur()

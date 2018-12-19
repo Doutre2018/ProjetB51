@@ -29,7 +29,7 @@ class Controleur():
         
     def reloadMessageBD(self):
         self.vue.ajoutMessageBD()
-        self.vue.root.after(100,self.reloadMessageBD)
+        self.vue.root.after(20,self.reloadMessageBD)
         
     def recevoirFichiers(self):
         # pour utiliser, entrez le nom des fichiers que vous voulez dans la liste chemins (1 à n chemins) 

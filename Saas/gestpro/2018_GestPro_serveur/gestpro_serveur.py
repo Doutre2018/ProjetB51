@@ -307,7 +307,6 @@ class  BaseDonnees():
     
     def genererListeTables(self):
         listeTables = [ 
-            ['stocks', ['price', 'INTEGER', '']],
             ['Serveurs', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['IP','INTEGER',''], ['nom','text','UNIQUE']],
             ['Utilisateur', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomUtilisateur','text','UNIQUE'],['id_compagnie','INTEGER',''], ['motDePasse','text',''], ['chemin_acces_csv','text','']],
             ['Projet', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text','UNIQUE']],
@@ -324,7 +323,7 @@ class  BaseDonnees():
             ['Objet_Maquette', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['Type','text',''], ['PosX','real',''], ['PosY','real',''],['X','real',''], ['Y','real',''], ['Bordure','real','NULL'], ['Interieur','real','NULL'],['Texte','text',''],['Font','text','']],
             ['ColonnesScenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text',''], ['numero_position','INTEGER','']],
             ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''], ['classe','text',''], ['ordre','INTEGER',''],['carte_heritage','text',''],['nom_responsable','text','']],
-            ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],
+            ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text',''],['id_classe','INTEGER','']],
             ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date',''],['nom','text','']],
             ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER',''],['id_membre','INTEGER','']],
            # ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
@@ -332,10 +331,10 @@ class  BaseDonnees():
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
             ['Position',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['x','real','NOT NULL'],['y','real','NOT NULL']],
             ['Compagnie',['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['nomCompagnie','text','NOT NULL']],
-            ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['date', 'text', '']],
+            ['Scrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''], ['date', 'text', '']],
             ['MembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', '']],
             ['DonneesMembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', '']],
-            ['CartesDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''], ['nom', 'text', '']],
+            ['CartesDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'],['id_projet','INTEGER',''],['id_carte','INTEGER',''],  ['nom', 'text', '']],
             ['ItemDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', ''], ['type', 'text', ''], ['contrainte', 'text', '']],
             ['ObjetsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['objet','text','']],
             ['MembreSprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['id_sprint','INTEGER',''],['nomMembre','text','']]
@@ -361,8 +360,6 @@ class  BaseDonnees():
             ['Cartes', 'id_projet','INTEGER', 'Projet', 'id'],
             ['Objet_Maquette', 'id_position','INTEGER', 'Position', 'id'],
             ['Objet_Maquette', 'id_type','INTEGER', 'TypeForme', 'id'],
-            #['Taches_Terlow', 'id_projet','INTEGER', 'Projet', 'id'],
-            #['Taches_Terlow', 'id_colonne_terlow','INTEGER', 'Colonnes_Terlow', 'id'],
             ['Objet_Texte', 'id_position','INTEGER', 'Position', 'id'],
             ['Tache_Sprint','id_sprint','INTEGER', 'Sprint', 'id'],
             ['Sprint', 'id_projet', 'INTEGER',  'Projet', 'id'],
@@ -418,7 +415,7 @@ class  BaseDonnees():
             self.curseur.execute(stringCreate)
         self.alterTable(listeConst)
         self.curseur.execute("CREATE TABLE IF NOT EXISTS Colonnes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, ordre INTEGER, titre text, CONSTRAINT ordre_unique UNIQUE (ordre)) ")
-        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, texte text, estimationTemps INTEGER,  dateCreation timestamp, datePrevueFin timestamp)") 
+        self.curseur.execute("CREATE TABLE IF NOT EXISTS Cartes_Terlow (id INTEGER PRIMARY KEY AUTOINCREMENT, id_colonne INTEGER, ordre INTEGER, titre text, description text, estimationTemps INTEGER,  dateCreation timestamp, datePrevueFin timestamp)") 
 
     
     def insertion(self, nomTable = "", listeValeurs=[]):

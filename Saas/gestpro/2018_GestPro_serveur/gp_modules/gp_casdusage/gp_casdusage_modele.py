@@ -27,9 +27,12 @@ class Modele():
     
     def insertScenarii(self, ligne, usager, machine ):
         idCas = self.BD.requeteSelection("SELECT id FROM CasUsage WHERE texte = '" + str(ligne[0]) + "';")
-        idCas = idCas[0]
-        idCas = idCas[0]
-        
+        try :
+            idCas=idCas[0]
+            idCas=idCas[0]
+        except:
+            idCas=idCas
+
         self.BD.requeteInsertionPerso("INSERT INTO Scenarii(id_projet, id_casUsage,ligne,id_colonne) VALUES('" + str(self.numProjet) + "','" + str(idCas) + "','" + str(usager) + "','" + str(1) + "');")
         self.BD.requeteInsertionPerso("INSERT INTO Scenarii(id_projet, id_casUsage,ligne,id_colonne) VALUES('" + str(self.numProjet) + "','" + str(idCas) + "','" + str(machine) + "','" + str(2) + "');")
    

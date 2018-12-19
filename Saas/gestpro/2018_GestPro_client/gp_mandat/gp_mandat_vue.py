@@ -185,6 +185,7 @@ class Vue():
         self.nouveauSprint.destroy()
     
     def afficherMembresSprint(self,evt):
+        self.listeMembre.delete(0,'end')
         w= evt.widget
         a=w.curselection()
         nom = self.listeSprint.get(a)
@@ -201,7 +202,7 @@ class Vue():
     def delete(self):
         a=()
         a=self.listeSprint.curselection()
-        
+        self.listeMembre.delete(0,'end')
         if a==():
             pass
         else:
@@ -276,7 +277,6 @@ class Vue():
         
         
     def modifInsertion(self):
-       
         Date= self.jour.get() +" "+ self.comboMois.get() 
         ligneAjout= "Sprint " + self.entryNumeroSprint.get() +" : "+ Date
         

@@ -84,10 +84,11 @@ class Modele():
         self.serveur.requeteSelection(commande)
     
     def selectTexteLigneChat(self,id):
-        commande = "SELECT texte FROM LigneChat ORDER BY id LIMIT 30 DESC WHERE id="
+        commande = "SELECT texte FROM LigneChat DESC WHERE id="
         for i in self.serveur.requeteSelection(commande+str(id)):
             for n in i:
                 rep = n
+        commande += " ORDER BY id LIMIT 30"
         return rep
     
     def selectNomUtilisateurDeLigneChat(self,id):

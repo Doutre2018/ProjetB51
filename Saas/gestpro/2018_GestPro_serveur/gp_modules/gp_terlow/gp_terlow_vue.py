@@ -113,7 +113,7 @@ class Vue():
         ordre = str(noListe)
         titre = entreeTitre.get()
         param = (ordre, titre,)
-        self.parent.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, texte) VALUES (?, ?)", param )
+        self.parent.serveur.requeteInsertionPerso("INSERT INTO Colonnes_Terlow (ordre, titre) VALUES (?, ?)", param )
         self.nbListe+=1
 
     def ajouterCarte(self, noListe):
@@ -221,7 +221,7 @@ class Vue():
         #listeInfoCarte.append(self.entreeeProprietaireCarte.get())
         
         commande = "UPDATE Cartes_Terlow" 
-        commande += " SET texte = '" + str(nom) + "', description = '" + str(description) + "'"
+        commande += " SET titre = '" + str(nom) + "', description = '" + str(description) + "'"
         commande += " WHERE id_colonne = " + str(noColonne + 1) + " AND ordre = " + str(noCarte)
         self.parent.serveur.requeteMiseAJour(commande)
 

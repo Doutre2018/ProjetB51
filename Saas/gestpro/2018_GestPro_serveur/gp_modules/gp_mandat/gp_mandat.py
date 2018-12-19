@@ -17,10 +17,18 @@ class Controleur():
         print("IN CONTROLEUR")
         self.createurId=Id
         self.serveur = ServerProxy(sys.argv[4], allow_none=True)
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
+class Modele():
+    def __init__(self,parent):
+        self.parent=parent
+        self.serveur=parent.serveur
+        
+    def selectSprint(self):
+        commande = "SELECT nom FROM Sprint"
+        return self.serveur.requeteSelection(commande)
     
 if __name__ == '__main__':
     c=Controleur()

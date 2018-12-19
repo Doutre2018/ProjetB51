@@ -17,10 +17,23 @@ class Controleur():
         print("IN CONTROLEUR")
         self.createurId=Id
         self.serveur = ServerProxy(sys.argv[4], allow_none=True)
-        self.modele=None
+        self.modele=Modele(self)
         self.vue=Vue(self)
         self.vue.root.mainloop()
         
+class Modele():
+    def __init__(self,parent):
+        self.parent=parent
+        self.serveur=parent.serveur
+        
+    def selectSprint(self):
+        commande = "SELECT nom FROM Sprint"
+        return self.serveur.requeteSelection(commande)
     
+    def insertSprint(self,nom):
+        return self.serveur.requeteInsertionPerso("INSERT INTO Sprint(nom) VALUES('" + str(nom) + "');")
+    
+    def insertMembreSprint(self,membre,idSprint):
+        return self.serveur.requeteInsertionPerso("INSERT INTO MembreSprint(nomMembre,id_sprint) VALUES('" + str(membre) + "',"+str(idSprint)+");")
 if __name__ == '__main__':
     c=Controleur()

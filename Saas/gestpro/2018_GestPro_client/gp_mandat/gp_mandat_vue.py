@@ -30,7 +30,7 @@ class Vue():
         self.root.protocol("WM_DELETE_WINDOW", self.fermerfenetre)
         self.root.config(bg="#E4E9F3")
         self.parent=parent
-        self.modele=None
+        self.modele=parent.modele
         
         self.largeur=self.largeurDefault=largeur
         self.hauteur=self.hauteurDefault=hauteur
@@ -98,7 +98,10 @@ class Vue():
         self.boutonSuppSprint.grid(row=11,column=0,columnspan=3)
         self.boutonModifierSprint = Button(self.root, text="Modifier", command=self.modifier,width=10, relief=FLAT, bg="white")
         self.boutonModifierSprint.grid(row=11,column=0, pady=10,columnspan=3,padx=(200,0))
-         
+        
+        for i in self.modele.selectSprint():
+            for n in i:
+                self.listeSprint.insert(0,n)
 
         self.textMembre= Label(self.root,font="-size 14",text="Membre",bg="#E4E9F3",width=10)
         self.textMembre.grid(row=15,column=0,columnspan=3, padx=(0,240), pady=(20,0))
@@ -176,7 +179,7 @@ class Vue():
         ligneAjout= "Sprint " + str(self.compteur) +" : "+ Date
         self.listeSprint.insert(END, ligneAjout)
         self.compteur +=1
-        
+        self.modele.insertSprint(Date)
         self.nouveauSprint.destroy()
         
     def delete(self):

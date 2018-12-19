@@ -24,6 +24,15 @@ class Controleur():
         
     def insertNewScrum(self, dateScrum):
         self.modele.insertScrum(dateScrum)
+    
+    def insertNewMembre(self, nom, idScrum):
+        self.modele.insertMembreScrum(nom, idScrum)
+        
+    def insertDataMembre(self, accompli, aFaire, probleme, nom):
+        self.modele.insertDonneesMembre(accompli, aFaire, probleme, nom)
+        
+    def selectDataMembre(self, nom):
+        self.modele.selectMembres(nom)
         
     
 if __name__ == '__main__':

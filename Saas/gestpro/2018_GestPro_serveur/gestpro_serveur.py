@@ -208,10 +208,10 @@ class ModeleService(object):
         with open(cheminFichier, "rb") as handle:
             return xmlrpc.client.Binary(handle.read())
 
-    def logErreur(self, adresseIP, message):
+    def logErreur(self,date, adresseIP, message):
         with open("log.csv", 'a+', newline = '') as handler:
             writer = csv.writer(handler, delimiter = ';') 
-            row =[datetime.now(),  adresseIP,  message]
+            row =[date,  adresseIP,  message]
             writer.writerow(row)
         return True
             
@@ -324,8 +324,8 @@ class  BaseDonnees():
             ['ColonnesScenarii', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nom','text',''], ['numero_position','INTEGER','']],
             ['Cartes', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['classe','text',''], ['ordre','INTEGER',''],['carte_heritage','text',''],['nom_responsable','text','']],
             ['AttributsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['nomAttributs','text','']],
-            ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date','']],
-            ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER','']],
+            ['Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['date','date',''],['nom','text','']],
+            ['Tache_Sprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['description','text',''], ['nom','text',''], ['duree','INTEGER',''],['id_membre','INTEGER','']],
            # ['Taches_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre','INTEGER',''], ['texte','text','DEFAULT NULL']],
             #['Colonnes_Terlow', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['ordre', 'INTEGER', ''], ['titre','text','']],
             ['Objet_Texte', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'], ['texte','text','']],
@@ -336,12 +336,15 @@ class  BaseDonnees():
             ['DonneesMembreScrum', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['accompli', 'text', ''], ['aFaire', 'text', ''], ['probleme', 'text', '']],
             ['CartesDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', '']],
             ['ItemDonnees', ['id', 'INTEGER', 'PRIMARY KEY AUTOINCREMENT'], ['nom', 'text', ''], ['type', 'text', ''], ['contrainte', 'text', '']],
-            ['ObjetsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['objet','text','']]
+            ['ObjetsCRC', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['objet','text','']],
+            ['MembreSprint', ['id','INTEGER','PRIMARY KEY AUTOINCREMENT'],['id_sprint','INTEGER',''],['nomMembre','text','']]
             ]
         return listeTables
     
     def genererListeConst(self):
         listeConst = [
+            ['Tache_Sprint','id_membre','INTEGER','MembreSprint','id'],
+            ['MembreSprint','id_sprint','INTEGER','Sprint','id'],
             ['LigneChat', 'id_utilisateur','INTEGER', 'Utilisateur', 'id'],
             ['LigneChat', 'id_filDiscussion','INTEGER', 'filDeDiscussion', 'id'],
             ['AnalyseTextuelle', 'id_type','INTEGER', 'TypeMot', 'id'],

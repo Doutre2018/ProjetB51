@@ -179,6 +179,8 @@ class Vue():
         ligneAjout= "Sprint " + str(self.compteur) +" : "+ Date
         self.listeSprint.insert(END, ligneAjout)
         self.compteur +=1
+        
+        #Insert en BD
         self.modele.insertSprint(Date)
         self.nouveauSprint.destroy()
         
@@ -189,7 +191,12 @@ class Vue():
         if a==():
             pass
         else:
-            self.listeSprint.delete(a)   
+            nom = self.listeSprint.get(a)
+            self.listeSprint.delete(a)
+            for i in self.modele.selectIdSprint(nom):
+                for n in i:
+                    rep = n
+            self.modele.deleteSprint(n)   
         
         #Supprime la rangée de la BD
         #self.modele.supprimerCarte(nomClasse)
